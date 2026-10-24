@@ -115,6 +115,33 @@ def cm_md(y, p, labels) -> str:
     return "\n".join(lines)
 
 
+def input_type_md() -> list[str]:
+    """Input-type classifier section, from models/input_type_report.json (scripts/train_input_type.py)."""
+    import json as _json
+    p = ROOT / "models" / "input_type_report.json"
+    if not p.exists():
+        return []
+    r = _json.loads(p.read_text(encoding="utf-8"))
+    cls = r["classes"]
+    rows = ", ".join(f"{c} {r['rows'][c]}" for c in cls)
+    out = ["\n## Input type (abstention)\n",
+           f"`scripts/train_input_type.py`: TF-IDF char 2-5 + word 1-2 grams, calibrated logistic regression. "
+           f"Rows: {rows}. Split: {r['split']}; "
+           f"{r['n_train']} train / {r['n_val']} validation rows, so every validation template is unseen.\n",
+           "| Class | F1 | support |", "|---|---|---|"]
+    out += [f"| {c} | {r['per_class_f1'][c]:.3f} | {r['support'][c]} |" for c in cls]
+    out.append(f"| **macro** | **{r['macro_f1']:.3f}** | |\n")
+    out.append("Confusion (rows = true, columns = predicted):\n")
+    out.append("| | " + " | ".join(cls) + " |")
+    out.append("|---" * (len(cls) + 1) + "|")
+    out += [f"| {c} | " + " | ".join(str(v) for v in row) + " |" for c, row in zip(cls, r["confusion"])]
+    out.append("\nThe classifier never opens clinical questioning on its own: a clinical follow-up needs an evidence "
+               "span in the user's words (`app/evidence.py`). It only chooses a more specific non-health reply; the "
+               "regex rules for maths and code run first, which covers most of the maths templates it confuses with "
+               "off-topic.\n")
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-write", action="store_true")
@@ -300,6 +327,7 @@ def main() -> None:
             report.append(f"| {name} | {m['urg_f1']:.3f} | {m['ktas12_recall']:.3f} | {m['under_triage']:.3f} |")
         report.append("\nKTAS is Korean ED data triaged largely on vital signs, which a text-only router cannot see. "
                       "It is used as extra urgency signal, not as the target distribution.\n")
+    report += input_type_md()
     mc_dir = ROOT / "models" / "model_c"
     if (mc_dir / "meta.json").exists():
         try:

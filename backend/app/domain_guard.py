@@ -168,6 +168,12 @@ def classify(text: str, answering_clinical_question: bool = False) -> str:
         return OFF_TOPIC
     if UNKNOWN_MED.search(t):
         return UNKNOWN_TERM
+    from . import input_type  # learned classifier + simple gibberish features (lexicon share, repeats, vowels)
+    if _looks_gibberish(t) or input_type.looks_gibberish(t):
+        return UNCLEAR
+    learned = input_type.predict(t)
+    if learned in (GREETING, OFF_TOPIC, MATH, UNCLEAR):
+        return learned
     # no evidence span: never start clinical questioning (evidence gate); ask what, who and since when instead
     if len(WORD.findall(t)) >= 4:
         c = _llm_tiebreak(t)
