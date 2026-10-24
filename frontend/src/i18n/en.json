@@ -317,7 +317,7 @@
     "notesPlaceholder": "e.g. Second floor, ring the bell twice",
     "confirm": "Confirm booking",
     "confirming": "Booking…",
-    "successTitle": "Booking confirmed",
+    "successTitle": "Demo booking saved",
     "bookingId": "Booking ID",
     "caregiver": "Caregiver",
     "time": "Time",
@@ -330,7 +330,7 @@
     },
     "viewBookings": "View my bookings",
     "done": "Done",
-    "toast": "Booking confirmed with {name}",
+    "toast": "Demo booking saved with {name}. No real caregiver is notified.",
     "failed": "Booking failed. Please try again.",
     "invalidPhone": "Please enter a 10-digit mobile number",
     "stepDone": "done"
@@ -350,7 +350,32 @@
     "back": "Back to chat",
     "noBooking": "Booking is turned off in emergencies. Please call first.",
     "readAloud": "Read instructions aloud",
-    "undo": "Selected by mistake? Go back"
+    "undo": "Selected by mistake? Go back",
+    "tapToCall": "Tap to call",
+    "share": {
+      "title": "Tell your family",
+      "hint": "Opens a ready message that you send yourself. CareCompass does not send anything.",
+      "line1": "CareCompass: this may be an emergency. Please help or call 112.",
+      "signs": "Danger signs",
+      "location": "Location",
+      "time": "Time",
+      "call112": "Emergency number: 112. Ambulance: 108.",
+      "tapToShare": "Tap to share",
+      "whatsapp": "Tap to share on WhatsApp",
+      "sms": "Tap to share by SMS",
+      "whatsappAny": "Share on WhatsApp",
+      "smsAny": "Share by SMS"
+    },
+    "contact": {
+      "name": "Contact name",
+      "phone": "10-digit mobile number",
+      "save": "Save contact",
+      "call": "Tap to call {name}",
+      "edit": "Change",
+      "remove": "Remove",
+      "invalid": "Enter a name and a 10-digit mobile number.",
+      "deviceOnly": "The contact is saved only in this browser on this device. It never leaves this device."
+    }
   },
   "directory": {
     "title": "Caregivers",

@@ -5,6 +5,7 @@ import { useApp } from "../../context/AppContext.jsx";
 import { speak } from "../../lib/speech.js";
 import { locationLabel } from "../../lib/locations.js";
 import { flagLabel } from "../../lib/care.js";
+import EmergencyContacts from "./EmergencyContacts.jsx";
 
 function steps(reasoning) {
   return (reasoning || "").split(/(?<=[.।!?])\s+/).map((s) => s.trim()).filter(Boolean);
@@ -58,7 +59,7 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
             <span className="min-w-0">
               <span className="block font-display text-5xl font-bold leading-none sm:text-7xl">112</span>
               <span className="mt-1 block text-lg font-bold sm:text-xl">{t("emergency.call112")}</span>
-              <span className="block text-sm text-emergency/80">{t("emergency.call112d")}</span>
+              <span className="block text-sm text-emergency/80">{t("emergency.call112d")} · {t("emergency.tapToCall")}</span>
             </span>
           </a>
           <a href="tel:108" className="flex items-center gap-5 rounded-3xl bg-emergency-soft p-5 text-emergency-deep shadow-lift sm:p-7" aria-label={t("emergency.call108")}>
@@ -68,7 +69,7 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
             <span className="min-w-0">
               <span className="block font-display text-5xl font-bold leading-none sm:text-7xl">108</span>
               <span className="mt-1 block text-lg font-bold sm:text-xl">{t("emergency.call108")}</span>
-              <span className="block text-sm opacity-80">{t("emergency.call108d")}</span>
+              <span className="block text-sm opacity-80">{t("emergency.call108d")} · {t("emergency.tapToCall")}</span>
             </span>
           </a>
         </div>
@@ -117,6 +118,7 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
                 <p className="mt-3 font-semibold">{t("emergency.locationUnknown")}</p>
               )}
             </section>
+            <EmergencyContacts signs={(response.red_flags || []).map((f) => flagLabel(f, t, debug))} />
             <p className="flex items-start gap-2 rounded-2xl border border-white/40 px-4 py-3 font-semibold">
               <Ban className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />{t("emergency.noBooking")}
             </p>

@@ -10,7 +10,7 @@ import StatusTimeline from "./StatusTimeline.jsx";
 import { Avatar, ErrorState, Spinner } from "./ui.jsx";
 
 export default function BookingModal({ cg, careType, urgency, onClose, preferredSlot }) {
-  const { t, lang, location, addBooking, updateBooking, toast, voice } = useApp();
+  const { t, lang, location, addBooking, toast, voice } = useApp();
   const slots = useMemo(() => futureSlots(cg).slice(0, 12), [cg]);
   const [slot, setSlot] = useState(() => (preferredSlot ? preferredSlot.toISOString() : slots[0]?.toISOString() || ""));
   const [name, setName] = useState("");
@@ -19,7 +19,7 @@ export default function BookingModal({ cg, careType, urgency, onClose, preferred
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(null);
-  const [status, setStatus] = useState(0);
+  const [status] = useState(0); // "booked" only: nothing beyond the demo booking is claimed
   const dialogRef = useRef(null);
   const closeRef = useRef(null);
 
@@ -41,16 +41,7 @@ export default function BookingModal({ cg, careType, urgency, onClose, preferred
     return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
   }, [onClose]);
 
-  // mock progress of the visit after booking
-  useEffect(() => {
-    if (!done) return undefined;
-    const id = setInterval(() => setStatus((s) => {
-      const n = Math.min(s + 1, 1);
-      updateBooking(done.booking_id, { status: n });
-      return n;
-    }), 2500);
-    return () => clearInterval(id);
-  }, [done, updateBooking]);
+  // no simulated progress: the demo never claims a caregiver was assigned or is on the way
 
   const byDay = useMemo(() => {
     const groups = [];
