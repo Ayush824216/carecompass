@@ -24,7 +24,7 @@
                     "label": {"en": "unconscious", "hi": "बेहोशी", "hinglish": "behoshi"}},
     "seizure": {"patterns": ["daura", "seizure", "convuls", "fits? (aa|pad)", "jhatke", "दौरा", "झटके"],
                 "label": {"en": "seizure / fit", "hi": "दौरा", "hinglish": "daura"}},
-    "stiff_neck": {"patterns": ["gardan (\\S+ )?(akad|akd|jakad|jakd|stiff)", "stiff neck", "neck (is )?stiff", "गर्दन.{0,8}(अकड़|अकड|जकड़)"],
+    "stiff_neck": {"patterns": ["gardan (\\S+ )?(akad|akd|jakad|jakd|stiff)", "stiff neck", "neck (is |has )?(become |gone )?stiff", "गर्दन.{0,8}(अकड़|अकड|जकड़)"],
                    "label": {"en": "stiff neck", "hi": "गर्दन में अकड़न", "hinglish": "gardan akadna"}},
     "non_fading_rash": {"patterns": ["(purple|baingani) (rash|daane|spots)", "rash (that )?(does ?n.?t|doesn't|won'?t) fade", "dabane par (bhi )?(nahi jaate|nahi mit)", "बैंगनी दाने"],
                         "label": {"en": "purple rash that does not fade", "hi": "बैंगनी दाने जो दबाने पर नहीं जाते", "hinglish": "baingani daane jo dabane par nahi jaate"}},
@@ -68,7 +68,7 @@
      "label": {"en": "fever in pregnancy", "hi": "गर्भावस्था में बुखार", "hinglish": "pregnancy mein bukhar"}},
     {"id": "elderly_raise", "when": "elderly", "effect": "raise", "pathways": ["fever", "cough", "stomach"],
      "label": {"en": "age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}},
-    {"id": "comorbid_raise", "when": "comorbid", "effect": "raise", "pathways": "*",
+    {"id": "comorbid_raise", "when": "comorbid", "effect": "raise", "pathways": ["fever", "cough", "stomach", "headache"], "_note": "chest pain rules already use diabetes / heart / BP directly",
      "label": {"en": "a long-term condition (sugar, heart, kidney, liver, cancer, steroids or HIV)", "hi": "पुरानी बीमारी (शुगर, दिल, किडनी, लीवर, कैंसर, स्टेरॉयड या HIV)", "hinglish": "purani bimari (sugar, dil, kidney, liver, cancer, steroid ya HIV)"}},
     {"id": "bedridden_home", "when": "bedridden", "effect": "prefer_home", "pathways": "*",
      "label": {"en": "cannot travel", "hi": "बाहर नहीं जा सकते", "hinglish": "bahar nahi ja sakte"}}

@@ -21,7 +21,9 @@ NUMW = {
     "ek": 1, "one": 1, "a": 1, "an": 1, "do": 2, "two": 2, "teen": 3, "three": 3, "char": 4, "chaar": 4, "four": 4,
     "paanch": 5, "panch": 5, "five": 5, "chhe": 6, "chhah": 6, "che": 6, "six": 6, "saat": 7, "seven": 7, "aath": 8,
     "eight": 8, "nau": 9, "nine": 9, "das": 10, "ten": 10, "gyarah": 11, "barah": 12, "pandrah": 15,
+    "eleven": 11, "twelve": 12, "fifteen": 15, "twenty": 20, "bees": 20,
     "एक": 1, "दो": 2, "तीन": 3, "चार": 4, "पाँच": 5, "पांच": 5, "छह": 6, "छः": 6, "सात": 7, "आठ": 8, "नौ": 9, "दस": 10,
+    "ग्यारह": 11, "बारह": 12, "पंद्रह": 15, "बीस": 20,
 }
 NUM = r"(\d+(?:\.\d+)?|" + "|".join(sorted((re.escape(k) for k in NUMW), key=len, reverse=True)) + r")"
 DEVA_DIGITS = str.maketrans("०१२३४५६७८९", "0123456789")
@@ -179,10 +181,10 @@ def parse_duration(text: str, today: Optional[datetime] = None) -> Optional[floa
 
 
 AGE_YEARS = [
-    _rx(rf"{NUM}\s*(saal|sal|years?|yrs?|साल)\s*(ka|ki|ke|old|का|की|के|ki\s+umar|of\s+age)\b"),
+    _rx(rf"{NUM}\s*(saal|sal|years?|yrs?|साल)\s*(ka|ki|ke|old|का|की|के|ki\s+umar|of\s+age){END}"),
     _rx(rf"\b(umar|umr|age|aged|उम्र)\s*(hai\s+|is\s+|:\s*)?{NUM}"),
     _rx(rf"(?:^|[,.;]\s*){NUM}\s*(saal|sal|years?|yrs?|साल)\s*(?=[,.;]|$)"),
-    _rx(rf"{NUM}\s*(saal|sal|years?|साल)\s+(ke|ki|ka|के|की)?\s*(papa|mummy|dada|dadi|nana|nani|father|mother|patient|aunt|uncle)"),
+    _rx(rf"{NUM}\s*(saal|sal|years?|साल)\s+(ke|ki|ka|के|की)?\s*(papa|mummy|dada|dadi|nana|nani|father|mother|patient|aunt|uncle|पापा|मम्मी|माँ|दादा|दादी|नाना|नानी|पिता)"),
     _rx(rf"\b{NUM}\s*-?\s*(year|yr)\s*-?\s*old\b"),
 ]
 AGE_MONTHS = _rx(rf"{NUM}\s*-?\s*(mahine|mahina|months?|महीने|महीना)\s*-?\s*(ka|ki|ke|old|का|की|के){END}")
@@ -220,7 +222,7 @@ def parse_age(text: str) -> tuple[Optional[float], Optional[str]]:
     return None, None
 
 
-PLT = _rx(r"(?:platelets?|plate\s*lets?|platlets?|pletlets?|plt|प्लेटलेट[ऀ-ॿ]*)\s*(?:count)?\s*(?:is|hai|h|aaye|aayi|aaya|aa\s+gaye|ho\s+gaye|:|-|=|ab)?\s*"
+PLT = _rx(r"(?:platelets?|plate\s*lets?|platlets?|pletlets?|plt|प्लेटलेट[ऀ-ॿ]*)\s*(?:count)?\s*(?:is|are|was|were|hai|h|aaye|aayi|aaya|aa\s+gaye|ho\s+gaye|:|-|=|ab)?\s*"
           r"(\d+(?:[.,]\d+)*)\s*(k\b|thousand|hazaa?r|hajaar|हज़ार|हजार|lakh|lac|लाख)?")
 PLT_REV = _rx(r"(\d+(?:[.,]\d+)*)\s*(k\b|thousand|hazaa?r|hajaar|हज़ार|हजार|lakh|lac|लाख)?\s*(?:platelets?|plate\s*lets?|प्लेटलेट)")
 
@@ -256,7 +258,8 @@ def parse_bp(text: str) -> tuple[Optional[int], Optional[int], bool]:
 COUNT_V = [_rx(rf"{NUM}(?:\s*(?:-|–|to|se)\s*{NUM})?\s*(?:baar|bar|times|dafa|बार)\s*(?:ki\s+|se\s+)?(?:ulti|ultee|vomit\w*|उल्टी)"),
            _rx(rf"(?:ulti|ultee|vomit\w*|उल्टी)\w*\s+(?:\S+\s+){{0,3}}{NUM}(?:\s*(?:-|–|to)\s*{NUM})?\s*(?:baar|bar|times|बार)")]
 COUNT_S = [_rx(rf"{NUM}(?:\s*(?:-|–|to|se)\s*{NUM})?\s*(?:baar|bar|times|dafa|बार)\s*(?:ki\s+|se\s+)?(?:dast|loose|potty|motion|latrine|stool|दस्त)"),
-           _rx(rf"(?:dast|loose\s+motions?|potty|motions?|diarrh\w*|दस्त)\s+(?:\S+\s+){{0,3}}{NUM}(?:\s*(?:-|–|to)\s*{NUM})?\s*(?:baar|bar|times|बार)")]
+           _rx(rf"(?:dast|loose\s+motions?|potty|motions?|diarrh\w*|दस्त)\s+(?:\S+\s+){{0,3}}{NUM}(?:\s*(?:-|–|to)\s*{NUM})?\s*(?:baar|bar|times|बार)"),
+           _rx(rf"\b{NUM}\s+(?:loose\s+motions?|loose\s+stools?|watery\s+stools?|motions)\b")]
 GENERIC_COUNT = _rx(rf"(?:din\s+(?:mein|me)\s+|a\s+day\s+)?{NUM}(?:\s*(?:-|–|to)\s*{NUM})?\s*(?:baar|bar|times|बार)")
 
 
