@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens as RGB channels so Tailwind opacity modifiers work. */
+:root {
+  --bg: 250 247 241;          /* warm off-white */
+  --surface: 255 255 255;
+  --sunken: 242 238 230;
+  --ink: 22 36 34;
+  --muted: 84 98 95;
+  --line: 223 216 204;
+  --primary: 14 98 86;        /* deep teal */
+  --primary-deep: 8 66 58;
+  --primary-soft: 222 239 234;
+  --primary-ink: 255 255 255;
+  --accent: 214 122 34;       /* warm saffron, highlights only */
+  --accent-soft: 252 236 214;
+  --emergency: 190 18 32;     /* reserved for emergencies */
+  --emergency-deep: 140 10 22;
+  --emergency-soft: 253 231 232;
+  --routine: 36 122 62;
+  --routine-soft: 224 242 228;
+  --sameday: 168 98 0;
+  --sameday-soft: 253 240 214;
+  --base-size: 18px;
+  color-scheme: light;
+}
+
+:root[data-contrast="high"] {
+  --bg: 255 255 255;
+  --surface: 255 255 255;
+  --sunken: 238 238 238;
+  --ink: 0 0 0;
+  --muted: 30 30 30;
+  --line: 0 0 0;
+  --primary: 0 72 62;
+  --primary-deep: 0 45 38;
+  --primary-soft: 214 236 230;
+  --accent: 150 70 0;
+  --accent-soft: 255 232 200;
+  --emergency: 170 0 15;
+  --routine: 0 95 30;
+  --sameday: 130 70 0;
+}
+
+html { font-size: var(--base-size); }
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+  line-height: 1.55;
+}
+:lang(hi) body, [lang="hi"] { line-height: 1.7; }
+
+h1, h2, h3 { @apply font-display; letter-spacing: -0.01em; }
+
+:focus-visible {
+  outline: 3px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+[data-contrast="high"] .card, [data-contrast="high"] .border-line { border-width: 2px; }
+
+@layer components {
+  .container-page { @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8; }
+  .card { @apply bg-surface border border-line rounded-xl2 shadow-card; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 min-h-[48px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply btn bg-primary text-primary-ink hover:bg-primary-deep; }
+  .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
+  .btn-emergency { @apply btn bg-emergency text-white hover:bg-emergency-deep; }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-sm; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.14em] text-muted; }
+  .input { @apply w-full rounded-xl border border-line bg-surface px-4 min-h-[48px] text-ink placeholder:text-muted/70 focus:border-primary; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+.leaflet-container { font-family: inherit; border-radius: 1rem; }

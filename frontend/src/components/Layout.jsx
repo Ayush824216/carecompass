@@ -1,0 +1,222 @@
+import { useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Contrast, Github, Menu, Minus, Phone, Plus, Volume2, VolumeX, X, XCircle } from "lucide-react";
+import { useApp } from "../context/AppContext.jsx";
+import { API_BASE } from "../lib/api.js";
+
+export function Logo({ className = "h-9 w-9" }) {
+  return (
+    <svg viewBox="0 0 40 40" className={className} aria-hidden="true">
+      <circle cx="20" cy="20" r="19" className="fill-primary" />
+      <circle cx="20" cy="20" r="14" fill="none" stroke="white" strokeOpacity=".35" strokeWidth="1.5" />
+      <path d="M20 7l5 13-5 13-5-13z" fill="white" />
+      <path d="M20 7l5 13h-10z" className="fill-accent" />
+      <circle cx="20" cy="20" r="2.2" className="fill-primary" />
+    </svg>
+  );
+}
+
+export function EmergencyButton({ compact = false }) {
+  const { t } = useApp();
+  return (
+    <a href="tel:112" className="btn-emergency px-3 sm:px-4 shrink-0" aria-label={t("nav.emergencyAria")}>
+      <Phone className="h-5 w-5" aria-hidden="true" />
+      <span className={compact ? "hidden sm:inline" : ""}>{t("nav.emergency")}</span>
+    </a>
+  );
+}
+
+export function LanguageToggle() {
+  const { t, lang, setLang } = useApp();
+  return (
+    <button type="button" onClick={() => setLang(lang === "en" ? "hi" : "en")} aria-label={t("meta.otherLangLabel")}
+      className="btn-ghost px-3 min-w-[48px] font-semibold" lang={lang === "en" ? "hi" : "en"}>
+      {t("meta.otherLang")}
+    </button>
+  );
+}
+
+export function TextSizeControl() {
+  const { t, grow, shrink, canGrow, canShrink } = useApp();
+  return (
+    <div className="flex items-center rounded-xl border border-line bg-surface" role="group" aria-label={t("nav.textSize")}>
+      <button type="button" onClick={shrink} disabled={!canShrink} aria-label={t("nav.textSmaller")}
+        className="flex h-12 w-11 items-center justify-center rounded-l-xl hover:bg-sunken disabled:opacity-40">
+        <Minus className="h-4 w-4" aria-hidden="true" /><span className="text-sm font-bold">A</span>
+      </button>
+      <span className="h-6 w-px bg-line" aria-hidden="true" />
+      <button type="button" onClick={grow} disabled={!canGrow} aria-label={t("nav.textLarger")}
+        className="flex h-12 w-11 items-center justify-center rounded-r-xl hover:bg-sunken disabled:opacity-40">
+        <span className="text-lg font-bold">A</span><Plus className="h-4 w-4" aria-hidden="true" />
+      </button>
+    </div>
+  );
+}
+
+export function ContrastToggle() {
+  const { t, contrast, setContrast } = useApp();
+  return (
+    <button type="button" onClick={() => setContrast(!contrast)} aria-pressed={contrast} aria-label={t("nav.contrast")}
+      title={t("nav.contrast")}
+      className={`flex h-12 w-12 items-center justify-center rounded-xl border ${contrast ? "border-ink bg-ink text-bg" : "border-line bg-surface hover:bg-sunken"}`}>
+      <Contrast className="h-5 w-5" aria-hidden="true" />
+    </button>
+  );
+}
+
+export function VoiceToggle({ withLabel = false }) {
+  const { t, voice, setVoice } = useApp();
+  const Icon = voice ? Volume2 : VolumeX;
+  return (
+    <button type="button" onClick={() => setVoice(!voice)} aria-pressed={voice} aria-label={t("nav.voiceAria")}
+      title={voice ? t("nav.voiceOn") : t("nav.voiceOff")}
+      className={`flex h-12 items-center justify-center gap-2 rounded-xl border px-3 ${voice ? "border-primary/40 bg-primary-soft text-primary-deep" : "border-line bg-surface text-muted"}`}>
+      <Icon className="h-5 w-5" aria-hidden="true" />
+      {withLabel && <span className="text-sm font-semibold">{voice ? t("nav.voiceOn") : t("nav.voiceOff")}</span>}
+    </button>
+  );
+}
+
+const LINKS = [
+  ["/care", "nav.getCare"], ["/caregivers", "nav.caregivers"], ["/how-it-works", "nav.how"],
+  ["/developers", "nav.developers"], ["/bookings", "nav.bookings"],
+];
+
+function Navbar() {
+  const { t, bookings } = useApp();
+  const [open, setOpen] = useState(false);
+  const loc = useLocation();
+  useEffect(() => setOpen(false), [loc.pathname]);
+
+  const linkCls = ({ isActive }) =>
+    `relative rounded-lg px-3 py-2 font-semibold transition-colors ${isActive ? "text-primary-deep bg-primary-soft" : "text-ink/80 hover:text-ink hover:bg-sunken"}`;
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-line bg-bg/95 backdrop-blur">
+      <div className="container-page flex h-[72px] items-center gap-3">
+        <Link to="/" className="flex items-center gap-2.5 rounded-lg pr-2" aria-label="CareCompass home">
+          <Logo />
+          <span className="font-display text-xl font-semibold tracking-tight">CareCompass</span>
+        </Link>
+        <nav className="ml-4 hidden xl:flex items-center gap-1" aria-label="Main">
+          {LINKS.map(([to, key]) => (
+            <NavLink key={to} to={to} className={linkCls}>
+              {t(key)}
+              {to === "/bookings" && bookings.length > 0 && (
+                <span className="ml-1.5 rounded-full bg-accent px-1.5 text-xs font-bold text-white">{bookings.length}</span>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
+            <TextSizeControl />
+            <ContrastToggle />
+            <VoiceToggle />
+            <LanguageToggle />
+          </div>
+          <EmergencyButton compact />
+          <button type="button" className="xl:hidden flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-surface"
+            onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? t("nav.closeMenu") : t("nav.menu")}>
+            {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
+          </button>
+        </div>
+      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div id="mobile-nav" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            className="xl:hidden overflow-hidden border-t border-line bg-bg">
+            <nav className="container-page flex flex-col gap-1 py-3" aria-label="Mobile">
+              {LINKS.map(([to, key]) => (
+                <NavLink key={to} to={to} className={({ isActive }) => `${linkCls({ isActive })} min-h-[48px] flex items-center`}>{t(key)}</NavLink>
+              ))}
+              <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-line pt-3 lg:hidden">
+                <span className="eyebrow w-full">{t("nav.settings")}</span>
+                <TextSizeControl />
+                <ContrastToggle />
+                <VoiceToggle withLabel />
+                <LanguageToggle />
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
+  );
+}
+
+function Footer() {
+  const { t } = useApp();
+  return (
+    <footer className="mt-24 border-t border-line bg-sunken/60">
+      <div className="container-page grid gap-10 py-12 md:grid-cols-[1.6fr_1fr_1fr]">
+        <div>
+          <div className="flex items-center gap-2.5"><Logo className="h-8 w-8" /><span className="font-display text-lg font-semibold">CareCompass</span></div>
+          <p className="mt-3 max-w-md text-muted">{t("footer.tagline")}</p>
+          <p className="mt-5 text-sm font-semibold">{t("footer.team")}</p>
+          <p className="text-sm text-muted">{t("footer.event")}</p>
+        </div>
+        <div>
+          <h2 className="eyebrow mb-3 font-sans">{t("footer.explore")}</h2>
+          <ul className="space-y-2">
+            {LINKS.map(([to, key]) => <li key={to}><Link to={to} className="hover:text-primary hover:underline">{t(key)}</Link></li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 className="eyebrow mb-3 font-sans">{t("footer.resources")}</h2>
+          <ul className="space-y-2">
+            <li><a href={`${API_BASE}/docs`} target="_blank" rel="noreferrer" className="hover:text-primary hover:underline">{t("footer.apiDocs")}</a></li>
+            <li><a href="https://github.com/Ayush824216/carecompass" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-primary hover:underline">
+              <Github className="h-4 w-4" aria-hidden="true" />{t("footer.github")}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-line">
+        <div className="container-page space-y-2 py-6 text-sm text-muted">
+          <p className="font-semibold text-ink">{t("footer.disclaimer")}</p>
+          <p>{t("footer.dpdp")}</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function Toasts() {
+  const { toasts, dismissToast, t } = useApp();
+  return (
+    <div className="pointer-events-none fixed bottom-4 right-4 z-[60] flex w-[min(92vw,380px)] flex-col gap-2" aria-live="polite">
+      <AnimatePresence>
+        {toasts.map((x) => (
+          <motion.div key={x.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }}
+            className="pointer-events-auto card flex items-start gap-3 p-4 shadow-lift">
+            {x.tone === "error"
+              ? <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-emergency" aria-hidden="true" />
+              : <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-routine" aria-hidden="true" />}
+            <p className="flex-1 font-semibold">{x.message}</p>
+            <button type="button" onClick={() => dismissToast(x.id)} aria-label={t("common.close")} className="-m-2 p-2 text-muted hover:text-ink">
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function Layout() {
+  const { t } = useApp();
+  const { pathname } = useLocation();
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  return (
+    <div className="flex min-h-screen flex-col">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 btn-primary">{t("nav.skip")}</a>
+      <Navbar />
+      <main id="main" className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+      <Toasts />
+    </div>
+  );
+}
