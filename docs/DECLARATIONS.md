@@ -5,17 +5,30 @@ All code was written during the event by team OCTUPUS. Open-source components ar
 ## Datasets
 | Dataset | Use | Link |
 |---|---|---|
-| CareCompass dev data (`dev_data/`) | **Synthetic, self-generated** by `scripts/make_dev_data.py` (templates + seeded randomisation, no LLM, no real patients). Development/validation only. | this repo |
+| CareCompass dev data (`dev_data/`) | **Synthetic, self-generated** by `scripts/make_dev_data.py` (templates + seeded randomisation, no LLM, no real patients). Includes the clinical pathway vignettes from `scripts/pathway_vignettes.py`, hand-labelled by the team from the stage tables in `docs/CLINICAL_PATHWAYS.md`. Development/validation only. | this repo |
 | KTAS emergency triage (Kaggle, ilkeryildiz) | Urgency model training/validation (`KTAS_expert`), red-flag recall checks. Triage-time fields only. | https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application |
 | Disease Symptom Description (Kaggle, itachi9604) | `Symptom-severity.csv` weights for the severity lexicon; `dataset.csv` symptom lists as extra English training text (disease mapped internally to care type). Precautions are **not** used. | https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset |
 | Symptoms to Diseases (Kaggle, abhishekgodara) | Sampled symptom lists (20 per disease) as extra English care-type training text; diseases mapped internally via `config/disease_to_care_type.json`, never shown to users. | https://www.kaggle.com/datasets/abhishekgodara/symptoms-to-diseases |
 
 No real patient data is used.
 
+## Clinical references
+The clinical pathway thresholds and danger signs (`docs/CLINICAL_PATHWAYS.md`, `config/pathways/*.json`) were specified by our mentor from the sources below. They are used only to choose care type and urgency, never to diagnose. No text from these documents is reproduced in the product.
+
+| Reference | Used for |
+|---|---|
+| WHO, *Dengue: Guidelines for Diagnosis, Treatment, Prevention and Control*, new edition (2009) | Fever pathway: dengue warning signs and severe-dengue criteria (platelet and warning-sign stages). |
+| National Center for Vector Borne Diseases Control (NCVBDC), Govt. of India: dengue, malaria and chikungunya guidance | Fever pathway: India-specific vector-borne fever patterns. |
+| WHO, *Integrated Management of Childhood Illness (IMCI)* chart booklet | General danger signs in children (cannot drink, vomits everything, convulsions, lethargy): child modifiers and S3 rules. |
+| NICE guideline NG143, *Fever in under 5s: assessment and initial management* (2019) | Traffic-light approach; any fever under 3 months is high risk (infant modifier). |
+| National TB Elimination Programme (NTEP), India | Cough pathway: cough of 2 weeks or more as presumptive TB (S2, specialist). |
+| Standard emergency chest pain red flags (e.g. NICE CG95, *Chest pain of recent onset*) and stroke FAST signs | Chest pain and headache pathway S3 rules. |
+
 ## Models
 | Model | Use |
 |---|---|
 | Rule engine (`backend/app/safety.py`) | Deterministic red-flag detection (EN/HI/Hinglish), written by the team. |
+| Clinical pathway engine (`backend/app/pathways/`, `config/pathways/*.json`) | Deterministic S0–S3 severity staging for fever, cough, stomach, chest pain and headache, from the mentor's specification; written by the team. |
 | Model A: TF-IDF (word 1-2 + char_wb 2-5 grams) + Logistic Regression (scikit-learn) | Care type and urgency classifiers, trained by us on dev data + processed public data. |
 | Model C: [google/muril-base-cased](https://huggingface.co/google/muril-base-cased) (Apache-2.0), fallback [xlm-roberta-base](https://huggingface.co/FacebookAI/xlm-roberta-base) (MIT) | Multilingual encoder fine-tuned by us with two classification heads (optional, GPU). |
 | Hosted LLM (Model B), provider/model set via `LLM_PROVIDER` / `LLM_MODEL` | Few-shot routing with taxonomy definitions and 5 retrieved examples; output strictly validated; never sees personal identifiers. Exact provider and model are recorded below once configured. |

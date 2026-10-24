@@ -139,7 +139,7 @@ Model C: `google/muril-base-cased`, two heads, 4 epochs, frozen word embeddings,
 | challenge_v2.csv | 0.726 / 0.718 | 0.567 / 0.737 | 0.626 / 0.729 |
 | challenge_v3.csv | 0.713 / 0.594 | 0.610 / 0.705 | 0.692 / 0.526 |
 
-With ~600 synthetic vignettes the fine-tuned encoder overfits template style. Char n-gram TF-IDF generalises better to new phrasing, so Model A serves. Model C is re-evaluated automatically when retrained on the official data.
+With about 1,000 synthetic vignettes the fine-tuned encoder overfits template style. Char n-gram TF-IDF generalises better to new phrasing, so Model A serves. Model C is re-evaluated automatically when retrained on the official data.
 
 
 ### Blind first-look scores (before any fix informed by that set)

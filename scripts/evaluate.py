@@ -327,7 +327,7 @@ def main() -> None:
                                   [r["urgency"] for r in rows_s], [x[1] for x in pr])
                     cells.append(f"{mtr['care_f1']:.3f} / {mtr['urg_f1']:.3f}")
                 report.append(f"| {sname} | " + " | ".join(cells) + " |")
-            report.append("\nWith ~600 synthetic vignettes the fine-tuned encoder overfits template style. Char n-gram "
+            report.append("\nWith about 1,000 synthetic vignettes the fine-tuned encoder overfits template style. Char n-gram "
                           "TF-IDF generalises better to new phrasing, so Model A serves. Model C is re-evaluated "
                           "automatically when retrained on the official data.\n")
         except Exception as e:  # torch not installed (CPU-only env)
