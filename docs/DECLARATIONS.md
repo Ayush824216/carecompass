@@ -25,6 +25,8 @@ No real patient data is used.
 |---|---|
 | Hosted LLM API (provider TBD: OpenAI-compatible / Gemini / Anthropic) | Model B triage call, 6 s timeout, local fallback. |
 | Browser Web Speech API (SpeechRecognition, speechSynthesis) | Voice input (hi-IN / en-IN) and read-aloud in the frontend; runs in the user's browser. |
+| OpenStreetMap tile servers | Map tiles in the web app (© OpenStreetMap contributors, ODbL). |
+| Google Fonts (Fraunces, Source Sans 3, Noto Sans/Serif Devanagari, JetBrains Mono; SIL OFL) | Web fonts. |
 | Browser Geolocation API | User location for caregiver distance (fallback: central Delhi). |
 
 ## Libraries
@@ -39,6 +41,12 @@ No real patient data is used.
 | PyTorch | BSD | Model C training/inference (optional) |
 | Hugging Face Transformers, Accelerate, SentencePiece | Apache-2.0 | Model C (optional) |
 | React, React DOM | MIT | Frontend |
+| react-router-dom | MIT | Multi-page routing |
+| Tailwind CSS, PostCSS, Autoprefixer | MIT | Styling / design tokens |
+| framer-motion | MIT | Subtle animations (respects prefers-reduced-motion) |
+| lucide-react | ISC | Icons |
+| Leaflet, react-leaflet | BSD-2 / Hippocratic-2.1 | Caregiver maps |
+| Playwright (dev only) | Apache-2.0 | Screenshot-based responsive / accessibility audit |
 | Vite, @vitejs/plugin-react | MIT | Frontend build |
 | nginx (Docker image) | BSD-2 | Serving the built frontend |
 | Docker, Docker Compose | Apache-2.0 | Packaging |
