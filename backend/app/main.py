@@ -10,7 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from . import data_adapter, intake, pipeline
+from . import data_adapter, intake, pathways, pipeline
 from .config import get_settings
 from .schemas import BookingRequest, BookingResponse, Caregiver, TriageRequest, TriageResponse
 
@@ -72,9 +72,17 @@ def list_caregivers() -> list[Caregiver]:
 @app.get("/api/v1/questions")
 def questions() -> dict:
     """Follow-up question bank with quick-reply options (lets clients render one-tap chips)."""
-    return {qid: {"en": q["en"], "hi": q["hi"], "hinglish": q["hinglish"],
+    bank = {qid: {"en": q["en"], "hi": q["hi"], "hinglish": q["hinglish"], "multi": False,
                   "options": [{"value": v, "en": e, "hi": h, "hinglish": g} for v, e, h, g in q["options"]]}
             for qid, q in intake.QUESTIONS.items()}
+    _, pws, _ = pathways.load()
+    for p in pws.values():  # clinical pathway questions: multi-select chips with a "None of these" option
+        for q in p.cfg["questions"]:
+            opts = {lang: pathways.chip_options(q, lang) for lang in ("en", "hi", "hinglish")}
+            bank[q["id"]] = {**q["text"], "multi": True, "pathway": p.id,
+                             "options": [{"value": o["id"], "exclusive": o.get("exclusive", False),
+                                          **{lang: opts[lang][i]["label"] for lang in opts}} for i, o in enumerate(opts["en"])]}
+    return bank
 
 
 @app.get("/api/v1/caregivers/{caregiver_id}", response_model=Caregiver)

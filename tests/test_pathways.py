@@ -236,3 +236,77 @@ def test_chip_options_have_none():
     q = next(q for q in pw.load()[1]["fever"].cfg["questions"] if q["id"] == "fever.danger")
     opts = pw.chip_options(q, "hinglish")
     assert opts[-1]["id"] == "none" and opts[-1]["label"] == "Kuch nahi"
+
+
+# ---------------------------------------------------------------- API integration
+import re  # noqa: E402
+
+from fastapi.testclient import TestClient  # noqa: E402
+
+from app.main import app  # noqa: E402
+
+client = TestClient(app)
+OFFICIAL = {"follow_up_question", "care_type", "urgency", "red_flags", "reasoning", "matched_caregivers"}
+DISEASE = re.compile(r"dengue|malaria|typhoid|chikun|jaundice|hepatitis|tuberculosis|\btb\b|pneumonia|meningitis|appendic|डेंगू|मलेरिया", re.I)
+
+
+def _post(text, hist=None, debug=True):
+    return client.post("/api/v1/triage", json={"user_input": text, "conversation_history": hist or [], "debug": debug,
+                                                "location": {"lat": 28.5245, "lng": 77.2066}}).json()
+
+
+def test_api_schema_unchanged_with_pathways():
+    r = client.post("/api/v1/triage", json={"user_input": "Platelets 18000 aur masudon se khoon"}).json()
+    assert set(r) == OFFICIAL and r["care_type"] == "emergency_referral" and r["matched_caregivers"] == []
+
+
+def test_api_pathway_question_multiselect_chips():
+    r = _post("bukhar hai")
+    assert r["follow_up_question"] and r["care_type"] is None
+    fu = r["debug"]["followup"]
+    assert fu["pathway"] == "fever" and fu["multi"] is True and fu["question_id"] == "fever.danger"
+    assert fu["options"][-1]["id"] == "none"
+
+
+def test_api_pathway_flow_none_then_next_question():
+    q1 = _post("bukhar hai")["follow_up_question"]
+    hist = [{"role": "user", "content": "bukhar hai"}, {"role": "assistant", "content": q1}]
+    r = _post("Kuch nahi", hist)
+    assert r["debug"]["followup"].get("question_id") == "fever.duration_height"
+    assert r["debug"]["followup"]["asked_so_far"] == 1
+
+
+def test_api_stops_on_s3_answer():
+    q1 = _post("bukhar hai")["follow_up_question"]
+    hist = [{"role": "user", "content": "bukhar hai"}, {"role": "assistant", "content": q1}]
+    r = _post("Gardan akadna / bahut tez sir dard", hist)
+    assert r["care_type"] == "emergency_referral" and r["follow_up_question"] is None
+
+
+def test_api_max_four_questions_then_decide():
+    text, hist = "bukhar hai", []
+    for _ in range(6):
+        r = _post(text, hist)
+        if not r["follow_up_question"]:
+            break
+        hist += [{"role": "user", "content": text}, {"role": "assistant", "content": r["follow_up_question"]}]
+        text = "Koi nahi" if "kaun" in r["follow_up_question"].lower() else "Kuch nahi"
+    assert r["care_type"] is not None and len([h for h in hist if h["role"] == "assistant"]) <= 4
+
+
+@pytest.mark.parametrize("text", ["mujhe lagta hai dengue hai", "Dengue test positive, platelets 80 hazaar, pet mein dard",
+                                  "pichle saal malaria hua tha aur ab 3 din se bukhar", "typhoid jaisa lag raha hai, 8 din se bukhar"])
+def test_api_never_names_a_disease(text):
+    r = _post(text, debug=False)
+    assert not DISEASE.search((r["reasoning"] or "") + (r["follow_up_question"] or "")), r
+
+
+def test_api_debug_has_stage_and_internal_patterns():
+    d = _post("Dengue test positive, platelets 80 hazaar, pet mein dard")["debug"]["pathways"]
+    assert d["primary"]["pathway"] == "fever" and d["primary"]["stage"] == "S2"
+    assert "dengue_like" in d["concern_patterns_internal"] and d["moved_by"]
+
+
+def test_questions_endpoint_lists_pathway_questions():
+    bank = client.get("/api/v1/questions").json()
+    assert "fever.danger" in bank and bank["fever.danger"]["multi"] is True

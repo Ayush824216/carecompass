@@ -50,7 +50,7 @@
   "sufficient": "known(duration_days) or n_signs >= 2",
   "questions": [
     {"id": "cough.danger", "kind": "danger",
-     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "text": {"en": "With the cough, is any of these happening?", "hi": "खांसी के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Khansi ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(breathless) and known(blood_in_cough) and known(blue_lips)",
      "chips": [
        {"id": "breath", "label": {"en": "Breathless / hard to speak", "hi": "साँस फूल रही / बोलने में दिक्कत", "hinglish": "Saans phool rahi / bolne mein dikkat"}, "facts": {"breathless": true}},

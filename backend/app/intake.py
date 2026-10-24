@@ -114,10 +114,13 @@ def identify_question(text: str) -> Optional[str]:
         for lang in ("en", "hi", "hinglish"):
             if q[lang].lower() == t or q[lang].lower() in t:
                 return qid
-    return None
+    from .pathways import identify_question as pathway_question  # clinical pathway questions count too
+    return pathway_question(text)
 
 
 def parse_answer(qid: str, answer: str) -> Optional[str]:
+    if qid not in QUESTIONS:  # pathway questions are parsed by the pathway engine (chips + free text)
+        return None
     a = clean(answer)
     al = a.lower()
     for val, *labels in QUESTIONS[qid]["options"]:

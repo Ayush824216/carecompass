@@ -37,7 +37,7 @@
   "sufficient": "known(age_years) or chest_wall or chest_burning",
   "questions": [
     {"id": "chest.danger", "kind": "danger",
-     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "text": {"en": "With the chest pain, is any of these happening?", "hi": "सीने के दर्द के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Seene ke dard ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(radiation) and known(sweating) and known(breathless)",
      "chips": [
        {"id": "rad", "label": {"en": "Pain to left arm / jaw / back", "hi": "दर्द बाएँ हाथ / जबड़े / पीठ तक", "hinglish": "Dard baayen haath / jabde / peeth tak"}, "facts": {"radiation": true}},

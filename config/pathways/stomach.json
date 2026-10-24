@@ -1,6 +1,6 @@
 {
   "id": "stomach",
-  "label": {"en": "Stomach", "hi": "पेट", "hinglish": "Pet"},
+  "label": {"en": "Stomach upset", "hi": "पेट की तकलीफ", "hinglish": "Pet ki takleef"},
   "trigger": "vomiting or diarrhoea or abdominal_pain or blood_in_stool or black_stool or blood_vomit or right_lower_pain or severe_pain or rigid_belly or vomit_count is not None or stool_count is not None",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
@@ -52,7 +52,7 @@
   "sufficient": "known(duration_days) and (known(cannot_drink) or drinking_ok or n_signs >= 2)",
   "questions": [
     {"id": "stomach.danger", "kind": "danger",
-     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "text": {"en": "With the stomach problem, is any of these happening?", "hi": "पेट की तकलीफ के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Pet ki takleef ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(blood_vomit) and known(severe_pain) and known(reduced_urine)",
      "chips": [
        {"id": "blood", "label": {"en": "Blood in vomit or stool / black stool", "hi": "उल्टी या पॉटी में खून / काली पॉटी", "hinglish": "Ulti ya potty mein khoon / kaali potty"}, "facts": {"blood_vomit": true}},

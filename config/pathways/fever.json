@@ -61,7 +61,7 @@
     {"id": "f_over_14_days", "stage": "S2", "when": "fever and duration_days is not None and duration_days > 14", "care_type": "specialist_referral"},
     {"id": "f_over_7_days", "stage": "S2", "when": "fever and duration_days is not None and duration_days > 7", "pattern": "typhoid_like"},
     {"id": "f_platelets_below_1_lakh", "stage": "S2", "when": "platelets is not None and platelets < 100000", "pattern": "dengue_like", "note": "home_blood_test"},
-    {"id": "f_dengue_warning", "stage": "S2", "when": "fever and (abdominal_pain or persistent_vomiting or vomit_count >= 3 or bleeding_any or weakness_severe) and ((duration_days is not None and duration_days >= 2) or named_dengue or platelets is not None)", "pattern": "dengue_like"},
+    {"id": "f_dengue_warning", "stage": "S2", "when": "(fever or platelets is not None or named_dengue) and (abdominal_pain or persistent_vomiting or vomit_count >= 3 or bleeding_any or weakness_severe) and ((duration_days is not None and duration_days >= 2) or named_dengue or platelets is not None)", "pattern": "dengue_like"},
     {"id": "f_down_but_worse", "stage": "S2", "when": "fever_down and (weakness_severe or abdominal_pain or persistent_vomiting or very_drowsy or bleeding_any)", "pattern": "dengue_like"},
     {"id": "f_malaria_warning", "stage": "S2", "when": "fever and chills and (weakness_severe or persistent_vomiting)", "pattern": "malaria_like"},
     {"id": "f_jaundice_warning", "stage": "S2", "when": "yellow_eyes and (persistent_vomiting or vomit_count >= 3)", "pattern": "jaundice_like"},
@@ -85,7 +85,7 @@
   "sufficient": "(known(duration_days) and (known(temp_f) or high_fever_reported or mild_fever or n_signs >= 1)) or platelets is not None",
   "questions": [
     {"id": "fever.danger", "kind": "danger",
-     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "text": {"en": "With the fever, is any of these happening?", "hi": "बुखार के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Bukhar ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(very_drowsy) and known(breathless) and known(bleeding_any) and known(stiff_neck) and known(seizure)",
      "chips": [
        {"id": "drowsy", "label": {"en": "Very drowsy / almost fainting", "hi": "बहुत सुस्त / बेहोशी जैसा", "hinglish": "Bahut sust / behoshi jaisa"}, "facts": {"very_drowsy": true}},

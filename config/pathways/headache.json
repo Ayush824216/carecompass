@@ -46,7 +46,7 @@
   "sufficient": "known_migraine or n_signs >= 2 or known(duration_days)",
   "questions": [
     {"id": "headache.danger", "kind": "danger",
-     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "text": {"en": "With the headache, is any of these happening?", "hi": "सिर दर्द के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Sir dard ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(sudden_worst) and known(weakness_one_side) and known(stiff_neck)",
      "chips": [
        {"id": "sudden", "label": {"en": "Sudden, worst-ever pain", "hi": "अचानक, ज़िंदगी का सबसे तेज़ दर्द", "hinglish": "Achanak, zindagi ka sabse tez dard"}, "facts": {"sudden_worst": true}},

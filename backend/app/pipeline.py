@@ -6,8 +6,9 @@ import time
 from dataclasses import asdict
 from typing import Optional
 
-from . import domain_guard, explain, intake, llm_triage, matching, safety
+from . import domain_guard, explain, intake, llm_triage, matching, pathways, safety
 from .config import get_settings
+from .pathways import route as proute
 from .lang import detect_language, normalise, resolve_language, term_matches
 from .llm import available as llm_available
 from .schemas import (EMERGENCY_CARE_TYPE, MOST_URGENT, URGENCY_RANK, MatchedCaregiver, TriageRequest,
@@ -72,6 +73,18 @@ def emergency_response(flags: list[str], lang: str, prefix: str = "") -> TriageR
                           matched_caregivers=[])
 
 
+def pathway_flags(pout) -> list[str]:
+    prim = pout.primary
+    return list(dict.fromkeys(prim.signs + prim.modifiers)) or prim.rule_ids
+
+
+def pathway_emergency(pout, lang: str, safety_flags: list[str]) -> TriageResponse:
+    """S3 from a pathway: emergency path with the pathway's danger signs in plain words."""
+    flags = list(dict.fromkeys(list(safety_flags) + pathway_flags(pout)))
+    return TriageResponse(follow_up_question=None, care_type=EMERGENCY_CARE_TYPE, urgency=MOST_URGENT, red_flags=flags,
+                          reasoning=proute.emergency_reasoning(pout, lang, safety_flags), matched_caregivers=[])
+
+
 def _pending_clinical_question(req: TriageRequest):
     """Id of the clinical follow-up the user is answering now, if the last assistant turn was one."""
     for t in reversed(req.conversation_history):
@@ -127,6 +140,16 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             return TriageResponse(follow_up_question=domain_guard.redirect_text(dclass, lang), care_type=None,
                                   urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
 
+        # clinical pathways (fever, cough, stomach, chest pain, headache): stage rules + senior-doctor questions
+        t = time.perf_counter()
+        pout = pathways.run(turns, history=[h.model_dump() for h in req.conversation_history], user_input=req.user_input)
+        prim = pout.primary
+        timings["pathways"] = time.perf_counter() - t
+        tr["pathways"] = proute.trace(pout, lang)
+        if prim is not None and prim.stage == "S3":
+            tr["model_used"] = f"pathway:{prim.pathway}"
+            return pathway_emergency(pout, lang, sres.red_flags)
+
         t = time.perf_counter()
         local = local_decision(state.model_text)
         timings["local_model"] = time.perf_counter() - t
@@ -134,20 +157,30 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             tr["local_model"] = {"name": local.source, "care_type": local.care_type, "urgency": local.urgency,
                                  "probs": {k: {c: round(p, 3) for c, p in v.items()} for k, v in local.probs.items()}}
 
-        q = intake.choose_followup(state, local.probs if local else None)
-        if q:
-            tr["followup"]["question_id"] = q
-            tr["model_used"] = local.source if local else "default"
-            return TriageResponse(follow_up_question=intake.question_text(q, lang), care_type=None, urgency=None,
-                                  red_flags=[], reasoning="", matched_caregivers=[])
+        if prim is not None:  # pathway complaint: the pathway's question tree replaces the generic follow-ups
+            pq = pathways.next_question(pout, state.n_assistant_questions, get_settings().max_followups)
+            if pq:
+                tr["followup"].update({"question_id": pq["id"], "pathway": prim.pathway, "multi": True,
+                                       "options": pathways.chip_options(pq, lang)})
+                tr["model_used"] = f"pathway:{prim.pathway}"
+                return TriageResponse(follow_up_question=pathways.question_text(pq, lang), care_type=None,
+                                      urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
+        else:
+            q = intake.choose_followup(state, local.probs if local else None)
+            if q:
+                tr["followup"]["question_id"] = q
+                tr["model_used"] = local.source if local else "default"
+                return TriageResponse(follow_up_question=intake.question_text(q, lang), care_type=None, urgency=None,
+                                      red_flags=[], reasoning="", matched_caregivers=[])
 
         t = time.perf_counter()
         llm = llm_triage.llm_decision(state.model_text, lang, _history_text(req)) if use_llm else None
         timings["llm"] = time.perf_counter() - t
         tr["llm"] = {"available": llm_available(), "used": llm is not None}
         dec = combine(local, llm)
-        if dec is None:  # no model at all: conservative default
+        if dec is None and prim is None:  # no model at all: conservative default
             dec = Decision("gp_teleconsult", "same_day", "default")
+        dec = proute.merge(dec, pout)  # most urgent of (pathway, ML); pathway care type when rules decided
         tr["model_used"] = dec.source
 
         # safety re-check: rules over everything, union with any LLM red flags
@@ -159,14 +192,19 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             tr["safety_checks"]["model_emergency"] = True
             return emergency_response([], lang, prefix=MODEL_EMERGENCY.get(lang, MODEL_EMERGENCY["en"]))
 
-        apply_persistence_rule(dec, state.slots, " ".join(turns))
+        pathway_decided = prim is not None and prim.explicit
+        if not pathway_decided:
+            apply_persistence_rule(dec, state.slots, " ".join(turns))
         tr["model_used"] = dec.source
 
         # elderly / infant who cannot drink: never leave as routine
         if state.slots.answers.get("drinking") == "no" and URGENCY_RANK[dec.urgency] < URGENCY_RANK["same_day"]:
             dec.urgency = "same_day"
 
-        reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
+        if pathway_decided:  # plain-language danger signs from the pathway; never a disease name
+            reasoning = proute.reasoning(pout, dec.care_type, dec.urgency, lang)
+        else:
+            reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
 
         t = time.perf_counter()
         loc = req.location.model_dump() if req.location else None
@@ -210,6 +248,12 @@ def final_decision(text: str, model=None, cfg: Optional[dict] = None, use_llm: b
     if sres.is_emergency:
         return {"care_type": EMERGENCY_CARE_TYPE, "urgency": MOST_URGENT, "red_flags": sres.red_flags,
                 "reasoning": safety.emergency_reasoning(sres.red_flags, lang), "source": "rules"}
+    pout = pathways.run([text])
+    prim = pout.primary
+    if prim is not None and prim.stage == "S3":
+        r = pathway_emergency(pout, lang, [])
+        return {"care_type": r.care_type, "urgency": r.urgency, "red_flags": r.red_flags, "reasoning": r.reasoning,
+                "source": f"pathway:{prim.pathway}", "stage": prim.stage, "pathway": prim.pathway}
     m = model or best_local_model()
     local = None
     if m is not None:
@@ -217,15 +261,24 @@ def final_decision(text: str, model=None, cfg: Optional[dict] = None, use_llm: b
         care, urg, conf = decide_from_probs(probs, cfg)
         local = Decision(care, urg, getattr(m, "name", "local"), conf, probs)
     llm = llm_triage.llm_decision(state.model_text, lang) if use_llm else None
-    dec = combine(local, llm) or Decision("gp_teleconsult", "same_day", "default")
+    dec = combine(local, llm)
+    if dec is None and prim is None:
+        dec = Decision("gp_teleconsult", "same_day", "default")
+    dec = proute.merge(dec, pout)
+    extra = {"stage": prim.stage, "pathway": prim.pathway} if prim else {}
     if dec.red_flags:
         return {"care_type": EMERGENCY_CARE_TYPE, "urgency": MOST_URGENT, "red_flags": dec.red_flags,
-                "reasoning": safety.emergency_reasoning(dec.red_flags, lang), "source": dec.source}
+                "reasoning": safety.emergency_reasoning(dec.red_flags, lang), "source": dec.source, **extra}
+    pathway_decided = prim is not None and prim.explicit
     if dec.care_type == EMERGENCY_CARE_TYPE or dec.urgency == MOST_URGENT:
         dec.care_type, dec.urgency = EMERGENCY_CARE_TYPE, MOST_URGENT
-    else:
+    elif not pathway_decided:
         apply_persistence_rule(dec, state.slots, text)
-    reasoning = dec.llm_reasoning or (explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
-                                      if dec.care_type != EMERGENCY_CARE_TYPE else safety.STEPS.get(lang, safety.STEPS["en"]))
+    if dec.care_type == EMERGENCY_CARE_TYPE:
+        reasoning = safety.STEPS.get(lang, safety.STEPS["en"])
+    elif pathway_decided:
+        reasoning = proute.reasoning(pout, dec.care_type, dec.urgency, lang)
+    else:
+        reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
     return {"care_type": dec.care_type, "urgency": dec.urgency, "red_flags": [], "reasoning": reasoning,
-            "source": dec.source}
+            "source": dec.source, **extra}

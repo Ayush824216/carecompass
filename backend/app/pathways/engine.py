@@ -109,7 +109,10 @@ def question_index() -> dict[str, tuple[str, dict]]:
     for p in pathways.values():
         for q in p.cfg["questions"]:
             for lang in LANGS:
-                idx[_norm(q["text"][lang])] = (p.id, q)
+                key = _norm(q["text"][lang])
+                if key in idx and idx[key][1]["id"] != q["id"]:  # answers are matched by question text
+                    raise ValueError(f"question text not unique: {q['text'][lang]!r} ({q['id']} vs {idx[key][1]['id']})")
+                idx[key] = (p.id, q)
     return idx
 
 
