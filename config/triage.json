@@ -1,0 +1,8 @@
+{
+  "_note": "Decision knobs for backend/app/triage.py. Tuned on the dev validation split by scripts/evaluate.py.",
+  "emergency_threshold": 0.35,
+  "same_day_threshold": 0.40,
+  "coherent_emergency": true,
+  "prefer_llm": true,
+  "llm_k_examples": 5
+}
