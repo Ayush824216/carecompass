@@ -709,9 +709,12 @@
     "classes": {
       "greeting_smalltalk": "अभिवादन / बातचीत",
       "off_topic": "विषय से बाहर",
-      "unclear_or_gibberish": "समझ नहीं आया",
+      "unclear_or_gibberish": "संदेश में कोई सेहत की परेशानी नहीं मिली",
       "medicine_or_diagnosis_request": "दवा या बीमारी पूछी गई",
-      "abusive_or_prompt_injection": "मान्य अनुरोध नहीं"
+      "abusive_or_prompt_injection": "मान्य अनुरोध नहीं",
+      "math_or_code": "गणित या कोड, सेहत नहीं",
+      "unknown_term": "अनजान मेडिकल शब्द: अंदाज़ा नहीं लगाया",
+      "abstain_give_up": "3 अस्पष्ट संदेशों के बाद सवाल बंद"
     },
     "chipsTitle": "क्या परेशानी है, चुनें",
     "stageSkipped": "शुरू नहीं हुआ",

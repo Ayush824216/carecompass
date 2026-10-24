@@ -44,7 +44,7 @@ SIMPLE: dict[str, list[str]] = {
     ],
     "unconscious": [
         r"unconscious", r"unresponsive", r"(not|isn'?t|is\s+not|stopped)\s+(responding|responsive|waking|conscious)",
-        r"passed\s+out", r"faint(ed|ing)", r"syncop", r"loc", r"loss\s+of\s+consciousness", r"collapsed", r"lost\s+consciousness", r"(won'?t|can'?t|cannot)\s+wake",
+        r"passed\s+out", r"faint(ed|ing)", r"syncop", r"\bloc\b", r"loss\s+of\s+consciousness", r"collapsed", r"lost\s+consciousness", r"(won'?t|can'?t|cannot)\s+wake",
         r"\bbeh?oo?sh", r"\bbehos\b", r"\bhosh\s+(mein\s+|me\s+)?(nahi|nhi|nahin)", r"\bhosh\s+(kho|ud)",
         r"(jawab|response)\s+(nahi|nhi|nahin)\s+de", r"(uth|jaag)\s+(nahi|nhi)\s+rah",
         r"बेहोश", r"(?<!बे)होश\s*(में)?\s*नहीं", r"(?<!बे)होश खो", r"जवाब नहीं दे",
@@ -77,7 +77,7 @@ SIMPLE: dict[str, list[str]] = {
     "stroke_signs": [
         r"slurr", r"dysarthria|hemipar|hemipleg|facial\s+palsy",r"(face|mouth)\s+(is\s+)?(droop|drooping|tilted|twisted|crooked|deviated)", r"droop",
         r"(one|left|right)\s+side\s+(of\s+(the\s+|his\s+|her\s+)?(body|face)\s+)?(is\s+)?(weak|numb|paraly|not\s+moving)",
-        r"weakness\s+(on|in)\s+one\s+side", r"(lt|rt|left|right)\.?\s+side\s+(\S+\s+)?weak", r"paraly", r"\bstroke\b", r"sudden\w*\s+(loss\s+of\s+)?(vision|speech)",
+        r"weakness\s+(on|in)\s+one\s+side", r"\b(lt|rt|left|right)\.?\s+side\s+(\S+\s+)?weak", r"paraly", r"\bstroke\b", r"sudden\w*\s+(loss\s+of\s+)?(vision|speech)",
         r"can'?t\s+(speak|talk)\s+properly",
         r"(can'?t|cannot|unable\s+to|not\s+able\s+to)\s+(lift|move|raise|feel)\s+(\S+\s+){0,2}(arm|leg|hand|side)",
         r"(words|speech)\s+(\S+\s+){0,3}(jumbled|garbled|mixed\s+up|confused)|jumbled\s+(words|speech)|trouble\s+(speaking|finding\s+words)",

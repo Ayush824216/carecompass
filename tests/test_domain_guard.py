@@ -70,7 +70,7 @@ def _post(text, hist=None, debug=False):
 
 
 @pytest.mark.parametrize("text,lang_word", [("hello Babu tum kaise ho aajkal etc question kya hai", "sehat"),
-                                            ("aaj mausam kaisa hai", "health care"), ("kaunsi dawai lun", "dawai"),
+                                            ("aaj mausam kaisa hai", "sehat"), ("kaunsi dawai lun", "dawai"),
                                             ("नमस्ते", "सेहत")])
 def test_redirect_response_schema(text, lang_word):
     r = _post(text)
@@ -94,7 +94,9 @@ def test_redirects_do_not_count_as_followups():
     hist = []
     for text in ("hello", "kaise ho", "aaj mausam kaisa hai", "ok"):
         r = _post(text, hist)
-        hist += [{"role": "user", "content": text}, {"role": "assistant", "content": r["follow_up_question"]}]
+        hist += [{"role": "user", "content": text}]
+        if r["follow_up_question"]:  # the 3rd unclear turn in a row stops asking (no question to echo)
+            hist.append({"role": "assistant", "content": r["follow_up_question"]})
     st = intake.build_state("mujhe khansi hai", hist)
     assert st.n_assistant_questions == 0
     d = _post("mujhe khansi hai", hist, debug=True)["debug"]

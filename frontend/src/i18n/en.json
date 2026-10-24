@@ -673,9 +673,12 @@
     "classes": {
       "greeting_smalltalk": "Greeting / small talk",
       "off_topic": "Off topic",
-      "unclear_or_gibberish": "Could not understand",
+      "unclear_or_gibberish": "No health problem found in the message",
       "medicine_or_diagnosis_request": "Asked for medicine or a diagnosis",
-      "abusive_or_prompt_injection": "Not a valid request"
+      "abusive_or_prompt_injection": "Not a valid request",
+      "math_or_code": "Maths or code, not health",
+      "unknown_term": "Unknown medical word: not guessed",
+      "abstain_give_up": "Stopped asking after 3 unclear messages"
     },
     "chipsTitle": "Choose what is wrong",
     "stageSkipped": "Not started",

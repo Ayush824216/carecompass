@@ -190,7 +190,7 @@ AGE_PATTERNS = [
     ("infant", r"\b(baby|infant|newborn|navjaat|shishu)\b|\b\d{1,2}\s*(months?|mahine|mahina)\s*(old|ka|ki|ke)\b|नवजात|शिशु|महीने के बच्चे|महीने का बच्चा"),
     ("elderly", r"grand(father|mother|ma|pa)|\bold\b|elderly|\bdadi|\bdada|\bnani\b|\bnana\b|budh|buzurg|bujurg|बुज़ुर्ग|दादी|दादा|नानी|नाना|\b([6-9]\d)\s*(years?|yrs?|saal|sal|साल)|aged\s+([6-9]\d)"),
     ("child", r"\b(son|daughter|child|kid|boy|girl|beta|bete|beti|bachch?[aei]|bacch?[aei])\b|बेटा|बेटे|बेटी|बच्च|\b([1-9]|1[0-5])\s*(years?|saal|sal|साल)\s*(old|ka|ki|ke|का|की|के)"),
-    ("adult", r"\b(i|me|my wife|my husband|wife|husband|brother|sister|mujhe|main|bhai|didi|pati|patni|papa|mummy|father|mother|maa)\b|मुझे|पत्नी|पति|भाई|दीदी|पापा|मम्मी"),
+    ("adult", r"\b(i|me|my wife|my husband|wife|husband|brother|sister|mujhe|main|bhai|didi|pati|patni|papa|mummy|father|mother|maa|abba|abbu|ammi)\b|मुझे|पत्नी|पति|भाई|दीदी|पापा|मम्मी"),
 ]
 _AGE_C = [(g, re.compile(p, re.I)) for g, p in AGE_PATTERNS]
 SEVERE = re.compile(r"\b(severe|very bad|unbearable|extreme|a lot|bahut|bohot|tez|tej|zyada|jyada)\b|बहुत|तेज़|तेज|ज़्यादा", re.I)

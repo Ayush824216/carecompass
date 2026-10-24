@@ -95,7 +95,8 @@ export default function GetCare() {
   const clinicalQ = Boolean(debug?.followup?.question_id) && debug?.domain_class === "health_request";
   const questionNo = clinicalQ ? (debug.followup.asked_so_far || 0) + 1 : 0;
   const redirect = phase === "done" && debug?.domain_class && debug.domain_class !== "health_request";
-  const final = phase === "done" && response && !response.follow_up_question;
+  // a final answer has a care type; an abstention ("stopped asking") has none and shows no result card
+  const final = phase === "done" && response && !response.follow_up_question && Boolean(response.care_type);
   const emergency = response?.care_type === "emergency_referral";
   const started = history.length > 0;
   // pathway questions come with multi-select chips (debug.followup.options; "none" is exclusive)

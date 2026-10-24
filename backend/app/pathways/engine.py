@@ -176,7 +176,10 @@ def _norm(s: str) -> str:
 
 def identify_question(text: str) -> Optional[str]:
     hit = question_index().get(_norm(text or ""))
-    return hit[1]["id"] if hit else None
+    if hit:
+        return hit[1]["id"]
+    contra = _match_contradiction(text or "")  # dynamic "you said both X and not X" confirmation
+    return contra["id"] if contra else None
 
 
 def _none_label(q: dict) -> dict:

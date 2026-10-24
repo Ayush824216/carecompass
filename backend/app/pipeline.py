@@ -6,7 +6,7 @@ import time
 from dataclasses import asdict
 from typing import Optional
 
-from . import assessment, domain_guard, explain, intake, llm_triage, matching, pathways, safety
+from . import assessment, domain_guard, evidence, explain, intake, llm_triage, matching, pathways, safety
 from .config import get_settings
 from .pathways import route as proute
 from .lang import detect_language, normalise, resolve_language, term_matches
@@ -98,6 +98,19 @@ def _pending_clinical_question(req: TriageRequest):
     return None
 
 
+def _unclear_streak(req: TriageRequest) -> int:
+    """Non-health user turns in a row just before this one (answers to our clinical questions are health)."""
+    streak, pending = 0, None
+    for t in req.conversation_history:
+        if t.role == "assistant":
+            pending = intake.identify_question(t.content)
+        elif t.role == "user" and t.content:
+            health = pending is not None or domain_guard.classify(t.content) == domain_guard.HEALTH
+            streak = 0 if health else streak + 1
+            pending = None
+    return streak
+
+
 def _history_text(req: TriageRequest) -> str:
     return "\n".join(f"{t.role}: {t.content}" for t in req.conversation_history[-8:] if t.content)
 
@@ -137,9 +150,17 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         # domain guard: only health requests go further (safety above always runs first)
         answering = _pending_clinical_question(req) is not None
         dclass = domain_guard.classify(req.user_input, answering_clinical_question=answering)
+        spans = evidence.find(turns)
+        tr["evidence"] = [sp.as_dict() for sp in spans]
+        if dclass == domain_guard.HEALTH and not spans:  # evidence gate: no clinical question without a span
+            dclass = domain_guard.UNCLEAR
         tr["domain_class"] = dclass
         if dclass != domain_guard.HEALTH:
             tr["model_used"] = "domain_guard"
+            if _unclear_streak(req) + 1 >= domain_guard.MAX_UNCLEAR_TURNS:  # stop asking after 3 unclear turns
+                tr["domain_class"] = domain_guard.GIVE_UP
+                return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                      reasoning=domain_guard.give_up_text(lang), matched_caregivers=[])
             return TriageResponse(follow_up_question=domain_guard.redirect_text(dclass, lang), care_type=None,
                                   urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
 

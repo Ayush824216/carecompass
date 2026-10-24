@@ -6,12 +6,17 @@ still goes to the emergency path). Classifies the latest user turn into:
   health_request                 -> normal pipeline
   greeting_smalltalk             -> polite redirect
   off_topic                      -> polite redirect
-  unclear_or_gibberish           -> ask for symptom / who / since when
+  unclear_or_gibberish           -> "no health problem found": ask what, who, since when (never a clinical question)
+  math_or_code                   -> "not a health question"
+  unknown_term                   -> "I do not recognise this name; describe the symptoms" (never pretend to know it)
   medicine_or_diagnosis_request  -> "I can't name medicines or diseases, but I can route you"
   abusive_or_prompt_injection    -> neutral redirect; injected instructions are never followed
 
 Fast multilingual rules first; the LLM is only a tie-breaker for ambiguous multi-word text, with a timeout and a
 rules-only fallback. A message that mixes small talk and a health problem is a health_request.
+
+Evidence gate: health_request needs at least one evidence span (app.evidence) in the user's own words. A person
+mention alone ("abba", "papa") is not evidence, and text with no evidence of any class is unclear, not health.
 """
 from __future__ import annotations
 
@@ -19,8 +24,9 @@ import re
 import unicodedata
 
 from . import llm
+from . import evidence
 from .intake import extract_slots
-from .lang import clean, normalise
+from .lang import clean
 
 HEALTH = "health_request"
 GREETING = "greeting_smalltalk"
@@ -28,34 +34,16 @@ OFF_TOPIC = "off_topic"
 UNCLEAR = "unclear_or_gibberish"
 MEDICINE = "medicine_or_diagnosis_request"
 ABUSE = "abusive_or_prompt_injection"
-CLASSES = (HEALTH, GREETING, OFF_TOPIC, UNCLEAR, MEDICINE, ABUSE)
+MATH = "math_or_code"
+UNKNOWN_TERM = "unknown_term"
+GIVE_UP = "abstain_give_up"  # pipeline-only: after 3 non-health turns in a row we stop asking
+CLASSES = (HEALTH, GREETING, OFF_TOPIC, UNCLEAR, MEDICINE, ABUSE, MATH, UNKNOWN_TERM)
 
 
 def _rx(*parts: str) -> re.Pattern:
     return re.compile("|".join(parts), re.I)
 
 
-# Care / health vocabulary beyond the symptom slots (EN, Hinglish, Devanagari)
-HEALTH_WORDS = _rx(
-    r"\b(sick|ill|unwell|not\s+well|not\s+feeling\s+well|health|healthy|patient|symptom|doctor|dr\.?|nurse|paramedic|caregiver|"
-    r"hospital|clinic|ambulance|check[- ]?up|blood\s+test|bp|sugar|diabet|pregnan|injection|dressing|wound|surgery|operation|"
-    r"medical|treatment|therapy|physio|bedridden|elderly|disabled|hurt|hurting|ache|aching|sore|bleed|fell|fall|injur|accident|"
-    r"crying|not\s+eating|not\s+sleeping|tired|weak|faint|vomit|fever|cough|cold|pain|breath|dizzy|rash|itch|swell)\w*",
-    r"\b(tabiyat|tabiyet|tabeeyat|bimar|beemar|bimaar|takleef|taklif|dard|bukhar|khansi|zukaam|ulti|dast|chakkar|kamzori|"
-    r"chot|ghaav|khoon|sujan|soojan|khujli|jalan|peshab|latrine|pet\s+kharab|thik\s+nahi|theek\s+nahi|thik\s+nhi|theek\s+nhi|"
-    r"ilaaj|ilaj|dekhbhal|mareez|marij|daktar|davakhana|aspatal|haspatal|garbh|pregnent|ro\s+raha|ro\s+rahi|khana\s+nahi|"
-    r"neend\s+nahi|gir\s+gay|gir\s+gai|behosh|saans|sans|sar\s+dard|sir\s+dard|kamar|ghutn)\w*",
-    r"(kabz|constipat|acne|pimple|muhas|period|mahwari|aankh|eye|kaan|ear|naak|nose|gala|throat|daant|tooth|teeth|"
-    r"skin|chamdi|hair|nail|urin|peshab|stool|potty|concentrat|dhyaan|irritab|chidchid|memory|forget|bhool|anxi|stress|"
-    r"depress|udaas|sleep|pill|tablet|goli|dawai|dawa|poison|zeher|zahar|burn|jal\s+gay|heart|dil|chest|seen[ae]|haath|hand|"
-    r"arm|pair|leg|foot|feet|back|pet|stomach|tummy|belly|head|face|chehr|mouth|muh|munh|lips|hont|tongue|body|sharir|"
-    r"badan|blood|khoon|bp|shaking|kaanp|tremor|numb|sunn|lump|gaanth|thirst|pyaas|lakwa|stroke|fit|daura|chhale|ulcer|"
-    r"mucus|balgam|sneez|cheenk|tel\s+pee|kerosene|tezaab|acid|bijli|current|shock|jhatka)\w*",
-    r"कब्ज़|कब्ज|मुहांसे|पीरियड|आँख|आंख|कान|नाक|गला|दाँत|दांत|त्वचा|बाल|पेशाब|ध्यान|चिड़चिड़|भूल|तनाव|उदास|नींद|गोली|दवा|ज़हर|जहर|"
-    r"जल\s*ग|दिल|सीने|सीना|हाथ|पैर|पीठ|चेहरा|चेहरे|मुँह|मुंह|होंठ|जीभ|शरीर|बदन|खून|बीपी|शुगर|काँप|कांप|सुन्न|गांठ|प्यास|लकवा|दौरा|छाले|तेज़ाब|तेजाब|केरोसिन|करंट|हड्डी|टूट",
-    r"तबीयत|बीमार|तकलीफ|दर्द|बुखार|खांसी|खाँसी|जुकाम|उल्टी|दस्त|चक्कर|कमज़ोरी|कमजोरी|चोट|घाव|खून|सूजन|खुजली|जलन|पेशाब|"
-    r"इलाज|देखभाल|मरीज़|मरीज|डॉक्टर|नर्स|अस्पताल|गर्भ|साँस|सांस|बेहोश|ठीक नहीं|सिर|पेट|घुटन|कमर|इंजेक्शन|ड्रेसिंग",
-)
 MEDICINE_ASK = _rx(
     r"\b(which|what)\s+(medicine|medication|tablet|pill|drug|antibiotic|syrup)s?\b", r"\bdos(e|age)\b",
     r"\b(prescribe|prescription)\b", r"\bwhat\s+(disease|illness|condition)\b", r"\bdiagnos\w*", r"\bwhat\s+do\s+i\s+have\b",
@@ -92,6 +80,16 @@ OFF = _rx(
     r"loan|bank|recharge|mobile\s+number|laptop|computer|phone\s+kharab)\w*",
     r"मौसम|क्रिकेट|मैच|फिल्म|गाना|राजनीति|चुनाव|सरकार|खबर|शेयर|मज़ाक|चुटकुला|कहानी|कविता|नौकरी|पढ़ाई",
 )
+MATH_CODE = _rx(
+    r"^[\s\d.,+\-*/x×÷^=()%<>!?]*\d\s*[+\-*/x×÷^=%]\s*[\d(][\s\d.,+\-*/x×÷^=()%?]*$",
+    r"\b(solve|calculate|integrate|derivative|equation|kitna\s+hota|kitne\s+hote|plus|minus|times|multiply|divided\s+by)\b.*\d"
+    r"|\d.*\b(plus|minus|guna|into)\b",
+    r"\b(def|function|return|import|console\.log|printf?|elif|lambda|var|const|let)\b.*[(){}=;:]",
+    r"[{};]\s*$", r"=>|#include|</?\w+>|\bselect\b.+\bfrom\b",
+)
+BP_LIKE = re.compile(r"^\s*\d{2,3}\s*/\s*\d{2,3}\s*$")  # "140/90" is a reading, not a sum
+# a word that looks like a disease name but is in none of our lexicons ("xyzitis")
+UNKNOWN_MED = re.compile(r"\b[a-z]{2,}(itis|osis|emia|aemia|oma|pathy|algia|plegia|iasis|rrhoea|rrhea|ectomy|uria|cele)\b", re.I)
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿️‍]")
 WORD = re.compile(r"[a-zऀ-ॿ]+", re.I)
 
@@ -130,9 +128,8 @@ def _greeting_only(t: str) -> bool:
 
 
 def has_health_signal(text: str) -> bool:
-    if extract_slots([text]).symptoms:
-        return True
-    return bool(HEALTH_WORDS.search(clean(text)) or HEALTH_WORDS.search(normalise(text)))
+    """At least one evidence span in the user's own words (symptom, complaint or red flag)."""
+    return evidence.has_evidence([text])
 
 
 def _llm_tiebreak(text: str) -> str | None:
@@ -165,15 +162,18 @@ def classify(text: str, answering_clinical_question: bool = False) -> str:
         return ABUSE
     if _greeting_only(t):
         return GREETING
+    if MATH_CODE.search(t) and not BP_LIKE.search(t):
+        return MATH
     if OFF.search(t):
         return OFF_TOPIC
-    if _looks_gibberish(t):
-        return UNCLEAR
-    # no positive evidence of another class: never block a possible health request.
-    # The LLM (if configured) may still recognise small talk / off-topic text; otherwise the pipeline handles it.
+    if UNKNOWN_MED.search(t):
+        return UNKNOWN_TERM
+    # no evidence span: never start clinical questioning (evidence gate); ask what, who and since when instead
     if len(WORD.findall(t)) >= 4:
-        return _llm_tiebreak(t) or HEALTH
-    return HEALTH
+        c = _llm_tiebreak(t)
+        if c and c != HEALTH:
+            return c
+    return UNCLEAR
 
 
 REDIRECTS = {
@@ -183,9 +183,14 @@ REDIRECTS = {
         "hinglish": "Namaste! Main sirf sehat se judi madad kar sakta hoon. Batayein, kis ki tabiyat theek nahi hai aur kya pareshani hai?",
     },
     OFF_TOPIC: {
-        "en": "Sorry, I can only help you find the right health care. Is someone unwell?",
-        "hi": "माफ़ कीजिए, मैं सिर्फ़ सही देखभाल ढूँढने में मदद करता हूँ। क्या किसी की तबीयत खराब है?",
-        "hinglish": "Maaf kijiye, main sirf health care dhoondhne mein madad karta hoon. Kya kisi ki tabiyat kharab hai?",
+        "en": "This does not look like a health question. I can only help with health and care.",
+        "hi": "यह सेहत का सवाल नहीं लगता। मैं सिर्फ़ सेहत से जुड़ी मदद करता हूँ।",
+        "hinglish": "Ye health ka sawaal nahi lagta. Main sirf sehat se judi madad karta hoon.",
+    },
+    UNKNOWN_TERM: {
+        "en": "I do not recognise this name. Please describe the symptoms.",
+        "hi": "मैं इस नाम को नहीं पहचानता। अपने लक्षण बताइए।",
+        "hinglish": "Main is naam ko nahi pehchaanta. Apne symptoms batayein.",
     },
     MEDICINE: {
         "en": "I cannot suggest medicines or name an illness. But I can connect you to the right doctor or nurse. Please describe the symptoms.",
@@ -193,9 +198,9 @@ REDIRECTS = {
         "hinglish": "Main dawai ya bimari ka naam nahi bata sakta. Lekin sahi doctor ya nurse tak pahunchane mein madad kar sakta hoon. Symptoms batayein.",
     },
     UNCLEAR: {
-        "en": "I did not understand that. Please describe the problem, who it is for, and since when. For example: \"My father has had a fever for 2 days\".",
-        "hi": "मैं समझ नहीं पाया। कृपया बताइए क्या परेशानी है, किसे है और कब से। जैसे: \"पापा को दो दिन से बुखार है\"।",
-        "hinglish": "Main samajh nahi paaya. Batayein kya pareshani hai, kise hai aur kab se. Jaise: \"Papa ko do din se bukhar hai\".",
+        "en": "I could not find a health problem in this message. What is the problem, who has it, and since when?",
+        "hi": "इस संदेश में मुझे कोई सेहत की परेशानी समझ नहीं आई। क्या तकलीफ है, किसे है, और कब से?",
+        "hinglish": "Is message mein mujhe koi health problem samajh nahi aayi. Kya takleef hai, kisko, aur kab se?",
     },
     ABUSE: {
         "en": "I am here only to help find health care. If someone is unwell, please describe the problem.",
@@ -205,9 +210,22 @@ REDIRECTS = {
 }
 
 
+REDIRECTS[MATH] = REDIRECTS[OFF_TOPIC]
+GIVE_UP_TEXT = {
+    "en": "I am not able to understand this. If someone is unwell, please talk to a doctor; in an emergency, call 112.",
+    "hi": "मैं यह बात समझ नहीं पा रहा। अगर तबीयत खराब है तो डॉक्टर से बात करें, इमरजेंसी में 112 पर कॉल करें।",
+    "hinglish": "Main is baat ko samajh nahi pa raha. Agar tabiyat kharab hai to doctor se baat karein, emergency mein 112.",
+}
+MAX_UNCLEAR_TURNS = 3
+
+
+def give_up_text(lang: str) -> str:
+    return GIVE_UP_TEXT.get(lang) or GIVE_UP_TEXT["en"]
+
+
 def redirect_text(domain_class: str, lang: str) -> str:
     m = REDIRECTS.get(domain_class, REDIRECTS[UNCLEAR])
     return m.get(lang) or m["en"]
 
 
-REDIRECT_TEXTS = {v for m in REDIRECTS.values() for v in m.values()}
+REDIRECT_TEXTS = {v for m in REDIRECTS.values() for v in m.values()} | set(GIVE_UP_TEXT.values())
