@@ -53,6 +53,8 @@ def load() -> tuple[dict, dict[str, Pathway], dict[str, dict]]:
     signs: dict[str, dict] = dict(common["signs"])
     for pid in common["priority"]:
         cfg = json.loads((d / f"{pid}.json").read_text(encoding="utf-8"))
+        if common.get("age_question"):  # the shared age chip question belongs to every pathway's tree
+            cfg["questions"] = cfg["questions"] + [common["age_question"]]
         pathways[pid] = Pathway(pid, cfg)
         signs.update(cfg.get("signs", {}))
     for p in pathways.values():
@@ -205,13 +207,14 @@ class Answers:
     negated: set[str] = field(default_factory=set)
     asked: list[str] = field(default_factory=list)
     confirm_asked: list[str] = field(default_factory=list)  # danger-confirmation questions (not counted in the 4)
+    meta_asked: list[str] = field(default_factory=list)  # the age question (not counted in the 4 either)
     definite: list[str] = field(default_factory=list)  # chip ids answered that are definite_S3
     chips: dict[str, list[str]] = field(default_factory=dict)  # question id -> chip ids chosen ("none" included)
     resolved_absent: set[str] = field(default_factory=set)  # contradiction confirmed as "not now"
 
     @property
     def n_clinical(self) -> int:
-        return len([q for q in self.asked if q not in self.confirm_asked])
+        return len([q for q in self.asked if q not in self.confirm_asked and q not in self.meta_asked])
 
 
 def parse_answers(history: list[dict], user_input: str) -> Answers:
@@ -229,6 +232,8 @@ def parse_answers(history: list[dict], user_input: str) -> Answers:
                 ans.asked.append(pending["id"])
                 if pending.get("kind") == "confirm":
                     ans.confirm_asked.append(pending["id"])
+                elif pending.get("kind") == "age":
+                    ans.meta_asked.append(pending["id"])
             continue
         if role != "user" or pending is None:
             continue
@@ -299,6 +304,7 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
         "child": slots.age_group in ("infant", "child") or (age is not None and age < 12),
         "elderly": slots.age_group == "elderly" or (age is not None and age >= 65),
         "age40": age is not None and age >= 40,
+        "age_known": age is not None or slots.age_group is not None,
     })
     for d in slots.named_diseases:
         f[f"named_{d}"] = True
@@ -407,7 +413,8 @@ def evaluate_pathway(p: Pathway, facts: dict, neg: set[str], known: set[str]) ->
             res.care_type, res.urgency = route["care_type"], route["urgency"]
             res.explicit = True
             res.modifiers.append(m["id"])
-        elif eff == "raise" and raised < common.get("max_total_raise", 1) and res.stage != "S3":
+        elif eff == "raise" and raised < common.get("max_total_raise", 1) and res.stage != "S3" \
+                and _stage_i(res.stage) < _stage_i(m.get("max_stage", "S3")):
             base = res.stage
             res.stage = STAGES[_stage_i(res.stage) + 1]
             route = p.stage_route(res.stage)
@@ -517,6 +524,14 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
                 if q.get("kind") == "confirm" and expr.evaluate(q.get("only_if", "False"), facts, fn) \
                         and not expr.evaluate(q.get("skip_if", "False"), facts, fn):
                     return q
+    # age unknown: one chip question early (after the first danger screen), outside the cap of max_q
+    age_q = next((q for q in p.cfg["questions"] if q.get("kind") == "age"), None)
+    if age_q and not facts.get("age_known") and age_q["id"] not in out.answers.asked:
+        danger_open = any(q.get("kind") == "danger" and q["id"] not in out.answers.asked
+                          and expr.evaluate(q.get("only_if", "True"), facts, fn)
+                          and not expr.evaluate(q.get("skip_if", "False"), facts, fn) for q in p.cfg["questions"])
+        if out.answers.asked or not danger_open:
+            return age_q
     if n_clinical_asked >= max_q:
         return None
     if expr.evaluate(p.cfg.get("sufficient", "False"), facts, fn):
@@ -530,7 +545,7 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
                     return q
         return None
     for q in p.cfg["questions"]:
-        if q["id"] in out.answers.asked or q.get("kind") == "confirm":
+        if q["id"] in out.answers.asked or q.get("kind") in ("confirm", "age"):
             continue
         if not expr.evaluate(q.get("only_if", "True"), facts, fn):
             continue

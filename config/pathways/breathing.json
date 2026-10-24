@@ -51,12 +51,10 @@
      "text": {"en": "With the breathing trouble, is any of these happening?", "hi": "साँस की तकलीफ के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Saans ki takleef ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(breathless_rest) and known(blue_lips) and known(chest_pain_any) and known(confusion)",
      "chips": [
-       {"id": "rest", "severity": "definite_S3", "label": {"en": "Breathless even sitting still", "hi": "बैठे-बैठे भी साँस फूल रही है", "hinglish": "Baithe-baithe bhi saans phool rahi"}, "facts": {"breathless_rest": true}},
-       {"id": "speak", "severity": "definite_S3", "label": {"en": "Cannot finish a sentence", "hi": "पूरा वाक्य नहीं बोल पा रहे", "hinglish": "Poora vakya nahi bol pa rahe"}, "facts": {"breathless_rest": true}},
-       {"id": "blue", "severity": "definite_S3", "label": {"en": "Lips or nails blue or grey", "hi": "होंठ या नाखून नीले या भूरे", "hinglish": "Hont ya naakhun neele ya bhoore"}, "facts": {"blue_lips": true}},
-       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain with it", "hi": "साथ में सीने में दर्द", "hinglish": "Saath mein seene mein dard"}, "facts": {"chest_pain_any": true}},
-       {"id": "faint", "severity": "definite_S3", "label": {"en": "Fainted or nearly fainted", "hi": "बेहोश हुए या होने वाले थे", "hinglish": "Behosh hue ya hone wale the"}, "facts": {"fainted": true}},
-       {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती", "hinglish": "Bhram ya bahut susti"}, "facts": {"confusion": true}}
+       {"id": "rest", "severity": "definite_S3", "label": {"en": "Breathless even at rest, or cannot speak", "hi": "आराम में भी / बोल नहीं पा रहे", "hinglish": "Aaram mein bhi / bol nahi pa rahe"}, "facts": {"breathless_rest": true}},
+       {"id": "exertion", "label": {"en": "Only on walking", "hi": "चलने पर", "hinglish": "Chalne par"}, "facts": {"breathless_exertion": true}},
+       {"id": "blue", "severity": "definite_S3", "label": {"en": "Blue lips", "hi": "होंठ नीले", "hinglish": "Hoth neele"}, "facts": {"blue_lips": true}},
+       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain", "hi": "सीने में दर्द", "hinglish": "Seene mein dard"}, "facts": {"chest_pain_any": true}}
      ]},
     {"id": "breathing.onset", "kind": "onset", "single": true,
      "text": {"en": "How did the breathing trouble start?", "hi": "साँस की तकलीफ कैसे शुरू हुई?", "hinglish": "Saans ki takleef kaise shuru hui?"},

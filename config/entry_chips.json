@@ -1,0 +1,12 @@
+{
+  "_note": "Start chips on the Get Care screen (frontend i18n guard.chips). A turn that is exactly one of these labels only opens its pathway: it is never read by the safety pre-check, so 'Saans ki dikkat' asks the breathing danger question instead of going straight to emergency. Typed text (e.g. 'saans nahi aa rahi') is checked as usual. Labels must match the i18n chips.",
+  "chips": [
+    {"id": "fever", "labels": ["Bukhar / Fever", "बुखार"]},
+    {"id": "breathing", "labels": ["Saans ki dikkat", "साँस की दिक्कत"]},
+    {"id": "injury", "labels": ["Chot lagi / Injury", "चोट लगी"]},
+    {"id": "elderly_care", "labels": ["Buzurg ki dekhbhal", "बुज़ुर्ग की देखभाल"]},
+    {"id": "child", "labels": ["Bacche ki tabiyat", "बच्चे की तबीयत"]},
+    {"id": "nurse", "labels": ["Dawai/injection ke liye nurse", "दवा/इंजेक्शन के लिए नर्स"]},
+    {"id": "mood", "labels": ["Mann / mood", "मन / मूड"]}
+  ]
+}

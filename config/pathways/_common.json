@@ -64,6 +64,12 @@
                             "label": {"en": "swelling of face, hands or feet", "hi": "चेहरे/हाथ-पैर में सूजन", "hinglish": "chehre ya haath-pair mein sujan"}}
   },
   "modifiers": [
+    {"id": "elderly_home", "when": "elderly", "effect": "prefer_home", "pathways": "*", "_note": "65+: a home visit rather than a teleconsult",
+     "label": {"en": "age 65+ (home visit preferred)", "hi": "65+ उम्र (घर पर देखभाल बेहतर)", "hinglish": "65+ umar (ghar par dekhbhal behtar)"}},
+    {"id": "elderly_raise_capped", "when": "elderly", "effect": "raise", "max_stage": "S2", "pathways": ["headache", "chest_pain", "mood"], "_note": "age alone never makes an emergency here",
+     "label": {"en": "age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}},
+    {"id": "infant_raise", "when": "infant", "effect": "raise", "max_stage": "S2", "pathways": "*", "_note": "a baby under 1 year: one stage up",
+     "label": {"en": "a baby under 1 year", "hi": "1 साल से छोटा शिशु", "hinglish": "1 saal se chhota baby"}},
     {"id": "definite_s3_chip", "when": "definite_s3_answer", "effect": "min_stage", "stage": "S3", "pathways": "*", "_note": "a chip marked definite_S3 was selected: emergency at once, no further questions",
      "label": {"en": "a danger sign you selected", "hi": "आपका चुना खतरे का संकेत", "hinglish": "aapka chuna khatre ka sanket"}},
     {"id": "young_infant_fever", "when": "young_infant and fever and (temp_f is None or temp_f >= 100.4)", "effect": "min_stage", "stage": "S3", "pathways": ["fever"],
@@ -84,5 +90,6 @@
      "label": {"en": "cannot travel", "hi": "बाहर नहीं जा सकते", "hinglish": "bahar nahi ja sakte"}}
   ],
   "max_total_raise": 1,
-  "priority": ["chest_pain", "breathing", "headache", "fever", "abdominal", "vomiting", "urinary", "cough"]
+  "age_question": {"id": "common.age", "kind": "age", "single": true, "no_none_chip": true, "_note": "asked early when the age is unknown; one chip question that does not count toward the 4", "text": {"en": "How old is the patient?", "hi": "मरीज़ की उम्र कितनी है?", "hinglish": "Mareez ki umar kitni hai?"}, "chips": [{"id": "lt1", "label": {"en": "Under 1 year", "hi": "1 साल से छोटा", "hinglish": "1 saal se chhota"}, "facts": {"age_known": true, "infant": true, "child": true, "under5": true, "minor": true, "age_band": "lt1"}}, {"id": "1_5", "label": {"en": "1–5 years", "hi": "1–5 साल", "hinglish": "1–5 saal"}, "facts": {"age_known": true, "child": true, "under5": true, "minor": true, "age_band": "1-5"}}, {"id": "6_17", "label": {"en": "6–17 years", "hi": "6–17 साल", "hinglish": "6–17 saal"}, "facts": {"age_known": true, "child": true, "minor": true, "age_band": "6-17"}}, {"id": "18_64", "label": {"en": "18–64 years", "hi": "18–64 साल", "hinglish": "18–64 saal"}, "facts": {"age_known": true, "adult": true, "age_band": "18-64"}}, {"id": "65p", "label": {"en": "65+ years", "hi": "65+ साल", "hinglish": "65+ saal"}, "facts": {"age_known": true, "elderly": true, "age_band": "65+"}}]},
+  "priority": ["chest_pain", "breathing", "headache", "fever", "abdominal", "vomiting", "urinary", "cough", "mood"]
 }

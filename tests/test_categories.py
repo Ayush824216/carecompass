@@ -85,7 +85,7 @@ DIZZINESS = [
     ("खड़े होने पर चक्कर आता है", "S1", GP, SD),
     ("I feel dizzy when I stand up", "S1", GP, SD),
     ("Sab ghoomta hua lagta hai", "S1", GP, SD),
-    ("72 saal ki mummy ko chakkar aata hai", "S2", GP, SD),
+    ("72 saal ki mummy ko chakkar aata hai", "S2", "paramedic_home_visit", SD),  # 65+: home visit over teleconsult
 ]
 
 
@@ -157,7 +157,7 @@ def test_fever_subtree_depends_on_previous_answer(answer, qid):
     hist = [{"role": "user", "content": "bukhar hai 2 din se, thermometer mein 101"},
             {"role": "assistant", "content": "Bukhar ke saath kya-kya hai?"}]
     o = e.run([h["content"] for h in hist if h["role"] == "user"] + [answer], history=hist, user_input=answer)
-    asked = set(o.answers.asked) | {"fever.danger"}
+    asked = set(o.answers.asked) | {"fever.danger", "common.age"}
     o.answers.asked = list(asked)
     q = e.next_question(o, 2)
     assert q is not None and q["id"] == qid, (answer, q and q["id"])
@@ -191,5 +191,8 @@ def test_vomiting_dehydration_flow_end_to_end():
         assert r["debug"]["followup"]["pathway"] == "vomiting"
         opts = r["debug"]["followup"]["options"]
         hist += [{"role": "user", "content": text}, {"role": "assistant", "content": r["follow_up_question"]}]
-        text = "Kuch nahi" if opts[-1]["id"] == "none" else opts[0]["label"]
+        if r["debug"]["followup"]["question_id"] == "common.age":
+            text = "18–64 saal"
+        else:
+            text = "Kuch nahi" if opts[-1]["id"] == "none" else opts[0]["label"]
     assert r["care_type"] == NU and r["urgency"] == SD and r["debug"]["assessment"]["category"] == "vomiting"

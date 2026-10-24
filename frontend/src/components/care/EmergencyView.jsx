@@ -73,6 +73,17 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
             </span>
           </a>
         </div>
+        {/* crisis screen: thoughts of self-harm also get the free national mental-health line (verified, config/helplines.json) */}
+        {(response.red_flags || []).includes("suicidal_intent") && (
+          <a href="tel:14416" className="mt-4 flex items-center gap-5 rounded-3xl bg-white p-5 text-emergency-deep shadow-lift sm:p-6" aria-label={t("emergency.teleManas")}>
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary text-white"><Phone className="h-8 w-8" aria-hidden="true" /></span>
+            <span className="min-w-0">
+              <span className="block font-display text-4xl font-bold leading-none">14416</span>
+              <span className="mt-1 block text-lg font-bold">{t("emergency.teleManas")}</span>
+              <span className="block text-sm opacity-80">{t("emergency.teleManasD")} · {t("emergency.tapToCall")}</span>
+            </span>
+          </a>
+        )}
 
         <div className="mt-8 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
           <section className="rounded-3xl bg-black/20 p-5 sm:p-6" aria-labelledby="em-steps-h">

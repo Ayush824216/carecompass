@@ -1,0 +1,89 @@
+{
+  "id": "mood",
+  "raise_care": "keep",
+  "label": {"en": "Mood / mental health", "hi": "मन / मूड", "hinglish": "Mann / mood"},
+  "_spec": "Mood, anxiety, stress, sleep and irritability. Routing only: never a disease label, never a medicine. The self-harm safety question is ALWAYS asked (kind danger, never skipped); thoughts or a plan of self-harm -> crisis screen (112 + Tele-MANAS 14416). Otherwise GP teleconsult or a mental-health specialist, routine or same day by severity.",
+  "trigger": "low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or self_harm_thoughts or self_harm_plan or mood_entry",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "specialist_referral", "urgency": "routine"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "mood_entry": {"patterns": ["^\\s*mann\\s*/\\s*mood\\s*$", "^\\s*मन\\s*/\\s*मूड\\s*$"],
+                   "label": {"en": "mood", "hi": "मन / मूड", "hinglish": "mann / mood"}},
+    "low_mood": {"patterns": ["udaa?s", "\\bdukhi\\b", "\\bsad\\b", "feel(ing|s)? (very |so )?(low|down|empty)", "low mood", "depress", "mann (nahi|nhi) lagta", "kisi cheez mein mann nahi", "hopeless", "nira(a)?sh", "उदास", "दुखी", "मन नहीं लगता", "निराश"],
+                 "label": {"en": "low mood", "hi": "उदासी", "hinglish": "udaasi"}},
+    "anxiety": {"patterns": ["ghabra", "anxi", "bechain", "\\bpanic", "dar lagta", "\\btension\\b", "nervous", "घबराह", "बेचैन", "डर लगता"],
+                "label": {"en": "anxiety or restlessness", "hi": "घबराहट या बेचैनी", "hinglish": "ghabrahat ya bechaini"}},
+    "mood_swings": {"patterns": ["mood swing", "mood (\\S+ )?(baar[- ]baar|jaldi|achanak) badal", "mood (bahut )?kharab", "\\bmood\\b (\\S+ )?(off|upar neeche)", "मूड (बार-बार |जल्दी )?बदल", "मूड खराब"],
+                    "label": {"en": "mood swings", "hi": "मूड बदलना", "hinglish": "mood badalna"}},
+    "irritability": {"patterns": ["chidchid", "irritab", "gussa (bahut|jaldi|zyada)", "(bahut|jaldi) gussa", "चिड़चिड़", "गुस्सा"],
+                     "label": {"en": "irritability or anger", "hi": "चिड़चिड़ापन या गुस्सा", "hinglish": "chidchidapan ya gussa"}},
+    "stress": {"patterns": ["\\bstress", "tanav", "\\bpressure\\b", "तनाव"],
+               "label": {"en": "stress", "hi": "तनाव", "hinglish": "tanav"}},
+    "mood_sleep": {"patterns": ["neend (nahi|nhi|kam|nahin) (aati|aa rahi|hoti)", "neend (bahut )?kam", "insomnia", "can'?t sleep", "not sleeping", "बहुत (ज़्यादा |कम )?नींद", "नींद (नहीं|कम) (आती|हो)"],
+                   "label": {"en": "sleep trouble", "hi": "नींद की दिक्कत", "hinglish": "neend ki dikkat"}},
+    "self_harm_thoughts": {"patterns": ["suicid", "self[- ]?harm", "marne (ka|ke) (koi )?(khayal|khyal|vichar|mann)", "khud ko (nuksan|nuksaan|hurt|khatam)( (pahunchane|pahuchane|karne) (ka|ke))?( (koi )?(khayal|khyal|vichar|mann|soch))?", "(jeena|jeene ka mann) (nahi|nhi)", "end(ing)? my life", "don'?t want to live", "आत्महत्या", "मरने (का|के) (कोई )?(ख्याल|विचार|मन)", "खुद को (नुकसान|खत्म)"],
+                           "label": {"en": "thoughts of self-harm", "hi": "खुद को नुकसान पहुँचाने के विचार", "hinglish": "khud ko nuksaan pahunchane ke vichaar"}},
+    "self_harm_plan": {"patterns": ["plan (bana|bhi) (liya|hai)", "tarika soch", "have a plan to"],
+                       "label": {"en": "a plan to self-harm", "hi": "खुद को नुकसान पहुँचाने की योजना", "hinglish": "khud ko nuksaan pahunchane ka plan"}},
+    "substance_use": {"patterns": ["sharaa?b", "\\bdaru\\b", "alcohol", "\\bnasha", "\\bdrugs?\\b", "ganja", "शराब", "नशा"],
+                      "label": {"en": "alcohol or drug use", "hi": "शराब या नशा", "hinglish": "sharab ya nasha"}}
+  },
+  "rules": [
+    {"id": "m_self_harm", "stage": "S3", "when": "self_harm_thoughts or self_harm_plan"},
+
+    {"id": "m_severe_impact", "stage": "S2", "when": "mood_impact_severe"},
+    {"id": "m_substance", "stage": "S2", "when": "substance_use and (low_mood or anxiety or mood_swings)"},
+    {"id": "m_no_sleep_eat", "stage": "S2", "when": "mood_no_sleep and mood_no_appetite"},
+
+    {"id": "m_long", "stage": "S1", "when": "(duration_days is not None and duration_days >= 14) or mood_long"},
+    {"id": "m_impact", "stage": "S1", "when": "mood_impact_some"},
+    {"id": "m_swings", "stage": "S1", "when": "mood_swings and (irritability or mood_sleep or mood_no_sleep)"},
+
+    {"id": "m_any", "stage": "S0", "when": "low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or mood_entry"}
+  ],
+  "sufficient": "False",
+  "questions": [
+    {"id": "mood.safety", "kind": "danger",
+     "text": {"en": "Sometimes when people feel this way, thoughts of hurting themselves come. Has that happened?", "hi": "कभी-कभी ऐसा महसूस होने पर खुद को नुकसान पहुँचाने के विचार आते हैं। क्या ऐसा हुआ है?", "hinglish": "Kabhi-kabhi aisa mehsoos hone par khud ko nuksaan pahunchane ke khayal aate hain. Kya aisa hua hai?"},
+     "none_label": {"en": "No, no such thoughts", "hi": "नहीं, ऐसे विचार नहीं", "hinglish": "Nahi, aise khayal nahi"},
+     "chips": [
+       {"id": "thoughts", "severity": "definite_S3", "label": {"en": "Yes, such thoughts come", "hi": "हाँ, ऐसे विचार आते हैं", "hinglish": "Haan, aise khayal aate hain"}, "facts": {"self_harm_thoughts": true}},
+       {"id": "plan", "severity": "definite_S3", "label": {"en": "Yes, and I have thought how", "hi": "हाँ, और तरीका भी सोचा है", "hinglish": "Haan, aur tarika bhi socha hai"}, "facts": {"self_harm_plan": true}}
+     ]},
+    {"id": "mood.duration", "kind": "duration", "single": true, "no_none_chip": true,
+     "text": {"en": "Since when have you been feeling this way?", "hi": "ऐसा कब से महसूस हो रहा है?", "hinglish": "Aisa kab se mehsoos ho raha hai?"},
+     "skip_if": "known(duration_days)",
+     "chips": [
+       {"id": "lt2w", "label": {"en": "A few days", "hi": "कुछ दिनों से", "hinglish": "Kuch dino se"}, "facts": {"duration_days": 7}},
+       {"id": "2w2m", "label": {"en": "A few weeks", "hi": "कुछ हफ्तों से", "hinglish": "Kuch hafton se"}, "facts": {"duration_days": 30}},
+       {"id": "gt2m", "label": {"en": "For months", "hi": "कई महीनों से", "hinglish": "Kai mahino se"}, "facts": {"duration_days": 90, "mood_long": true}}
+     ]},
+    {"id": "mood.impact", "kind": "associated", "single": true, "no_none_chip": true,
+     "text": {"en": "How much is it affecting daily life (work, study, home)?", "hi": "रोज़ के काम (काम, पढ़ाई, घर) पर कितना असर है?", "hinglish": "Roz ke kaam (kaam, padhai, ghar) par kitna asar hai?"},
+     "chips": [
+       {"id": "severe", "label": {"en": "Cannot do daily work", "hi": "रोज़ का काम नहीं हो पाता", "hinglish": "Roz ka kaam nahi ho paata"}, "facts": {"mood_impact_severe": true}},
+       {"id": "some", "label": {"en": "Some effect", "hi": "थोड़ा असर", "hinglish": "Thoda asar"}, "facts": {"mood_impact_some": true}},
+       {"id": "no", "label": {"en": "No real effect", "hi": "कोई खास असर नहीं", "hinglish": "Koi khaas asar nahi"}, "facts": {"mood_impact_none": true}}
+     ]},
+    {"id": "mood.sleep_appetite", "kind": "associated",
+     "text": {"en": "Any change in sleep or appetite?", "hi": "नींद या भूख में कोई बदलाव?", "hinglish": "Neend ya bhookh mein koi badlav?"},
+     "chips": [
+       {"id": "nosleep", "label": {"en": "Hardly sleeping", "hi": "नींद बहुत कम", "hinglish": "Neend bahut kam"}, "facts": {"mood_no_sleep": true}},
+       {"id": "oversleep", "label": {"en": "Sleeping much more", "hi": "बहुत ज़्यादा नींद", "hinglish": "Bahut zyada neend"}, "facts": {"mood_sleep": true}},
+       {"id": "noeat", "label": {"en": "Eating much less", "hi": "भूख बहुत कम", "hinglish": "Bhookh bahut kam"}, "facts": {"mood_no_appetite": true}},
+       {"id": "overeat", "label": {"en": "Eating much more", "hi": "भूख बहुत ज़्यादा", "hinglish": "Bhookh bahut zyada"}, "facts": {"mood_appetite_up": true}}
+     ]},
+    {"id": "mood.substance", "kind": "associated",
+     "text": {"en": "Any alcohol, tobacco or other drug use lately?", "hi": "हाल में शराब, तंबाकू या कोई और नशा?", "hinglish": "Haal mein sharab, tambaku ya koi aur nasha?"},
+     "skip_if": "known(substance_use)",
+     "chips": [
+       {"id": "alcohol", "label": {"en": "Alcohol", "hi": "शराब", "hinglish": "Sharab"}, "facts": {"substance_use": true}},
+       {"id": "drugs", "label": {"en": "Other drugs", "hi": "कोई और नशा", "hinglish": "Koi aur nasha"}, "facts": {"substance_use": true}},
+       {"id": "tobacco", "label": {"en": "Tobacco only", "hi": "सिर्फ़ तंबाकू", "hinglish": "Sirf tambaku"}, "facts": {"tobacco": true}}
+     ]}
+  ]
+}

@@ -52,7 +52,8 @@ function buildStages({ response, debug, t }) {
   }
   out.symptoms = {
     status: "done",
-    value: syms.length ? [syms.map((x) => { const v = t(`symptoms.${x}`); return v.startsWith("symptoms.") ? x : v; }).join(", "), slots.duration_text].filter(Boolean).join(" · ") : t("panel.noSymptoms"),
+    value: [syms.length ? [syms.map((x) => { const v = t(`symptoms.${x}`); return v.startsWith("symptoms.") ? x : v; }).join(", "), slots.duration_text].filter(Boolean).join(" · ") : t("panel.noSymptoms"),
+      dbg.age?.label ? `${t("panel.age")}: ${dbg.age.label}` : null].filter(Boolean).join(" · "),
   };
   out.safety = flags.length
     ? { status: "alert", value: t("panel.redFlags", { flags: flags.map((f) => flagLabel(f, t, dbg)).join(", ") }) }

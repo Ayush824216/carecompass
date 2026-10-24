@@ -238,7 +238,7 @@ def test_e20_iron_tablets_black_stool():
 # ---------------------------------------------------------------- engine behaviour
 def test_missing_slots_never_lower_and_rules_validate():
     common, pathways, signs = pw.load()  # loading validates every rule expression
-    assert set(pathways) == {"fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary"} and len(signs) > 50
+    assert set(pathways) == {"fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary", "mood"} and len(signs) > 50
 
 
 def test_questions_danger_first_and_stop_on_s3():
@@ -300,6 +300,10 @@ def test_api_pathway_flow_none_then_next_question():
     q1 = _post("bukhar hai")["follow_up_question"]
     hist = [{"role": "user", "content": "bukhar hai"}, {"role": "assistant", "content": q1}]
     r = _post("Kuch nahi", hist)
+    assert r["debug"]["followup"].get("question_id") == "common.age"  # age unknown: asked early, not counted
+    assert r["debug"]["followup"]["asked_so_far"] == 1
+    hist += [{"role": "user", "content": "Kuch nahi"}, {"role": "assistant", "content": r["follow_up_question"]}]
+    r = _post("18–64 saal", hist)
     assert r["debug"]["followup"].get("question_id") == "fever.duration_height"
     assert r["debug"]["followup"]["asked_so_far"] == 1
 
@@ -319,7 +323,8 @@ def test_api_max_four_questions_then_decide():
             break
         hist += [{"role": "user", "content": text}, {"role": "assistant", "content": r["follow_up_question"]}]
         text = "Koi nahi" if "kaun" in r["follow_up_question"].lower() else "Kuch nahi"
-    assert r["care_type"] is not None and len([h for h in hist if h["role"] == "assistant"]) <= 4
+    age_q = "Mareez ki umar kitni hai?"  # the age chip question does not count toward the 4
+    assert r["care_type"] is not None and len([h for h in hist if h["role"] == "assistant" and h["content"] != age_q]) <= 4
 
 
 @pytest.mark.parametrize("text", ["mujhe lagta hai dengue hai", "Dengue test positive, platelets 80 hazaar, pet mein dard",

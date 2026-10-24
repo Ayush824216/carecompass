@@ -281,7 +281,8 @@
     "severityLadder": "Severity ladder",
     "internalPattern": "Internal routing pattern (not a diagnosis)",
     "internalPatternNote": "Used only to pick the care type and urgency. Never shown to the patient.",
-    "severityAssessing": "{pathway} pathway · being assessed"
+    "severityAssessing": "{pathway} pathway · being assessed",
+    "age": "Age"
   },
   "result": {
     "title": "Recommended care",
@@ -379,7 +380,9 @@
       "remove": "Remove",
       "invalid": "Enter a name and a 10-digit mobile number.",
       "deviceOnly": "The contact is saved only in this browser on this device. It never leaves this device."
-    }
+    },
+    "teleManas": "Tele-MANAS: talk to a counsellor",
+    "teleManasD": "Free, 24x7, many languages. You are not alone."
   },
   "directory": {
     "title": "Caregivers",
@@ -688,7 +691,8 @@
       "Chot lagi / Injury",
       "Buzurg ki dekhbhal",
       "Bacche ki tabiyat",
-      "Dawai/injection ke liye nurse"
+      "Dawai/injection ke liye nurse",
+      "Mann / mood"
     ]
   },
   "landing": {

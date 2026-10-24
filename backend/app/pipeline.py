@@ -4,12 +4,13 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import asdict
+from functools import lru_cache
 from typing import Optional
 
 from . import assessment, domain_guard, evidence, explain, intake, llm_triage, matching, pathways, safety
 from .config import get_settings
 from .pathways import route as proute
-from .lang import detect_language, normalise, resolve_language, term_matches
+from .lang import clean, detect_language, normalise, resolve_language, term_matches
 from .llm import available as llm_available
 from .schemas import (EMERGENCY_CARE_TYPE, MOST_URGENT, URGENCY_RANK, MatchedCaregiver, TriageRequest,
                       TriageResponse)
@@ -83,6 +84,8 @@ def pathway_flags(pout) -> list[str]:
 
 def pathway_emergency(pout, lang: str, safety_flags: list[str]) -> TriageResponse:
     """S3 from a pathway: emergency path with the pathway's danger signs in plain words."""
+    if set(pout.primary.signs) & {"self_harm_thoughts", "self_harm_plan"}:  # crisis screen: 112 + Tele-MANAS 14416
+        safety_flags = list(dict.fromkeys(["suicidal_intent"] + list(safety_flags)))
     flags = list(dict.fromkeys(list(safety_flags) + pathway_flags(pout)))
     return TriageResponse(follow_up_question=None, care_type=EMERGENCY_CARE_TYPE, urgency=MOST_URGENT, red_flags=flags,
                           reasoning=proute.emergency_reasoning(pout, lang, safety_flags), matched_caregivers=[])
@@ -109,6 +112,53 @@ def _unclear_streak(req: TriageRequest) -> int:
             streak = 0 if health else streak + 1
             pending = None
     return streak
+
+
+@lru_cache
+def _entry_labels() -> frozenset[str]:
+    import json
+    cfg = json.loads((get_settings().config_dir / "entry_chips.json").read_text(encoding="utf-8"))
+    return frozenset(clean(l).lower() for c in cfg["chips"] for l in c["labels"])
+
+
+def is_entry_chip(text: str) -> bool:
+    """A start chip tapped on the Get Care screen: it only opens its pathway (config/entry_chips.json)."""
+    return clean(text or "").lower() in _entry_labels()
+
+
+def _safety_texts(turns: list[str], state: intake.IntakeState) -> list[str]:
+    """Everything the user wrote, except bare entry chips (their pathway asks its danger question instead)."""
+    own = [t for t in turns if not is_entry_chip(t)]
+    model = " . ".join(t for t in state.model_text.split(" . ") if not is_entry_chip(t))
+    return own + ([model] if model else [])
+
+
+AGE_LABEL = {"infant": ("Baby under 1 year", "1 साल से छोटा शिशु", "1 saal se chhota baby"),
+             "child": ("Child (under 18)", "बच्चा (18 से कम)", "Bachcha (18 se kam)"),
+             "adult": ("Adult (18–64)", "वयस्क (18–64)", "Adult (18–64)"),
+             "elderly": ("Elderly (65+)", "बुज़ुर्ग (65+)", "Buzurg (65+)")}
+
+
+def age_info(state: intake.IntakeState, pout, lang: str) -> dict:
+    """Patient age from the text (intake / pathway slots) or the age chip; drives modifiers and matching."""
+    f = pout.facts if pout is not None else {}
+    years, band = f.get("age_years"), f.get("age_band")
+    if f.get("infant"):
+        group = "infant"
+    elif f.get("child") or f.get("minor"):
+        group = "child"
+    elif f.get("elderly"):
+        group = "elderly"
+    elif f.get("adult"):
+        group = "adult"
+    else:
+        group = state.slots.age_group
+    i = {"en": 0, "hi": 1}.get(lang, 2)
+    label = AGE_LABEL[group][i] if group in AGE_LABEL else None
+    if years is not None:
+        label = f"{label} · {years:g}" if label else f"{years:g}"
+    return {"group": group, "years": years, "band": band, "label": label,
+            "source": "answer" if band else ("text" if group or years is not None else None)}
 
 
 def _history_text(req: TriageRequest) -> str:
@@ -138,7 +188,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
                           "question_id": None}
 
         t = time.perf_counter()
-        sres = safety.check(turns + [state.model_text], extra_flags=_extra_flags(state))
+        sres = safety.check(_safety_texts(turns, state), extra_flags=_extra_flags(state))
         timings["safety"] = time.perf_counter() - t
         tr["safety_checks"] = {"red_flags": sres.red_flags, "evidence": sres.evidence,
                                "categories_checked": len(safety.FLAG_LABELS), "stage": "pre_model"}
@@ -171,6 +221,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         prim = pout.primary
         timings["pathways"] = time.perf_counter() - t
         tr["pathways"] = proute.trace(pout, lang)
+        tr["age"] = age_info(state, pout, lang)  # shown in the decision panel while questions are still open
         if prim is not None:
             tr["assessment_state"] = assessment.state(pout)
         if prim is not None and prim.stage == "S3":
@@ -185,7 +236,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
                                  "probs": {k: {c: round(p, 3) for c, p in v.items()} for k, v in local.probs.items()}}
 
         if prim is not None:  # pathway complaint: the pathway's question tree replaces the generic follow-ups
-            n_clinical = max(0, state.n_assistant_questions - len(pout.answers.confirm_asked))
+            n_clinical = max(0, state.n_assistant_questions - len(pout.answers.confirm_asked) - len(pout.answers.meta_asked))
             tr["followup"]["asked_so_far"] = n_clinical
             pq = pathways.next_question(pout, n_clinical, get_settings().max_followups)
             if pq:
@@ -223,8 +274,13 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             return emergency_response([], lang, prefix=MODEL_EMERGENCY.get(lang, MODEL_EMERGENCY["en"]))
 
         pathway_decided = prim is not None and prim.explicit
+        age = age_info(state, pout, lang)
+        tr["age"] = age
         if not pathway_decided:
             apply_persistence_rule(dec, state.slots, " ".join(turns))
+            if age["group"] == "elderly" and dec.care_type == "gp_teleconsult":  # 65+: home visit over teleconsult
+                dec.care_type = "paramedic_home_visit"
+                dec.source = f"{dec.source}+elderly_home"
         tr["model_used"] = dec.source
 
         # elderly / infant who cannot drink: never leave as routine
@@ -240,8 +296,9 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
 
         t = time.perf_counter()
         loc = req.location.model_dump() if req.location else None
-        ranked, minfo = matching.rank_with_info(dec.care_type, dec.urgency, lang, loc, state.slots.symptoms,
-                                                state.slots.age_group, text=" ".join(turns))
+        syms = state.slots.symptoms + (["low mood"] if prim is not None and prim.pathway == "mood" else [])
+        ranked, minfo = matching.rank_with_info(dec.care_type, dec.urgency, lang, loc, syms,
+                                                age["group"], text=" ".join(turns))
         matched = [MatchedCaregiver(caregiver_id=s.cg["caregiver_id"], score=s.score,
                                     reason=matching.reason(s, dec.care_type, lang)) for s in ranked]
         timings["matching"] = time.perf_counter() - t
@@ -258,7 +315,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         log.exception("pipeline error; returning safe response")
         tr["error"] = True
         try:
-            doubt = safety.check(turns)
+            doubt = safety.check([t for t in turns if not is_entry_chip(t)])
             if doubt.is_emergency:
                 return emergency_response(doubt.red_flags, lang)
         except Exception:
