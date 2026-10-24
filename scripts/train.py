@@ -20,6 +20,10 @@ def training_rows(holdout: bool) -> list[dict]:
     src = "official" if "official" in str(data_adapter.vignettes_path()) else "dev"
     for r in vig:
         r["source"] = src
+    # pathway S3 vignettes are routed by the deterministic pathway engine before Model A is consulted; training on
+    # them only taught the model spurious emergency cues (challenge-set emergency FPR 0.06 -> 0.16), so they are
+    # kept for evaluation but not for fitting
+    vig = [r for r in vig if not (r.get("pathway") and r.get("stage") == "S3")]
     if holdout:
         vig, _ = stratified_split(vig)
     pub = data_adapter.load_processed_public()

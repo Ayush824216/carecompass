@@ -5,7 +5,10 @@
     "id": ["id", "case_id", "vignette_id", "sample_id"],
     "language": ["language", "lang"],
     "care_type": ["care_type", "caretype", "care", "label_care_type", "care_type_label"],
-    "urgency": ["urgency", "urgency_level", "label_urgency", "priority"]
+    "urgency": ["urgency", "urgency_level", "label_urgency", "priority"],
+    "template_id": ["template_id", "template", "group_id"],
+    "pathway": ["pathway"],
+    "stage": ["stage", "severity_stage"]
   },
   "care_type": {
     "paramedic": "paramedic_home_visit", "paramedic_home_visit": "paramedic_home_visit", "paramedic home visit": "paramedic_home_visit",

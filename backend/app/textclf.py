@@ -42,18 +42,28 @@ def build_pipeline(C: float = 4.0):
 
 def stratified_split(rows: list[dict], val_frac: float = 0.2, seed: int = 42,
                      key=lambda r: (r.get("care_type"), r.get("urgency"))) -> tuple[list[dict], list[dict]]:
-    """Deterministic stratified split shared by train.py and evaluate.py."""
-    groups: dict = defaultdict(list)
+    """Deterministic stratified split shared by train.py and evaluate.py.
+
+    Rows sharing a template_id are kept on the same side, so validation only sees templates the model
+    never trained on. Rows without one are their own group."""
+    strata: dict = defaultdict(lambda: defaultdict(list))
     for r in rows:
-        groups[key(r)].append(r)
+        strata[key(r)][r.get("template_id") or str(r.get("id", r.get("text")))].append(r)
     rng = random.Random(seed)
     tr, va = [], []
-    for k in sorted(groups, key=str):
-        g = sorted(groups[k], key=lambda r: str(r.get("id", r.get("text"))))
-        rng.shuffle(g)
-        n_val = max(1, round(len(g) * val_frac)) if len(g) >= 3 else 0
-        va += g[:n_val]
-        tr += g[n_val:]
+    for k in sorted(strata, key=str):
+        groups = strata[k]
+        names = sorted(groups)
+        rng.shuffle(names)
+        total = sum(len(g) for g in groups.values())
+        target = max(1, round(total * val_frac)) if len(names) >= 3 else 0
+        n_val = 0
+        for name in names:
+            if n_val < target and n_val + len(groups[name]) <= max(target * 1.5, target + 1):
+                va += groups[name]
+                n_val += len(groups[name])
+            else:
+                tr += groups[name]
     return tr, va
 
 

@@ -40,7 +40,7 @@
                     "label": {"en": "fever rising day by day", "hi": "बुखार रोज़ बढ़ रहा है", "hinglish": "bukhar roz badh raha hai"}},
     "fever_down": {"patterns": ["bukh?aa?r (\\S+ )?(utar|kam ho|chala|chal) (gaya|gya|gaya hai)", "fever (went|has gone|came|is) down", "fever (has )?(settled|gone)", "बुखार उतर गया"],
                    "label": {"en": "fever went down", "hi": "बुखार उतर गया", "hinglish": "bukhar utar gaya"}},
-    "weakness_severe": {"patterns": ["bahut (zyada )?kamz?j?ori", "very weak", "extremely weak", "bechain", "restless", "बहुत कमज़ोरी", "बहुत कमजोरी", "बेचैन"],
+    "weakness_severe": {"patterns": ["bahut (zyada )?kamz?j?ori", "very weak", "extremely weak", "(bistar|bed) se uth nahi", "can'?t get out of bed", "बिस्तर से उठ नहीं", "bechain", "restless", "बहुत कमज़ोरी", "बहुत कमजोरी", "बेचैन"],
                         "label": {"en": "severe weakness or restlessness", "hi": "बहुत कमज़ोरी या बेचैनी", "hinglish": "bahut kamzori ya bechaini"}}
   },
   "rules": [

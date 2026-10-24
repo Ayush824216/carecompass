@@ -5,6 +5,9 @@ Everything here is SELF-GENERATED and SYNTHETIC (templates + seeded randomisatio
 no LLM calls, no real patients).
 
     python scripts/make_dev_data.py [--n 400] [--seed 42] [--base-date 2026-10-24]
+
+Pathway vignettes (fever, cough, stomach, chest pain, headache x S0-S3 x modifiers x en/hi/hinglish) come
+from scripts/pathway_vignettes.py; every row carries a template_id so train/val splits never share a template.
 """
 from __future__ import annotations
 
@@ -575,7 +578,8 @@ def render(sc: dict, lang: str, rng: random.Random) -> str:
 
 def make_vignettes(n: int, rng: random.Random) -> list[dict]:
     by_ct: dict[str, list[dict]] = {}
-    for sc in SCENARIOS:
+    for i, sc in enumerate(SCENARIOS):
+        sc.setdefault("template_id", f"G{i + 1:03d}")
         by_ct.setdefault(sc["care_type"], []).append(sc)
     rows, seen = [], set()
     cts, cw = list(CT_SHARE), list(CT_SHARE.values())
@@ -591,8 +595,27 @@ def make_vignettes(n: int, rng: random.Random) -> list[dict]:
             continue
         seen.add(text)
         rows.append({"id": f"DEV_{len(rows) + 1:04d}", "text": text, "language": lang,
-                     "care_type": sc["care_type"], "urgency": sc["urgency"]})
+                     "care_type": sc["care_type"], "urgency": sc["urgency"],
+                     "pathway": "", "stage": "", "template_id": sc["template_id"]})
     return rows
+
+
+def add_pathway_vignettes(rows: list[dict], rng: random.Random) -> tuple[list[dict], int]:
+    """Swap generic non-emergency rows that fall inside one of the five clinical pathways for the
+    hand-labelled pathway vignettes (docs/CLINICAL_PATHWAYS.md), so the two label sources never disagree.
+    The engine is used only to detect that a complaint belongs to a pathway, never to label anything."""
+    import sys
+    sys.path.insert(0, str(ROOT / "backend"))
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from app import pathways
+    import pathway_vignettes
+
+    keep = [r for r in rows if r["care_type"] == "emergency_referral" or not pathways.run([r["text"]]).results]
+    dropped = len(rows) - len(keep)
+    out = keep + pathway_vignettes.generate(rng)
+    for i, r in enumerate(out):
+        r["id"] = f"DEV_{i + 1:04d}"
+    return out, dropped
 
 
 # --- caregivers ------------------------------------------------------------
@@ -714,8 +737,10 @@ def main() -> None:
 
     (out / "taxonomy.json").write_text(json.dumps(make_taxonomy(), ensure_ascii=False, indent=2), encoding="utf-8")
     rows = make_vignettes(a.n, rng)
+    rows, dropped = add_pathway_vignettes(rows, random.Random(a.seed + 2))
+    print(f"replaced {dropped} generic rows inside a clinical pathway with pathway vignettes")
     with open(out / "vignettes.csv", "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["id", "text", "language", "care_type", "urgency"])
+        w = csv.DictWriter(f, fieldnames=["id", "text", "language", "care_type", "urgency", "pathway", "stage", "template_id"])
         w.writeheader()
         w.writerows(rows)
     cgs = make_caregivers(random.Random(a.seed + 1), date.fromisoformat(a.base_date))
@@ -723,7 +748,7 @@ def main() -> None:
 
     from collections import Counter
     print(f"vignettes={len(rows)} caregivers={len(cgs)}")
-    for col in ("care_type", "urgency", "language"):
+    for col in ("care_type", "urgency", "language", "pathway"):
         print(col, dict(Counter(r[col] for r in rows)))
 
 

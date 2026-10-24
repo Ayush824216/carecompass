@@ -284,7 +284,7 @@ PREG_M = _rx(rf"{NUM}\s*(?:mahine|mahina|months?|महीने)\s*(?:ki\s+|ka\
 PREG_W = _rx(rf"{NUM}\s*(?:hafte|weeks?|हफ्ते)\s*(?:ki\s+|ka\s+)?(?:pregnan|pregnent|garbh|गर्भ)|pregnan\w*\s+(?:\S+\s+)?{NUM}\s*weeks?")
 PREG_LEAD = _rx(rf"(?:pregnancy|garbh)\s+(?:ka|ki)\s+{NUM}\w*\s*(?:mahina|month)")
 COMORB = {
-    "diabetes": _rx(r"\bsugar\s+(hai|h\b|ki\s+bimari|patient|ke\s+mareez|ki\s+mareez|wale|wali)|\bdiabet\w*|madhumeh|शुगर\s*(है|की)|डायबिटीज|मधुमेह|sugar\s+patient"),
+    "diabetes": _rx(r"\bsugar\s+(hai|h\b|ki\s+bimari|patient|ke\s+mareez|ki\s+mareez|wale|wali)|\bdiabet\w*|madhumeh|शुगर\s*(है|की)|डायबिटीज|मधुमेह|sugar\s+(ke\s+|ki\s+)?(patient|mareez)"),
     "heart": _rx(r"heart\s+(patient|disease|problem|ki\s+bimari)|dil\s+(ki|ke)\s+(bimari|mareez|marij|patient)|\bstent|bypass|angioplasty|दिल\s*की\s*बीमारी|हृदय\s*रोग"),
     "kidney": _rx(r"kidney\s+(patient|disease|problem|ki\s+bimari|failure)|dialysis|गुर्दे|किडनी"),
     "liver": _rx(r"liver\s+(disease|problem|ki\s+bimari)|cirrhosis|लीवर\s*की\s*बीमारी"),

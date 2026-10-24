@@ -30,9 +30,10 @@
   "rules": [
     {"id": "ch_red_flags", "stage": "S3", "when": "(chest_pain_any or chest_burning or pressure) and (pressure or radiation or sweating or breathless or dizziness_standing or longer_5min)", "pattern": "heart_like"},
     {"id": "ch_sharp_breathless", "stage": "S3", "when": "sharp_breathing and breathless", "pattern": "breathing_related"},
-    {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure) and (age40 or diabetes or hypertension or heart) and not chest_wall and not not_current", "pattern": "heart_like"},
+    {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure or chest_burning) and (age40 or diabetes or hypertension or heart) and not chest_wall and not not_current", "pattern": "heart_like"},
     {"id": "ch_not_explained", "stage": "S3", "when": "chest_pain_any and not chest_wall and not chest_burning and not not_current", "pattern": "heart_like"},
     {"id": "ch_recurrent_risk", "stage": "S2", "when": "recurrent and (diabetes or hypertension or heart or smoker or age40) and (not_current or not chest_pain_any)", "pattern": "heart_like"},
+    {"id": "ch_recurrent_no_risk", "stage": "S1", "when": "recurrent and not_current", "pattern": "heart_like"},
     {"id": "ch_acidity_young", "stage": "S1", "when": "chest_burning and not age40 and not diabetes and not hypertension and not heart", "pattern": "acidity_like"},
     {"id": "ch_chest_wall_young", "stage": "S0", "when": "chest_wall and not age40 and not diabetes and not hypertension and not heart", "pattern": "chest_wall_like"}
   ],

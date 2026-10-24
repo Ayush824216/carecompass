@@ -139,7 +139,9 @@ SIMPLE: dict[str, list[str]] = {
     ],
     "severe_burns": [
         r"(severe|severely|bad|badly|major|large|serious|deep|extensive)\w*\s+(\S+\s+){0,3}burn",
-        r"burn\w*\s+(\S+\s+){0,5}(large|whole|entire|face|body|chest|severe|badly)", r"caught\s+fire", r"on\s+fire",
+        # "burning in the chest / stomach / urine" is a sensation, not a burn injury
+        r"burn(?!ing\s+(sensation|feeling|in\s+(the\s+|my\s+|his\s+|her\s+)?(chest|stomach|urine|throat)|of\s+(the\s+)?chest))\w*\s+(\S+\s+){0,5}(large|whole|entire|face|body|chest|severe|badly)",
+        r"caught\s+fire", r"on\s+fire",
         r"electric\w*\s+(shock|burn)|electrocut", r"acid\s+(attack|burn)",
         r"\bjal\s+(gaye|gayi|gaya|gae|gyi|gya|gai)", r"jhulas", r"aag\s+(lag|mein|me)", r"(current|karant|bijli)\s+(lag|ka\s+jhatka)",
         r"जल\s*(गए|गई|गया|गये)", r"झुलस", r"आग\s*(लग|में)", r"करंट",
@@ -203,7 +205,15 @@ PATTERN_EXCLUDE: dict[str, list[str]] = {
     r"dysarthria|hemipar|hemipleg|facial\s+palsy": STROKE_HISTORY,
 }
 # Message-level exclusions (checked against the whole text, not just the clause).
-TEXT_EXCLUDE: dict[str, list[str]] = {"urinary_retention": [r"catheter|कैथेटर"]}
+TEXT_EXCLUDE: dict[str, list[str]] = {
+    "urinary_retention": [r"catheter|कैथेटर"],
+    # chest discomfort that comes and goes and is not happening right now, with no cardiac feature anywhere:
+    # the chest pain pathway routes it (S2 cardiology with risk factors), it is not a current emergency
+    "chest_pain": [r"^(?!.*(bhaa?ri|dabaa?v|pressure|heav|squeez|tight|paseen|pasin|sweat|saans|breath|jabd|jaw|left\s+arm|"
+                   r"baa?ye?i?n?\s+haath|faint|chakkar|behosh|भारी|दबाव|पसीना|साँस|सांस|चक्कर|बेहोश))"
+                   r".*(on\s+and\s+off|comes\s+and\s+goes|kabhi\s+kabhi|aata[- ]jaata|कभी[- ]कभी|आता[- ]जाता)"
+                   r".{0,60}(not\s+(right\s+)?now|abhi\s+(nahi|nhi|theek)|अभी\s+(नहीं|ठीक))"],
+}
 CHRONIC = re.compile(r"(months?|years?|mahin|saal|महीन|साल)")
 EXERTION = re.compile(r"(stairs|walk|exercise|exertion|climb|seedh?i|chadhne|chalne|chalte|daudne|सीढ़ी|चढ़ने|चलने)", re.I)
 

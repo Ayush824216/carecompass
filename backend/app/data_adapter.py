@@ -59,7 +59,8 @@ def _map_columns(row: dict) -> dict:
 
 
 def read_vignette_file(path: Path) -> list[dict]:
-    """Read a vignette CSV/JSON(L) into internal rows: id, text, language, care_type, urgency."""
+    """Read a vignette CSV/JSON(L) into internal rows: id, text, language, care_type, urgency
+    (+ optional template_id / pathway / stage)."""
     if path.suffix.lower() == ".csv":
         with open(path, encoding="utf-8-sig", newline="") as f:
             raw = list(csv.DictReader(f))
@@ -79,6 +80,9 @@ def read_vignette_file(path: Path) -> list[dict]:
             "language": m.get("language") or None,
             "care_type": norm_label("care_type", m.get("care_type")),
             "urgency": norm_label("urgency", m.get("urgency")),
+            "template_id": m.get("template_id") or None,
+            "pathway": m.get("pathway") or None,
+            "stage": m.get("stage") or None,
         })
     return rows
 

@@ -69,6 +69,37 @@ def predict_rows(model: LocalModel, rows: list[dict], cfg: dict, use_rules: bool
     return out, lat
 
 
+def pathway_table(model: LocalModel, rows: list[dict], cfg: dict) -> list[tuple]:
+    """Per-pathway stage accuracy and S3 recall: the pathway engine alone, and the full pipeline's routing."""
+    from app import pathways
+    pr, _ = predict_rows(model, rows, cfg, use_rules=True, use_pipeline=True)
+    by: dict[str, list] = {}
+    for r, (care, urg) in zip(rows, pr):
+        res = {x.pathway: x for x in pathways.run([r["text"]]).results}.get(r["pathway"])
+        by.setdefault(r["pathway"], []).append((r, res.stage if res else None, care, urg))
+    table = []
+    for pw in pathways.PATHWAY_IDS:
+        items = by.get(pw, [])
+        if not items:
+            continue
+        s3 = [x for x in items if x[0]["stage"] == "S3"]
+        table.append((pw, len(items),
+                      sum(x[1] == x[0]["stage"] for x in items) / len(items),
+                      sum(x[1] == "S3" for x in s3) / len(s3) if s3 else float("nan"),
+                      sum((x[2], x[3]) == (x[0]["care_type"], x[0]["urgency"]) for x in items) / len(items),
+                      sum(is_emerg(x[2], x[3]) for x in s3) / len(s3) if s3 else float("nan"),
+                      sum(URGENCY_RANK[x[3]] < URGENCY_RANK[x[0]["urgency"]] for x in items) / len(items)))
+    return table
+
+
+def pathway_md(table: list[tuple]) -> list[str]:
+    out = ["| Pathway | n | engine stage accuracy | engine S3 recall | pipeline care+urgency exact | pipeline S3 → emergency recall | pipeline under-triage |",
+           "|---|---|---|---|---|---|---|"]
+    for pw, n, acc, s3, exact, ps3, under in table:
+        out.append(f"| {pw} | {n} | {acc:.3f} | {s3:.3f} | {exact:.3f} | {ps3:.3f} | {under:.3f} |")
+    return out
+
+
 def fmt(m: dict) -> str:
     keys = [("care_f1", "care_type macro-F1"), ("urg_f1", "urgency macro-F1"), ("emerg_recall", "emergency recall"),
             ("emerg_fpr", "emergency false-positive rate"), ("under_triage", "under-triage rate")]
@@ -162,6 +193,20 @@ def main() -> None:
                 if c != r["care_type"] or u != r["urgency"]:
                     print(f"  MISS {r['id']}: gold={r['care_type']}/{r['urgency']} pred={c}/{u} | {r['text'][:90]}")
 
+    # clinical pathways (docs/CLINICAL_PATHWAYS.md): stage accuracy and S3 recall per pathway
+    pw_val = [r for r in dev_val if r.get("pathway") and r.get("stage")]
+    pw_all = [r for r in vig_all if r.get("pathway") and r.get("stage")]
+    pw_tables = {}
+    if pw_val:
+        pw_tables[f"validation split, unseen templates (n={len(pw_val)})"] = pathway_table(model, pw_val, cfg)
+    if pw_all:
+        pw_tables[f"all pathway vignettes (n={len(pw_all)})"] = pathway_table(model, pw_all, cfg)
+    for label, tab in pw_tables.items():
+        print(f"[pathways, {label}]")
+        for pw, n, acc, s3, exact, ps3, under in tab:
+            print(f"  {pw:<11} n={n:<3} stage_acc={acc:.3f} S3_recall={s3:.3f} pipe_exact={exact:.3f} "
+                  f"pipe_S3_emerg={ps3:.3f} under={under:.3f}")
+
     k_res = {}
     if ktas_val:
         for name, rules, pipe in variants[:2]:
@@ -231,6 +276,22 @@ def main() -> None:
         for name, (m, *_r) in ch_res.items():
             report.append(f"| {name} | {m['care_f1']:.3f} | {m['urg_f1']:.3f} | {m['emerg_recall']:.3f} | "
                           f"{m['emerg_fpr']:.3f} | {m['under_triage']:.3f} |")
+    if pw_tables:
+        report.append("\n## Clinical pathways (per-pathway severity stage)\n")
+        report.append("Hand-labelled pathway vignettes (`scripts/pathway_vignettes.py`): each template is labelled from the "
+                      "stage tables in `docs/CLINICAL_PATHWAYS.md` (stage, care type, urgency), covers S0–S3 and the risk "
+                      "modifiers (65+, child, infant, pregnancy, long-term conditions) in English, Hindi and Hinglish, and "
+                      "is rendered several times. Splits keep every render of a template on one side.\n")
+        report.append("*Engine* columns score the deterministic pathway engine's stage for the labelled pathway. "
+                      "*Pipeline* columns score the final API routing (safety rules + pathways + Model A). "
+                      "S3 recall is the share of S3 (emergency) vignettes routed to emergency / immediate.\n")
+        for label, tab in pw_tables.items():
+            report.append(f"\n### {label[0].upper() + label[1:]}\n")
+            report += pathway_md(tab)
+        report.append("\nCaveat: the pathway sign patterns were widened while these templates were being written "
+                      "(each authored label was checked against the engine and phrasing gaps were fixed), so engine "
+                      "accuracy here is optimistic. Model A was trained on the training templates, so the validation "
+                      "split is the fairer pipeline number.\n")
     if k_res:
         report.append(f"\n## KTAS validation split (urgency only, n={len(ktas_val)})\n")
         report.append("| Variant | urgency macro-F1 | KTAS 1-2 → immediate recall | under-triage |")

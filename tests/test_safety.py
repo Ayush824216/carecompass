@@ -295,3 +295,23 @@ def test_pathway_spec_benign(text):
 
 def test_chest_wall_exclusion_keeps_cardiac_features():
     assert "chest_pain" in safety.check(["chest dabane par dard aur bhaari pan, paseena"]).red_flags
+
+
+@pytest.mark.parametrize("text", [
+    "Burning in the chest after meals, 24 years old, nothing else",
+    "burning sensation in urine since yesterday",
+    "My husband has diabetes and gets chest discomfort on and off, not right now",
+    "Didi ko sugar hai, seene mein kabhi kabhi takleef hoti hai, abhi nahi",
+    "My old mother has had blurry vision for many months, difficulty reading",
+])
+def test_vignette_phrasings_benign(text):
+    assert safety.check([text]).red_flags == [], text
+
+
+@pytest.mark.parametrize("text", [
+    "chest pain on and off, not right now, but he was sweating a lot",
+    "seene mein kabhi kabhi bhaari dabav, abhi nahi",
+    "severe burns on the chest and face",
+])
+def test_vignette_exclusions_keep_real_emergencies(text):
+    assert safety.check([text]).red_flags, text
