@@ -296,9 +296,12 @@ def evaluate_pathway(p: Pathway, facts: dict, neg: set[str], known: set[str]) ->
             res.explicit = True
             res.modifiers.append(m["id"])
         elif eff == "raise" and raised < common.get("max_total_raise", 1) and res.stage != "S3":
+            base = res.stage
             res.stage = STAGES[_stage_i(res.stage) + 1]
             route = p.stage_route(res.stage)
-            if res.stage == "S3":
+            # care after a raise: the new stage's default when coming from S0 or when the pathway says so
+            # (cough, stomach); fever keeps the base rule's care (spec 1.6: elderly chikungunya-like stays home visit)
+            if res.stage == "S3" or base == "S0" or p.cfg.get("raise_care", "stage_default") == "stage_default":
                 res.care_type = route["care_type"]
             res.urgency = max(res.urgency, route["urgency"], key=lambda u: URG_RANK[u])
             res.explicit = True

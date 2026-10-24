@@ -23,14 +23,16 @@
     "chest_wall": {"patterns": ["dabane (par|pe|se)", "press(ing)? (karne )?(par|pe)", "on pressing", "when i press", "hilne (par|pe)", "on movement", "(gym|workout|exercise|kasrat|weight uthane|lifting) (ke )?baad", "after (the )?(gym|workout|exercise|lifting)", "chot ke baad", "muscle (pain|pull|strain)", "दबाने पर"],
                    "label": {"en": "pain on pressing or moving (muscle-like)", "hi": "दबाने या हिलने पर दर्द", "hinglish": "dabane ya hilne par dard"}},
     "recurrent": {"patterns": ["aata[- ]jaata", "baar[- ]baar (hota|aata)", "comes and goes", "on and off", "kabhi kabhi", "आता-जाता"], "label": {"en": "comes and goes", "hi": "आता-जाता दर्द", "hinglish": "aata-jaata dard"}},
+    "not_current": {"patterns": ["abhi (nahi|nhi|theek)", "(none|nothing|no pain) (right )?now", "not (right )?now", "abhi (\\S+ )?dard (nahi|nhi)", "at the moment (it'?s )?fine", "अभी नहीं", "अभी ठीक"],
+                    "label": {"en": "not happening right now", "hi": "अभी नहीं हो रहा", "hinglish": "abhi nahi ho raha"}},
     "longer_5min": {"patterns": ["\\d+ min\\w* se (zyada|jyada)", "(more|longer) than (5|five|10|ten) min", "continuous", "lagatar", "abhi (bhi )?ho raha", "still (going on|there)", "लगातार"], "label": {"en": "pain lasting more than 5 minutes", "hi": "5 मिनट से ज़्यादा दर्द", "hinglish": "5 minute se zyada dard"}}
   },
   "rules": [
     {"id": "ch_red_flags", "stage": "S3", "when": "(chest_pain_any or chest_burning or pressure) and (pressure or radiation or sweating or breathless or dizziness_standing or longer_5min)", "pattern": "heart_like"},
     {"id": "ch_sharp_breathless", "stage": "S3", "when": "sharp_breathing and breathless", "pattern": "breathing_related"},
-    {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure) and (age40 or diabetes or hypertension or heart) and not chest_wall", "pattern": "heart_like"},
-    {"id": "ch_not_explained", "stage": "S3", "when": "chest_pain_any and not chest_wall and not chest_burning", "pattern": "heart_like"},
-    {"id": "ch_recurrent_risk", "stage": "S2", "when": "recurrent and (diabetes or hypertension or heart or smoker or age40) and not chest_pain_any", "pattern": "heart_like"},
+    {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure) and (age40 or diabetes or hypertension or heart) and not chest_wall and not not_current", "pattern": "heart_like"},
+    {"id": "ch_not_explained", "stage": "S3", "when": "chest_pain_any and not chest_wall and not chest_burning and not not_current", "pattern": "heart_like"},
+    {"id": "ch_recurrent_risk", "stage": "S2", "when": "recurrent and (diabetes or hypertension or heart or smoker or age40) and (not_current or not chest_pain_any)", "pattern": "heart_like"},
     {"id": "ch_acidity_young", "stage": "S1", "when": "chest_burning and not age40 and not diabetes and not hypertension and not heart", "pattern": "acidity_like"},
     {"id": "ch_chest_wall_young", "stage": "S0", "when": "chest_wall and not age40 and not diabetes and not hypertension and not heart", "pattern": "chest_wall_like"}
   ],

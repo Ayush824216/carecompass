@@ -1,6 +1,7 @@
 {
   "id": "fever",
   "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"},
+  "raise_care": "keep",
   "trigger": "fever or temp_f is not None or platelets is not None or named_dengue or named_malaria or named_typhoid or named_chikungunya",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
