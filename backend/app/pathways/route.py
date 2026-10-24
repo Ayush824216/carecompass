@@ -18,6 +18,7 @@ from .engine import PathwayOutcome
 
 URG = {"routine": 0, "same_day": 1, "immediate": 2}
 IDX = {"en": 0, "hi": 1, "hinglish": 2}
+S0_RAISE_CONF = 0.75
 NOT_MEASURED = ("temperature not measured", "तापमान नहीं नापा गया", "temperature naapa nahi gaya")
 
 
@@ -27,7 +28,14 @@ def merge(dec: Optional[Decision], out: PathwayOutcome) -> Optional[Decision]:
         return dec
     if dec is None:
         dec = Decision(prim.care_type, prim.urgency, "pathway")
-    urgency = max([dec.urgency, out.urgency or prim.urgency], key=lambda u: URG[u])
+    path_urg = out.urgency or prim.urgency
+    urgency = max([dec.urgency, path_urg], key=lambda u: URG[u])
+    # approved S0 rule: when an explicit S0 rule says "mild" (and no pathway says more), the model may raise
+    # urgency only when it is highly confident. Every other case: the more urgent of pathway and model.
+    if prim.explicit and prim.stage == "S0" and path_urg == "routine" and URG[dec.urgency] > URG[path_urg] \
+            and dec.urgency != "immediate" and dec.probs:
+        if dec.probs.get("urgency", {}).get(dec.urgency, 0.0) < S0_RAISE_CONF:
+            urgency = path_urg
     care = prim.care_type if prim.explicit else dec.care_type
     merged = Decision(care, urgency, f"pathway:{prim.pathway}+{dec.source}" if prim.explicit else dec.source,
                       dec.confidence, dec.probs, dec.red_flags, dec.llm_reasoning)

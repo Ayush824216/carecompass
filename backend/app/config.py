@@ -36,6 +36,10 @@ class Settings:
         self.use_transformer = os.getenv("USE_TRANSFORMER", "auto").lower()
         self.cors_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "*").split(",") if o.strip()]
         self.max_followups = int(os.getenv("MAX_FOLLOWUPS", "4"))
+        # "Your assessment" card: educational possible causes (never a diagnosis); off -> section hidden
+        self.show_possible_causes = os.getenv("SHOW_POSSIBLE_CAUSES", "true").strip().lower() in ("1", "true", "yes", "on")
+        # local development only: when true the server log may include raw user text. Default false (DPDP Act 2023)
+        self.debug_log_text = os.getenv("DEBUG_LOG_TEXT", "false").strip().lower() in ("1", "true", "yes", "on")
 
     def __repr__(self) -> str:  # never leak the key
         return f"Settings(provider={self.llm_provider}, model={self.llm_model}, key={'set' if self.llm_api_key else 'unset'})"

@@ -53,6 +53,9 @@ class TriageRequest(BaseModel):
     conversation_history: list[Turn] = Field(default_factory=list)
     debug: bool = Field(False, description="Optional. If true, the response gains an extra `debug` object (decision trace). "
                                            "Without it the response is exactly the official schema.")
+    assessment_state: Optional[dict] = Field(None, description="Optional. The `debug.assessment_state` object from the previous "
+                                             "response, echoed back by the client. The API stays stateless: nothing is stored "
+                                             "server-side, and the state can only add answers, never lower urgency.")
 
     @field_validator("debug", mode="before")
     @classmethod

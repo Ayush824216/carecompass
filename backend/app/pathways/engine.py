@@ -70,6 +70,13 @@ def _compiled_signs() -> dict[str, list[re.Pattern]]:
     return {sid: [re.compile(p, re.I) for p in spec["patterns"]] for sid, spec in signs.items()}
 
 
+@lru_cache
+def _compiled_denials() -> dict[str, list[re.Pattern]]:
+    common, _, _ = load()
+    return {sid: [re.compile(p, re.I) for p in pats] for sid, pats in common.get("denials", {}).items()
+            if not sid.startswith("_")}
+
+
 def sign_label(sid: str, lang: str) -> str:
     _, _, signs = load()
     lab = signs.get(sid, {}).get("label", {})
@@ -77,27 +84,74 @@ def sign_label(sid: str, lang: str) -> str:
 
 
 def detect_signs(slots: Slots) -> dict[str, bool]:
-    """sign -> True (affirmed) / False (explicitly negated). Only the patient's current clauses are scanned."""
+    return detect_signs_detail(slots)[0]
+
+
+def detect_signs_detail(slots: Slots) -> tuple[dict[str, bool], set[str]]:
+    """sign -> True (affirmed) / False (explicitly negated), and the signs both affirmed and denied
+    ("saans theek hai" ... "chalne par phoolti hai"). A contradiction resolves to the more severe reading (True).
+    Only the patient's current clauses are scanned."""
     out: dict[str, bool] = {}
+    denied: set[str] = set()
     for cl in slots.patient_clauses:
+        hit: dict[str, bool] = {}
         for variant in (cl.lower(), normalise(cl)):
             for sid, pats in _compiled_signs().items():
-                if out.get(sid) is True:
+                if hit.get(sid) is True:
                     continue
                 for p in pats:
                     for m in p.finditer(variant):
                         if _negated(variant, m.start(), m.end()):
-                            out.setdefault(sid, False)
+                            hit.setdefault(sid, False)
                         else:
-                            out[sid] = True
+                            hit[sid] = True
                             break
-                    if out.get(sid) is True:
+                    if hit.get(sid) is True:
                         break
+        for sid, pats in _compiled_denials().items():
+            if hit.get(sid) is not True and any(p.search(cl.lower()) for p in pats):
+                hit[sid] = False
+        for sid, v in hit.items():
+            if v is False:
+                denied.add(sid)
+                out.setdefault(sid, False)
+            else:
+                out[sid] = True
     if slots.correction:  # "khoon nahi... nahi ruko, thoda sa aaya tha": the later statement wins (safer)
         for sid, v in list(out.items()):
             if v is False:
                 out[sid] = True
-    return out
+    return out, {s for s in denied if out.get(s) is True}
+
+
+# one confirmation when the user said both "X" and "no X" and X changed the stage (built per sign, so matched
+# by template rather than by fixed text)
+CONTRA_TEXT = {"en": "You said both that there is {x} and that there is not. Is it there now?",
+               "hi": "आपने '{x}' होने और न होने, दोनों बातें कहीं। क्या अभी यह है?",
+               "hinglish": "Aapne '{x}' hone aur na hone, dono baatein kahin. Kya abhi yeh hai?"}
+CONTRA_YES = {"en": "Yes, it is there now", "hi": "हाँ, अभी है", "hinglish": "Haan, abhi hai"}
+CONTRA_NO = {"en": "No, not now", "hi": "नहीं, अभी नहीं", "hinglish": "Nahi, abhi nahi"}
+
+
+def contradiction_question(sid: str) -> dict:
+    return {"id": f"confirm.contradiction:{sid}", "kind": "confirm", "sign": sid,
+            "text": {l: CONTRA_TEXT[l].format(x=sign_label(sid, l)) for l in LANGS},
+            "chips": [{"id": "yes", "label": CONTRA_YES, "facts": {sid: True}}],
+            "none_label": CONTRA_NO}
+
+
+def _match_contradiction(content: str) -> Optional[dict]:
+    _, _, signs = load()
+    low = _norm(content)
+    for l in LANGS:
+        head, tail = CONTRA_TEXT[l].split("{x}")
+        m = re.fullmatch(re.escape(_norm(head)) + r"\s*(.+?)\s*" + re.escape(_norm(tail)), low)
+        if not m:
+            continue
+        for sid in signs:
+            if _norm(sign_label(sid, l)) == m.group(1).strip():
+                return contradiction_question(sid)
+    return None
 
 
 # ---------------------------------------------------------------- answers to pathway questions
@@ -149,6 +203,7 @@ class Answers:
     confirm_asked: list[str] = field(default_factory=list)  # danger-confirmation questions (not counted in the 4)
     definite: list[str] = field(default_factory=list)  # chip ids answered that are definite_S3
     chips: dict[str, list[str]] = field(default_factory=dict)  # question id -> chip ids chosen ("none" included)
+    resolved_absent: set[str] = field(default_factory=set)  # contradiction confirmed as "not now"
 
     @property
     def n_clinical(self) -> int:
@@ -165,7 +220,7 @@ def parse_answers(history: list[dict], user_input: str) -> Answers:
     for role, content in turns:
         if role == "assistant":
             hit = question_index().get(_norm(content))
-            pending = hit[1] if hit else None
+            pending = hit[1] if hit else _match_contradiction(content)
             if pending:
                 ans.asked.append(pending["id"])
                 if pending.get("kind") == "confirm":
@@ -213,6 +268,8 @@ def apply_chip_answer(ans: Answers, q: dict, chosen: list[dict], none: bool) -> 
     if none and not chosen:
         for c in q["chips"]:
             ans.negated |= {k for k, v in c["facts"].items() if v is True}
+        if q.get("sign"):  # a deliberate answer to the contradiction question settles it
+            ans.resolved_absent.add(q["sign"])
     ans.chips[q["id"]] = [c["id"] for c in chosen] + (["none"] if none and not chosen else [])
 
 
@@ -253,6 +310,10 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
             if not f.get(k):
                 neg.add(k)
                 known.add(k)
+        for k in answers.resolved_absent:  # the user confirmed "not now" when asked about their own contradiction
+            f[k] = False
+            neg.add(k)
+            known.add(k)
     f["under5"] = f.get("under5") or (f["child"] and (f["age_years"] is None or f["age_years"] < 5))
     if f["age_years"] is not None:
         f["age40"] = f["age40"] or f["age_years"] >= 40
@@ -369,6 +430,7 @@ class PathwayOutcome:
     known: set[str]
     slots: Slots
     answers: Answers
+    contradictions: set[str] = field(default_factory=set)  # said both "X" and "no X"; the more severe was used
 
     @property
     def primary(self) -> Optional[PathwayResult]:
@@ -384,19 +446,43 @@ class PathwayOutcome:
         return max((r.urgency for r in self.results), key=lambda u: URG_RANK[u], default=None)
 
 
-def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input: str = "") -> PathwayOutcome:
+def merge_state_answers(ans: Answers, state: Optional[dict]) -> None:
+    """Answers echoed back in the client's assessment_state, for questions no longer in the (trimmed) history.
+    Positive chips only: the state can add facts, never remove or lower anything."""
+    if not isinstance(state, dict) or not isinstance(state.get("answered"), dict):
+        return
+    by_id = {q["id"]: q for _, q in question_index().values()}
+    for qid, chip_ids in state["answered"].items():
+        q = by_id.get(qid)
+        if q is None or qid in ans.asked or not isinstance(chip_ids, list):
+            continue
+        chosen = [c for c in q["chips"] if c["id"] in chip_ids]
+        if chosen:
+            apply_chip_answer(ans, q, chosen, none=False)
+            ans.asked.append(qid)
+            if q.get("kind") == "confirm":
+                ans.confirm_asked.append(qid)
+
+
+def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input: str = "",
+        state: Optional[dict] = None) -> PathwayOutcome:
     common, pathways, _ = load()
     slots = parse(user_texts)
-    signs = detect_signs(slots)
+    signs, contra = detect_signs_detail(slots)
     answers = parse_answers(history or [], user_input) if history is not None else Answers()
+    merge_state_answers(answers, state)
     facts, neg, known = build_facts(slots, signs, answers)
+    # a chip answer that contradicts the text (or the reverse) also counts; the more severe statement stands
+    contra |= {k for k in answers.negated if signs.get(k) is True}
+    contra |= {k for k, v in answers.facts.items() if v is True and signs.get(k) is False}
+    contra -= answers.resolved_absent | {q.split(":", 1)[1] for q in answers.confirm_asked if q.startswith("confirm.contradiction:")}
     fn = _funcs(facts, neg, known)
     results = []
     for pid in common["priority"]:
         p = pathways[pid]
         if expr.evaluate(p.cfg["trigger"], facts, fn):
             results.append(evaluate_pathway(p, facts, neg, known))
-    return PathwayOutcome(results, facts, neg, known, slots, answers)
+    return PathwayOutcome(results, facts, neg, known, slots, answers, contra)
 
 
 # ---------------------------------------------------------------- senior-doctor questioning
@@ -414,6 +500,10 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
     facts = dict(out.facts, n_signs=n_signs)
     fn = _funcs(facts, out.neg, out.known)
     if not out.answers.confirm_asked:
+        # a contradiction that moved the stage is confirmed first (the more severe reading stands until then)
+        for sid in prim.signs:
+            if sid in out.contradictions:
+                return contradiction_question(sid)
         for res in [prim] + [r for r in out.results if r is not prim]:
             for q in pathways[res.pathway].cfg["questions"]:
                 if q.get("kind") == "confirm" and expr.evaluate(q.get("only_if", "False"), facts, fn) \

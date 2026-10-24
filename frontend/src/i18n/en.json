@@ -753,5 +753,24 @@
       "name": "Emergency",
       "route": "Emergency referral, immediately"
     }
+  },
+  "assessment": {
+    "notDiagnosis": "Not a diagnosis",
+    "matched": "Matches",
+    "missing": "Not reported",
+    "strength": {
+      "strong": "Strong match",
+      "moderate": "Moderate match",
+      "weak": "Weak match"
+    },
+    "status": {
+      "present": "present",
+      "absent": "not present",
+      "notAsked": "not asked",
+      "notMeasured": "not measured",
+      "measured": "measured"
+    },
+    "seeCaregivers": "See caregivers who can visit",
+    "tapToCall112": "Tap to call 112"
   }
 }

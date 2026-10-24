@@ -6,6 +6,7 @@ import { api } from "../../lib/api.js";
 import { haversineKm, kmLabel, nextSlot, slotLabel } from "../../lib/format.js";
 import { locationLabel, nearestLocality } from "../../lib/locations.js";
 import BookingModal from "../BookingModal.jsx";
+import AssessmentCard from "./AssessmentCard.jsx";
 import CaregiverCard from "../CaregiverCard.jsx";
 import CaregiverMap from "../CaregiverMap.jsx";
 import { CareGlyph, EmptyState, Skeleton, UrgencyBadge } from "../ui.jsx";
@@ -98,7 +99,12 @@ export default function ResultSection({ response, debug }) {
         </div>
       </motion.div>
 
-      <div>
+      {debug?.assessment && (
+        <AssessmentCard card={debug.assessment}
+          onGoToCaregivers={() => document.getElementById("caregivers")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })} />
+      )}
+
+      <div id="caregivers" className="scroll-mt-24">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div className="min-w-0">
             <h2 className="text-2xl font-semibold md:text-3xl">{loaded ? heading(t, response, rows, location) : t("result.caregivers")}</h2>

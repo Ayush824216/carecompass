@@ -6,7 +6,15 @@
     "S2": {"en": "Warning signs", "hi": "चेतावनी के संकेत", "hinglish": "Chetawani ke sanket"},
     "S3": {"en": "Emergency", "hi": "आपातकाल", "hinglish": "Emergency"}
   },
-  "none_chip": {"id": "none", "label": {"en": "None of these", "hi": "इनमें से कुछ नहीं", "hinglish": "Kuch nahi"}},
+  "denials": {
+    "_note": "phrases that deny a sign without naming it negatively ('saans theek hai'). Used to spot contradictions; a later affirmation still wins.",
+    "breathless": ["saa?ns (bilkul )?(theek|thik|normal|sahi)", "breathing (is )?(fine|normal|ok|okay)", "no (trouble|problem|difficulty) (in )?breathing", "साँस ठीक", "सांस ठीक"],
+    "vomiting": ["ult(i|ee) (bilkul )?(nahi|nhi) (hui|ho rahi)"],
+    "abdominal_pain": ["pet (bilkul )?(theek|thik) (hai|h)"],
+    "headache": ["(sir|sar) (bilkul )?(theek|thik) (hai|h)"],
+    "fever": ["bukh?aa?r (bilkul )?(nahi|nhi) (hai|h|tha)", "no fever", "बुखार नहीं"]
+  },
+  "none_chip": {"id": "none","label": {"en": "None of these", "hi": "इनमें से कुछ नहीं", "hinglish": "Kuch nahi"}},
   "signs": {
     "breathless_rest": {"patterns": ["saa?ns (bilkul )?(nahi|nhi) aa", "saa?ns (bahut|bohot) (phool|ful|phul)", "bol nahi pa", "bolne mein (bahut )?dikkat", "cannot speak", "can'?t (speak|talk) (in )?full", "breathless (at|while) (rest|sitting)", "can'?t breathe", "cannot breathe", "gasping", "साँस नहीं आ", "सांस नहीं आ", "बोल नहीं पा"],
                         "label": {"en": "breathless at rest / cannot speak", "hi": "आराम में भी साँस फूलना / बोल न पाना", "hinglish": "aaram mein bhi saans phoolna / bol na paana"}},

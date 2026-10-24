@@ -789,5 +789,24 @@
       "name": "आपातकाल",
       "route": "इमरजेंसी रेफ़रल, तुरंत"
     }
+  },
+  "assessment": {
+    "notDiagnosis": "निदान नहीं",
+    "matched": "मेल खाता है",
+    "missing": "बताया नहीं गया",
+    "strength": {
+      "strong": "ज़्यादा मेल",
+      "moderate": "कुछ मेल",
+      "weak": "कम मेल"
+    },
+    "status": {
+      "present": "है",
+      "absent": "नहीं है",
+      "notAsked": "पूछा नहीं गया",
+      "notMeasured": "नहीं नापा",
+      "measured": "नापा गया"
+    },
+    "seeCaregivers": "घर आने वाले देखभालकर्ता देखें",
+    "tapToCall112": "112 पर कॉल करने के लिए दबाएँ"
   }
 }

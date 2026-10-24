@@ -1,0 +1,231 @@
+{
+  "_note": "Content for the 'Your assessment' card (docs/SYMPTOM_CATEGORIES.md). Educational only: possible causes are never a diagnosis and never change urgency, which comes only from the safety rules and pathways. 'supports' are pathway facts (signs, slots, derived facts in backend/app/assessment.py). 'csv' links a cause to rows of the public symptom_precaution.csv; those precautions are filtered for anything that names or implies a medicine. Precautions here are non-medicine only. Review with clinical mentors.",
+  "tests": {
+    "cbc": {"label": {"en": "Complete blood count (CBC) with platelets", "hi": "सीबीसी खून की जाँच (प्लेटलेट्स के साथ)", "hinglish": "CBC khoon ki jaanch (platelets ke saath)"}, "home_sample": true},
+    "malaria_test": {"label": {"en": "Malaria test (blood)", "hi": "मलेरिया की खून जाँच", "hinglish": "Malaria ki khoon jaanch"}, "home_sample": true},
+    "dengue_test": {"label": {"en": "Dengue test (NS1 or antibody, blood)", "hi": "डेंगू जाँच (NS1 या एंटीबॉडी, खून)", "hinglish": "Dengue jaanch (NS1 ya antibody, khoon)"}, "home_sample": true},
+    "typhoid_test": {"label": {"en": "Typhoid test (blood culture or as the doctor decides)", "hi": "टाइफाइड जाँच (ब्लड कल्चर या जैसा डॉक्टर कहें)", "hinglish": "Typhoid jaanch (blood culture ya jaisa doctor kahein)"}, "home_sample": true},
+    "urine_test": {"label": {"en": "Urine test (routine and culture)", "hi": "पेशाब की जाँच (रूटीन और कल्चर)", "hinglish": "Peshab ki jaanch (routine aur culture)"}, "home_sample": true},
+    "lft": {"label": {"en": "Liver function test (blood)", "hi": "लिवर फंक्शन टेस्ट (खून)", "hinglish": "Liver function test (khoon)"}, "home_sample": true},
+    "kft": {"label": {"en": "Kidney function and salts (blood)", "hi": "किडनी फंक्शन और नमक की जाँच (खून)", "hinglish": "Kidney function aur namak ki jaanch (khoon)"}, "home_sample": true},
+    "sugar": {"label": {"en": "Blood sugar", "hi": "ब्लड शुगर", "hinglish": "Blood sugar"}, "home_sample": true},
+    "chest_xray": {"label": {"en": "Chest X-ray", "hi": "छाती का एक्स-रे", "hinglish": "Chest X-ray"}, "home_sample": false},
+    "sputum_tb": {"label": {"en": "Sputum test for TB (free at government TB centres)", "hi": "टीबी के लिए बलगम की जाँच (सरकारी टीबी केंद्र पर मुफ़्त)", "hinglish": "TB ke liye balgam ki jaanch (sarkari TB centre par muft)"}, "home_sample": false},
+    "spo2": {"label": {"en": "Oxygen level (pulse oximeter)", "hi": "ऑक्सीजन लेवल (पल्स ऑक्सीमीटर)", "hinglish": "Oxygen level (pulse oximeter)"}, "home_sample": false},
+    "spirometry": {"label": {"en": "Breathing test (spirometry / peak flow)", "hi": "साँस की जाँच (स्पाइरोमेट्री / पीक फ्लो)", "hinglish": "Saans ki jaanch (spirometry / peak flow)"}, "home_sample": false},
+    "ecg": {"label": {"en": "ECG (heart tracing)", "hi": "ईसीजी (दिल की जाँच)", "hinglish": "ECG (dil ki jaanch)"}, "home_sample": false},
+    "troponin": {"label": {"en": "Heart enzyme blood test (in hospital)", "hi": "दिल के एंजाइम की खून जाँच (अस्पताल में)", "hinglish": "Dil ke enzyme ki khoon jaanch (hospital mein)"}, "home_sample": false},
+    "bp_check": {"label": {"en": "Blood pressure check", "hi": "बीपी की जाँच", "hinglish": "BP ki jaanch"}, "home_sample": false},
+    "eye_check": {"label": {"en": "Eye and nerve examination", "hi": "आँख और नसों की जाँच", "hinglish": "Aankh aur nason ki jaanch"}, "home_sample": false},
+    "ultrasound_abdomen": {"label": {"en": "Ultrasound of the abdomen", "hi": "पेट का अल्ट्रासाउंड", "hinglish": "Pet ka ultrasound"}, "home_sample": false},
+    "stool_test": {"label": {"en": "Stool test", "hi": "पॉटी की जाँच", "hinglish": "Potty ki jaanch"}, "home_sample": true},
+    "electrolytes": {"label": {"en": "Body salts (electrolytes)", "hi": "शरीर के नमक (इलेक्ट्रोलाइट्स)", "hinglish": "Sharir ke namak (electrolytes)"}, "home_sample": true},
+    "pregnancy_test": {"label": {"en": "Pregnancy test, if it could apply", "hi": "प्रेग्नेंसी टेस्ट, अगर संभव हो", "hinglish": "Pregnancy test, agar sambhav ho"}, "home_sample": false}
+  },
+  "common": {
+    "no_medicine": {"en": "Do not take any medicine without asking a doctor.", "hi": "कोई भी दवाई डॉक्टर से पूछे बिना न लें।", "hinglish": "Koi bhi dawai doctor se pooche bina na lein."},
+    "only_doctor": {"en": "Only a doctor can confirm what it is.", "hi": "यह क्या है, यह सिर्फ़ डॉक्टर ही पक्का बता सकते हैं।", "hinglish": "Yeh kya hai, yeh sirf doctor hi pakka bata sakte hain."},
+    "home_sample": {"en": "The paramedic can collect a blood sample at home.", "hi": "पैरामेडिक घर पर ही खून का सैंपल ले सकते हैं।", "hinglish": "Paramedic ghar par hi khoon ka sample le sakte hain."},
+    "call_112_common": [
+      {"en": "breathing becomes very hard, or lips turn blue", "hi": "साँस लेना बहुत मुश्किल हो जाए या होंठ नीले पड़ें", "hinglish": "saans lena bahut mushkil ho jaaye ya hont neele padein"},
+      {"en": "they become confused, very drowsy or faint", "hi": "भ्रम, बहुत सुस्ती या बेहोशी हो", "hinglish": "bhram, bahut susti ya behoshi ho"}
+    ]
+  },
+  "derived_labels": {
+    "long_fever": {"en": "fever for more than a week", "hi": "एक हफ्ते से ज़्यादा बुखार", "hinglish": "ek hafte se zyada bukhar"},
+    "long_cough": {"en": "cough for 2 weeks or more", "hi": "2 हफ्ते या ज़्यादा से खांसी", "hinglish": "2 hafte ya zyada se khansi"},
+    "low_platelets": {"en": "low platelet count in a report", "hi": "रिपोर्ट में प्लेटलेट्स कम", "hinglish": "report mein platelets kam"},
+    "high_temp": {"en": "high fever", "hi": "तेज़ बुखार", "hinglish": "tez bukhar"},
+    "age40": {"en": "age 40 or more", "hi": "उम्र 40 या ज़्यादा", "hinglish": "umar 40 ya zyada"},
+    "short_illness": {"en": "started in the last few days", "hi": "पिछले कुछ दिनों में शुरू हुआ", "hinglish": "pichhle kuch dinon mein shuru hua"},
+    "tb_contact": {"en": "contact with a TB patient", "hi": "टीबी के मरीज़ से संपर्क", "hinglish": "TB ke mareez se sampark"},
+    "older": {"en": "age 50 or more", "hi": "उम्र 50 या ज़्यादा", "hinglish": "umar 50 ya zyada"}
+  },
+  "categories": {
+    "fever": {
+      "causes": [
+        {"id": "viral", "label": {"en": "A viral infection (such as flu)", "hi": "वायरल संक्रमण (जैसे फ़्लू)", "hinglish": "Viral infection (jaise flu)"}, "supports": ["body_ache", "cough", "headache", "short_illness"], "csv": ["Common Cold"], "tests": ["cbc"]},
+        {"id": "dengue", "label": {"en": "Dengue", "hi": "डेंगू", "hinglish": "Dengue"}, "supports": ["retro_orbital", "body_ache", "rash", "low_platelets", "abdominal_pain", "bleeding_any", "high_temp"], "csv": ["Dengue"], "tests": ["cbc", "dengue_test"]},
+        {"id": "malaria", "label": {"en": "Malaria", "hi": "मलेरिया", "hinglish": "Malaria"}, "supports": ["chills", "cyclic", "sweating", "high_temp"], "csv": ["Malaria"], "tests": ["malaria_test", "cbc"]},
+        {"id": "typhoid", "label": {"en": "Typhoid", "hi": "टाइफाइड", "hinglish": "Typhoid"}, "supports": ["long_fever", "step_rising", "abdominal_pain", "constipation"], "csv": ["Typhoid"], "tests": ["typhoid_test", "cbc"]},
+        {"id": "chikungunya", "label": {"en": "Chikungunya", "hi": "चिकनगुनिया", "hinglish": "Chikungunya"}, "supports": ["severe_joint_pain", "rash", "high_temp"], "csv": [], "tests": ["cbc"]},
+        {"id": "uti", "label": {"en": "A urine infection", "hi": "पेशाब का संक्रमण", "hinglish": "Peshab ka infection"}, "supports": ["burning_urine", "flank_pain", "frequent_urine"], "csv": ["Urinary tract infection"], "tests": ["urine_test"]},
+        {"id": "chest_infection", "label": {"en": "A chest infection (such as pneumonia)", "hi": "छाती का संक्रमण (जैसे निमोनिया)", "hinglish": "Chest infection (jaise pneumonia)"}, "supports": ["cough", "breathless", "fast_breathing", "chest_pain_breathing"], "csv": ["Pneumonia"], "tests": ["chest_xray", "cbc"]},
+        {"id": "meningitis", "label": {"en": "An infection of the brain lining (meningitis), which needs urgent checking", "hi": "दिमाग की झिल्ली का संक्रमण (मेनिन्जाइटिस), जिसकी तुरंत जाँच ज़रूरी है", "hinglish": "Dimaag ki jhilli ka infection (meningitis), jiski turant jaanch zaroori hai"}, "supports": ["severe_headache", "stiff_neck", "light_sensitivity", "persistent_vomiting", "confusion"], "csv": [], "tests": ["cbc"]},
+        {"id": "jaundice", "label": {"en": "A liver infection (jaundice)", "hi": "लिवर का संक्रमण (पीलिया)", "hinglish": "Liver infection (peeliya)"}, "supports": ["yellow_eyes", "dark_urine", "vomiting"], "csv": ["Jaundice"], "tests": ["lft"]}
+      ],
+      "default_tests": ["cbc"],
+      "precautions": [
+        {"en": "Rest, and drink water, coconut water or soup often.", "hi": "आराम करें और पानी, नारियल पानी या सूप बार-बार पिएँ।", "hinglish": "Aaram karein aur paani, nariyal paani ya soup baar-baar piyein."},
+        {"en": "Wipe the body with a cloth soaked in normal-temperature water; wear light clothes.", "hi": "सामान्य पानी में भीगे कपड़े से शरीर पोंछें; हल्के कपड़े पहनें।", "hinglish": "Normal paani mein bheege kapde se sharir ponchhein; halke kapde pehnein."},
+        {"en": "Check the temperature with a thermometer every few hours and write it down.", "hi": "हर कुछ घंटे थर्मामीटर से तापमान नापें और लिख लें।", "hinglish": "Har kuch ghante thermometer se temperature naapein aur likh lein."},
+        {"en": "Use a mosquito net and keep standing water away from the house.", "hi": "मच्छरदानी लगाएँ और घर के आसपास पानी जमा न होने दें।", "hinglish": "Machhardaani lagayein aur ghar ke aaspaas paani jama na hone dein."}
+      ],
+      "call_112_if": [
+        {"en": "the neck becomes stiff or a purple rash appears that does not fade on pressing", "hi": "गर्दन अकड़ जाए या बैंगनी दाने आएँ जो दबाने पर न जाएँ", "hinglish": "gardan akad jaaye ya baingani daane aayein jo dabane par na jaayein"},
+        {"en": "there is bleeding from gums or nose, black stool, or vomiting blood", "hi": "मसूड़ों या नाक से खून, काली पॉटी या खून की उल्टी हो", "hinglish": "masoodon ya naak se khoon, kaali potty ya khoon ki ulti ho"},
+        {"en": "they have a fit (seizure)", "hi": "दौरा पड़े", "hinglish": "daura pade"}
+      ]
+    },
+    "cough": {
+      "causes": [
+        {"id": "irritation", "label": {"en": "Throat or airway irritation (dust, smoke, cold)", "hi": "गले या साँस की नली में जलन (धूल, धुआँ, ठंड)", "hinglish": "Gale ya saans ki nali mein irritation (dhool, dhuaan, thand)"}, "supports": ["dry_cough", "short_illness", "smoker"], "csv": [], "tests": []},
+        {"id": "allergy", "label": {"en": "An allergy", "hi": "एलर्जी", "hinglish": "Allergy"}, "supports": ["dry_cough", "wheeze", "recurring_cough"], "csv": ["Allergy"], "tests": []},
+        {"id": "viral", "label": {"en": "A cold or viral infection", "hi": "सर्दी-ज़ुकाम या वायरल संक्रमण", "hinglish": "Sardi-zukaam ya viral infection"}, "supports": ["short_illness", "fever", "wet_cough"], "csv": ["Common Cold"], "tests": []},
+        {"id": "bronchitis", "label": {"en": "Bronchitis (inflamed airways)", "hi": "ब्रोंकाइटिस (साँस की नलियों में सूजन)", "hinglish": "Bronchitis (saans ki naliyon mein sujan)"}, "supports": ["wet_cough", "sputum_colored", "smoker"], "csv": [], "tests": ["chest_xray"]},
+        {"id": "asthma", "label": {"en": "An asthma-related problem", "hi": "दमे से जुड़ी तकलीफ", "hinglish": "Asthma se judi takleef"}, "supports": ["wheeze", "asthma_copd", "chest_tightness", "recurring_cough"], "csv": ["Bronchial Asthma"], "tests": ["spirometry", "spo2"]},
+        {"id": "pneumonia", "label": {"en": "Pneumonia (lung infection)", "hi": "निमोनिया (फेफड़ों का संक्रमण)", "hinglish": "Pneumonia (phephdon ka infection)"}, "supports": ["fever", "breathless", "fast_breathing", "chest_pain_breathing", "sputum_colored"], "csv": ["Pneumonia"], "tests": ["chest_xray", "spo2", "cbc"]},
+        {"id": "tb", "label": {"en": "Tuberculosis (TB), which needs formal testing", "hi": "टीबी, जिसकी पक्की जाँच ज़रूरी है", "hinglish": "TB, jiski pakki jaanch zaroori hai"}, "supports": ["long_cough", "night_sweats", "weight_loss", "fever", "blood_in_cough", "tb_contact"], "csv": ["Tuberculosis"], "tests": ["sputum_tb", "chest_xray"]}
+      ],
+      "default_tests": [],
+      "notes": [
+        {"when": "long_cough and (night_sweats or weight_loss or fever or blood_in_cough or tb_contact)", "text": {"en": "A cough of 2 weeks or more with these symptoms should be checked for TB with a formal test at a TB centre or by a doctor. Symptoms alone can never confirm TB.", "hi": "2 हफ्ते या ज़्यादा की खांसी और ये लक्षण हों तो टीबी केंद्र या डॉक्टर से पक्की जाँच करवाएँ। सिर्फ़ लक्षणों से टीबी पक्का नहीं होता।", "hinglish": "2 hafte ya zyada ki khansi aur ye lakshan hon to TB centre ya doctor se pakki jaanch karwayein. Sirf lakshanon se TB pakka nahi hota."}},
+        {"when": "blood_in_cough", "text": {"en": "Blood in the cough always needs a doctor's check. It does not by itself mean TB.", "hi": "खांसी में खून हो तो डॉक्टर की जाँच हमेशा ज़रूरी है। इसका मतलब अपने आप टीबी नहीं है।", "hinglish": "Khansi mein khoon ho to doctor ki jaanch hamesha zaroori hai. Iska matlab apne aap TB nahi hai."}}
+      ],
+      "precautions": [
+        {"en": "Drink warm water often; steam from a bowl of hot water may ease the throat (take care not to get burned).", "hi": "बार-बार गुनगुना पानी पिएँ; गर्म पानी की भाप से गले को आराम मिल सकता है (जलने से बचें)।", "hinglish": "Baar-baar gunguna paani piyein; garam paani ki bhaap se gale ko aaram mil sakta hai (jalne se bachein)."},
+        {"en": "Cover the mouth when coughing and wash hands often.", "hi": "खांसते समय मुँह ढकें और बार-बार हाथ धोएँ।", "hinglish": "Khaanste samay muh dhakein aur baar-baar haath dhoyein."},
+        {"en": "Stay away from smoke, dust and cooking fumes.", "hi": "धुएँ, धूल और रसोई के धुएँ से दूर रहें।", "hinglish": "Dhuein, dhool aur rasoi ke dhuein se door rahein."}
+      ],
+      "call_112_if": [
+        {"en": "they cough up more than a spoonful of blood", "hi": "खांसी में चम्मच भर से ज़्यादा खून आए", "hinglish": "khansi mein chammach bhar se zyada khoon aaye"},
+        {"en": "they cannot speak in full sentences", "hi": "पूरा वाक्य न बोल पाएँ", "hinglish": "poora vakya na bol paayein"}
+      ]
+    },
+    "breathing": {
+      "causes": [
+        {"id": "asthma", "label": {"en": "An asthma or airway problem", "hi": "दमा या साँस की नली की तकलीफ", "hinglish": "Asthma ya saans ki nali ki takleef"}, "supports": ["wheeze", "asthma_copd", "chest_tightness", "gradual_breathless"], "csv": ["Bronchial Asthma"], "tests": ["spirometry", "spo2"]},
+        {"id": "infection", "label": {"en": "A chest infection", "hi": "छाती का संक्रमण", "hinglish": "Chest infection"}, "supports": ["fever", "cough", "sputum_colored", "fast_breathing"], "csv": ["Pneumonia"], "tests": ["chest_xray", "spo2", "cbc"]},
+        {"id": "heart", "label": {"en": "A heart-related cause", "hi": "दिल से जुड़ा कारण", "hinglish": "Dil se juda kaaran"}, "supports": ["chest_pain_any", "swelling_feet", "lying_breathless", "heart", "age40"], "csv": [], "tests": ["ecg", "chest_xray"]},
+        {"id": "anaemia", "label": {"en": "Low haemoglobin (anaemia)", "hi": "खून की कमी (एनीमिया)", "hinglish": "Khoon ki kami (anaemia)"}, "supports": ["gradual_breathless", "breathless_exertion", "weakness"], "csv": [], "tests": ["cbc"]},
+        {"id": "anxiety", "label": {"en": "Stress or a panic episode, only after the others are checked", "hi": "तनाव या घबराहट, बाकी कारण जाँचने के बाद ही", "hinglish": "Tanaav ya ghabrahat, baaki kaaran jaanchne ke baad hi"}, "supports": ["tingling_hands"], "csv": [], "tests": ["spo2", "ecg"]}
+      ],
+      "default_tests": ["spo2"],
+      "notes": [
+        {"when": "True", "text": {"en": "Breathlessness should not be put down to stress or allergy until a doctor has checked the oxygen level, heart and lungs.", "hi": "जब तक डॉक्टर ऑक्सीजन, दिल और फेफड़ों की जाँच न कर लें, साँस फूलने को तनाव या एलर्जी न मानें।", "hinglish": "Jab tak doctor oxygen, dil aur phephdon ki jaanch na kar lein, saans phoolne ko tanaav ya allergy na maanein."}}
+      ],
+      "precautions": [
+        {"en": "Sit upright and rest; loosen tight clothes.", "hi": "सीधे बैठें और आराम करें; टाइट कपड़े ढीले करें।", "hinglish": "Seedhe baithein aur aaram karein; tight kapde dheele karein."},
+        {"en": "Stay away from smoke, dust and strong smells.", "hi": "धुएँ, धूल और तेज़ गंध से दूर रहें।", "hinglish": "Dhuein, dhool aur tez gandh se door rahein."},
+        {"en": "Do not exert yourself until a doctor has checked you.", "hi": "डॉक्टर की जाँच तक मेहनत वाला काम न करें।", "hinglish": "Doctor ki jaanch tak mehnat wala kaam na karein."}
+      ],
+      "call_112_if": [
+        {"en": "they are breathless even at rest or cannot finish a sentence", "hi": "आराम में भी साँस फूले या पूरा वाक्य न बोल पाएँ", "hinglish": "aaram mein bhi saans phoole ya poora vakya na bol paayein"},
+        {"en": "lips or nails look blue or grey", "hi": "होंठ या नाखून नीले या भूरे दिखें", "hinglish": "hont ya naakhun neele ya bhoore dikhein"},
+        {"en": "chest pain, fainting or confusion starts", "hi": "सीने में दर्द, बेहोशी या भ्रम शुरू हो", "hinglish": "seene mein dard, behoshi ya bhram shuru ho"}
+      ]
+    },
+    "chest_pain": {
+      "causes": [
+        {"id": "muscle", "label": {"en": "A muscle or chest-wall strain", "hi": "मांसपेशी या छाती की दीवार में खिंचाव", "hinglish": "Muscle ya chhaati ki deewar mein khinchaav"}, "supports": ["chest_wall"], "csv": [], "tests": []},
+        {"id": "acidity", "label": {"en": "Acidity or reflux", "hi": "एसिडिटी या रिफ्लक्स", "hinglish": "Acidity ya reflux"}, "supports": ["chest_burning", "after_food"], "csv": ["GERD"], "tests": []},
+        {"id": "heart", "label": {"en": "A heart-related cause, which only tests can rule out", "hi": "दिल से जुड़ा कारण, जिसे सिर्फ़ जाँच से ही रोका जा सकता है", "hinglish": "Dil se juda kaaran, jise sirf jaanch se hi rule out kiya ja sakta hai"}, "supports": ["pressure", "radiation", "sweating", "breathless", "age40", "diabetes", "hypertension", "heart", "smoker", "recurrent"], "csv": [], "tests": ["ecg", "troponin"]},
+        {"id": "lung", "label": {"en": "A lung-related cause", "hi": "फेफड़ों से जुड़ा कारण", "hinglish": "Phephdon se juda kaaran"}, "supports": ["sharp_breathing", "cough", "fever"], "csv": ["Pneumonia"], "tests": ["chest_xray"]}
+      ],
+      "default_tests": ["ecg"],
+      "notes": [
+        {"when": "True", "text": {"en": "A chat cannot rule out a heart problem. If the pain comes back or changes, get an ECG.", "hi": "चैट से दिल की तकलीफ को रोका नहीं जा सकता। दर्द फिर हो या बदले तो ईसीजी करवाएँ।", "hinglish": "Chat se dil ki takleef ko rule out nahi kiya ja sakta. Dard phir ho ya badle to ECG karwayein."}}
+      ],
+      "precautions": [
+        {"en": "Rest and avoid heavy work or exercise until a doctor has checked.", "hi": "आराम करें; डॉक्टर की जाँच तक भारी काम या कसरत न करें।", "hinglish": "Aaram karein; doctor ki jaanch tak bhaari kaam ya kasrat na karein."},
+        {"en": "Eat light meals and do not lie down right after eating.", "hi": "हल्का खाना खाएँ और खाने के तुरंत बाद न लेटें।", "hinglish": "Halka khana khayein aur khaane ke turant baad na letein."},
+        {"en": "Keep someone with you and a phone within reach.", "hi": "किसी को साथ रखें और फ़ोन पास रखें।", "hinglish": "Kisi ko saath rakhein aur phone paas rakhein."}
+      ],
+      "call_112_if": [
+        {"en": "the pain feels heavy or squeezing, or lasts more than 5 minutes", "hi": "दर्द भारी या दबाव जैसा लगे या 5 मिनट से ज़्यादा रहे", "hinglish": "dard bhaari ya dabav jaisa lage ya 5 minute se zyada rahe"},
+        {"en": "the pain spreads to the arm, jaw or back, or comes with sweating, breathlessness or fainting", "hi": "दर्द हाथ, जबड़े या पीठ तक जाए, या साथ में पसीना, साँस फूलना या बेहोशी हो", "hinglish": "dard haath, jabde ya peeth tak jaaye, ya saath mein paseena, saans phoolna ya behoshi ho"}
+      ]
+    },
+    "headache": {
+      "causes": [
+        {"id": "tension", "label": {"en": "A tension-type headache (stress, poor sleep, screen strain)", "hi": "तनाव वाला सिर दर्द (तनाव, कम नींद, स्क्रीन)", "hinglish": "Tension wala sir dard (tanaav, kam neend, screen)"}, "supports": ["known_migraine", "short_illness"], "csv": [], "tests": []},
+        {"id": "migraine", "label": {"en": "Migraine", "hi": "माइग्रेन", "hinglish": "Migraine"}, "supports": ["known_migraine", "light_sensitivity", "vomiting", "vision_change"], "csv": ["Migraine"], "tests": []},
+        {"id": "dehydration", "label": {"en": "Dehydration, heat or missed meals", "hi": "पानी की कमी, गर्मी या खाना छूटना", "hinglish": "Paani ki kami, garmi ya khana chhootna"}, "supports": ["dizziness_standing", "faint_postural", "vomiting", "diarrhoea"], "csv": [], "tests": ["sugar", "electrolytes"]},
+        {"id": "infection", "label": {"en": "An infection with fever", "hi": "बुखार वाला संक्रमण", "hinglish": "Bukhar wala infection"}, "supports": ["fever"], "csv": [], "tests": ["cbc"]},
+        {"id": "bp", "label": {"en": "High blood pressure", "hi": "हाई ब्लड प्रेशर", "hinglish": "High blood pressure"}, "supports": ["hypertension", "vision_change", "older"], "csv": ["Hypertension "], "tests": ["bp_check"]},
+        {"id": "inner_ear", "label": {"en": "An inner-ear balance problem", "hi": "कान के अंदर संतुलन की तकलीफ", "hinglish": "Kaan ke andar santulan ki takleef"}, "supports": ["vertigo", "vomiting"], "csv": ["(vertigo) Paroymsal  Positional Vertigo"], "tests": []},
+        {"id": "nerve", "label": {"en": "A problem in the brain or nerves, which needs a doctor's examination", "hi": "दिमाग या नसों की तकलीफ, जिसके लिए डॉक्टर की जाँच ज़रूरी है", "hinglish": "Dimaag ya nason ki takleef, jiske liye doctor ki jaanch zaroori hai"}, "supports": ["progressive", "wakes_sleep", "new_pattern", "older", "fainted"], "csv": [], "tests": ["eye_check", "bp_check"]}
+      ],
+      "default_tests": ["bp_check"],
+      "precautions": [
+        {"en": "Rest in a quiet, dim room and drink water.", "hi": "शांत, कम रोशनी वाले कमरे में आराम करें और पानी पिएँ।", "hinglish": "Shaant, kam roshni wale kamre mein aaram karein aur paani piyein."},
+        {"en": "If dizzy, sit or lie down at once and stand up slowly.", "hi": "चक्कर आए तो तुरंत बैठ या लेट जाएँ और धीरे-धीरे उठें।", "hinglish": "Chakkar aaye to turant baith ya let jaayein aur dheere-dheere uthein."},
+        {"en": "Eat regular meals and avoid long screen time.", "hi": "समय पर खाना खाएँ और देर तक स्क्रीन न देखें।", "hinglish": "Samay par khana khayein aur der tak screen na dekhein."},
+        {"en": "Do not drive while dizzy or after fainting.", "hi": "चक्कर हो या बेहोश हुए हों तो गाड़ी न चलाएँ।", "hinglish": "Chakkar ho ya behosh hue hon to gaadi na chalayein."}
+      ],
+      "call_112_if": [
+        {"en": "a sudden, worst-ever headache starts", "hi": "अचानक ज़िंदगी का सबसे तेज़ सिर दर्द हो", "hinglish": "achanak zindagi ka sabse tez sir dard ho"},
+        {"en": "the face droops, an arm or leg becomes weak, or speech becomes difficult", "hi": "मुँह टेढ़ा हो, हाथ-पैर कमज़ोर हों या बोलने में दिक्कत हो", "hinglish": "muh tedha ho, haath-pair kamzor hon ya bolne mein dikkat ho"},
+        {"en": "they faint again, or have a fit", "hi": "फिर से बेहोश हों या दौरा पड़े", "hinglish": "phir se behosh hon ya daura pade"}
+      ]
+    },
+    "abdominal": {
+      "causes": [
+        {"id": "indigestion", "label": {"en": "Indigestion or gas", "hi": "अपच या गैस", "hinglish": "Apach ya gas"}, "supports": ["upper_pain", "after_food", "bloating"], "csv": ["GERD"], "tests": []},
+        {"id": "gastro", "label": {"en": "A stomach infection (gastroenteritis)", "hi": "पेट का संक्रमण (गैस्ट्रोएंटेराइटिस)", "hinglish": "Pet ka infection (gastroenteritis)"}, "supports": ["vomiting", "diarrhoea", "fever", "short_illness"], "csv": ["Gastroenteritis"], "tests": ["stool_test"]},
+        {"id": "appendix", "label": {"en": "Appendix inflammation (appendicitis)", "hi": "अपेंडिक्स में सूजन", "hinglish": "Appendix mein sujan"}, "supports": ["right_lower_pain", "pain_worse_walking", "fever", "vomiting"], "csv": [], "tests": ["cbc", "ultrasound_abdomen"]},
+        {"id": "gallstone", "label": {"en": "Gallbladder or liver problem", "hi": "पित्ताशय या लिवर की तकलीफ", "hinglish": "Pittashay ya liver ki takleef"}, "supports": ["right_upper_pain", "after_food", "yellow_eyes", "fever"], "csv": ["Jaundice"], "tests": ["ultrasound_abdomen", "lft"]},
+        {"id": "kidney", "label": {"en": "A kidney stone or urine infection", "hi": "पथरी या पेशाब का संक्रमण", "hinglish": "Pathri ya peshab ka infection"}, "supports": ["flank_pain", "burning_urine", "blood_urine", "vomiting"], "csv": ["Urinary tract infection"], "tests": ["urine_test", "ultrasound_abdomen"]},
+        {"id": "ulcer", "label": {"en": "A stomach ulcer", "hi": "पेट में छाला (अल्सर)", "hinglish": "Pet mein chhaala (ulcer)"}, "supports": ["upper_pain", "black_stool", "blood_vomit"], "csv": ["Peptic ulcer diseae"], "tests": ["cbc"]},
+        {"id": "pregnancy", "label": {"en": "A pregnancy-related cause", "hi": "गर्भावस्था से जुड़ा कारण", "hinglish": "Pregnancy se juda kaaran"}, "supports": ["pregnant"], "csv": [], "tests": ["pregnancy_test", "ultrasound_abdomen"], "only_if": "pregnant"}
+      ],
+      "default_tests": [],
+      "notes": [
+        {"when": "True", "text": {"en": "Stomach pain has many causes; it should not be assumed to be acidity without a check.", "hi": "पेट दर्द के कई कारण होते हैं; बिना जाँच इसे एसिडिटी न मानें।", "hinglish": "Pet dard ke kai kaaran hote hain; bina jaanch ise acidity na maanein."}}
+      ],
+      "precautions": [
+        {"en": "Rest, and take small sips of water.", "hi": "आराम करें और थोड़ा-थोड़ा पानी पिएँ।", "hinglish": "Aaram karein aur thoda-thoda paani piyein."},
+        {"en": "Eat light, plain food or nothing heavy until the pain settles.", "hi": "दर्द ठीक होने तक हल्का, सादा खाना खाएँ; भारी खाना न खाएँ।", "hinglish": "Dard theek hone tak halka, saada khana khayein; bhaari khana na khayein."},
+        {"en": "Note where the pain is and whether it is getting worse.", "hi": "ध्यान दें कि दर्द कहाँ है और बढ़ रहा है या नहीं।", "hinglish": "Dhyaan dein ki dard kahan hai aur badh raha hai ya nahi."},
+        {"en": "Do not put a hot bottle on the belly if there is fever.", "hi": "बुखार हो तो पेट पर गर्म बोतल न रखें।", "hinglish": "Bukhar ho to pet par garam bottle na rakhein."}
+      ],
+      "call_112_if": [
+        {"en": "the belly becomes hard or swollen, or the pain becomes unbearable", "hi": "पेट सख्त या फूला हो जाए या दर्द असहनीय हो", "hinglish": "pet sakht ya phoola ho jaaye ya dard asahniya ho"},
+        {"en": "there is blood in vomit, or black stool", "hi": "उल्टी में खून या काली पॉटी हो", "hinglish": "ulti mein khoon ya kaali potty ho"},
+        {"en": "pain in pregnancy, or pain with fainting", "hi": "गर्भावस्था में दर्द, या दर्द के साथ बेहोशी", "hinglish": "pregnancy mein dard, ya dard ke saath behoshi"}
+      ]
+    },
+    "vomiting": {
+      "causes": [
+        {"id": "gastro", "label": {"en": "A stomach infection (gastroenteritis)", "hi": "पेट का संक्रमण (गैस्ट्रोएंटेराइटिस)", "hinglish": "Pet ka infection (gastroenteritis)"}, "supports": ["vomiting", "diarrhoea", "fever", "short_illness"], "csv": ["Gastroenteritis"], "tests": ["stool_test"]},
+        {"id": "food", "label": {"en": "Food poisoning", "hi": "खाने से संक्रमण (फ़ूड पॉइज़निंग)", "hinglish": "Food poisoning"}, "supports": ["vomiting", "diarrhoea", "short_illness", "abdominal_pain"], "csv": ["Gastroenteritis"], "tests": []},
+        {"id": "dysentery", "label": {"en": "A bowel infection with blood (dysentery)", "hi": "खून वाले दस्त का संक्रमण (पेचिश)", "hinglish": "Khoon wale dast ka infection (pechish)"}, "supports": ["blood_in_stool", "fever", "abdominal_pain"], "csv": [], "tests": ["stool_test", "cbc"]},
+        {"id": "dehydration", "label": {"en": "Dehydration from fluid loss", "hi": "पानी की कमी (डिहाइड्रेशन)", "hinglish": "Paani ki kami (dehydration)"}, "supports": ["dry_mouth", "reduced_urine", "dizziness_standing", "cannot_drink", "sunken_eyes"], "csv": [], "tests": ["electrolytes", "kft"]},
+        {"id": "liver", "label": {"en": "A liver infection (jaundice)", "hi": "लिवर का संक्रमण (पीलिया)", "hinglish": "Liver infection (peeliya)"}, "supports": ["yellow_eyes", "dark_urine", "vomiting"], "csv": ["Jaundice"], "tests": ["lft"]}
+      ],
+      "default_tests": [],
+      "precautions": [
+        {"en": "Give small sips of fluid often: water, rice water, coconut water or dal water.", "hi": "थोड़ी-थोड़ी देर में घूँट-घूँट पानी, चावल का पानी, नारियल पानी या दाल का पानी दें।", "hinglish": "Thodi-thodi der mein ghoont-ghoont paani, chawal ka paani, nariyal paani ya dal ka paani dein."},
+        {"en": "Keep giving breast milk or normal feeds to babies.", "hi": "शिशु को माँ का दूध या सामान्य खाना देते रहें।", "hinglish": "Shishu ko maa ka doodh ya saamanya khana dete rahein."},
+        {"en": "Wash hands with soap after the toilet and before food; drink clean or boiled water.", "hi": "शौच के बाद और खाने से पहले साबुन से हाथ धोएँ; साफ़ या उबला पानी पिएँ।", "hinglish": "Shauch ke baad aur khaane se pehle sabun se haath dhoyein; saaf ya ubla paani piyein."},
+        {"en": "Watch how often urine is passed.", "hi": "ध्यान दें कि पेशाब कितनी बार हो रहा है।", "hinglish": "Dhyaan dein ki peshab kitni baar ho raha hai."}
+      ],
+      "call_112_if": [
+        {"en": "they cannot keep any fluid down, or pass no urine for 12 hours (8 hours in a child)", "hi": "कुछ भी पीने पर न रुके, या 12 घंटे (बच्चे में 8 घंटे) से पेशाब न हो", "hinglish": "kuch bhi peene par na ruke, ya 12 ghante (bachche mein 8 ghante) se peshab na ho"},
+        {"en": "there is blood in vomit, or black stool", "hi": "उल्टी में खून या काली पॉटी हो", "hinglish": "ulti mein khoon ya kaali potty ho"},
+        {"en": "they become very drowsy or confused", "hi": "बहुत सुस्ती या भ्रम हो", "hinglish": "bahut susti ya bhram ho"}
+      ]
+    },
+    "urinary": {
+      "causes": [
+        {"id": "uti", "label": {"en": "A bladder infection (urine infection)", "hi": "मूत्राशय का संक्रमण (पेशाब का संक्रमण)", "hinglish": "Bladder infection (peshab ka infection)"}, "supports": ["burning_urine", "frequent_urine", "urgency_urine", "lower_belly_pain"], "csv": ["Urinary tract infection"], "tests": ["urine_test"]},
+        {"id": "kidney_infection", "label": {"en": "A kidney infection", "hi": "किडनी का संक्रमण", "hinglish": "Kidney infection"}, "supports": ["flank_pain", "fever", "chills", "vomiting", "burning_urine"], "csv": [], "tests": ["urine_test", "cbc", "kft"]},
+        {"id": "stone", "label": {"en": "A kidney or urinary stone", "hi": "पथरी", "hinglish": "Pathri"}, "supports": ["flank_pain", "blood_urine", "vomiting"], "csv": [], "tests": ["urine_test", "ultrasound_abdomen"]},
+        {"id": "prostate", "label": {"en": "A prostate problem (in men)", "hi": "प्रोस्टेट की तकलीफ (पुरुषों में)", "hinglish": "Prostate ki takleef (purushon mein)"}, "supports": ["weak_stream", "frequent_urine", "older", "cannot_pass_urine"], "csv": [], "tests": ["urine_test", "ultrasound_abdomen"]},
+        {"id": "sugar", "label": {"en": "High blood sugar", "hi": "ब्लड शुगर ज़्यादा होना", "hinglish": "Blood sugar zyada hona"}, "supports": ["frequent_urine", "thirst", "diabetes"], "csv": ["Diabetes "], "tests": ["sugar", "urine_test"]}
+      ],
+      "default_tests": ["urine_test"],
+      "precautions": [
+        {"en": "Drink enough water through the day, unless a doctor has told you to limit fluids.", "hi": "दिन भर पर्याप्त पानी पिएँ, जब तक डॉक्टर ने कम पीने को न कहा हो।", "hinglish": "Din bhar paryaapt paani piyein, jab tak doctor ne kam peene ko na kaha ho."},
+        {"en": "Do not hold urine for long; keep the area clean and dry.", "hi": "पेशाब देर तक न रोकें; साफ़-सफ़ाई और सूखापन रखें।", "hinglish": "Peshab der tak na rokein; saaf-safai aur sookhapan rakhein."},
+        {"en": "Note the colour of the urine and any fever.", "hi": "पेशाब का रंग और बुखार पर ध्यान दें।", "hinglish": "Peshab ka rang aur bukhar par dhyaan dein."}
+      ],
+      "call_112_if": [
+        {"en": "they cannot pass urine at all, with a painful swollen lower belly", "hi": "पेशाब बिल्कुल न हो और नीचे पेट फूला व दर्द हो", "hinglish": "peshab bilkul na ho aur neeche pet phoola va dard ho"},
+        {"en": "high fever with shivering, back pain and vomiting", "hi": "कंपकंपी के साथ तेज़ बुखार, कमर दर्द और उल्टी", "hinglish": "kapkapi ke saath tez bukhar, kamar dard aur ulti"},
+        {"en": "they become confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती हो", "hinglish": "bhram ya bahut susti ho"}
+      ]
+    }
+  },
+  "aliases": {"stomach": ["vomiting", "abdominal"]}
+}

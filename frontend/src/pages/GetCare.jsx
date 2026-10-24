@@ -52,7 +52,8 @@ export default function GetCare() {
     setPhase("loading");
     try {
       const { data, ms: took } = await api.triage(
-        { user_input: text, language: "auto", location: { lat: location.lat, lng: location.lng }, conversation_history: hist },
+        { user_input: text, language: "auto", location: { lat: location.lat, lng: location.lng }, conversation_history: hist,
+          ...(hist.length && debug?.assessment_state ? { assessment_state: debug.assessment_state } : {}) },
         { debug: true });
       const { debug: dbg, ...official } = data;
       setResponse(official); setDebug(dbg || null); setMs(took); setPhase("done");

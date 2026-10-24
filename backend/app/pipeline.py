@@ -6,7 +6,7 @@ import time
 from dataclasses import asdict
 from typing import Optional
 
-from . import domain_guard, explain, intake, llm_triage, matching, pathways, safety
+from . import assessment, domain_guard, explain, intake, llm_triage, matching, pathways, safety
 from .config import get_settings
 from .pathways import route as proute
 from .lang import detect_language, normalise, resolve_language, term_matches
@@ -145,10 +145,13 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
 
         # clinical pathways (fever, cough, stomach, chest pain, headache): stage rules + senior-doctor questions
         t = time.perf_counter()
-        pout = pathways.run(turns, history=[h.model_dump() for h in req.conversation_history], user_input=req.user_input)
+        pout = pathways.run(turns, history=[h.model_dump() for h in req.conversation_history], user_input=req.user_input,
+                            state=req.assessment_state)
         prim = pout.primary
         timings["pathways"] = time.perf_counter() - t
         tr["pathways"] = proute.trace(pout, lang)
+        if prim is not None:
+            tr["assessment_state"] = assessment.state(pout)
         if prim is not None and prim.stage == "S3":
             tr["model_used"] = f"pathway:{prim.pathway}"
             return pathway_emergency(pout, lang, sres.red_flags)
@@ -211,6 +214,8 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             reasoning = proute.reasoning(pout, dec.care_type, dec.urgency, lang)
         else:
             reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
+        if prim is not None:  # "Your assessment" card (optional block only; official fields unchanged)
+            tr["assessment"] = assessment.build_card(pout, dec.care_type, dec.urgency, reasoning, lang)
 
         t = time.perf_counter()
         loc = req.location.model_dump() if req.location else None
