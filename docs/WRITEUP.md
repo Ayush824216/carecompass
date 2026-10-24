@@ -27,7 +27,7 @@ No real patient data is used. (1) **Dev data**, synthetic and self-generated: 60
 | Blind first look, challenge v2 / v3 | 0.61 / 0.73 | 0.67 / 0.60 | 0.44 / 0.78 | – |
 | KTAS validation (urgency only, n=253) | – | 0.49 | KTAS 1–2: 0.88 | 0.067 |
 
-Model C vs Model A vs ensemble: see `EVAL.md` (Model C section).
+**Model C (MuRIL, 5 min fine-tune on an RTX 3050, 2.5 GB peak VRAM, 462 MB fp16)** scored 0.86 care-F1 on dev val but only 0.57–0.61 on the challenge sets, against 0.78–0.88 for Model A. With ~600 synthetic vignettes it overfits template style, so **Model A serves**. Model C is re-evaluated automatically after retraining on the official data (`EVAL.md`).
 
 We report the **blind first-look** numbers on purpose. Each new phrasing set exposed red-flag gaps, for example "frothing at the mouth", "sugar 45" and "can't stand up after a fall". Each gap was closed with general patterns and regression tests, giving 181 tests today. A hidden test set will contain phrasings we did not anticipate. The LLM's red flags (unioned with the rules), the asymmetric urgency combination and the low model emergency threshold are the backstops for that.
 

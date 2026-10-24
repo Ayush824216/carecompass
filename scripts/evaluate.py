@@ -239,6 +239,38 @@ def main() -> None:
             report.append(f"| {name} | {m['urg_f1']:.3f} | {m['ktas12_recall']:.3f} | {m['under_triage']:.3f} |")
         report.append("\nKTAS is Korean ED data triaged largely on vital signs, which a text-only router cannot see. "
                       "It is used as extra urgency signal, not as the target distribution.\n")
+    mc_dir = ROOT / "models" / "model_c"
+    if (mc_dir / "meta.json").exists():
+        try:
+            import json as _json
+            from app.textclf import EnsembleModel
+            from app.transformer_clf import TransformerModel
+            meta = _json.loads((mc_dir / "meta.json").read_text(encoding="utf-8"))
+            mc = TransformerModel(mc_dir)
+            cmp_models = {"Model A (TF-IDF+LR)": model, f"Model C ({meta['base_model']})": mc,
+                          "Ensemble A+C": EnsembleModel(model, mc)}
+            sets = [("dev val", dev_val)] + [(f, data_adapter.read_vignette_file(ROOT / "dev_data" / f))
+                                             for f in ("challenge.csv", "challenge_v2.csv", "challenge_v3.csv")
+                                             if (ROOT / "dev_data" / f).exists()]
+            report.append("\n## Model A vs Model C vs ensemble (rules + model)\n")
+            report.append(f"Model C: `{meta['base_model']}`, two heads, {meta.get('epochs')} epochs, frozen word embeddings, "
+                          f"fp16, trained in {meta.get('train_seconds')}s on an RTX 3050 4 GB "
+                          f"(holdout split). Production choice recorded in meta.json: **{meta.get('production')}**.\n")
+            report.append("| Set | " + " | ".join(f"{n} care / urg F1" for n in cmp_models) + " |")
+            report.append("|---" * (len(cmp_models) + 1) + "|")
+            for sname, rows_s in sets:
+                cells = []
+                for mname, mm in cmp_models.items():
+                    pr, _ = predict_rows(mm, rows_s, cfg, use_rules=True)
+                    mtr = metrics([r["care_type"] for r in rows_s], [x[0] for x in pr],
+                                  [r["urgency"] for r in rows_s], [x[1] for x in pr])
+                    cells.append(f"{mtr['care_f1']:.3f} / {mtr['urg_f1']:.3f}")
+                report.append(f"| {sname} | " + " | ".join(cells) + " |")
+            report.append("\nWith ~600 synthetic vignettes the fine-tuned encoder overfits template style. Char n-gram "
+                          "TF-IDF generalises better to new phrasing, so Model A serves. Model C is re-evaluated "
+                          "automatically when retrained on the official data.\n")
+        except Exception as e:  # torch not installed (CPU-only env)
+            print("Model C comparison skipped:", e.__class__.__name__)
     report.append("\n### Blind first-look scores (before any fix informed by that set)\n")
     report.append("Each challenge set was scored once, blind, before it was used to fix anything. "
                   "These first-look numbers are the most honest estimate of performance on unseen phrasing:\n")
