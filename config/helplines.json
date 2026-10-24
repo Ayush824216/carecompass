@@ -1,0 +1,29 @@
+{
+  "_note": "National helplines only, each checked against an official government source on 2026-10-24. A number that could not be verified is left out: 104 (state health information helpline) has no official source confirming it in Delhi, so it is not listed. Re-verify before any real deployment.",
+  "verified_on": "2026-10-24",
+  "helplines": [
+    {"number": "112", "kind": "emergency",
+     "label": {"en": "Emergency (police, fire, ambulance)", "hi": "आपातकाल (पुलिस, फायर, एम्बुलेंस)", "hinglish": "Emergency (police, fire, ambulance)"},
+     "desc": {"en": "Single national emergency number (ERSS). Works from any phone, 24x7.", "hi": "राष्ट्रीय आपातकालीन नंबर (ERSS)। किसी भी फ़ोन से, 24x7।", "hinglish": "Rashtriya emergency number (ERSS). Kisi bhi phone se, 24x7."},
+     "sources": [{"name": "PIB: Pan-India Emergency Number '112' launched (Ministry of Home Affairs)", "url": "https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=188727"},
+                 {"name": "112.gov.in FAQ", "url": "https://112.gov.in/faq"}]},
+    {"number": "108", "kind": "ambulance",
+     "label": {"en": "Ambulance", "hi": "एम्बुलेंस", "hinglish": "Ambulance"},
+     "desc": {"en": "Free emergency ambulance, run by each state under the National Health Mission. Availability varies by state; 112 also reaches ambulance services.", "hi": "मुफ़्त आपातकालीन एम्बुलेंस, हर राज्य राष्ट्रीय स्वास्थ्य मिशन के तहत चलाता है। उपलब्धता राज्य के हिसाब से अलग है; 112 से भी एम्बुलेंस मिलती है।", "hinglish": "Muft emergency ambulance, har rajya National Health Mission ke tahat chalata hai. Uplabdhta rajya ke hisaab se alag hai; 112 se bhi ambulance milti hai."},
+     "sources": [{"name": "PIB: legacy emergency numbers (100 police, 108 ambulance, 101 fire) consolidated under 112", "url": "https://www.pib.gov.in/newsite/PrintRelease.aspx?relid=188727"},
+                 {"name": "NHM Uttarakhand: 108 emergency service", "url": "https://nhm.uk.gov.in/service/108-emergency/"}]},
+    {"number": "14416", "kind": "mental_health",
+     "label": {"en": "Tele-MANAS mental health helpline", "hi": "टेली-मानस मानसिक स्वास्थ्य हेल्पलाइन", "hinglish": "Tele-MANAS mental health helpline"},
+     "desc": {"en": "Free 24x7 counselling in many languages (also 1-800-891-4416).", "hi": "कई भाषाओं में मुफ़्त 24x7 परामर्श (1-800-891-4416 भी)।", "hinglish": "Kai bhashaon mein muft 24x7 counselling (1-800-891-4416 bhi)."},
+     "sources": [{"name": "PIB: Ministry of Health & Family Welfare, two years of Tele MANAS", "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2063830"}]},
+    {"number": "1098", "kind": "child",
+     "label": {"en": "Child helpline", "hi": "चाइल्ड हेल्पलाइन", "hinglish": "Child helpline"},
+     "desc": {"en": "National 24x7 toll-free helpline for children in difficulty (Ministry of Women and Child Development).", "hi": "मुश्किल में बच्चों के लिए राष्ट्रीय 24x7 टोल-फ्री हेल्पलाइन (महिला एवं बाल विकास मंत्रालय)।", "hinglish": "Mushkil mein bachchon ke liye rashtriya 24x7 toll-free helpline (Mahila evam Baal Vikas Mantralay)."},
+     "sources": [{"name": "PIB: Child Helpline 1098 integration with ERSS-112 (Ministry of Women and Child Development)", "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1933794"},
+                 {"name": "Ministry of Women and Child Development", "url": "https://wcd.gov.in/"}]},
+    {"number": "14567", "kind": "elder",
+     "label": {"en": "Elderline (senior citizens)", "hi": "एल्डरलाइन (वरिष्ठ नागरिक)", "hinglish": "Elderline (senior citizens)"},
+     "desc": {"en": "National helpline for senior citizens, 8 am to 8 pm, every day (Ministry of Social Justice and Empowerment).", "hi": "वरिष्ठ नागरिकों के लिए राष्ट्रीय हेल्पलाइन, रोज़ सुबह 8 से रात 8 बजे (सामाजिक न्याय एवं अधिकारिता मंत्रालय)।", "hinglish": "Senior citizens ke liye rashtriya helpline, roz subah 8 se raat 8 baje (Samajik Nyay evam Adhikarita Mantralay)."},
+     "sources": [{"name": "UT Ladakh: Elderline 14567, the National Helpline for Senior Citizens", "url": "https://ladakh.gov.in/elderline-14567-the-national-helpline-for-senior-citizens-launched-in-ladakh/"}]}
+  ]
+}
