@@ -92,6 +92,12 @@
         },
         "title": "Conversation History",
         "type": "array"
+      },
+      "debug": {
+        "default": false,
+        "description": "Optional. If true, the response gains an extra `debug` object (decision trace). Without it the response is exactly the official schema.",
+        "title": "Debug",
+        "type": "boolean"
       }
     },
     "title": "TriageRequest",

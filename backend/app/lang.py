@@ -136,3 +136,27 @@ def normalise(text: str) -> str:
     for rx, new in _LATIN_COMPILED:
         t = rx.sub(new, t)
     return re.sub(r"\s+", " ", t).strip()
+
+
+_SKIP_CANON = {"not", "days", "week", "months", "years", "pain"}
+
+
+def term_matches(text: str) -> list[dict]:
+    """Which user words were mapped to which canonical term, e.g. {"source": "bukhar", "canonical": "fever"}."""
+    t = clean(text).lower()
+    out: list[dict] = []
+    seen: set[str] = set()
+    for old, new in _DEVA_RULES:
+        if new not in _SKIP_CANON and old in t and new not in seen:
+            out.append({"source": old, "canonical": new})
+            seen.add(new)
+            t = t.replace(old, " ")
+    for rx, new in _LATIN_COMPILED:
+        if new in _SKIP_CANON or new in seen:
+            continue
+        m = rx.search(t)
+        if m and m.group(0) != new:
+            out.append({"source": m.group(0), "canonical": new})
+            seen.add(new)
+            t = t[:m.start()] + " " + t[m.end():]
+    return out

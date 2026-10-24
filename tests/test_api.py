@@ -69,3 +69,45 @@ def test_unknown_language_and_long_input():
     r = client.post("/api/v1/triage", json={"user_input": "fever " * 2000, "language": "fr"})
     assert r.status_code == 200
     _check_contract(r.json())
+
+
+BODY = {"user_input": "papa ko do din se bukhar hai aur khansi bhi", "language": "auto",
+        "location": {"lat": 28.54, "lng": 77.27}, "conversation_history": []}
+OFFICIAL_KEYS = {"follow_up_question", "care_type", "urgency", "red_flags", "reasoning", "matched_caregivers"}
+
+
+def test_default_response_has_exactly_official_keys():
+    for body in (BODY, {**BODY, "user_input": "seene mein tez dard"}, {**BODY, "user_input": "tabiyat kharab"}):
+        r = client.post("/api/v1/triage", json=body)
+        assert set(r.json()) == OFFICIAL_KEYS
+
+
+def test_debug_flag_adds_only_debug_key():
+    for r in (client.post("/api/v1/triage", json={**BODY, "debug": True}),
+              client.post("/api/v1/triage?debug=true", json=BODY)):
+        body = r.json()
+        assert set(body) == OFFICIAL_KEYS | {"debug"}
+        _check_contract({k: v for k, v in body.items() if k != "debug"})
+        d = body["debug"]
+        for k in ("detected_language", "normalised_text", "extracted_slots", "safety_checks", "model_used",
+                  "per_stage_latency_ms"):
+            assert k in d, k
+        assert d["detected_language"] == "hinglish" and "fever" in d["normalised_text"]
+        assert d["per_stage_latency_ms"]["total"] >= 0
+
+
+def test_debug_does_not_change_decision():
+    a = client.post("/api/v1/triage", json=BODY).json()
+    b = client.post("/api/v1/triage", json={**BODY, "debug": True}).json()
+    b.pop("debug")
+    assert a == b
+
+
+def test_debug_emergency_trace():
+    d = client.post("/api/v1/triage", json={**BODY, "user_input": "papa behosh ho gaye", "debug": True}).json()["debug"]
+    assert d["model_used"] == "rules" and "unconscious" in d["safety_checks"]["red_flags"]
+
+
+def test_list_caregivers():
+    r = client.get("/api/v1/caregivers")
+    assert r.status_code == 200 and len(r.json()) >= 10

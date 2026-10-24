@@ -51,6 +51,13 @@ class TriageRequest(BaseModel):
     language: LanguageIn = "auto"
     location: Optional[Location] = None
     conversation_history: list[Turn] = Field(default_factory=list)
+    debug: bool = Field(False, description="Optional. If true, the response gains an extra `debug` object (decision trace). "
+                                           "Without it the response is exactly the official schema.")
+
+    @field_validator("debug", mode="before")
+    @classmethod
+    def _debug(cls, v: Any) -> bool:
+        return str(v).strip().lower() in ("1", "true", "yes", "on")
 
     @field_validator("user_input", mode="before")
     @classmethod

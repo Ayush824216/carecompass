@@ -5,7 +5,9 @@ import logging
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from . import data_adapter, intake, pipeline
@@ -40,9 +42,23 @@ def health() -> dict:
 
 
 @app.post("/api/v1/triage", response_model=TriageResponse, response_model_exclude_none=False)
-def triage(req: TriageRequest) -> TriageResponse:
-    """Stateless: send the full conversation_history each turn. Returns a follow-up question OR a decision."""
-    return pipeline.run(req)
+def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `debug` decision trace to the response")):
+    """Stateless: send the full conversation_history each turn. Returns a follow-up question OR a decision.
+
+    The response is exactly the official schema unless `debug` is true (body field or `?debug=true`),
+    in which case one extra key, `debug`, is added.
+    """
+    if not (debug or req.debug):
+        return pipeline.run(req)
+    trace: dict = {}
+    resp = pipeline.run(req, trace=trace)
+    return JSONResponse({**jsonable_encoder(resp), "debug": jsonable_encoder(trace)})
+
+
+@app.get("/api/v1/caregivers", response_model=list[Caregiver])
+def list_caregivers() -> list[Caregiver]:
+    """All caregivers in the network (for directory views)."""
+    return [Caregiver(**{k: cg.get(k) for k in Caregiver.model_fields if k in cg}) for cg in data_adapter.load_caregivers()]
 
 
 @app.get("/api/v1/questions")

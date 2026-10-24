@@ -1,0 +1,46 @@
+# End-to-end API smoke test against a running backend.
+#   powershell -ExecutionPolicy Bypass -File test_flow.ps1 [-Base http://localhost:8000]
+param([string]$Base = "http://localhost:8000")
+$ErrorActionPreference = "Stop"
+$official = @("follow_up_question", "care_type", "urgency", "red_flags", "reasoning", "matched_caregivers") | Sort-Object
+$fail = 0
+
+function Check($name, $cond) {
+  if ($cond) { Write-Host "PASS  $name" -ForegroundColor Green } else { Write-Host "FAIL  $name" -ForegroundColor Red; $script:fail++ }
+}
+function Post($path, $body) {
+  Invoke-RestMethod -Method Post -Uri "$Base$path" -ContentType "application/json; charset=utf-8" `
+    -Body ([System.Text.Encoding]::UTF8.GetBytes(($body | ConvertTo-Json -Depth 10)))
+}
+function Keys($obj) { ($obj.PSObject.Properties.Name | Sort-Object) }
+
+$h = Invoke-RestMethod "$Base/health"
+Check "health ok" ($h.status -eq "ok")
+
+$req = @{ user_input = "papa ko do din se bukhar hai aur khansi bhi"; language = "auto"; location = @{ lat = 28.54; lng = 77.27 }; conversation_history = @() }
+$r = Post "/api/v1/triage" $req
+Check "default response has exactly the official keys" ((Compare-Object (Keys $r) $official) -eq $null)
+Check "example routes to a decision" ($r.care_type -ne $null -and $r.urgency -ne $null)
+Check "caregivers matched" ($r.matched_caregivers.Count -ge 1)
+
+$e = Post "/api/v1/triage" @{ user_input = "dadaji ke seene mein tez dard ho raha hai"; language = "auto"; conversation_history = @() }
+Check "emergency -> emergency_referral/immediate" ($e.care_type -eq "emergency_referral" -and $e.urgency -eq "immediate")
+Check "emergency has no caregivers" ($e.matched_caregivers.Count -eq 0)
+Check "emergency reasoning has 112" ($e.reasoning -like "*112*")
+
+$n = Post "/api/v1/triage" @{ user_input = "seene mein dard nahi hai, bas gas hai"; language = "auto"; conversation_history = @() }
+Check "negation is not an emergency" ($n.care_type -ne "emergency_referral")
+
+$d = Post "/api/v1/triage?debug=true" $req
+Check "debug adds exactly one key" ((Compare-Object (Keys $d) ($official + "debug" | Sort-Object)) -eq $null)
+Check "debug has detected_language" ($d.debug.detected_language -eq "hinglish")
+
+$f = Post "/api/v1/triage" @{ user_input = "tabiyat kharab hai"; language = "auto"; conversation_history = @() }
+Check "vague input asks a follow-up" ($f.follow_up_question -ne $null -and $f.care_type -eq $null)
+
+if ($r.matched_caregivers.Count -ge 1) {
+  $b = Post "/api/v1/book" @{ caregiver_id = $r.matched_caregivers[0].caregiver_id; care_type = $r.care_type; urgency = $r.urgency }
+  Check "booking confirmed" ($b.status -eq "confirmed")
+}
+
+if ($fail -gt 0) { Write-Host "$fail check(s) failed" -ForegroundColor Red; exit 1 } else { Write-Host "All checks passed" -ForegroundColor Green }
