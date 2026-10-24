@@ -4,7 +4,7 @@ import { Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { canListen, listen, stopSpeaking } from "../../lib/speech.js";
 import { CARE_EXAMPLES } from "../../lib/examples.js";
-import { Logo } from "../Layout.jsx";
+import { BrandAvatar } from "../Layout.jsx";
 
 function time(ts, lang) {
   return new Date(ts).toLocaleTimeString(lang === "hi" ? "hi-IN" : "en-IN", { hour: "numeric", minute: "2-digit" });
@@ -15,7 +15,7 @@ function Bubble({ m, lang, t }) {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}
       className={`flex gap-3 ${user ? "flex-row-reverse" : ""}`}>
-      {!user && <Logo className="mt-1 h-8 w-8 shrink-0" />}
+      {!user && <BrandAvatar className="mt-1 h-9 w-9" />}
       <div className={`flex max-w-[85%] flex-col ${user ? "items-end" : "items-start"}`}>
         <div className={`rounded-2xl px-4 py-3 text-[1.02rem] leading-relaxed ${user
           ? "rounded-tr-md bg-primary text-primary-ink"
@@ -32,7 +32,7 @@ function Bubble({ m, lang, t }) {
 function Typing({ t }) {
   return (
     <div className="flex items-center gap-3" role="status" aria-label={t("care.typing")}>
-      <Logo className="h-8 w-8 shrink-0" />
+      <BrandAvatar className="h-9 w-9" />
       <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md border border-line bg-surface px-4 py-3.5">
         {[0, 1, 2].map((i) => (
           <motion.span key={i} className="h-2 w-2 rounded-full bg-muted" animate={{ opacity: [0.3, 1, 0.3] }}

@@ -35,7 +35,9 @@
     "explore": "Explore",
     "resources": "Resources",
     "apiDocs": "API docs (Swagger)",
-    "github": "Source code"
+    "github": "Source code",
+    "sources": "Data sources",
+    "sourcesNote": "Synthetic dev data (ours) · KTAS triage · Disease-Symptom · Symptoms-to-Diseases (Kaggle)"
   },
   "common": {
     "loading": "Loading…",
@@ -588,5 +590,93 @@
       "Bacche ki tabiyat",
       "Dawai/injection ke liye nurse"
     ]
+  },
+  "landing": {
+    "eyebrow": "Home-healthcare routing for India",
+    "title": "The right care. The right caregiver. The right time.",
+    "subHi": "सही देखभाल। सही देखभालकर्ता। सही समय।",
+    "subEn": "The right care. The right caregiver. The right time.",
+    "subToggle": "हिंदी में देखें",
+    "sub": "Describe the problem by voice or text, in English, Hindi or Hinglish. CareCompass checks for danger signs, decides what care fits and how urgent it is, and finds a caregiver near you, with the reason shown.",
+    "cta": "Get care now",
+    "secondary": "How it works",
+    "trust": [
+      "English · हिंदी · Hinglish",
+      "Voice-first",
+      "Safety check on every message",
+      "Never diagnoses or prescribes"
+    ],
+    "visual": {
+      "map": "Delhi NCR",
+      "you": "You",
+      "example": "Example",
+      "triageFrom": "Papa · fever + cough · 2 days",
+      "triageTo": "Paramedic home visit",
+      "urg": "Same day",
+      "cgName": "Nurse Priya",
+      "cgMeta": "2.4 km · free 4 PM · 4.8★",
+      "safety": "Safety check: no danger signs",
+      "paramedic": "Paramedic",
+      "nurse": "Nurse",
+      "doctor": "Doctor"
+    },
+    "stepsTitle": "How it works",
+    "stepsSub": "Four steps, usually without a single follow-up question.",
+    "steps": [
+      {
+        "t": "Tell us",
+        "d": "Speak or type the problem, who it is for and since when."
+      },
+      {
+        "t": "Safety check",
+        "d": "Every message is screened for danger signs first, in three languages."
+      },
+      {
+        "t": "Right care",
+        "d": "We pick the care type and urgency, and explain why in plain words."
+      },
+      {
+        "t": "Right caregiver",
+        "d": "Ranked by skill, distance, free time, language and rating. Book in one tap."
+      }
+    ],
+    "careTitle": "Five kinds of care",
+    "careSub": "Plain-language guide to what each option means.",
+    "careWhen": {
+      "paramedic_home_visit": "Fever or a fall at home, BP or sugar checks for someone who cannot travel.",
+      "nurse_home_visit": "Injections, drips, wound or catheter care, bedridden patients.",
+      "gp_teleconsult": "Mild, common problems that a doctor can assess on a call.",
+      "specialist_referral": "Problems lasting weeks or months, or needing a specific expert.",
+      "emergency_referral": "Danger signs: chest pain, breathing trouble, fainting, stroke signs."
+    },
+    "emTitle": "In an emergency, we step aside and get you help",
+    "emBody": "If any danger sign is found, CareCompass skips questions and booking. It shows Call 112 and Ambulance 108 in large buttons, step-by-step instructions in your language, and your location to read out to the operator.",
+    "emCall": "Call 112",
+    "emAmb": "Ambulance 108",
+    "previewTitle": "Caregivers in the network",
+    "previewSub": "A few profiles from the demo network across Delhi NCR (synthetic data).",
+    "previewFrom": "from {place}",
+    "previewAll": "See all caregivers",
+    "builtTitle": "Built for every home",
+    "built": [
+      {
+        "t": "Large, clear text",
+        "d": "Text size control and high-contrast mode on every page."
+      },
+      {
+        "t": "Voice in and out",
+        "d": "Speak instead of typing. Answers are read aloud in Hindi or English."
+      },
+      {
+        "t": "Elderly-friendly",
+        "d": "Big buttons, one-tap answers like Haan / Nahi, no jargon."
+      },
+      {
+        "t": "Low-literacy ready",
+        "d": "Icons with every label and short sentences in the user's own language."
+      }
+    ],
+    "ctaTitle": "Is someone unwell at home today?",
+    "ctaSub": "Describe it in your own words. It takes less than a minute."
   }
 }

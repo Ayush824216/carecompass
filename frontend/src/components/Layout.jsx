@@ -5,15 +5,22 @@ import { CheckCircle2, Contrast, Github, Menu, Minus, Phone, Plus, SlidersHorizo
 import { useApp } from "../context/AppContext.jsx";
 import { API_BASE } from "../lib/api.js";
 
+/** Brand mark: a medical cross inside a location pin ("care" + "near you"). */
 export function Logo({ className = "h-9 w-9" }) {
   return (
     <svg viewBox="0 0 40 40" className={className} aria-hidden="true">
-      <circle cx="20" cy="20" r="19" className="fill-primary" />
-      <circle cx="20" cy="20" r="14" fill="none" stroke="white" strokeOpacity=".35" strokeWidth="1.5" />
-      <path d="M20 7l5 13-5 13-5-13z" fill="white" />
-      <path d="M20 7l5 13h-10z" className="fill-accent" />
-      <circle cx="20" cy="20" r="2.2" className="fill-primary" />
+      <path d="M20 2C11.7 2 5 8.6 5 16.8 5 27.4 20 38 20 38s15-10.6 15-21.2C35 8.6 28.3 2 20 2z" className="fill-primary" />
+      <path d="M17.4 9h5.2v5.2h5.2v5.2h-5.2v5.2h-5.2v-5.2h-5.2v-5.2h5.2z" fill="white" />
     </svg>
+  );
+}
+
+/** Assistant avatar: the brand mark on a soft mint circle. */
+export function BrandAvatar({ className = "h-9 w-9" }) {
+  return (
+    <span className={`flex shrink-0 items-center justify-center rounded-full bg-primary-soft ring-1 ring-primary/15 ${className}`} aria-hidden="true">
+      <Logo className="h-[62%] w-[62%]" />
+    </span>
   );
 }
 
@@ -153,7 +160,7 @@ function Navbar() {
       <div className="container-page flex h-[72px] items-center gap-3">
         <Link to="/" className="flex items-center gap-2.5 rounded-lg pr-2" aria-label="CareCompass home">
           <Logo />
-          {showWordmark && <span className="font-display text-xl font-semibold tracking-tight">CareCompass</span>}
+          {showWordmark && <span className="font-display text-xl font-bold tracking-tight">Care<span className="text-primary">Compass</span></span>}
         </Link>
         {fullNav && <nav className="ml-4 flex items-center gap-1" aria-label="Main">
           {LINKS.map(([to, key]) => (
@@ -208,7 +215,7 @@ function Footer() {
     <footer className="mt-24 border-t border-line bg-sunken/60">
       <div className="container-page grid gap-10 py-12 md:grid-cols-[1.6fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-2.5"><Logo className="h-8 w-8" /><span className="font-display text-lg font-semibold">CareCompass</span></div>
+          <div className="flex items-center gap-2.5"><Logo className="h-8 w-8" /><span className="font-display text-lg font-bold">Care<span className="text-primary">Compass</span></span></div>
           <p className="mt-3 max-w-md text-muted">{t("footer.tagline")}</p>
           <p className="mt-5 text-sm font-semibold">{t("footer.team")}</p>
           <p className="text-sm text-muted">{t("footer.event")}</p>
@@ -232,6 +239,7 @@ function Footer() {
         <div className="container-page space-y-2 py-6 text-sm text-muted">
           <p className="font-semibold text-ink">{t("footer.disclaimer")}</p>
           <p>{t("footer.dpdp")}</p>
+          <p><span className="font-semibold text-ink">{t("footer.sources")}:</span> {t("footer.sourcesNote")} · <a href="/how-it-works" className="underline hover:text-primary">{t("nav.how")}</a></p>
         </div>
       </div>
     </footer>

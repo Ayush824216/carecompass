@@ -1,12 +1,12 @@
-import { AlertTriangle, Building2, CalendarDays, Clock, Siren, Stethoscope, Syringe, Video } from "lucide-react";
+import { AlertTriangle, Ambulance, CalendarDays, Clock, HeartPulse, Microscope, Siren, Video } from "lucide-react";
 
 export const CARE_ORDER = ["paramedic_home_visit", "nurse_home_visit", "gp_teleconsult", "specialist_referral", "emergency_referral"];
 
 export const CARE_ICON = {
-  paramedic_home_visit: Stethoscope,
-  nurse_home_visit: Syringe,
+  paramedic_home_visit: Ambulance,
+  nurse_home_visit: HeartPulse,
   gp_teleconsult: Video,
-  specialist_referral: Building2,
+  specialist_referral: Microscope,
   emergency_referral: Siren,
 };
 

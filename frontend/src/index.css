@@ -4,25 +4,25 @@
 
 /* Design tokens as RGB channels so Tailwind opacity modifiers work. */
 :root {
-  --bg: 250 247 241;          /* warm off-white */
+  --bg: 247 249 251;          /* very light cool grey */
   --surface: 255 255 255;
-  --sunken: 242 238 230;
-  --ink: 22 36 34;
-  --muted: 84 98 95;
-  --line: 223 216 204;
-  --primary: 14 98 86;        /* deep teal */
-  --primary-deep: 8 66 58;
-  --primary-soft: 222 239 234;
+  --sunken: 240 244 247;
+  --ink: 30 41 59;            /* slate */
+  --muted: 82 96 116;
+  --line: 222 229 236;
+  --primary: 13 110 104;      /* deep medical teal */
+  --primary-deep: 9 78 74;
+  --primary-soft: 222 245 238; /* soft mint */
   --primary-ink: 255 255 255;
-  --accent: 214 122 34;       /* warm saffron, highlights only */
-  --accent-soft: 252 236 214;
-  --emergency: 190 18 32;     /* reserved for emergencies */
-  --emergency-deep: 140 10 22;
-  --emergency-soft: 253 231 232;
-  --routine: 36 122 62;
-  --routine-soft: 224 242 228;
-  --sameday: 168 98 0;
-  --sameday-soft: 253 240 214;
+  --accent: 2 120 186;        /* sky blue, supporting highlight */
+  --accent-soft: 225 241 252; /* pale sky */
+  --emergency: 196 22 38;     /* reserved for emergencies only */
+  --emergency-deep: 145 12 26;
+  --emergency-soft: 254 232 234;
+  --routine: 21 128 61;
+  --routine-soft: 220 244 228;
+  --sameday: 180 105 0;
+  --sameday-soft: 254 241 214;
   --base-size: 18px;
   color-scheme: light;
 }
@@ -30,18 +30,18 @@
 :root[data-contrast="high"] {
   --bg: 255 255 255;
   --surface: 255 255 255;
-  --sunken: 238 238 238;
+  --sunken: 236 238 240;
   --ink: 0 0 0;
   --muted: 30 30 30;
   --line: 0 0 0;
-  --primary: 0 72 62;
-  --primary-deep: 0 45 38;
-  --primary-soft: 214 236 230;
-  --accent: 150 70 0;
-  --accent-soft: 255 232 200;
+  --primary: 0 72 68;
+  --primary-deep: 0 45 42;
+  --primary-soft: 210 238 230;
+  --accent: 0 80 140;
+  --accent-soft: 210 232 250;
   --emergency: 170 0 15;
   --routine: 0 95 30;
-  --sameday: 130 70 0;
+  --sameday: 125 70 0;
 }
 
 html { font-size: var(--base-size); }
@@ -51,7 +51,7 @@ body {
 }
 :lang(hi) body, [lang="hi"] { line-height: 1.7; }
 
-h1, h2, h3 { @apply font-display; letter-spacing: -0.01em; }
+h1, h2, h3 { @apply font-display; letter-spacing: -0.02em; }
 
 :focus-visible {
   outline: 3px solid rgb(var(--accent));
@@ -69,7 +69,7 @@ h1, h2, h3 { @apply font-display; letter-spacing: -0.01em; }
   .btn-ghost { @apply btn border border-line bg-surface text-ink hover:bg-sunken; }
   .btn-emergency { @apply btn bg-emergency text-white hover:bg-emergency-deep; }
   .chip { @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-sm; }
-  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.14em] text-muted; }
+  .eyebrow { @apply font-mono text-[0.72rem] font-medium uppercase tracking-[0.16em] text-muted; }
   .input { @apply w-full rounded-xl border border-line bg-surface px-4 min-h-[48px] text-ink placeholder:text-muted/70 focus:border-primary; }
 }
 
@@ -78,3 +78,11 @@ h1, h2, h3 { @apply font-display; letter-spacing: -0.01em; }
 }
 
 .leaflet-container { font-family: inherit; border-radius: 1rem; }
+
+/* subtle film grain for hero/editorial sections (inline SVG noise, works offline) */
+.grain { position: relative; isolation: isolate; }
+.grain::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-contrast="high"] .grain::before { display: none; }
