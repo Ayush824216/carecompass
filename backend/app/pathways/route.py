@@ -8,6 +8,7 @@
 """
 from __future__ import annotations
 
+import re
 from importlib import import_module
 from typing import Optional
 
@@ -44,6 +45,17 @@ def merge(dec: Optional[Decision], out: PathwayOutcome) -> Optional[Decision]:
     return merged
 
 
+def temperature_said(temp_f: float, span: Optional[dict]) -> str:
+    """A temperature in the user's own number: "102°F", or "39 C (= 102.2°F)" when it was given in Celsius."""
+    said = (span or {}).get("text")
+    if not said:
+        return f"{temp_f:g}°F"
+    m = re.search(r"\d+(?:\.\d+)?", said)
+    if m and abs(float(m.group(0)) - temp_f) >= 0.05:
+        return f"{said} (= {temp_f:g}°F)"
+    return said if re.search(r"°|f|fahrenheit|deg", said, re.I) else f"{said}°F"
+
+
 def _num(n: float) -> str:
     return f"{int(n):,}" if float(n).is_integer() else f"{n:g}"
 
@@ -56,7 +68,8 @@ def slot_phrases(out: PathwayOutcome, refs: list[str], lang: str) -> list[str]:
         if v is None:
             continue
         if r == "temp_f" and out.slots.temp_f is not None:
-            ph.append((f"temperature {v:g}°F", f"तापमान {v:g}°F", f"temperature {v:g}°F")[i])
+            said = temperature_said(v, out.spans.get("temp_f"))
+            ph.append((f"temperature {said}", f"तापमान {said}", f"temperature {said}")[i])
         elif r == "temp_f" and f.get("temp_band"):  # the thermometer band the user picked, never a made-up number
             b = f["temp_band"].replace("-", "–")
             b = b if b[0] in "<" or b.endswith("+") else f"{b}"

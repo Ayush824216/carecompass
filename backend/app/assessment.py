@@ -186,19 +186,23 @@ def symptoms_checked(out: PathwayOutcome, lang: str, limit: int = 12) -> list[di
         st = "present" if out.facts.get(k) is True else "absent" if k in out.neg else "not_asked"
         if st == "not_asked" and k not in danger:
             continue
-        rows.append({"id": k, "label": engine.sign_label(k, lang), "status": st})
+        span = out.spans.get(k)
+        if st == "present" and span is None:  # hallucination control: shown as present only with the user's words
+            continue
+        rows.append({"id": k, "label": engine.sign_label(k, lang), "status": st, "evidence": span})
     rows.sort(key=lambda r: {"present": 0, "absent": 1, "not_asked": 2}[r["status"]])
     rows = rows[:limit]
     if out.facts.get("fever"):
         i = IDX.get(lang, 0)
         band = out.facts.get("temp_band")
+        span = out.spans.get("temp_f")
         if out.slots.temp_f is not None:
-            val = f"{out.slots.temp_f:g}°F"
+            val = proute.temperature_said(out.slots.temp_f, span)
         elif band:
             val = f"{band.replace('-', '–')}°F"
         else:
             val = None
-        rows.insert(0, {"id": "temperature", "label": TEXT["temperature"][i],
+        rows.insert(0, {"id": "temperature", "label": TEXT["temperature"][i], "evidence": span,
                         "status": "measured" if val else "not_measured", "value": val or TEXT["not_measured"][i]})
     return rows
 

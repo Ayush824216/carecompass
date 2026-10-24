@@ -229,6 +229,7 @@ class Slots:
     chronic_condition: bool = False
     can_travel: Optional[bool] = None
     answers: dict = field(default_factory=dict)
+    evidence: dict = field(default_factory=dict)  # symptom -> span in the user's words (or the answer it came from)
 
 
 def extract_slots(user_texts: list[str]) -> Slots:
@@ -308,6 +309,16 @@ def build_state(user_input: str, history: list[dict]) -> IntakeState:
     facts = [f for f in facts if f]
     slots = extract_slots(user_texts + facts)
     slots.answers = answers
+    # hallucination control: a symptom stays only with a span in the user's words, or when it comes from the
+    # canonical text of one of the user's own answers (e.g. "No" to "able to drink?" -> very weak)
+    from . import evidence
+    spans: dict[str, dict] = {}
+    for sp in evidence.find(user_texts):
+        spans.setdefault(sp.label, sp.as_dict())
+    from_answers = set(extract_slots(facts).symptoms) if facts else set()
+    slots.symptoms = [x for x in slots.symptoms if x in spans or x in from_answers]
+    slots.evidence = {x: spans.get(x) or {"kind": "answer", "label": x, "text": None, "start": None, "end": None,
+                                          "turn": None} for x in slots.symptoms}
     if answers.get("breathing") == "no":
         slots.breathing = "ok"
     elif answers.get("breathing") == "yes":

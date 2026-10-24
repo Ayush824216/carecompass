@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any, Optional
 
+from .. import evidence
 from ..config import get_settings
 from ..lang import clean, normalise
 from ..safety import _negated
@@ -435,6 +436,7 @@ class PathwayOutcome:
     slots: Slots
     answers: Answers
     contradictions: set[str] = field(default_factory=set)  # said both "X" and "no X"; the more severe was used
+    spans: dict = field(default_factory=dict)  # slot / sign id -> evidence span in the user's words (app.evidence)
 
     @property
     def primary(self) -> Optional[PathwayResult]:
@@ -472,9 +474,11 @@ def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input:
         state: Optional[dict] = None) -> PathwayOutcome:
     common, pathways, _ = load()
     slots = parse(user_texts)
+    spans = evidence.enforce_value_spans(slots, user_texts)  # a number without a span is dropped, never estimated
     signs, contra = detect_signs_detail(slots)
     answers = parse_answers(history or [], user_input) if history is not None else Answers()
     merge_state_answers(answers, state)
+    spans.update(evidence.sign_spans(signs, answers, user_texts))
     facts, neg, known = build_facts(slots, signs, answers)
     # a chip answer that contradicts the text (or the reverse) also counts; the more severe statement stands
     contra |= {k for k in answers.negated if signs.get(k) is True}
@@ -486,7 +490,7 @@ def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input:
         p = pathways[pid]
         if expr.evaluate(p.cfg["trigger"], facts, fn):
             results.append(evaluate_pathway(p, facts, neg, known))
-    return PathwayOutcome(results, facts, neg, known, slots, answers, contra)
+    return PathwayOutcome(results, facts, neg, known, slots, answers, contra, spans)
 
 
 # ---------------------------------------------------------------- senior-doctor questioning

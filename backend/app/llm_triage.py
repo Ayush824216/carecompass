@@ -1,7 +1,9 @@
 """Model B: LLM triage with taxonomy definitions + k nearest training examples as few-shot context.
 
-Retrieval uses TF-IDF char n-gram cosine (fast, CPU, handles Hinglish spelling). Output is validated strictly;
-anything invalid returns None so the caller falls back to the local model.
+Retrieval uses TF-IDF char n-gram cosine (fast, CPU, handles Hinglish spelling). Output is validated strictly:
+closed enums only (care_type, urgency, red-flag ids, symptom ids, concern-pattern ids), no unknown keys or values.
+Anything else returns None so the caller falls back to the local model. The LLM writes no free text that reaches
+the user: explanations come from our templates and curated config (hallucination control).
 """
 from __future__ import annotations
 
@@ -79,9 +81,8 @@ def system_prompt(lang: str) -> str:
         "2. Elderly, infants, or people who cannot travel favour home visits over teleconsult.\n"
         "3. Long-standing (weeks/months) or organ-specific problems favour specialist_referral.\n"
         "4. When torn between two urgency levels, choose the more urgent one.\n"
-        f"5. reasoning: one or two short sentences in {LANG_NAME.get(lang, 'simple English')}, based only on the "
-        "user's own words (symptoms, duration, who). No disease names, no medicines, no diagnosis.\n"
-        'Reply with JSON only: {"care_type": str, "urgency": str, "red_flags": [str], "reasoning": str}'
+        "5. Use only the ids listed above. Do not write any explanation or other text.\n"
+        'Reply with JSON only: {"care_type": str, "urgency": str, "red_flags": [str]}'
     )
 
 
@@ -92,20 +93,44 @@ def user_prompt(text: str, history_text: str, examples: list[dict]) -> str:
     return f"Labelled examples of similar requests:\n{ex}\n{conv}\nRequest to route: \"{text}\""
 
 
+ALLOWED_KEYS = {"care_type", "urgency", "red_flags", "symptom_ids", "pattern_ids"}
+IGNORED_KEYS = {"reasoning"}  # tolerated from older prompts, never used or shown
+
+
+@lru_cache
+def symptom_ids() -> frozenset[str]:
+    from .intake import SYMPTOMS
+    from .pathways.engine import load
+    return frozenset([n for n, _ in SYMPTOMS] + list(load()[2]))
+
+
+@lru_cache
+def pattern_ids() -> frozenset[str]:
+    from .assessment import load_cfg
+    return frozenset(c["id"] for cat in load_cfg()["categories"].values() for c in cat["causes"])
+
+
+def _closed_list(v, allowed) -> Optional[list[str]]:
+    if v is None:
+        return []
+    if not isinstance(v, list) or not all(isinstance(x, str) and x in allowed for x in v):
+        return None
+    return list(dict.fromkeys(v))
+
+
 def validate(obj: Optional[dict]) -> Optional[dict]:
-    if not isinstance(obj, dict):
+    """Strict JSON with closed enums: one unknown key or value rejects the whole answer (local fallback)."""
+    if not isinstance(obj, dict) or set(obj) - ALLOWED_KEYS - IGNORED_KEYS:
         return None
     ct, ur = obj.get("care_type"), obj.get("urgency")
     if ct not in CARE_TYPES or ur not in URGENCIES:
         return None
-    flags = obj.get("red_flags") or []
-    if not isinstance(flags, list):
-        flags = []
-    flags = [f for f in flags if isinstance(f, str) and f in safety.FLAG_LABELS]
-    reasoning = obj.get("reasoning") if isinstance(obj.get("reasoning"), str) else ""
-    if not safe_text(reasoning):
-        reasoning = ""
-    return {"care_type": ct, "urgency": ur, "red_flags": flags, "reasoning": reasoning.strip()[:400]}
+    flags = _closed_list(obj.get("red_flags"), safety.FLAG_LABELS)
+    syms = _closed_list(obj.get("symptom_ids"), symptom_ids())
+    pats = _closed_list(obj.get("pattern_ids"), pattern_ids())
+    if flags is None or syms is None or pats is None:
+        return None
+    return {"care_type": ct, "urgency": ur, "red_flags": flags, "symptom_ids": syms, "pattern_ids": pats}
 
 
 def llm_decision(text: str, lang: str, history_text: str = "") -> Optional[Decision]:
@@ -120,4 +145,4 @@ def llm_decision(text: str, lang: str, history_text: str = "") -> Optional[Decis
     if out is None:
         return None
     return Decision(care_type=out["care_type"], urgency=out["urgency"], source="llm", confidence=0.8,
-                    red_flags=out["red_flags"], llm_reasoning=out["reasoning"] or None)
+                    red_flags=out["red_flags"], llm_reasoning=None)

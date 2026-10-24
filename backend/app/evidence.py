@@ -64,14 +64,19 @@ def _sign_patterns():
     return _compiled_signs()
 
 
+def _labels(canon: str) -> list[str]:
+    """A canonical term and the intake symptom ids it stands for ("cannot breathe" -> breathlessness)."""
+    return [canon] + [n for n, rx in _symptom_patterns() if n != canon and rx.search(canon)]
+
+
 def find(user_texts: list[str]) -> list[Span]:
-    """All evidence spans in the user turns, in text order, one per (turn, start, end)."""
+    """All evidence spans in the user turns, in text order, one per (turn, start, end, label)."""
     from . import safety
-    out: dict[tuple[int, int, int], Span] = {}
+    out: dict[tuple[int, int, int, str], Span] = {}
 
     def add(kind: str, label: str, turn: int, s: str, a: int, b: int) -> None:
-        if b > a and (turn, a, b) not in out:
-            out[(turn, a, b)] = Span(kind, label, s[a:b], a, b, turn)
+        if b > a and (turn, a, b, label) not in out:
+            out[(turn, a, b, label)] = Span(kind, label, s[a:b], a, b, turn)
 
     for i, raw in enumerate(user_texts):
         s = clean(raw)
@@ -83,13 +88,15 @@ def find(user_texts: list[str]) -> list[Span]:
             if canon in NOT_HEALTH:
                 continue
             for m in rx.finditer(low):
-                add("symptom", canon, i, s, m.start(), m.end())
+                for lab in _labels(canon):
+                    add("symptom", lab, i, s, m.start(), m.end())
         for word, canon in _DEVA_RULES:
             if canon in NOT_HEALTH:
                 continue
             j = low.find(word)
             while j >= 0:
-                add("symptom", canon, i, s, j, j + len(word))
+                for lab in _labels(canon):
+                    add("symptom", lab, i, s, j, j + len(word))
                 j = low.find(word, j + 1)
         for m in COMPLAINT.finditer(s):
             add("complaint", "complaint", i, s, m.start(), m.end())
@@ -116,3 +123,92 @@ def supported(value: str, user_texts: list[str]) -> bool:
     """True when a value (a number, a word) literally appears in the user's text: used to drop unsupported values."""
     v = str(value).strip().lower()
     return bool(v) and any(v in clean(t).lower() for t in user_texts)
+
+
+# ---------------------------------------------------------------- values and signs (clinical pathways)
+def _span_dict(kind: str, label: str, turn: int, s: str, a: int, b: int) -> dict:
+    return {"kind": kind, "label": label, "text": s[a:b], "start": a, "end": b, "turn": turn}
+
+
+def _value_rules():
+    from .pathways import slots as S
+    return {
+        "temp_f": (lambda t: S.parse_temperature(t)[0], [S.TEMP]),
+        "platelets": (S.parse_platelets, [S.PLT, S.PLT_REV]),
+        "bp_sys": (lambda t: S.parse_bp(t)[0], [S.BP]),
+        "bp_dia": (lambda t: S.parse_bp(t)[1], [S.BP]),
+        "duration_days": (S.parse_duration, [rx for rx, _ in S.DURATION_RULES]),
+        "age_years": (lambda t: S.parse_age(t)[0], [S.AGE_MONTHS, S.AGE_WEEKS, *S.AGE_YEARS, S.INFANT_W]),
+        "vomit_count": (lambda t: S._count(S.COUNT_V, t.lower()), S.COUNT_V + [S.GENERIC_COUNT]),
+        "stool_count": (lambda t: S._count(S.COUNT_S, t.lower()), S.COUNT_S + [S.GENERIC_COUNT]),
+        "urine_absent_hours": (None, S.URINE_ABSENT),
+        "pregnancy_weeks": (None, [S.PREG_M, S.PREG_W, S.PREG_LEAD]),
+    }
+
+
+def _turn_texts(user_texts: list[str]) -> list[str]:
+    from .pathways.slots import DEVA_DIGITS
+    return [clean(t).translate(DEVA_DIGITS) for t in user_texts]  # digit translation keeps every offset
+
+
+def value_spans(slots, user_texts: list[str]) -> dict[str, dict]:
+    """Where each numeric slot came from. A turn that reproduces the value on its own is preferred."""
+    out: dict[str, dict] = {}
+    turns = _turn_texts(user_texts)
+    for attr, (parser, rxs) in _value_rules().items():
+        v = getattr(slots, attr, None)
+        if v is None:
+            continue
+        order = [i for i, t in enumerate(turns) if parser and parser(t) == v] + list(range(len(turns)))
+        for i in dict.fromkeys(order):
+            low = turns[i].lower()
+            m = next((m for rx in rxs for m in [rx.search(low)] if m), None)
+            if m:
+                out[attr] = _span_dict("value", attr, i, clean(user_texts[i]), m.start(), m.end())
+                break
+    return out
+
+
+def enforce_value_spans(slots, user_texts: list[str]) -> dict[str, dict]:
+    """Drop every numeric value without a span in the user's words (no number is ever estimated)."""
+    spans = value_spans(slots, user_texts)
+    for attr in _value_rules():
+        if getattr(slots, attr, None) is not None and attr not in spans:
+            setattr(slots, attr, None)
+    return spans
+
+
+def sign_spans(signs: dict, answers, user_texts: list[str]) -> dict[str, dict]:
+    """Span for each affirmed sign: the words that matched its pattern, else the chip the user tapped."""
+    from .pathways.engine import _compiled_signs, question_index
+    out: dict[str, dict] = {}
+    turns = [clean(t) for t in user_texts]
+    pats = _compiled_signs()
+    for sid, val in signs.items():
+        if val is not True:
+            continue
+        for i, s in enumerate(turns):
+            m = next((m for p in pats.get(sid, []) for m in [p.search(s.lower())] if m), None)
+            if m:
+                out[sid] = _span_dict("sign", sid, i, s, m.start(), m.end())
+                break
+    by_id = {q["id"]: q for _, q in question_index().values()}
+    for qid, chip_ids in (getattr(answers, "chips", None) or {}).items():
+        q = by_id.get(qid)
+        for c in (q or {}).get("chips", []):
+            if c["id"] not in chip_ids:
+                continue
+            labels = [lab for lab in c["label"].values() if lab]
+            for k, v in c.get("facts", {}).items():
+                if v is not True or k in out:
+                    continue
+                for i, s in enumerate(turns):
+                    j = next((s.lower().find(lab.lower()) for lab in labels if lab.lower() in s.lower()), -1)
+                    if j >= 0:
+                        lab = next(lab for lab in labels if lab.lower() in s.lower())
+                        out[k] = _span_dict("chip", k, i, s, j, j + len(lab))
+                        break
+                else:  # chosen earlier and echoed back in assessment_state: the user's own earlier answer
+                    out.setdefault(k, {"kind": "earlier_answer", "label": k, "text": c["label"].get("en", ""),
+                                       "start": None, "end": None, "turn": None})
+    return out

@@ -52,10 +52,14 @@ export default function AssessmentCard({ card, onGoToCaregivers }) {
           <ul className="grid gap-2 sm:grid-cols-2">
             {s.symptoms.items.map((it) => {
               const st = STATUS[it.status] || STATUS.not_asked;
+              // evidence span: the user's own words this row came from (shown on hover / long-press)
+              const ev = it.evidence?.text ? t("assessment.youSaid", { text: it.evidence.text })
+                : it.evidence ? t("assessment.fromAnswer") : undefined;
               return (
-                <li key={it.id} className="flex items-center gap-2.5">
+                <li key={it.id} className="flex items-center gap-2.5" title={ev}>
                   <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${st.cls}`} aria-hidden="true"><st.Icon className="h-4 w-4" /></span>
-                  <span className="min-w-0"><span className="font-semibold">{it.label}</span>
+                  <span className="min-w-0"><span className={`font-semibold ${ev ? "cursor-help underline decoration-dotted underline-offset-4" : ""}`}>{it.label}</span>
+                    {ev && <span className="sr-only"> ({ev})</span>}
                     <span className="text-sm text-muted"> · {it.value || t(`assessment.status.${st.key}`)}</span></span>
                 </li>
               );
