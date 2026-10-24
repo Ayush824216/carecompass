@@ -115,8 +115,10 @@ SIMPLE: dict[str, list[str]] = {
         r"(road|car|bike|scooter|truck|bus|motorcycle|two[- ]wheeler)\s+accident", r"accident",
         r"(fell|fallen|fall)\s+(\S+\s+){0,2}(from|off)\s+(\S+\s+){0,2}(roof|terrace|height|building|tree|ladder|balcony)",
         r"(broken|fractured)\s+(\S+\s+)?(bone|leg|arm|hip|neck|back)", r"bone\s+(is\s+)?(sticking|broken|out)", r"fracture",
-        r"haddi\s+(toot|tut|tooti|tuti)", r"(chhat|chat|chhath|seedhi|ped)\s+se\s+gir",
-        r"एक्सीडेंट|दुर्घटना", r"हड्डी\s*(टूट)", r"(छत|सीढ़ी|पेड़)\s*से\s*गिर",
+        r"(haddi|haath|hath|pair|taang|tang|baazu|bazu)\s+(\S+\s+)?(toot|tut|tooti|tuti)", r"haddi\s+(tedhi|bahar)",
+        r"(arm|leg|wrist|ankle|hip)\s+(is\s+|looks\s+|seems\s+)?(broken|fractured|deformed)",
+        r"(chhat|chat|chhath|seedhi|ped)\s+se\s+gir",
+        r"एक्सीडेंट|दुर्घटना", r"(हड्डी|हाथ|पैर|टांग|बाज़ू|बाजू)\s*(\S+\s*)?(टूट)", r"हड्डी\s*(टेढ़|बाहर)", r"(छत|सीढ़ी|पेड़)\s*से\s*गिर",
     ],
     "altered_mental_state": [
         r"\bconfus", r"disorient", r"mental\s+(status\s+)?change", r"altered\s+(mental|sensorium|consciousness)",
@@ -129,15 +131,26 @@ SIMPLE: dict[str, list[str]] = {
 
 # Clause-level exclusions per flag: if any of these is in the same clause, the flag is not fired.
 EXCLUDE: dict[str, list[str]] = {
-    "heavy_bleeding": [r"\b(thoda|thodi|little|slight|small|minor|halka|chhota)\b", r"(थोड़ा|थोड़ी|हल्का|छोटा)"],
     "seizure": [r"\bfits?\s+(well|fine|properly|in)\b", r"\bfit\s+(hai|hain|hoon|hu|h|he|ho|rehte|rehti)\b",
                 r"dil\s+ka\s+daura", r"fit\s+(and|&)\s+fine"],
     "stroke_signs": [],
+    # heavy periods over weeks/months is a specialist problem, not a haemorrhage
+    "heavy_bleeding": [r"\b(thoda|thodi|little|slight|small|minor|halka|chhota)\b", r"(थोड़ा|थोड़ी|हल्का|छोटा)",
+                       r"period|mahwari|maahwari|masik|menstru|पीरियड|माहवारी|मासिक"],
     "major_trauma": [r"\b(minor|small|chhota|chhoti|halka)\b\s+(\S+\s+)?accident"],
     "severe_breathing_difficulty": [],
 }
+# Per-pattern exclusions: only the bare keyword is suppressed, acute signs in the same clause still fire.
+# e.g. "discharged after a stroke" (history) vs "had a stroke last year, now slurred speech again" (acute sign).
+STROKE_HISTORY = [r"(after|since|post|had|history\s+of|old|previous|past|pichle\s+saal)\s+(\S+\s+){0,2}(stroke|paraly|lakwa|lakva)",
+                  r"(stroke|lakwa|lakva|paralysis)\s+(\S+\s+){0,2}(ke\s+baad|hua\s+tha|aaya\s+tha|pada\s+tha|last\s+year|years?\s+ago)",
+                  r"(लकवा|स्ट्रोक)\s*(के बाद|हुआ था|पड़ा था)"]
+PATTERN_EXCLUDE: dict[str, list[str]] = {
+    r"paraly": STROKE_HISTORY, r"\bstroke\b": STROKE_HISTORY, r"lakwa|lakva|laqwa": STROKE_HISTORY, r"लकवा": STROKE_HISTORY,
+    r"dysarthria|hemipar|hemipleg|facial\s+palsy": STROKE_HISTORY,
+}
 CHRONIC = re.compile(r"(months?|years?|mahin|saal|महीन|साल)")
-EXERTION = re.compile(r"(stairs|walking\s+fast|exercise|seedh?i|chadhne|daudne|सीढ़ी|चढ़ने)")
+EXERTION = re.compile(r"(stairs|walk|exercise|exertion|climb|seedh?i|chadhne|chalne|chalte|daudne|सीढ़ी|चढ़ने|चलने)", re.I)
 
 # --- combo flags: need a trigger AND a qualifier somewhere in the (whole) text --------------------
 FEVER = r"(fever|temperature|bukh?aa?r|bukar|बुखार|ताप)"
@@ -200,6 +213,7 @@ def _compile(pats: list[str]) -> list[re.Pattern]:
 
 
 _SIMPLE_C = {k: _compile(v) for k, v in SIMPLE.items()}
+_PEXCL_C = {re.compile(k, re.I).pattern: _compile(v) for k, v in PATTERN_EXCLUDE.items()}
 _EXCL_C = {k: _compile(v) for k, v in EXCLUDE.items()}
 _COMBO_C = {k: (_compile(a), _compile(b)) for k, (a, b) in COMBOS.items()}
 _TOKEN = re.compile(r"[\wऀ-ॿ']+")
@@ -238,9 +252,13 @@ def _scan_text(text: str, found: dict[str, str]) -> None:
                 continue
             if any(x.search(cl) for x in _EXCL_C.get(flag, [])):
                 continue
-            if flag == "severe_breathing_difficulty" and CHRONIC.search(cl) and EXERTION.search(cl):
+            # long-standing breathlessness only on exertion -> specialist, not emergency (unless severe at rest)
+            if (flag == "severe_breathing_difficulty" and CHRONIC.search(text) and EXERTION.search(cl)
+                    and not re.search(r"\b(rest|sitting|lying|baithe|lete)\b|severe|bahut|बहुत", cl, re.I)):
                 continue
             for p in pats:
+                if any(x.search(cl) for x in _PEXCL_C.get(p.pattern, [])):
+                    continue
                 m = p.search(cl)
                 while m:
                     if not _negated(cl, m.start(), m.end()):

@@ -172,3 +172,26 @@ def test_normalise():
     n = normalise("Papa ko do din se bukhar hai aur khansi bhi")
     assert "fever" in n and "cough" in n and "father" in n
     assert "fever" in normalise("दो दिन से बुखार है")
+
+
+# regressions found on the hand-written challenge set
+@pytest.mark.parametrize("text", [
+    "My father was discharged after a stroke and needs help with daily care and a feeding tube at home",
+    "Didi ko periods mein bahut zyada bleeding ho rahi hai 2 mahine se",
+    "Saans phoolti hai seedhi chadhne par, 6 mahine se",
+    "My dad's legs have been swelling up for a month and he gets breathless walking",
+    "papa ko pichle saal lakwa hua tha, ab physiotherapy chahiye",
+])
+def test_regression_benign(text):
+    assert safety.check([text]).red_flags == [], text
+
+
+@pytest.mark.parametrize("text,flag", [
+    ("बेटे का हाथ टूट गया लगता है, हड्डी टेढ़ी दिख रही है", "major_trauma"),
+    ("bete ka haath toot gaya", "major_trauma"),
+    ("his arm looks broken after the fall", "major_trauma"),
+    ("breathless even while sitting for 2 months, getting worse", "severe_breathing_difficulty"),
+    ("he had a stroke last year and now suddenly his speech is slurred again", "stroke_signs"),
+])
+def test_regression_positive(text, flag):
+    assert flag in safety.check([text]).red_flags, text

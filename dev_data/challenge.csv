@@ -1,0 +1,61 @@
+id,text,language,care_type,urgency
+CH_001,"Since last night my mother is coughing a lot and has a temperature of 101, she is 72",en,paramedic_home_visit,same_day
+CH_002,"I keep sneezing and my nose is blocked, started today",en,gp_teleconsult,routine
+CH_003,"Mere pet mein halka dard hai khana khane ke baad, 4-5 din se",hinglish,gp_teleconsult,routine
+CH_004,"दादी गिर गईं, कलाई सूज गई है और दर्द है, होश में हैं और बात कर रही हैं",hi,paramedic_home_visit,same_day
+CH_005,"He suddenly can't lift his right arm and his words are coming out jumbled",en,emergency_referral,immediate
+CH_006,"Bacche ne galti se mitti ka tel pee liya",hinglish,emergency_referral,immediate
+CH_007,"My son has had ear pain since yesterday and a mild fever",en,gp_teleconsult,same_day
+CH_008,"मेरे पिताजी को रोज़ इंसुलिन का इंजेक्शन लगवाना है, वो खुद नहीं लगा पाते",hi,nurse_home_visit,routine
+CH_009,"Wife ka c-section hua tha 10 din pehle, taanke ki dressing ghar par karwani hai",hinglish,nurse_home_visit,routine
+CH_010,"Grandpa's hands have been shaking for over a year and he walks slowly now",en,specialist_referral,routine
+CH_011,"Meri beti ko 2 saal se aankhon se dhundhla dikhta hai, board padhne mein dikkat",hinglish,specialist_referral,routine
+CH_012,"I've been getting acne on my face for months, nothing works",en,specialist_referral,routine
+CH_013,"Nana ji ka BP bahut high aa raha hai 180/110, sar bhaari hai",hinglish,paramedic_home_visit,same_day
+CH_014,"She's having trouble breathing and wheezing badly, inhaler isn't helping",en,emergency_referral,immediate
+CH_015,"मुझे दो दिन से बुखार है, बदन दर्द है, बाकी सब ठीक है",hi,gp_teleconsult,same_day
+CH_016,"Papa ko kal se peshab mein jalan ho rahi hai",hinglish,gp_teleconsult,same_day
+CH_017,"My father was discharged after a stroke and needs help with daily care and a feeding tube at home",en,nurse_home_visit,routine
+CH_018,"The baby is 3 weeks old and has a temperature of 100.8",en,emergency_referral,immediate
+CH_019,"मम्मी को कल से उल्टी और दस्त हो रहे हैं, बहुत कमज़ोरी है, 68 साल की हैं",hi,paramedic_home_visit,same_day
+CH_020,"Mujhe kuch dino se bahut tension aur ghabrahat rehti hai, neend nahi aati",hinglish,specialist_referral,routine
+CH_021,"I am 6 months pregnant and the baby has not moved since morning",en,emergency_referral,immediate
+CH_022,"My husband got stung by a bee on his hand, small swelling at the spot only",en,gp_teleconsult,routine
+CH_023,"Dadi ki taang mein ghaav hai jo sugar ki wajah se bhar nahi raha, roz patti chahiye",hinglish,nurse_home_visit,same_day
+CH_024,"बेटे का हाथ टूट गया लगता है, खेलते हुए गिरा, हड्डी टेढ़ी दिख रही है",hi,emergency_referral,immediate
+CH_025,"Need someone to come home and check my mother's sugar and BP every week, she is bedridden",en,paramedic_home_visit,routine
+CH_026,"I have had a dry cough for 3 weeks now, no fever",en,gp_teleconsult,same_day
+CH_027,"Bhai ne bahut saari neend ki goliyan kha li hain",hinglish,emergency_referral,immediate
+CH_028,"My mother has been feeling dizzy when she gets up from bed for the past 2 days, she is 80",en,paramedic_home_visit,same_day
+CH_029,"पापा को सांस लेने में कोई तकलीफ नहीं है, बस हल्की खांसी है एक हफ्ते से",hi,gp_teleconsult,routine
+CH_030,"Mere 4 saal ke bete ke daant mein dard aur sujan hai",hinglish,specialist_referral,same_day
+CH_031,"Woke up with a pounding headache and the worst of my life, neck is stiff and I have fever",en,emergency_referral,immediate
+CH_032,"Bachchi ki skin par lal chakatte hain aur khujli, kal se",hinglish,gp_teleconsult,routine
+CH_033,"My dad's legs have been swelling up for a month and he gets breathless walking",en,specialist_referral,same_day
+CH_034,"Mummy ko chakkar aake gir gayi, ab theek hain par sar par halki chot hai",hinglish,paramedic_home_visit,same_day
+CH_035,"Can a doctor tell me if my child's vaccination schedule is right?",en,gp_teleconsult,routine
+CH_036,"नानी जी को बिस्तर पर लेटे लेटे पीठ पर घाव हो गए हैं",hi,nurse_home_visit,same_day
+CH_037,"He cut his finger while cooking, bleeding stopped after pressing, needs a bandage",en,paramedic_home_visit,routine
+CH_038,"Didi ko periods mein bahut zyada bleeding ho rahi hai 2 mahine se",hinglish,specialist_referral,same_day
+CH_039,"My grandmother is not eating, very drowsy today and doesn't recognise me",en,emergency_referral,immediate
+CH_040,"Lower back pain for 2 years, radiates to my left leg",en,specialist_referral,routine
+CH_041,"Mujhe sar dard hai aur aankhon ke peeche dard, kal se, bukhar nahi hai",hinglish,gp_teleconsult,routine
+CH_042,"मेरे पति के पैर में मोच आ गई है, चल नहीं पा रहे",hi,paramedic_home_visit,same_day
+CH_043,"Thoda sa gala kharab hai aur zukaam, aaj subah se",hinglish,gp_teleconsult,routine
+CH_044,"My father needs his catheter checked, urine is not draining since this afternoon",en,nurse_home_visit,same_day
+CH_045,"I feel like hurting myself, I can't take this anymore",en,emergency_referral,immediate
+CH_046,"Papa ko 3 din se tez bukhar hai aur bahut kamzori, bistar se uth nahi pa rahe",hinglish,paramedic_home_visit,same_day
+CH_047,"My 10 month old has loose stools since yesterday but is feeding well and active",en,gp_teleconsult,same_day
+CH_048,"माँ के घुटनों का ऑपरेशन हुआ है, फिजियो और ड्रेसिंग घर पर चाहिए",hi,nurse_home_visit,routine
+CH_049,"Need to show my thyroid and cholesterol reports to a doctor online",en,gp_teleconsult,routine
+CH_050,"Aankh mein kuch chala gaya, laal hai aur paani aa raha hai, aaj se",hinglish,gp_teleconsult,same_day
+CH_051,"Uncle is sweating a lot and has pain going down his left arm",en,emergency_referral,immediate
+CH_052,"मुझे छह महीने से पेशाब बार बार आता है और प्यास बहुत लगती है",hi,specialist_referral,routine
+CH_053,"Beta 12 saal ka hai, school mein dhyaan nahi lagta, chidchida rehta hai, kai mahino se",hinglish,specialist_referral,routine
+CH_054,"My mom's face has suddenly gone crooked on one side",en,emergency_referral,immediate
+CH_055,"I have small painful blisters around my mouth since 2 days",en,gp_teleconsult,routine
+CH_056,"Dadaji ko 2 din se latrine nahi hui, pet phoola hai, 85 saal ke hain",hinglish,paramedic_home_visit,same_day
+CH_057,"There is a lump in my neck for a month, it is not painful",en,specialist_referral,same_day
+CH_058,"मेरी बहन ने तेज़ाब पी लिया है",hi,emergency_referral,immediate
+CH_059,"Saans phoolti hai seedhi chadhne par, 6 mahine se, dil ki dhadkan bhi tez lagti hai",hinglish,specialist_referral,same_day
+CH_060,"hello I need doctor",en,gp_teleconsult,routine

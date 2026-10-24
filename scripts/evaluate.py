@@ -88,6 +88,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-write", action="store_true")
     ap.add_argument("--sweep", action="store_true", help="sweep decision thresholds on the dev split")
+    ap.add_argument("--show-errors", action="store_true", help="print challenge-set misses")
     a = ap.parse_args()
     logging.getLogger("carecompass").setLevel(logging.WARNING)
     logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -138,6 +139,24 @@ def main() -> None:
         if pipe:
             lat_all = lat
         print(f"[{'official' if is_official else 'dev'} val n={m['n']}] {name}: {fmt(m)}")
+
+    # hand-written challenge set (different phrasing from the templates; never used for training)
+    ch_res = {}
+    ch_path = ROOT / "dev_data" / "challenge.csv"
+    challenge = data_adapter.read_vignette_file(ch_path) if ch_path.exists() else []
+    if challenge:
+        for name, rules, pipe in variants:
+            pr, _ = predict_rows(model, challenge, cfg, use_rules=rules, use_pipeline=pipe)
+            yc, yu = [r["care_type"] for r in challenge], [r["urgency"] for r in challenge]
+            pc, pu = [x[0] for x in pr], [x[1] for x in pr]
+            m = metrics(yc, pc, yu, pu)
+            ch_res[name] = (m, yc, pc, yu, pu)
+            print(f"[challenge n={m['n']}] {name}: {fmt(m)}")
+        if a.show_errors:
+            m, yc, pc, yu, pu = ch_res[list(ch_res)[-1]]
+            for r, c, u in zip(challenge, pc, pu):
+                if c != r["care_type"] or u != r["urgency"]:
+                    print(f"  MISS {r['id']}: gold={r['care_type']}/{r['urgency']} pred={c}/{u} | {r['text'][:90]}")
 
     k_res = {}
     if ktas_val:
