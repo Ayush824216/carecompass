@@ -10,3 +10,18 @@ build/
 models/*.joblib
 outputs/
 .DS_Store
+
+# --- added: model artefacts & processed data ---
+models/*
+!models/.gitkeep
+data/processed/
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.ckpt
+.pytest_cache/
+.env.*
+!.env.example
+*.log
+.vscode/
