@@ -4,7 +4,10 @@ import { api } from "../lib/api.js";
 import { speak, stopSpeaking } from "../lib/speech.js";
 import ChatPanel from "../components/care/ChatPanel.jsx";
 import DecisionPanel from "../components/care/DecisionPanel.jsx";
+import ResultSection from "../components/care/ResultSection.jsx";
+import EmergencyView from "../components/care/EmergencyView.jsx";
 import { ErrorState } from "../components/ui.jsx";
+import { ShieldAlert } from "lucide-react";
 
 const MAX_Q = 4;
 let uid = 0;
@@ -29,6 +32,7 @@ export default function GetCare() {
   const [ms, setMs] = useState(0);
   const [error, setError] = useState("");
   const [bank, setBank] = useState(null);
+  const [emOpen, setEmOpen] = useState(false);
   const lastInput = useRef(null);
 
   useEffect(() => { api.questions().then(setBank).catch(() => {}); }, []);
@@ -47,6 +51,7 @@ export default function GetCare() {
         { debug: true });
       const { debug: dbg, ...official } = data;
       setResponse(official); setDebug(dbg || null); setMs(took); setPhase("done");
+      setEmOpen(official.care_type === "emergency_referral");
       const newHist = [...hist, { role: "user", content: text }];
       if (official.follow_up_question) {
         setMessages((m) => [...m, { id: nextId(), role: "assistant", kind: "question", content: official.follow_up_question, ts: Date.now() }]);
@@ -66,10 +71,12 @@ export default function GetCare() {
 
   const reset = () => {
     stopSpeaking();
-    setMessages(welcome()); setHistory([]); setPhase("idle"); setResponse(null); setDebug(null); setError("");
+    setMessages(welcome()); setHistory([]); setPhase("idle"); setResponse(null); setDebug(null); setError(""); setEmOpen(false);
   };
 
   const questionNo = useMemo(() => history.filter((h) => h.role === "assistant").length, [history]);
+  const final = phase === "done" && response && !response.follow_up_question;
+  const emergency = response?.care_type === "emergency_referral";
   const quick = response?.follow_up_question && phase === "done" ? quickRepliesFor(response.follow_up_question, bank) : [];
 
   return (
@@ -88,6 +95,15 @@ export default function GetCare() {
           questionNo={response?.follow_up_question ? questionNo : 0} maxQuestions={MAX_Q} onReset={reset} />
         <DecisionPanel phase={phase} response={response} debug={debug} ms={ms} />
       </div>
+      {final && emergency && !emOpen && (
+        <button type="button" onClick={() => setEmOpen(true)}
+          className="mt-8 flex w-full items-center gap-4 rounded-xl2 bg-emergency p-5 text-left text-white shadow-lift">
+          <ShieldAlert className="h-8 w-8 shrink-0" aria-hidden="true" />
+          <span><span className="block text-xl font-bold">{t("emergency.title")}</span><span className="block">{t("emergency.call112")} · {t("emergency.call108")}</span></span>
+        </button>
+      )}
+      {final && !emergency && <ResultSection response={response} />}
+      {final && emergency && emOpen && <EmergencyView response={response} onBack={() => setEmOpen(false)} />}
     </div>
   );
 }
