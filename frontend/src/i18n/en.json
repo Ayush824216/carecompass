@@ -432,7 +432,8 @@
         "name": "Fast and robust",
         "desc": "Around 10 ms without the LLM; every LLM call has a 6-second timeout and a local fallback."
       }
-    ]
+    ],
+    "layersSub": "From what you see on screen down to the decision engine. Safety sits in the middle and wraps every model."
   },
   "dev": {
     "title": "For developers",
