@@ -195,3 +195,18 @@ def test_regression_benign(text):
 ])
 def test_regression_positive(text, flag):
     assert flag in safety.check([text]).red_flags, text
+
+
+@pytest.mark.parametrize("text,flag", [
+    ("My 3 week old baby has a temperature", "infant_danger_signs"),
+    ("navjaat baby ko bukhar hai", "infant_danger_signs"),
+    ("तीन हफ्ते के बच्चे को बुखार है", "infant_danger_signs"),
+    ("My wife is 8 months pregnant and the baby has not moved since morning", "pregnancy_emergency"),
+    ("pregnant hoon, subah se bachcha hil nahi raha", "pregnancy_emergency"),
+])
+def test_infant_and_pregnancy_extra(text, flag):
+    assert flag in safety.check([text]).red_flags, text
+
+
+def test_older_baby_mild_fever_is_not_flagged():
+    assert safety.check(["mere 10 mahine ke bete ko halka bukhar hai, khel raha hai"]).red_flags == []

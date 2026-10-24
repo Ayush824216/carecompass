@@ -99,7 +99,7 @@ SIMPLE: dict[str, list[str]] = {
         r"(too\s+many|a\s+lot\s+of|whole\s+(bottle|strip)\s+of|all\s+(the|his|her|my))\s+(\S+\s+)?(pills|tablets|medicines?)",
         r"(snake|scorpion)\s*(bite|bit|sting|stung)", r"bitten\s+by\s+a\s+(snake|scorpion)",
         r"zeh[ae]r|jah[ae]r|jeher|zahar", r"(keede|keeda|chuhe|chuha|machhar)\s+maar", r"kerosene|phenyl|tezaab|tezab",
-        rf"\b(saari|sari|bahut|zyada|jyada|poori|puri)\s+{W}{{0,1}}(goliyan|goliya|goli|tablets?|dawai|dawa|dawaiyan)\s+{W}{{0,2}}(kha|le|pee|pi|nigal)",
+        rf"\b(saari|sari|bahut|zyada|jyada|poori|puri)\s+{W}{{0,3}}(goliyan|goliya|goli|tablets?|dawai|dawa|dawaiyan)\s+{W}{{0,2}}(kha|le|pee|pi|nigal)",
         r"\b(saanp|sanp|saap|bichhu|bichu)\b",
         r"ज़हर|जहर|विष", r"(चूहे|कीड़े|कीडे)[^।,.!?]{0,6}मार", r"(सारी|बहुत|ज़्यादा|ज्यादा|पूरी)[^।,.!?]{0,6}(गोलियाँ|गोलियां|गोली|दवा|दवाई)",
         r"साँप|सांप|बिच्छू", r"तेज़ाब|तेजाब|केरोसिन|फिनाइल",
@@ -168,13 +168,22 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
          r"दूध[^।,.!?]{0,10}नहीं", r"letharg|limp|floppy|\bsust\b|सुस्त", r"not\s+moving|hil\s+nahi|हिल\s*नहीं",
          r"breathing\s+fast|tez\s+saans|तेज़? साँस", r"blue|neela|नीला", r"seizure|fit|daura|दौरा", r"(won'?t|not)\s+wak"],
     ),
+    # any fever in a baby under ~3 months (reported as "young_infant_fever", surfaced as infant_danger_signs)
+    "young_infant_fever": (
+        [r"\b(newborn|new\s*born|navjaat)\b", r"\b([0-9]|1[0-2]|one|two|three|four|five|six)\s*[- ]?(week|weeks|hafte|hafta|din|days?)\s*[- ]?(old|ka|ki|ke)\b",
+         r"\b([0-2]|one|two)\s*[- ]?(month|months|mahine|mahina)\s*[- ]?(old|ka|ki|ke)\b", r"नवजात",
+         r"(एक|दो|तीन|चार|[0-9]+)\s*(हफ्ते|हफ़्ते|दिन)\s*(का|की|के)", r"(एक|दो|[0-2])\s*(महीने)\s*(का|की|के)"],
+        [FEVER],
+    ),
     "pregnancy_emergency": (
         [r"pregnan", r"garbh|garbhvati|garbhwati|pet\s+se\s+hai|expecting", r"गर्भ|प्रेग्नेंट|गर्भवती"],
         [r"bleed|blood(?!\s*(test|report|sugar|pressure|sample|group|check|bp))|spotting",
          r"(kh[oo]+n|khun)(?!\s*(ki\s+)?(jaa?n?ch|test|report|sample))",
          r"(खून|ख़ून|रक्त)(?!\s*(की)?\s*(जाँच|जांच|टेस्ट|रिपोर्ट|सैंपल))", r"(severe|tez|tej|bahut|unbearable)\s+(\S+\s+)?(pain|dard)",
          r"(तेज़|तेज|बहुत)\s*दर्द", r"water\s+(broke|break)|paani\s+(gir|nikal|aa)", r"पानी\s*(गिर|निकल)",
-         r"seizure|fit|daura|दौरा", r"(baby|bachcha|bachche)\s+(\S+\s+)?(not\s+moving|hil\s+nahi)", r"बच्चा\s*हिल\s*नहीं",
+         r"seizure|fit|daura|दौरा",
+         r"(baby|bachch?[aei])\s+(\S+\s+){0,2}(not\s+mov|hasn'?t\s+mov|stopped\s+mov|hil\s+(nahi|nhi)|hilna\s+band)",
+         r"(no|less|reduced|decreased)\s+(fetal\s+|baby'?s?\s+)?movement", r"बच्चा\s*(\S+\s*)?हिल\s*(नहीं|ना)",
          r"severe\s+headache.*(blur|vision)", r"behosh|बेहोश|faint"],
     ),
     "severe_head_injury": (
@@ -185,6 +194,8 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
          r"(not|can'?t)\s+(walk|talk|speak)|bol\s+nahi"],
     ),
 }
+
+FLAG_ALIAS = {"young_infant_fever": "infant_danger_signs"}
 
 # --- negation ------------------------------------------------------------------------------------
 CLAUSE_SPLIT = re.compile(r"[,.;!?।|\n]+|\s(?:but|however|although|lekin|magar|parantu|लेकिन|मगर|परंतु|किंतु)\s", re.I)
@@ -303,6 +314,9 @@ def check(user_texts: list[str], extra_flags: list[str] | None = None) -> Safety
     for f in extra_flags or []:
         if f and f not in found:
             found[f] = "confirmed"
+    for alias, target in FLAG_ALIAS.items():
+        if alias in found:
+            found.setdefault(target, found.pop(alias))
     order = list(SIMPLE) + list(COMBOS)
     flags = sorted(found, key=lambda f: order.index(f) if f in order else len(order))
     return SafetyResult(red_flags=flags, evidence=found)

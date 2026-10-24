@@ -1,401 +1,601 @@
 id,text,language,care_type,urgency
 DEV_0001,"Nana ji ka pichle hafte operation hua tha, ghar par dressing karwani hai",hinglish,nurse_home_visit,routine
-DEV_0002,My sister has acidity and burning after meals for 5 days. What should we do?,en,gp_teleconsult,routine
+DEV_0002,My sister has had loose motions since this morning but is drinking fluids. What should we do?,en,gp_teleconsult,same_day
 DEV_0003,bachche ko 2 din se zukaam aur cheenk aa rhi he,hinglish,gp_teleconsult,routine
 DEV_0004,"Mera dost ka pichle hafte operation hua tha, ghar par dressing karwani h, doctor chahiye",hinglish,nurse_home_visit,routine
-DEV_0005,"Not feeling well for a week, just tired. Please help",en,gp_teleconsult,routine
+DEV_0005,"My wife has had a dry cough for a week, no fever and breathing is fine. Please help",en,gp_teleconsult,same_day
 DEV_0006,Need help with newborn baby care and the mother's stitches after delivery. Need a doctor,en,nurse_home_visit,routine
-DEV_0007,My wife is 7 months pregnant and is bleeding with severe pain. Please help,en,emergency_referral,immediate
-DEV_0008,"mujhe ek hafte se kamzori aur thakaan lag rahi h, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0009,"My old mother twisted an ankle for 3 days, it is swollen and walking is hard. Please help",en,paramedic_home_visit,same_day
-DEV_0010,"बेटा का खाना खाने के बाद चेहरा और गला सूज गया, साँस लेने में दिक्कत है",hi,emergency_referral,immediate
-DEV_0011,dada ji hosh mein nahi hain,hinglish,emergency_referral,immediate
-DEV_0012,mera 6 saal ka beta garam tel se bohot buri tarah jal gaye hain,hinglish,emergency_referral,immediate
-DEV_0013,"Nana ji ko achanak saans bohot phool rahi hai, bol bhi nahi pa rahe, please help",hinglish,emergency_referral,immediate
-DEV_0014,My 2 month old baby has a high fever and is not feeding,en,emergency_referral,immediate
-DEV_0015,"bhai ko 5 din se khane ke baad acidity aur jalan ho rhi hai, please help",hinglish,gp_teleconsult,routine
-DEV_0016,"bachcha ka khana khane ke baad chehra aur gala sooj gaya, saans lene mein dikkat hai, please help",hinglish,emergency_referral,immediate
-DEV_0017,"My 75 year old father got a small cut on the hand for 2 days, needs cleaning and dressing",en,paramedic_home_visit,same_day
-DEV_0018,My husband has been feeling weak and tired for a week,en,gp_teleconsult,routine
-DEV_0019,दादाजी को छह महीने से कम सुनाई दे रहा है,hi,specialist_referral,routine
-DEV_0020,मुझे कल से दस्त हो रहे हैं पर पानी पी रहे हैं। क्या करें?,hi,gp_teleconsult,same_day
-DEV_0021,My child has had white patches on the skin for 6 months that keep spreading,en,specialist_referral,routine
-DEV_0022,"पापा कल से बाथरूम में फिसल गए, घुटने में चोट और दर्द है पर ठीक से बात कर रहे हैं",hi,paramedic_home_visit,same_day
-DEV_0023,मम्मी को कल से हाथ पर खुजली वाले दाने हैं। क्या करें?,hi,gp_teleconsult,routine
-DEV_0024,"Didi ko do din se bag uthane ke baad kamar mein halka dard hai, please help",hinglish,gp_teleconsult,routine
-DEV_0025,My daughter has a sore throat and mild cough since yesterday,en,gp_teleconsult,same_day
-DEV_0026,"मेरे पति को साँस नहीं आ रही, होंठ नीले पड़ रहे हैं। कृपया मदद करें",hi,emergency_referral,immediate
-DEV_0027,"मेरी पत्नी को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं",hi,nurse_home_visit,routine
-DEV_0028,mere husband ko kal se bukhar khansi hai par saans theek hai,hinglish,gp_teleconsult,same_day
-DEV_0029,My grandfather is extremely breathless suddenly and cannot even speak. What should we do?,en,emergency_referral,immediate
-DEV_0030,"Mere 6 saal ke bete ko do din se tez bukhar hai, gardan akad gayi h aur behki behki baatein kar rahe hain, doctor chahiye",hinglish,emergency_referral,immediate
-DEV_0031,"दादाजी का घर पर खून का सैंपल लेना है, लैब नहीं जा सकते",hi,paramedic_home_visit,routine
-DEV_0032,"nana ji ko subah se gale mein kharash aur thodi khansi hai, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0033,"I don't want to live anymore, I am thinking of ending my life. Please help",en,emergency_referral,immediate
-DEV_0034,मेरी पत्नी को कल से हल्का सिर दर्द है,hi,gp_teleconsult,routine
-DEV_0035,Mera 3 saal ka beta abhi tak bolta nahi hai,hinglish,specialist_referral,routine
-DEV_0036,Beti ko do din se gale mein kharash aur thodi khansi hai,hinglish,gp_teleconsult,same_day
-DEV_0037,My father has an itchy rash on the arm for 2 days,en,gp_teleconsult,routine
-DEV_0038,My 6 year old has had a high fever since yesterday with a stiff neck and confusion,en,emergency_referral,immediate
-DEV_0039,My old mother suddenly has slurred speech and one side of the face is drooping. Please help,en,emergency_referral,immediate
-DEV_0040,"मुझे डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं",hi,nurse_home_visit,routine
-DEV_0041,दादी बिस्तर पर हैं और पीठ पर घाव बढ़ रहा है। डॉक्टर चाहिए,hi,nurse_home_visit,same_day
-DEV_0042,"doctor ne bola thyroid badha hua hai, specialist ko dikhana hai",hinglish,specialist_referral,routine
-DEV_0043,"Bhai ko ek hafte se kamzori aur thakaan lag rahi hai, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0044,"बेटे को तीन दिन से हाथ पर छोटा सा कट लग गया, पट्टी करवानी है",hi,paramedic_home_visit,same_day
-DEV_0045,"Mummy ko 3 mahine se kam sunai de rha hai, kya karein?",hinglish,specialist_referral,routine
-DEV_0046,"bhai ko do din se haath par chhota sa cut lag gaya, dressing karwani hai",hinglish,paramedic_home_visit,same_day
-DEV_0047,My 75 year old father has had trouble hearing for 6 months,en,specialist_referral,routine
-DEV_0048,"Didi ko teen din se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
-DEV_0049,My child accidentally swallowed rat poison,en,emergency_referral,immediate
-DEV_0050,"Need a blood sample collected at home, my 75 year old father cannot go to the lab",en,paramedic_home_visit,routine
-DEV_0051,The doctor said my thyroid is high and I should see a specialist. Please help,en,specialist_referral,routine
-DEV_0052,"bete ko teen din se haath par chhota sa cut lag gaya, dressing karwani h, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0053,भाई गरम तेल से बहुत बुरी तरह जल गए हैं। क्या करें?,hi,emergency_referral,immediate
-DEV_0054,My grandfather has had loose motions for 2 days and feels dizzy when standing. What should we do?,en,paramedic_home_visit,same_day
-DEV_0055,भाई को सुबह से दस्त हो रहे हैं पर पानी पी रहे हैं,hi,gp_teleconsult,same_day
-DEV_0056,My husband has had loose motions since this morning but is drinking fluids. Please help,en,gp_teleconsult,same_day
-DEV_0057,"मेरी पत्नी को कल से हल्का बुखार है, खाना पीना ठीक है",hi,gp_teleconsult,same_day
-DEV_0058,"mummy ko achanak daura pad raha hai, haath pair kaanp rahe hain",hinglish,emergency_referral,immediate
-DEV_0059,"Dadi ko 3 mahine se dhundhla dikh raha hai, padhne mein dikkat hai, kya karein?",hinglish,specialist_referral,routine
-DEV_0060,"My old mother got a small cut on the hand for 3 days, needs cleaning and dressing. What should we do?",en,paramedic_home_visit,same_day
-DEV_0061,"Mere husband ko ek saal se baar baar aadhe sir mein tez dardh hota hai, doctor chahiye",hinglish,specialist_referral,routine
-DEV_0062,Bhai ko subah se bukhar khansi he par sans theek hai,hinglish,gp_teleconsult,same_day
-DEV_0063,My husband has a sore throat and mild cough for 3 days. What should we do?,en,gp_teleconsult,same_day
-DEV_0064,"मेरी पत्नी को पाँच दिन से शुगर 300 से ऊपर आ रही है, दवा लेने पर भी। कृपया मदद करें",hi,specialist_referral,same_day
-DEV_0065,"डॉक्टर ने कहा थायरॉइड बढ़ा हुआ है, विशेषज्ञ को दिखाना है",hi,specialist_referral,routine
-DEV_0066,"bhai ko subah se dast ho rahe hain par paani pee rahe hain, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0067,"delivery ke baad bachche ki dekhbhal aur taankon ki dressing ke liye nurse chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
-DEV_0068,"Meri wife ko 2 din se halka bukhar hai, khana peena theek hai",hinglish,gp_teleconsult,same_day
-DEV_0069,My husband got badly burned by boiling oil over a large part of the body. Need a doctor,en,emergency_referral,immediate
-DEV_0070,The doctor advised an IV drip at home for My old mother. Need a doctor,en,nurse_home_visit,same_day
-DEV_0071,"My father has had a cold since this morning, nothing else. What should we do?",en,gp_teleconsult,routine
-DEV_0072,my mother had surgery last week and needs wound dressing at home. Please help,en,nurse_home_visit,routine
-DEV_0073,Dada ji ko kai mahino se kam sunai de raha hai,hinglish,specialist_referral,routine
-DEV_0074,"doctor ne nani ko ghar par drip lagwane ko kaha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
-DEV_0075,The doctor advised an IV drip at home for My old mother,en,nurse_home_visit,same_day
-DEV_0076,"Mujhe 5 din se sugar 300 se upar aa rahi hai, dawai le rahe hain phir bhi",hinglish,specialist_referral,same_day
-DEV_0077,"Mujhe 2 din se bukhar khansi hai par saans theek hai, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0078,"Need a blood sample collected at home, My old mother cannot go to the lab. What should we do?",en,paramedic_home_visit,routine
-DEV_0079,My wife has mild back pain since this morning after lifting a bag. Please help,en,gp_teleconsult,routine
-DEV_0080,My son accidentally swallowed rat poison,en,emergency_referral,immediate
-DEV_0081,"My son twisted an ankle since this morning, it is swollen and walking is hard",en,paramedic_home_visit,same_day
-DEV_0082,"Bachcha ka khana khane ke baad chehra aur gala sooj gaya, saas lene mein dikkat hai, doctor chahiye",hinglish,emergency_referral,immediate
-DEV_0083,my grandfather has had fever and cough since this morning. Need a doctor,en,paramedic_home_visit,same_day
-DEV_0084,"I have fever and cough for 2 days, no breathing difficulty",en,gp_teleconsult,same_day
-DEV_0085,"dadi subah se bathroom mein fisal gaye, ghutne mein chot aur dard hai par baat theek se kar rahe hain, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0086,I want to discuss my blood test report with a doctor,en,gp_teleconsult,routine
-DEV_0087,Mujhe 2 din se bag uthane ke baad kamar mein halka dard hai,hinglish,gp_teleconsult,routine
-DEV_0088,"My brother twisted an ankle for 2 days, it is swollen and walking is hard",en,paramedic_home_visit,same_day
-DEV_0089,"nana ji bistar par hain aur peeth par ghaav badh raha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
-DEV_0090,"Didi ko 10 din se breast mein gaanth hai, kya karein?",hinglish,specialist_referral,same_day
-DEV_0091,My wife has an itchy rash on the arm since yesterday,en,gp_teleconsult,routine
-DEV_0092,"dadi ko teen din se dast ho rahe hain aur khade hone par chakkar aata hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
-DEV_0093,"Nana ji ko abhi abhi daura pad raha hai, haath pair kaanp rahe hain",hinglish,emergency_referral,immediate
-DEV_0094,My brother has mild back pain for 2 days after lifting a bag. Please help,en,gp_teleconsult,routine
-DEV_0095,My 75 year old father has a urine catheter that needs to be changed. Please help,en,nurse_home_visit,routine
-DEV_0096,My grandmother is unconscious and not waking up. Please help,en,emergency_referral,immediate
-DEV_0097,"मेरी पत्नी सात महीने की गर्भवती है और खून आ रहा है, तेज़ दर्द है। कृपया मदद करें",hi,emergency_referral,immediate
-DEV_0098,"meri wife ko teen din se dast ho rahe hain par paani pee rahe hain, kya karein?",hinglish,gp_teleconsult,same_day
-DEV_0099,"Doctor ne Dada ji ko ghar par drip lagwane ko kaha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
-DEV_0100,"Nana ji ka ghar par blood sample lena hai, lab nhi ja sakte, doctor chahiye",hinglish,paramedic_home_visit,routine
-DEV_0101,meri wife ko hafte bhar se breast mein ek gaanth mehsoos ho rhi hai,hinglish,specialist_referral,same_day
-DEV_0102,My 75 year old father has had loose motions for 3 days and feels dizzy when standing,en,paramedic_home_visit,same_day
-DEV_0103,Bachcha ne galti se chuhe maarne ki dawai pee li,hinglish,emergency_referral,immediate
-DEV_0104,"Papa ko 3 mahine se kam sunai de raha hai, doctor chahiye",hinglish,specialist_referral,routine
-DEV_0105,"Meri wife ko kal se dast ho rahe hain par paani pee rahe hain, please help",hinglish,gp_teleconsult,same_day
-DEV_0106,"mere 6 saal ke bete ko kal se haath par chhota sa cut lag gaya, dressing karwani hai, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0107,"Bhai ko hafte bhar se khane ke baad acidity aur jalan ho rahi hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0108,nana ji ko do din se haath par khujli wale daane hain,hinglish,gp_teleconsult,routine
-DEV_0109,"Beta ko saans nahi aa rahi, hont neele pad rahe hain, kya karein?",hinglish,emergency_referral,immediate
-DEV_0110,Mere husband ko 5 din se khane ke baad acidity aur jalan ho rahi hai,hinglish,gp_teleconsult,routine
-DEV_0111,"mummy bahar nahi ja sakte, ghar par bp aur sugar check karwana hai",hinglish,paramedic_home_visit,routine
-DEV_0112,"Mere 6 saal ke bete ko do din se gale mein kharash aur thodi khansi hai, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0113,"didi ko subah se haath par khujli wale daane hain, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0114,"dada ji ko sugar hai aur hafte bhar se pair mein ghaav hai, roz dressing chahiye, kya karein?",hinglish,nurse_home_visit,same_day
-DEV_0115,"My wife has had mild fever for 3 days, eating and drinking normally. What should we do?",en,gp_teleconsult,same_day
-DEV_0116,डिलीवरी के बाद बच्चे की देखभाल और टांकों की ड्रेसिंग के लिए नर्स चाहिए,hi,nurse_home_visit,routine
-DEV_0117,"bhai ko kai mahino se skin par safed daag hain jo badh rahe hain, kya karein?",hinglish,specialist_referral,routine
-DEV_0118,"My grandmother slipped in the bathroom for 2 days, has knee pain and a bruise but is talking normally. Please help",en,paramedic_home_visit,same_day
-DEV_0119,"My wife has had mild fever since yesterday, eating and drinking normally. What should we do?",en,gp_teleconsult,same_day
-DEV_0120,"बेटे को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं। कृपया मदद करें",hi,nurse_home_visit,routine
-DEV_0121,"मम्मी कल से बाथरूम में फिसल गए, घुटने में चोट और दर्द है पर ठीक से बात कर रहे हैं",hi,paramedic_home_visit,same_day
-DEV_0122,My wife is 5 months pregnant and needs a routine checkup. What should we do?,en,specialist_referral,routine
-DEV_0123,Beta garam tel se bht buri tarah jal gaye hain,hinglish,emergency_referral,immediate
-DEV_0124,"nana ji bahar nahi ja sakte, ghar par bp aur sugar check karwana hai, kya karein?",hinglish,paramedic_home_visit,routine
-DEV_0125,"My father has fever and vomited twice for 2 days, feeling weak. What should we do?",en,paramedic_home_visit,same_day
-DEV_0126,"My sister has had mild fever since this morning, eating and drinking normally",en,gp_teleconsult,same_day
-DEV_0127,My sister has had white patches on the skin for many months that keep spreading,en,specialist_referral,routine
-DEV_0128,Meri wife ko do din se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
-DEV_0129,"My wife has had mild fever since this morning, eating and drinking normally",en,gp_teleconsult,same_day
-DEV_0130,need help with newborn baby care and the mother's stitches after delivery,en,nurse_home_visit,routine
-DEV_0131,"dada ji ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye",hinglish,nurse_home_visit,routine
-DEV_0132,"बच्चे को दो दिन से हल्का बुखार है, ठीक से खेल रहा है। क्या करें?",hi,gp_teleconsult,same_day
-DEV_0133,"मेरे छह साल के बेटे को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं",hi,nurse_home_visit,routine
-DEV_0134,बेटी को एक साल से त्वचा पर सफेद दाग हैं जो बढ़ रहे हैं। डॉक्टर चाहिए,hi,specialist_referral,routine
-DEV_0135,"meri wife 7 mahine pregnant hai aur bleeding ho rahi hai, tez dard he, please help",hinglish,emergency_referral,immediate
-DEV_0136,Meri wife ko 3 mahine se mann bahut udaas rehta hai aur neend nahi aati,hinglish,specialist_referral,routine
-DEV_0137,डॉक्टर ने दादी को घर पर ड्रिप लगवाने को कहा है,hi,nurse_home_visit,same_day
-DEV_0138,"Didi ko doctor ne injection bataye hain, roz ghar par lagwane hain, doctor chahiye",hinglish,nurse_home_visit,routine
-DEV_0139,"Beti ne galti se chuhe maarne ki dawai pee li, kya karein?",hinglish,emergency_referral,immediate
-DEV_0140,"Beti ko do din se gale mein kharash aur thodi khansi hai, please help",hinglish,gp_teleconsult,same_day
-DEV_0141,mere husband ko kal se gale mein kharash aur thodi khansi hai,hinglish,gp_teleconsult,same_day
-DEV_0142,My father has a feeding tube and needs daily nursing care at home,en,nurse_home_visit,routine
-DEV_0143,Nana ji ki awaaz achanak ladkhada rahi he aur chehra ek taraf tedha ho gaya,hinglish,emergency_referral,immediate
-DEV_0144,"meri wife ko 10 din se breast mein ek gaanth mehsoos ho rhi hai, kya karein?",hinglish,specialist_referral,same_day
-DEV_0145,"Fever and cough for 3 days, breathing is fine. What should we do?",en,gp_teleconsult,same_day
-DEV_0146,My brother has had loose motions since yesterday but is drinking fluids. Need a doctor,en,gp_teleconsult,same_day
-DEV_0147,"didi ko ek saal se mann bahut udaas rehta hai aur neend nahi aati, doctor chahiye",hinglish,specialist_referral,routine
-DEV_0148,बेटी ने गलती से चूहे मारने की दवा पी ली,hi,emergency_referral,immediate
-DEV_0149,"dadi ko 3 mahine se dhundhla dikh raha hai, padhne mein dikkat hai",hinglish,specialist_referral,routine
-DEV_0150,"मुझे पाँच दिन से शुगर 300 से ऊपर आ रही है, दवा लेने पर भी",hi,specialist_referral,same_day
-DEV_0151,"After eating peanuts, the face and throat are swelling and it is hard to breathe",en,emergency_referral,immediate
-DEV_0152,"Mummy ko 2 din se gale mein kharash aur thodi khansi hai, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0153,Mummy ko subah se bukhar hai aur khansi bhi,hinglish,paramedic_home_visit,same_day
-DEV_0154,My father has fever with cough since this morning and feels weak,en,paramedic_home_visit,same_day
-DEV_0155,"nani bistar par hain aur peeth par ghaav badh raha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
-DEV_0156,My brother has a sore throat and mild cough since yesterday,en,gp_teleconsult,same_day
-DEV_0157,मेरी पत्नी को तीन दिन से जुकाम और छींक आ रही है,hi,gp_teleconsult,routine
-DEV_0158,I want to discuss my blood test report with a doctor. Need a doctor,en,gp_teleconsult,routine
-DEV_0159,"dadi bahar nahi ja sakte, ghar par bp aur sugar check karwana hai",hinglish,paramedic_home_visit,routine
-DEV_0160,My grandmother has diabetes and a foot wound for a week that needs regular dressing,en,nurse_home_visit,same_day
-DEV_0161,भाई को दो दिन से बैग उठाने के बाद कमर में हल्का दर्द है। क्या करें?,hi,gp_teleconsult,routine
-DEV_0162,"Meri wife 5 mahine pregnant hai, regular checkup karwana hai",hinglish,specialist_referral,routine
-DEV_0163,didi ko do din se gale mein kharash aur thodi khansi hai,hinglish,gp_teleconsult,same_day
-DEV_0164,My old mother has a feeding tube and needs daily nursing care at home,en,nurse_home_visit,routine
-DEV_0165,"mummy ka catheter badalna hai, ghar par nurse chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
-DEV_0166,"Nana ji ko 2 din se dast ho rahe hain aur khade hone par chakkar aata hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0167,"papa ko do din se bukhar hai aur do baar ulti hui, kamjori hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0168,My grandfather has an itchy rash on the arm for 2 days. Please help,en,gp_teleconsult,routine
-DEV_0169,"Mere 6 saal ke bete ko subah se tez bukhar hai, gardan akad gayi hai aur behki behki baatein kar rahe hain, doctor chahiye",hinglish,emergency_referral,immediate
-DEV_0170,"नानी को तीन महीने से घुटनों में दर्द है, सीढ़ी चढ़ने में ज़्यादा",hi,specialist_referral,routine
-DEV_0171,"बेटे को तीन दिन से पैर में मोच आ गई, सूजन है और चलने में दिक्कत है। डॉक्टर चाहिए",hi,paramedic_home_visit,same_day
-DEV_0172,nani ko subah se haath par khujli wale daane hain,hinglish,gp_teleconsult,routine
-DEV_0173,"mummy ko 2 din se bukhar h aur khansi bhi, doctor chahiye",hinglish,paramedic_home_visit,same_day
-DEV_0174,My 75 year old father suddenly has slurred speech and one side of the face is drooping. What should we do?,en,emergency_referral,immediate
-DEV_0175,my father is unconscious and not waking up. Need a doctor,en,emergency_referral,immediate
-DEV_0176,"Bhai ko 10 din se khane ke baad acidity aur jalan ho rahi hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0177,"My grandfather twisted an ankle since this morning, it is swollen and walking is hard",en,paramedic_home_visit,same_day
-DEV_0178,"my grandfather cannot travel, need a bp and sugar check at home",en,paramedic_home_visit,routine
-DEV_0179,मेरी पत्नी को एक हफ्ते से खाने के बाद एसिडिटी और जलन हो रही है,hi,gp_teleconsult,routine
-DEV_0180,Meri wife ko subah se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
-DEV_0181,mere husband ko 3 mahine se mann bohot udaas rehta hai aur neend nahi aati,hinglish,specialist_referral,routine
-DEV_0182,दीदी को कल से हल्का सिर दर्द है। क्या करें?,hi,gp_teleconsult,routine
-DEV_0183,Mujhe kal se halka sar dardh he,hinglish,gp_teleconsult,routine
-DEV_0184,Mujhe ek saal se baar baar aadhe sar mein tej dard hota he,hinglish,specialist_referral,routine
-DEV_0185,"My wife has gas and bloating for 2 days, no chest pain. What should we do?",en,gp_teleconsult,routine
-DEV_0186,nani ko subah se dast ho rahe hain aur khade hone par chakkar aata hai,hinglish,paramedic_home_visit,same_day
-DEV_0187,"Dada ji 2 din se bathroom mein fisal gaye, ghutne mein chot aur dard hai par baat theek se kar rahe hain, please help",hinglish,paramedic_home_visit,same_day
-DEV_0188,बच्चे को दो दिन से जुकाम और छींक आ रही है,hi,gp_teleconsult,routine
-DEV_0189,"My sister needs the injections the doctor advised, given at home every day. Need a doctor",en,nurse_home_visit,routine
-DEV_0190,"report aayi hai, doctor se baat karni hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0191,My 75 year old father has had loose motions for 3 days and feels dizzy when standing. Need a doctor,en,paramedic_home_visit,same_day
-DEV_0192,bachche ko teen din se halka sir dardh hai,hinglish,gp_teleconsult,routine
-DEV_0193,I have had a high fever for 3 days with a stiff neck and confusion. Please help,en,emergency_referral,immediate
-DEV_0194,"डॉक्टर ने कहा थायरॉइड बढ़ा हुआ है, विशेषज्ञ को दिखाना है। कृपया मदद करें",hi,specialist_referral,routine
-DEV_0195,"My father has had blurry vision for 6 months, difficulty reading",en,specialist_referral,routine
-DEV_0196,beti ko subah se gale mein kharash aur thodi khansi he,hinglish,gp_teleconsult,same_day
-DEV_0197,My sister has had sugar readings above 300 for a week even with regular medicines. Need a doctor,en,specialist_referral,same_day
-DEV_0198,"Mummy ko 10 minute se seene mein tej dard ho raha hai aur paseena aa rha hai, kya karein?",hinglish,emergency_referral,immediate
-DEV_0199,papa hosh mein nahin hain,hinglish,emergency_referral,immediate
-DEV_0200,"Mummy ko kai mahino se ghutno mein dard hai, seedhi chadhne mein zyada",hinglish,specialist_referral,routine
-DEV_0201,My wife is 5 months pregnant and needs a routine checkup. Need a doctor,en,specialist_referral,routine
-DEV_0202,"Not feeling well for 10 days, just tired. Need a doctor",en,gp_teleconsult,routine
-DEV_0203,The doctor said my thyroid is high and I should see a specialist,en,specialist_referral,routine
-DEV_0204,My child accidentally swallowed rat poison. Need a doctor,en,emergency_referral,immediate
-DEV_0205,Nani ko ek saal se kam sunai de raha hai,hinglish,specialist_referral,routine
-DEV_0206,मुझे अपनी खून की जाँच रिपोर्ट डॉक्टर को दिखानी है,hi,gp_teleconsult,routine
-DEV_0207,"Bachcha ne galti se chuhe maarne ki dawai pee li, please help",hinglish,emergency_referral,immediate
-DEV_0208,"nana ji ka ghar par blood sample lena hai, lab nahi ja sakte",hinglish,paramedic_home_visit,routine
-DEV_0209,"Mujhe hafte bhar se dil ki dhadkan tez ho jaati hai, seene mein dard nahi hai, kya karein?",hinglish,specialist_referral,same_day
-DEV_0210,पापा को सुबह से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है। कृपया मदद करें,hi,paramedic_home_visit,same_day
-DEV_0211,bhai ko hafte bhar se khane ke baad acidity aur jalan ho rahi hai,hinglish,gp_teleconsult,routine
-DEV_0212,"bhai ko ek hafte se khane ke baad acidity aur jalan ho rahi hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0213,"My grandfather has had knee pain for 6 months, worse on the stairs",en,specialist_referral,routine
-DEV_0214,My 6 year old has a mild headache for 2 days,en,gp_teleconsult,routine
-DEV_0215,"I don't want to live anymore, I am thinking of ending my life",en,emergency_referral,immediate
-DEV_0216,"Dadi ka catheter badalna hai, ghar par nurse chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
-DEV_0217,"Dadi ko do din se bukhar hai aur do baar ulti hui, kamzori hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0218,मम्मी को दो दिन से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है,hi,paramedic_home_visit,same_day
-DEV_0219,"Papa ko sugar hai aur hafte bhar se pair mein ghaav hai, roz dressing chahiye",hinglish,nurse_home_visit,same_day
-DEV_0220,मेरी पत्नी को तीन दिन से बैग उठाने के बाद कमर में हल्का दर्द है,hi,gp_teleconsult,routine
-DEV_0221,"Meri wife ko 5 din se khane ke baad acidity aur jalan ho rahi h, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0222,"My grandfather has fever and vomited twice since yesterday, feeling weak. Need a doctor",en,paramedic_home_visit,same_day
-DEV_0223,"Dada ji ko subah se bukhar hai aur do baar vomit hui, kamzori he",hinglish,paramedic_home_visit,same_day
-DEV_0224,"My grandfather has fever and vomited twice for 2 days, feeling weak",en,paramedic_home_visit,same_day
-DEV_0225,"दीदी को कल से गैस और पेट फूलना है, सीने में दर्द नहीं है। डॉक्टर चाहिए",hi,gp_teleconsult,routine
-DEV_0226,मम्मी को दो दिन से जुकाम और छींक आ रही है। कृपया मदद करें,hi,gp_teleconsult,routine
-DEV_0227,"papa ko subah se bukhar aur khasi hai, kamzori bhi hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0228,मेरी पत्नी को दस दिन से स्तन में एक गांठ महसूस हो रही है,hi,specialist_referral,same_day
-DEV_0229,"बच्चे को तीन दिन से हल्का बुखार है, ठीक से खेल रहा है। क्या करें?",hi,gp_teleconsult,same_day
-DEV_0230,"mujhe kal se haath par chhota sa cut lag gaya, dressing karwani hai, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0231,Bhai ko subah se zukaam aur cheenk aa rahi hai,hinglish,gp_teleconsult,routine
-DEV_0232,"Mujhe 2 din se gas aur pet phoolna hai, seene mein dard nhi hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0233,My child has had white patches on the skin for a year that keep spreading. Need a doctor,en,specialist_referral,routine
-DEV_0234,"Mujhe do din se gas aur pet phoolna hai, seene mein dardh nahi h, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0235,"मम्मी को सुबह से बुखार है और दो बार उल्टी हुई, कमज़ोरी है",hi,paramedic_home_visit,same_day
-DEV_0236,"Mere husband ko hafte bhar se sugar 300 se upar aa rahi hai, dawai le rahe hain phir bhi, doctor chahiye",hinglish,specialist_referral,same_day
-DEV_0237,"My grandfather has fever and vomited twice for 3 days, feeling weak",en,paramedic_home_visit,same_day
-DEV_0238,"मुझे तीन दिन से बुखार और खांसी है, साँस की दिक्कत नहीं है। कृपया मदद करें",hi,gp_teleconsult,same_day
-DEV_0239,"Mere 6 saal ke bete ko teen din se halka bukhar hai, khel raha hai theek se",hinglish,gp_teleconsult,same_day
-DEV_0240,"dadi ka catheter badalna hai, ghar par nurse chahiye",hinglish,nurse_home_visit,routine
-DEV_0241,I have had loose motions for 3 days but is drinking fluids,en,gp_teleconsult,same_day
-DEV_0242,"mummy gir gaye aur sir par chot lagi, ab vomit ho rahi h aur confuse hain, doctor chahiye",hinglish,emergency_referral,immediate
-DEV_0243,My grandmother fainted and is not responding. Please help,en,emergency_referral,immediate
-DEV_0244,Dada ji ki awaaz achanak ladkhada rhi hai aur chehra ek taraf tedha ho gaya,hinglish,emergency_referral,immediate
-DEV_0245,"mummy ka catheter badalna hai, ghar par nurse chahiye",hinglish,nurse_home_visit,routine
-DEV_0246,"bachche ko ek saal se skin par safed daag hain jo badh rahe hain, doctor chahiye",hinglish,specialist_referral,routine
-DEV_0247,"didi ko subah se dast ho rahe hain par paani pee rahe hain, please help",hinglish,gp_teleconsult,same_day
-DEV_0248,mera dost garam tel se bahut buri tarah jal gaye hain,hinglish,emergency_referral,immediate
-DEV_0249,My wife is 5 months pregnant and needs a routine checkup,en,specialist_referral,routine
-DEV_0250,"After eating peanuts, the face and throat are swelling and it is hard to breathe. What should we do?",en,emergency_referral,immediate
-DEV_0251,नानी बिस्तर पर हैं और पीठ पर घाव बढ़ रहा है,hi,nurse_home_visit,same_day
-DEV_0252,पापा को दो दिन से बुखार है और खांसी भी,hi,paramedic_home_visit,same_day
-DEV_0253,"bhai ko teen din se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai",hinglish,paramedic_home_visit,same_day
-DEV_0254,My son has had white patches on the skin for 6 months that keep spreading. Need a doctor,en,specialist_referral,routine
-DEV_0255,"भाई को सुबह से बुखार और खांसी है, साँस की दिक्कत नहीं है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
-DEV_0256,Didi ko hafte bhar se tabiyat theek nahi lag rahi,hinglish,gp_teleconsult,routine
-DEV_0257,"Didi ko 2 din se gas aur pet phoolna hai, sine mein dardh nahi hai, please help",hinglish,gp_teleconsult,routine
-DEV_0258,"My old mother slipped in the bathroom for 3 days, has knee pain and a bruise but is talking normally. What should we do?",en,paramedic_home_visit,same_day
-DEV_0259,"भाई को पाँच दिन से दिल की धड़कन तेज़ हो जाती है, सीने में दर्द नहीं है। डॉक्टर चाहिए",hi,specialist_referral,same_day
-DEV_0260,"मम्मी का कैथेटर बदलना है, घर पर नर्स चाहिए",hi,nurse_home_visit,routine
-DEV_0261,My brother has had repeated severe one-sided headaches for 6 months. Please help,en,specialist_referral,routine
-DEV_0262,"Mujhe ab jeena nahi hai, khud ko khatam karne ka mann kar raha hai",hinglish,emergency_referral,immediate
-DEV_0263,My grandfather has a mild headache since this morning,en,gp_teleconsult,routine
-DEV_0264,Doctor ne Dada ji ko ghar par drip lagwane ko kaha hai,hinglish,nurse_home_visit,same_day
-DEV_0265,didi ko 10 din se breast mein gaanth hai,hinglish,specialist_referral,same_day
-DEV_0266,My mother has had trouble hearing for 6 months,en,specialist_referral,routine
-DEV_0267,मेरे पति को एक साल से बार बार आधे सिर में तेज़ दर्द होता है। कृपया मदद करें,hi,specialist_referral,routine
-DEV_0268,"Mujhe apni blood report doctor ko dikhani hai, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0269,"Fever and cough since this morning, breathing is fine. Need a doctor",en,gp_teleconsult,same_day
-DEV_0270,"My brother twisted an ankle for 3 days, it is swollen and walking is hard. Please help",en,paramedic_home_visit,same_day
-DEV_0271,Nana ji ko 2 din se bukhar hai aur khansi bhi,hinglish,paramedic_home_visit,same_day
-DEV_0272,"nani ko 2 din se bukhar hai aur do baar vomit hui, kamzori hai, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0273,"Mere husband ko 2 din se gas aur pet phoolna hai, sine mein dard nahi h",hinglish,gp_teleconsult,routine
-DEV_0274,"papa do din se bathroom mein fisal gaye, ghutne mein chot aur dard hai par baat theek se kar rahe hain",hinglish,paramedic_home_visit,same_day
-DEV_0275,beti ko 3 mahine se skin par safed daag hain jo badh rahe hain,hinglish,specialist_referral,routine
-DEV_0276,My wife has had white patches on the skin for many months that keep spreading,en,specialist_referral,routine
-DEV_0277,My grandfather has a urine catheter that needs to be changed,en,nurse_home_visit,routine
-DEV_0278,"papa ka catheter badalna hai, ghar par nurse chahiye",hinglish,nurse_home_visit,routine
-DEV_0279,"मम्मी को फीडिंग ट्यूब लगी है, रोज़ घर पर नर्स की देखभाल चाहिए",hi,nurse_home_visit,routine
-DEV_0280,मम्मी बिस्तर पर हैं और पीठ पर घाव बढ़ रहा है। कृपया मदद करें,hi,nurse_home_visit,same_day
-DEV_0281,Dada ji bistar par hain aur peeth par ghaav badh raha hai,hinglish,nurse_home_visit,same_day
-DEV_0282,My grandmother is extremely breathless suddenly and cannot even speak. Please help,en,emergency_referral,immediate
-DEV_0283,my grandmother has had a high fever for 2 days with a stiff neck and confusion,en,emergency_referral,immediate
-DEV_0284,"Dada ji ka ghar par blood sample lena hai, lab nahin ja sakte",hinglish,paramedic_home_visit,routine
-DEV_0285,My 75 year old father has a mild headache for 3 days. Need a doctor,en,gp_teleconsult,routine
-DEV_0286,"meri wife ko 5 din se breast mein ek gaanth mehsoos ho rahi hai, please help",hinglish,specialist_referral,same_day
-DEV_0287,doctor ne nana ji ko ghar par drip lagwane ko kaha hai,hinglish,nurse_home_visit,same_day
-DEV_0288,My old mother has had loose motions since yesterday and feels dizzy when standing. What should we do?,en,paramedic_home_visit,same_day
-DEV_0289,"meri wife ko kal se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
-DEV_0290,"Dada ji ka pichle hafte operation hua tha, ghar par dressing karwani hai",hinglish,nurse_home_visit,routine
-DEV_0291,My grandmother got badly burned by boiling oil over a large part of the body. Need a doctor,en,emergency_referral,immediate
-DEV_0292,"मम्मी कल से बाथरूम में फिसल गए, घुटने में चोट और दर्द है पर ठीक से बात कर रहे हैं। क्या करें?",hi,paramedic_home_visit,same_day
-DEV_0293,mujhe teen din se haath par khujli wale daane hain,hinglish,gp_teleconsult,routine
-DEV_0294,My husband has mild back pain since this morning after lifting a bag,en,gp_teleconsult,routine
-DEV_0295,"Mujhe ek hafte se dil ki dhadkan tej ho jaati hai, seene mein dard nhi he, doctor chahiye",hinglish,specialist_referral,same_day
-DEV_0296,"भाई को दो दिन से हाथ पर छोटा सा कट लग गया, पट्टी करवानी है। डॉक्टर चाहिए",hi,paramedic_home_visit,same_day
-DEV_0297,"Mere 6 saal ke bete ko kal se sardi zukaam hai bas, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0298,मेरी पत्नी को एक साल से त्वचा पर सफेद दाग हैं जो बढ़ रहे हैं,hi,specialist_referral,routine
-DEV_0299,"dada ji ko abhi abhi saans bht phool rahi hai, bol bhi nhi pa rahe",hinglish,emergency_referral,immediate
-DEV_0300,पापा बिस्तर पर हैं और पीठ पर घाव बढ़ रहा है,hi,nurse_home_visit,same_day
-DEV_0301,"Mere husband ko ek hafte se sugar 300 se upar aa rahi hai, dawai le rahe hain phir bhi, kya karein?",hinglish,specialist_referral,same_day
-DEV_0302,The doctor advised an IV drip at home for My grandfather. What should we do?,en,nurse_home_visit,same_day
-DEV_0303,My father has had trouble hearing for 3 months,en,specialist_referral,routine
-DEV_0304,"meri wife 5 mahine pregnant hai, regular checkup karwana hai",hinglish,specialist_referral,routine
-DEV_0305,मेरे पति को एक हफ्ते से कमज़ोरी और थकान लग रही है। क्या करें?,hi,gp_teleconsult,routine
-DEV_0306,"बेटे को सुबह से हल्का बुखार है, ठीक से खेल रहा है",hi,gp_teleconsult,same_day
-DEV_0307,"My father cannot travel, need a BP and sugar check at home. What should we do?",en,paramedic_home_visit,routine
-DEV_0308,पापा को सुबह से हल्का सिर दर्द है,hi,gp_teleconsult,routine
-DEV_0309,"mere husband ko subah se haath par chhota sa cut lag gaya, dressing karwani hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0310,My 75 year old father has a feeding tube and needs daily nursing care at home,en,nurse_home_visit,routine
-DEV_0311,पापा को दो दिन से हाथ पर खुजली वाले दाने हैं,hi,gp_teleconsult,routine
-DEV_0312,"Mera 6 saal ka beta ka pichle hafte operation hua tha, ghar par dressing karwani hai",hinglish,nurse_home_visit,routine
-DEV_0313,My 6 year old has a mild fever for 2 days and is playing normally,en,gp_teleconsult,same_day
-DEV_0314,मुझे तीन महीने से मन बहुत उदास रहता है और नींद नहीं आती,hi,specialist_referral,routine
-DEV_0315,"मेरे पति का पिछले हफ्ते ऑपरेशन हुआ था, घर पर ड्रेसिंग करवानी है",hi,nurse_home_visit,routine
-DEV_0316,"Mummy bahar nahi ja sakte, ghar par BP aur sugar check karwana hai, please help",hinglish,paramedic_home_visit,routine
-DEV_0317,"मेरा छह साल का बेटा को साँस नहीं आ रही, होंठ नीले पड़ रहे हैं",hi,emergency_referral,immediate
-DEV_0318,"Dadi bahar nahin ja sakte, ghar par BP aur sugar check karwana hai",hinglish,paramedic_home_visit,routine
-DEV_0319,"mere 6 saal ke bete ko do din se halka bukhar hai, khel raha hai theek se, please help",hinglish,gp_teleconsult,same_day
-DEV_0320,My child has a mild fever for 2 days and is playing normally,en,gp_teleconsult,same_day
-DEV_0321,My 6 year old has a sore throat and mild cough since this morning,en,gp_teleconsult,same_day
-DEV_0322,"dada ji ko teen din se halka sar dard hai, please help",hinglish,gp_teleconsult,routine
-DEV_0323,"dada ji ko kal se pair mein moch aa gayi, sujan h aur chalne mein dikkat hai",hinglish,paramedic_home_visit,same_day
-DEV_0324,"Nani behosh ho gaye hain, jawab nahi de rahe, kya karein?",hinglish,emergency_referral,immediate
-DEV_0325,"papa hosh mein nahi hain, please help",hinglish,emergency_referral,immediate
-DEV_0326,"बेटे को कल से हल्का बुखार है, ठीक से खेल रहा है। क्या करें?",hi,gp_teleconsult,same_day
-DEV_0327,mujhe 5 din se tabiyat theek nhi lag rahi,hinglish,gp_teleconsult,routine
-DEV_0328,नानी को दो दिन से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है,hi,paramedic_home_visit,same_day
-DEV_0329,My sister had a road accident and is bleeding heavily,en,emergency_referral,immediate
-DEV_0330,My husband has had repeated severe one-sided headaches for many months. What should we do?,en,specialist_referral,routine
-DEV_0331,"Bachche ko teen din se sardi zukaam he bas, doctor chahiye",hinglish,gp_teleconsult,routine
-DEV_0332,"bachche ko do din se halka bukhar hai, khel raha he theek se, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0333,"papa bahar nahin ja sakte, ghar par bp aur sugar check karwana hai",hinglish,paramedic_home_visit,routine
-DEV_0334,"Mummy ka pichle hafte operation hua tha, ghar par dressing karwani hai, please help",hinglish,nurse_home_visit,routine
-DEV_0335,"mere husband ko hafte bhar se sugar 300 se upar aa rahi hai, dawai le rahe hain phir bhi",hinglish,specialist_referral,same_day
-DEV_0336,"Bhai ko do din se bukhaar khansi hai par sans theek he, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0337,My husband has acidity and burning after meals for 10 days. Need a doctor,en,gp_teleconsult,routine
-DEV_0338,My child has an itchy rash on the arm for 3 days. What should we do?,en,gp_teleconsult,routine
-DEV_0339,My 75 year old father has had white patches on the skin for 3 months that keep spreading,en,specialist_referral,routine
-DEV_0340,My old mother has had trouble hearing for 6 months. Please help,en,specialist_referral,routine
-DEV_0341,"bhai ko doctor ne injection bataye hain, roz ghar par lagwane hain, kya karein?",hinglish,nurse_home_visit,routine
-DEV_0342,Need help with newborn baby care and the mother's stitches after delivery. Please help,en,nurse_home_visit,routine
-DEV_0343,"Beti ko 2 din se halka bukhar hai, khel raha hai theek se, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0344,"mere husband ko 2 din se bukhar aur khansi hai, sans ki dikkat nahi hai",hinglish,gp_teleconsult,same_day
-DEV_0345,दीदी को एक साल से बार बार आधे सिर में तेज़ दर्द होता है,hi,specialist_referral,routine
-DEV_0346,My husband has been feeling very low and not sleeping well for a year. Need a doctor,en,specialist_referral,routine
-DEV_0347,"दीदी को तीन दिन से बुखार और खांसी है, साँस की दिक्कत नहीं है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
-DEV_0348,"Bhai ko teen din se sardi zukaam hai bas, please help",hinglish,gp_teleconsult,routine
-DEV_0349,"Meri wife 5 mahine pregnant hai, regular checkup karwana hai, please help",hinglish,specialist_referral,routine
-DEV_0350,"Dada ji bahar nhi ja sakte, ghar par BP aur sugar check karwana hai",hinglish,paramedic_home_visit,routine
-DEV_0351,My grandmother is extremely breathless just now and cannot even speak,en,emergency_referral,immediate
-DEV_0352,"पापा को कल से बुखार है और दो बार उल्टी हुई, कमज़ोरी है। डॉक्टर चाहिए",hi,paramedic_home_visit,same_day
-DEV_0353,Mummy ko teen din se zukaam aur cheenk aa rahi hai,hinglish,gp_teleconsult,routine
-DEV_0354,"mummy bahar nahi ja sakte, ghar par bp aur sugar check karwana h",hinglish,paramedic_home_visit,routine
-DEV_0355,"दादाजी का कैथेटर बदलना है, घर पर नर्स चाहिए। डॉक्टर चाहिए",hi,nurse_home_visit,routine
-DEV_0356,"Papa ko do din se dast ho rahe hain aur khade hone par chakkar aata hai, please help",hinglish,paramedic_home_visit,same_day
-DEV_0357,my husband has been feeling weak and tired for 5 days. Please help,en,gp_teleconsult,routine
-DEV_0358,"nana ji subah se bathroom mein fisal gaye, ghutne mein chot aur dard hai par baat theek se kar rahe hain, kya karein?",hinglish,paramedic_home_visit,same_day
-DEV_0359,"My mother got a small cut on the hand for 2 days, needs cleaning and dressing",en,paramedic_home_visit,same_day
-DEV_0360,दादी को सुबह से जुकाम और छींक आ रही है। डॉक्टर चाहिए,hi,gp_teleconsult,routine
-DEV_0361,"mujhe apni blood report doctor ko dikhani hai, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0362,पापा को सुबह से हल्का सिर दर्द है। डॉक्टर चाहिए,hi,gp_teleconsult,routine
-DEV_0363,"My husband needs the injections the doctor advised, given at home every day",en,nurse_home_visit,routine
-DEV_0364,मम्मी को कई महीनों से कम सुनाई दे रहा है,hi,specialist_referral,routine
-DEV_0365,I have been feeling very low and not sleeping well for 3 months. What should we do?,en,specialist_referral,routine
-DEV_0366,"dadi ko 6 mahine se dhundhla dikh raha hai, padhne mein dikkat hai",hinglish,specialist_referral,routine
-DEV_0367,Mere husband ko kal se bukhar khansi hai par sans theek hai,hinglish,gp_teleconsult,same_day
-DEV_0368,"दादाजी को साँस नहीं आ रही, होंठ नीले पड़ रहे हैं। क्या करें?",hi,emergency_referral,immediate
-DEV_0369,Mummy ki awaaz achanak ladkhada rahi hai aur chehra ek taraf tedha ho gaya,hinglish,emergency_referral,immediate
-DEV_0370,"Nani ko 2 din se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
-DEV_0371,"दादाजी बेहोश हो गए हैं, जवाब नहीं दे रहे",hi,emergency_referral,immediate
-DEV_0372,My sister has been feeling weak and tired for 10 days. What should we do?,en,gp_teleconsult,routine
-DEV_0373,"bhai ko ek hafte se tabiyat theek nahi lag rahi, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0374,"dadi ko saans nahi aa rahi, hont neele pad rahe hain",hinglish,emergency_referral,immediate
-DEV_0375,"dada ji ko 2 din se haath par khujli wale daane hain, kya karein?",hinglish,gp_teleconsult,routine
-DEV_0376,"My 75 year old father has had knee pain for 3 months, worse on the stairs. What should we do?",en,specialist_referral,routine
-DEV_0377,My wife is 7 months pregnant and is bleeding with severe pain,en,emergency_referral,immediate
-DEV_0378,nana ji ko ek saal se kam sunai de raha hai,hinglish,specialist_referral,routine
-DEV_0379,"Doctor ne bola thyroid badha hua hai, specialist ko dikhana hai, kya karein?",hinglish,specialist_referral,routine
-DEV_0380,My brother has mild back pain since yesterday after lifting a bag. Need a doctor,en,gp_teleconsult,routine
-DEV_0381,"पापा को शुगर है और दस दिन से पैर में घाव है, रोज़ ड्रेसिंग चाहिए",hi,nurse_home_visit,same_day
-DEV_0382,"nani ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye",hinglish,nurse_home_visit,routine
-DEV_0383,bhai ko 5 din se tabiyat theek nhi lag rahi,hinglish,gp_teleconsult,routine
-DEV_0384,"beti ko do din se halka bukhar hai, khel rha hai theek se, doctor chahiye",hinglish,gp_teleconsult,same_day
-DEV_0385,"दादी को कई महीनों से धुंधला दिख रहा है, पढ़ने में दिक्कत है। कृपया मदद करें",hi,specialist_referral,routine
-DEV_0386,"nani ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye, kya karein?",hinglish,nurse_home_visit,routine
-DEV_0387,"Not feeling well for 10 days, just tired",en,gp_teleconsult,routine
-DEV_0388,My brother has had sugar readings above 300 for a week even with regular medicines. Need a doctor,en,specialist_referral,same_day
-DEV_0389,"nani ko ek saal se kam sunai de raha he, doctor chahiye",hinglish,specialist_referral,routine
-DEV_0390,My 75 year old father has fever with cough since this morning and feels weak. Need a doctor,en,paramedic_home_visit,same_day
-DEV_0391,मेरी पत्नी को पाँच दिन से स्तन में एक गांठ महसूस हो रही है,hi,specialist_referral,same_day
-DEV_0392,My son cannot breathe properly and the lips are turning blue. Please help,en,emergency_referral,immediate
-DEV_0393,My grandmother has a mild headache since this morning,en,gp_teleconsult,routine
-DEV_0394,दीदी को कल से गले में खराश और थोड़ी खांसी है। डॉक्टर चाहिए,hi,gp_teleconsult,same_day
-DEV_0395,"beti ko subah se haath par chhota sa cut lag gaya, dressing karwani hai",hinglish,paramedic_home_visit,same_day
-DEV_0396,My wife is 7 months pregnant and is bleeding with severe pain. What should we do?,en,emergency_referral,immediate
-DEV_0397,My husband had surgery last week and needs wound dressing at home. What should we do?,en,nurse_home_visit,routine
-DEV_0398,"mujhe 10 minute se daura pad raha hai, haath pair kaanp rahe hain, please help",hinglish,emergency_referral,immediate
-DEV_0399,"मेरी पत्नी पाँच महीने की गर्भवती है, नियमित जाँच करवानी है",hi,specialist_referral,routine
-DEV_0400,"My mother is having a fit suddenly, the whole body is shaking. Need a doctor",en,emergency_referral,immediate
+DEV_0007,My wife is 8 months pregnant and the baby has not moved since morning. Please help,en,emergency_referral,immediate
+DEV_0008,"Mere 6 saal ke bete ko subah se keede ne kaat liya, bas thodi khujli aur chhoti sujan",hinglish,gp_teleconsult,routine
+DEV_0009,"My old mother slipped in the bathroom since this morning, has knee pain and a bruise but is talking normally. Need a doctor",en,paramedic_home_visit,same_day
+DEV_0010,"Need a blood sample collected at home, My 75 year old father cannot go to the lab",en,paramedic_home_visit,routine
+DEV_0011,मम्मी की आवाज़ अचानक लड़खड़ा रही है और चेहरा एक तरफ टेढ़ा हो गया है। डॉक्टर चाहिए,hi,emergency_referral,immediate
+DEV_0012,"भाई को दस दिन से सूखी खांसी है, बुखार नहीं है, साँस ठीक है",hi,gp_teleconsult,same_day
+DEV_0013,"Nana ji ko abhi abhi seene mein tez dard ho raha hai aur paseena aa raha h, please help",hinglish,emergency_referral,immediate
+DEV_0014,"दादी का कैथेटर बदलना है, घर पर नर्स चाहिए। क्या करें?",hi,nurse_home_visit,routine
+DEV_0015,"Mujhe subah se gas aur pet phoolna hai, seene mein dardh nahi hai",hinglish,gp_teleconsult,routine
+DEV_0016,"Didi ko teen din se badan dard aur bukhar hai, baaki sab theek, doctor chahiye",hinglish,gp_teleconsult,same_day
+DEV_0017,"बच्चे को दो दिन से हल्का बुखार है, ठीक से खेल रहा है",hi,gp_teleconsult,same_day
+DEV_0018,बेटी को कल से जुकाम और छींक आ रही है। डॉक्टर चाहिए,hi,gp_teleconsult,routine
+DEV_0019,My father is bedridden and has a bedsore that is getting worse,en,nurse_home_visit,same_day
+DEV_0020,मेरा तीन साल का बेटा अभी तक बोलता नहीं है। क्या करें?,hi,specialist_referral,routine
+DEV_0021,"bhai ko ek hafte se khane ke baad acidity aur jalan ho rahi hai, kya karein?",hinglish,gp_teleconsult,routine
+DEV_0022,My mother has had trouble hearing for many months. Please help,en,specialist_referral,routine
+DEV_0023,"दीदी को कल से बुखार और खांसी है, साँस की दिक्कत नहीं है",hi,gp_teleconsult,same_day
+DEV_0024,"मेरी पत्नी को कल से बदन दर्द और बुखार है, बाकी सब ठीक है। क्या करें?",hi,gp_teleconsult,same_day
+DEV_0025,There is a burning feeling when urinating for 3 days,en,gp_teleconsult,same_day
+DEV_0026,My father needs daily insulin injections at home and cannot do it alone. What should we do?,en,nurse_home_visit,routine
+DEV_0027,My son drank kerosene by mistake. Need a doctor,en,emergency_referral,immediate
+DEV_0028,My son has had a high fever since yesterday with a stiff neck and confusion. What should we do?,en,emergency_referral,immediate
+DEV_0029,delivery ke baad bachche ki dekhbhal aur taankon ki dressing ke liye nurse chahiye,hinglish,nurse_home_visit,routine
+DEV_0030,भाई को तीन महीने से बार बार आधे सिर में तेज़ दर्द होता है। कृपया मदद करें,hi,specialist_referral,routine
+DEV_0031,Need a doctor to explain my test results,en,gp_teleconsult,routine
+DEV_0032,bete ko kal se urine karte waqt jalan hoti hai,hinglish,gp_teleconsult,same_day
+DEV_0033,"मेरा छह साल का बेटा खेलते हुए गिर गया, हाथ टूट गया लगता है",hi,emergency_referral,immediate
+DEV_0034,"मुझे पाँच दिन से दिल की धड़कन तेज़ हो जाती है, सीने में दर्द नहीं है",hi,specialist_referral,same_day
+DEV_0035,Nana ji ko subah se halka sar dard hai,hinglish,gp_teleconsult,routine
+DEV_0036,"पापा का कैथेटर बदलना है, घर पर नर्स चाहिए",hi,nurse_home_visit,routine
+DEV_0037,Bachche ko do din se haath par khujli wale daane hain,hinglish,gp_teleconsult,routine
+DEV_0038,My old mother has heavy pressure in the chest suddenly,en,emergency_referral,immediate
+DEV_0039,"My wife has a headache with pain behind the eyes for 2 days, no fever. Please help",en,gp_teleconsult,routine
+DEV_0040,"Nana ji subah se gir gaye, kalai sooj gayi hai aur dard hai, baat theek kar rahe hain",hinglish,paramedic_home_visit,same_day
+DEV_0041,"दादी का बीपी आज बहुत ज़्यादा आ रहा है, सिर भारी है",hi,paramedic_home_visit,same_day
+DEV_0042,The doctor advised an IV drip at home for My old mother. Please help,en,nurse_home_visit,same_day
+DEV_0043,My father needs daily insulin injections at home and cannot do it alone,en,nurse_home_visit,routine
+DEV_0044,"Papa ko roz insulin ka injection lagwana hai, khud nahi laga pate, please help",hinglish,nurse_home_visit,routine
+DEV_0045,"My old mother slipped for a few hours, ankle hurts, fully alert. Need a doctor",en,paramedic_home_visit,same_day
+DEV_0046,My daughter has a mild headache for 3 days,en,gp_teleconsult,routine
+DEV_0047,"भाई को दो दिन से हाथ पर छोटा सा कट लग गया, पट्टी करवानी है। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0048,"dadi ko subah se bahut khansi aur 101 bukhar hai, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0049,"बच्चे को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं। क्या करें?",hi,nurse_home_visit,routine
+DEV_0050,"Meri wife ko aaj se keede ne kaat liya, bas thodi khujli aur chhoti sujan",hinglish,gp_teleconsult,routine
+DEV_0051,"मेरे छह साल के बेटे को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं। कृपया मदद करें",hi,nurse_home_visit,routine
+DEV_0052,"बच्चे को एक साल से स्कूल में ध्यान नहीं लगता, चिड़चिड़ा रहता है",hi,specialist_referral,routine
+DEV_0053,"mere husband ko ek hafte se dil ki dhadkan tez ho jaati hai, sine mein dard nahi hai",hinglish,specialist_referral,same_day
+DEV_0054,My son keeps pulling at the ear and crying for 2 days. Please help,en,gp_teleconsult,same_day
+DEV_0055,"papa 10 minute se ek haath utha nhi pa rahe aur awaaz atak rahi hai, doctor chahiye",hinglish,emergency_referral,immediate
+DEV_0056,"Mere husband ko kai mahino se kamar dardh hai jo pair tak jaata hai, kya karein?",hinglish,specialist_referral,routine
+DEV_0057,तीन हफ्ते के बच्चे को बुखार है,hi,emergency_referral,immediate
+DEV_0058,"dada ji ka catheter badalna hai, ghar par nurse chahiye, kya karein?",hinglish,nurse_home_visit,routine
+DEV_0059,"Papa bistar par hain, har hafte ghar par BP sugar check karwana hai",hinglish,paramedic_home_visit,routine
+DEV_0060,"My father fell and hit the head, now vomiting and confused",en,emergency_referral,immediate
+DEV_0061,I have had lower back pain for 6 months going down one leg. Please help,en,specialist_referral,routine
+DEV_0062,The doctor said my thyroid is high and I should see a specialist,en,specialist_referral,routine
+DEV_0063,डॉक्टर ने पापा को घर पर ड्रिप लगवाने को कहा है। कृपया मदद करें,hi,nurse_home_visit,same_day
+DEV_0064,My son has a toothache with swelling of the gum since yesterday. Please help,en,specialist_referral,same_day
+DEV_0065,"दादाजी को तीन महीने से धुंधला दिख रहा है, पढ़ने में दिक्कत है। क्या करें?",hi,specialist_referral,routine
+DEV_0066,"wife 8 mahine pregnant hai, subah se baby hil nahin raha, please help",hinglish,emergency_referral,immediate
+DEV_0067,दीदी को तीन महीने से पीरियड्स में बहुत ज़्यादा खून आता है,hi,specialist_referral,same_day
+DEV_0068,Bachcha ne galti se chuhe maarne ki dawai pee li,hinglish,emergency_referral,immediate
+DEV_0069,"Nani ko 2 din se bukhar hai aur do baar ulti hui, kamzori hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
+DEV_0070,"दादी को सुबह से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे। डॉक्टर चाहिए",hi,paramedic_home_visit,same_day
+DEV_0071,"भाई को पाँच दिन से सूखी खांसी है, बुखार नहीं है, साँस ठीक है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
+DEV_0072,"need a blood sample collected at home, my grandmother cannot go to the lab. What should we do?",en,paramedic_home_visit,routine
+DEV_0073,My 3 year old is not speaking any words yet. What should we do?,en,specialist_referral,routine
+DEV_0074,"dadi ko doctor ne injection bataye hain, roz ghar par lagwane hain, doctor chahiye",hinglish,nurse_home_visit,routine
+DEV_0075,The doctor advised an IV drip at home for My old mother. Need a doctor,en,nurse_home_visit,same_day
+DEV_0076,My sister swallowed a whole strip of sleeping pills,en,emergency_referral,immediate
+DEV_0077,"I have had mild fever since this morning, eating and drinking normally. Please help",en,gp_teleconsult,same_day
+DEV_0078,"Nani ko subah se keede ne kaat liya, bas thodi khujli aur chhoti sujan",hinglish,gp_teleconsult,routine
+DEV_0079,"dada ji ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0080,मेरे दो महीने के बच्चे को तेज़ बुखार है और दूध नहीं पी रहा,hi,emergency_referral,immediate
+DEV_0081,"doctor ne nani ko ghar par drip lagwane ko kaha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
+DEV_0082,The doctor advised an IV drip at home for My old mother,en,nurse_home_visit,same_day
+DEV_0083,"Mujhe 5 din se dil ki dhadkan tez ho jaati hai, seene mein dard nahi hai, please help",hinglish,specialist_referral,same_day
+DEV_0084,My grandmother is extremely breathless suddenly and cannot even speak. Please help,en,emergency_referral,immediate
+DEV_0085,"Mujhe do din se halka bukhar hai, khana peena theek hai",hinglish,gp_teleconsult,same_day
+DEV_0086,"dada ji ko achanak bahut paseena aa rha hai aur baayein haath mein dard ja rha hai, seene mein bhaaripan",hinglish,emergency_referral,immediate
+DEV_0087,"मेरी पत्नी सात महीने की गर्भवती है और खून आ रहा है, तेज़ दर्द है। कृपया मदद करें",hi,emergency_referral,immediate
+DEV_0088,"Fever and cough since yesterday, breathing is fine. What should we do?",en,gp_teleconsult,same_day
+DEV_0089,My old mother has fever with cough since this morning and feels weak,en,paramedic_home_visit,same_day
+DEV_0090,bachche ko kal se halka sar dard hai,hinglish,gp_teleconsult,routine
+DEV_0091,"My wife needs the injections the doctor advised, given at home every day",en,nurse_home_visit,routine
+DEV_0092,"My grandfather has been running a temperature of 102 since this morning, very weak. What should we do?",en,paramedic_home_visit,same_day
+DEV_0093,"Mere husband ko 2 din se dast ho rahe hain par paani pee rahe hain, please help",hinglish,gp_teleconsult,same_day
+DEV_0094,"My child has had a cold for 2 days, nothing else. Please help",en,gp_teleconsult,routine
+DEV_0095,"mummy ka bp 180/110 aa raha he, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0096,"meri wife ko kal se 100 bukar aur badan toot raha hai, please help",hinglish,gp_teleconsult,same_day
+DEV_0097,"Papa ko 10 minute se chest mein bht dard h, please help",hinglish,emergency_referral,immediate
+DEV_0098,"nani ko do din se bukhar hai aur do baar ulti hui, kamzori hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
+DEV_0099,पापा को तीन महीने से कम सुनाई दे रहा है,hi,specialist_referral,routine
+DEV_0100,my mother has had loose motions for 2 days and feels dizzy when standing. Please help,en,paramedic_home_visit,same_day
+DEV_0101,Is there a doctor I can talk to on the phone?. Need a doctor,en,gp_teleconsult,routine
+DEV_0102,dada ji ko subah se peshab mein jalan ho rhi hai,hinglish,gp_teleconsult,same_day
+DEV_0103,"bhai ko 2 din se bag uthane ke baad kamar mein halka dard hai, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0104,दादी को तीन दिन से बुखार है और खांसी भी,hi,paramedic_home_visit,same_day
+DEV_0105,"My old mother's urine catheter seems blocked today, nothing is draining. Please help",en,nurse_home_visit,same_day
+DEV_0106,"My old mother cannot travel, need a BP and sugar check at home",en,paramedic_home_visit,routine
+DEV_0107,"meri wife ko teen din se munh mein chhaale ho gaye hain, khane mein dard",hinglish,gp_teleconsult,routine
+DEV_0108,"didi ko ek saal se periods mein bohot zyada bleeding hoti hai, doctor chahiye",hinglish,specialist_referral,same_day
+DEV_0109,"मेरी पत्नी को एक हफ्ते से दिल की धड़कन तेज़ हो जाती है, सीने में दर्द नहीं है। कृपया मदद करें",hi,specialist_referral,same_day
+DEV_0110,"My son is wheezing badly and the inhaler is not helping, struggling to breathe. Need a doctor",en,emergency_referral,immediate
+DEV_0111,my grandmother has had loose motions since this morning and feels dizzy when standing,en,paramedic_home_visit,same_day
+DEV_0112,बेटी को कल से पेशाब में जलन हो रही है। क्या करें?,hi,gp_teleconsult,same_day
+DEV_0113,The doctor advised an IV drip at home for My grandfather,en,nurse_home_visit,same_day
+DEV_0114,"Mere 6 saal ke bete ko 10 minute se daura pad raha hai, haath pair kaanp rahe hain, kya karein?",hinglish,emergency_referral,immediate
+DEV_0115,Mere husband ko do din se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
+DEV_0116,My husband has painful mouth ulcers for 2 days. What should we do?,en,gp_teleconsult,routine
+DEV_0117,papa ko kal se halka sir dard h,hinglish,gp_teleconsult,routine
+DEV_0118,बच्चे को कल से कान में दर्द है और हल्का बुखार है। क्या करें?,hi,gp_teleconsult,same_day
+DEV_0119,the catheter bag has stayed empty since this morning. Please help,en,nurse_home_visit,same_day
+DEV_0120,"दादी दो दिन से बाथरूम में फिसल गए, घुटने में चोट और दर्द है पर ठीक से बात कर रहे हैं",hi,paramedic_home_visit,same_day
+DEV_0121,"Didi ko 10 din se kabz hai, pet saaf nahi hota",hinglish,gp_teleconsult,routine
+DEV_0122,Dada ji ko kai mahino se kam sunai de rha hai,hinglish,specialist_referral,routine
+DEV_0123,My father feels dizzy when getting up from bed since yesterday,en,paramedic_home_visit,same_day
+DEV_0124,"Nani ko subah se tez bukhar hai aur bahut kamzori, bistar se uth nahi pa rahe",hinglish,paramedic_home_visit,same_day
+DEV_0125,My 3 week old baby has a temperature. Please help,en,emergency_referral,immediate
+DEV_0126,मेरे पति को पाँच दिन से खाने के बाद एसिडिटी और जलन हो रही है। कृपया मदद करें,hi,gp_teleconsult,routine
+DEV_0127,"navjaat baby ko bukhaar hai, 3 hafte ka hai",hinglish,emergency_referral,immediate
+DEV_0128,"nana ji bahar nahi ja sakte, ghar par bp aur sugar check karwana hai, kya karein?",hinglish,paramedic_home_visit,routine
+DEV_0129,"My father has fever and vomited twice for 2 days, feeling weak. What should we do?",en,paramedic_home_visit,same_day
+DEV_0130,"Fever and cough since this morning, breathing is fine. What should we do?",en,gp_teleconsult,same_day
+DEV_0131,My son keeps pulling at the ear and crying for 2 days. What should we do?,en,gp_teleconsult,same_day
+DEV_0132,My husband has had loose motions for 3 days but is drinking fluids,en,gp_teleconsult,same_day
+DEV_0133,My 75 year old father has had loose motions for 3 days and feels dizzy when standing. Need a doctor,en,paramedic_home_visit,same_day
+DEV_0134,bhai ko kal se bukhar khansi he par saans theek hai,hinglish,gp_teleconsult,same_day
+DEV_0135,बच्चे के टीकों के बारे में डॉक्टर से पूछना है। डॉक्टर चाहिए,hi,gp_teleconsult,routine
+DEV_0136,"Nani ko do din se bukhar hai aur do baar ulti hui, kamzori hai, doctor chahiye",hinglish,paramedic_home_visit,same_day
+DEV_0137,"मेरे छह साल के बेटे को सुबह से कीड़े ने काटा, बस थोड़ी खुजली है। क्या करें?",hi,gp_teleconsult,routine
+DEV_0138,bete ko subah se urine karte waqt jalan hoti he,hinglish,gp_teleconsult,same_day
+DEV_0139,"Need a blood sample collected at home, My grandfather cannot go to the lab. Need a doctor",en,paramedic_home_visit,routine
+DEV_0140,"Nani ko achanak saans bahut phool rahi hai, bol bhi nahi pa rahe",hinglish,emergency_referral,immediate
+DEV_0141,My 75 year old father has a urine catheter that needs to be changed,en,nurse_home_visit,routine
+DEV_0142,My old mother has been coughing a lot since yesterday with a temperature of 101. Need a doctor,en,paramedic_home_visit,same_day
+DEV_0143,"My grandmother has fever and vomited twice for 2 days, feeling weak. What should we do?",en,paramedic_home_visit,same_day
+DEV_0144,nana ji ko subah se dast ho rahe hain aur khade hone par chakar aata hai,hinglish,paramedic_home_visit,same_day
+DEV_0145,My wife has had loose motions for 2 days but is drinking fluids,en,gp_teleconsult,same_day
+DEV_0146,नानी को कई महीनों से कम सुनाई दे रहा है,hi,specialist_referral,routine
+DEV_0147,"mujhe 2 din se sar dardh aur aankhon ke peeche dard hai, bukhar nahi",hinglish,gp_teleconsult,routine
+DEV_0148,"nani bistar par hain, har hafte ghar par bp sugar check karwana hai",hinglish,paramedic_home_visit,routine
+DEV_0149,"बेटी को तीन महीने से स्कूल में ध्यान नहीं लगता, चिड़चिड़ा रहता है। डॉक्टर चाहिए",hi,specialist_referral,routine
+DEV_0150,"दादी को दो दिन से बुखार है और दो बार उल्टी हुई, कमज़ोरी है",hi,paramedic_home_visit,same_day
+DEV_0151,"BP machine shows 175/105 for My mother, feeling uneasy",en,paramedic_home_visit,same_day
+DEV_0152,My grandfather got badly burned by boiling oil over a large part of the body,en,emergency_referral,immediate
+DEV_0153,"Meri wife ko 10 din se tabiyat theek nahi lag rahi, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0154,My grandmother has not passed stool for 2 days and the stomach is bloated. What should we do?,en,paramedic_home_visit,same_day
+DEV_0155,पापा को कल से हाथ पर खुजली वाले दाने हैं। डॉक्टर चाहिए,hi,gp_teleconsult,routine
+DEV_0156,"nani bistar par hain aur peeth par ghaav badh raha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
+DEV_0157,"My brother has gas and bloating since yesterday, no chest pain",en,gp_teleconsult,routine
+DEV_0158,मेरी पत्नी को तीन दिन से जुकाम और छींक आ रही है,hi,gp_teleconsult,routine
+DEV_0159,My brother has painful mouth ulcers for 2 days,en,gp_teleconsult,routine
+DEV_0160,My sister has had very heavy periods for 6 months,en,specialist_referral,same_day
+DEV_0161,बेटी ने गलती से केरोसिन पी लिया,hi,emergency_referral,immediate
+DEV_0162,Need regular home checks of vitals for My father. Please help,en,paramedic_home_visit,routine
+DEV_0163,"बच्चा खेलते हुए गिर गया, हाथ टूट गया लगता है। डॉक्टर चाहिए",hi,emergency_referral,immediate
+DEV_0164,nana ji ko kal se bahut khansi aur 101 bukhaar hai,hinglish,paramedic_home_visit,same_day
+DEV_0165,"Dada ji ko kal se latrine nahi hui, pet phoola hua hai, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0166,"My sister has had mild fever for 2 days, eating and drinking normally",en,gp_teleconsult,same_day
+DEV_0167,"mujhe 10 din se bahut tension aur ghabrahat rehti hai, neend nahi aati",hinglish,specialist_referral,routine
+DEV_0168,"डॉक्टर ने कहा थायरॉइड बढ़ा हुआ है, विशेषज्ञ को दिखाना है। कृपया मदद करें",hi,specialist_referral,routine
+DEV_0169,"papa ko do din se bukhar hai aur do baar ulti hui, kamjori hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0170,"My brother has body ache and fever for 2 days, otherwise fine. Please help",en,gp_teleconsult,same_day
+DEV_0171,"Nana ji ko achanak bahut paseena aa raha hai aur baayein haath mein dard ja raha hai, seene mein bhaaripan, please help",hinglish,emergency_referral,immediate
+DEV_0172,"Mujhe subah se dast ho rahe hain par paani pee rahe hain, kya karein?",hinglish,gp_teleconsult,same_day
+DEV_0173,My husband has a painless lump in the neck for 5 days. Need a doctor,en,specialist_referral,same_day
+DEV_0174,"dadi ko kal se dast ho rahe hain aur khade hone par chakkar aata hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0175,"Papa ka catheter badalna hai, ghar par nurse chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0176,My sister has a sore throat and mild cough for 3 days,en,gp_teleconsult,same_day
+DEV_0177,My sister has small sores inside the mouth for 2 days. What should we do?,en,gp_teleconsult,routine
+DEV_0178,"mujhe ek hafte se sookhi khansi hai, bukhar nahi, saans theek hai, doctor chahiye",hinglish,gp_teleconsult,same_day
+DEV_0179,"मेरी पत्नी को कुछ घंटों से कीड़े ने काटा, बस थोड़ी खुजली है। क्या करें?",hi,gp_teleconsult,routine
+DEV_0180,"My brother has had mild fever for 2 days, eating and drinking normally",en,gp_teleconsult,same_day
+DEV_0181,"My mother has been running a temperature of 102 for 3 days, very weak",en,paramedic_home_visit,same_day
+DEV_0182,"my mother twisted an ankle since yesterday, it is swollen and walking is hard. Please help",en,paramedic_home_visit,same_day
+DEV_0183,"Mummy kuch ghante se gir gaye, kalai sooj gayi hai aur dard hai, baat theek kar rahe hain, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0184,दीदी को कल से बैग उठाने के बाद कमर में हल्का दर्द है,hi,gp_teleconsult,routine
+DEV_0185,"Didi ko ek hafte se kabz hai, pet saaf nahi hota, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0186,नानी को दो दिन से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है,hi,paramedic_home_visit,same_day
+DEV_0187,"मेरे छह साल के बेटे को डॉक्टर ने इंजेक्शन बताए हैं, रोज़ घर पर लगवाने हैं",hi,nurse_home_visit,routine
+DEV_0188,"मेरे छह साल के बेटे को दो दिन से तेज़ बुखार है, गर्दन अकड़ गई है और बहकी बहकी बातें कर रहे हैं। कृपया मदद करें",hi,emergency_referral,immediate
+DEV_0189,My old mother needs daily insulin injections at home and cannot do it alone. Please help,en,nurse_home_visit,routine
+DEV_0190,"dadi ka catheter badalna hai, ghar par nurse chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0191,भाई को एक साल से बार बार आधे सिर में तेज़ दर्द होता है,hi,specialist_referral,routine
+DEV_0192,मेरे पति को तीन महीने से चेहरे पर मुहांसे हैं जो जाते नहीं। कृपया मदद करें,hi,specialist_referral,routine
+DEV_0193,mummy ka bp 180/110 aa raha he,hinglish,paramedic_home_visit,same_day
+DEV_0194,"बेटे को दो दिन से हाथ पर छोटा सा कट लग गया, पट्टी करवानी है। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0195,मम्मी को तीन दिन से बिस्तर से उठने पर चक्कर आता है। कृपया मदद करें,hi,paramedic_home_visit,same_day
+DEV_0196,"mummy bistar par hain, har hafte ghar par bp sugar check karwana h",hinglish,paramedic_home_visit,routine
+DEV_0197,"Mera 3 saal ka beta abhi tak bolta nahin hai, please help",hinglish,specialist_referral,routine
+DEV_0198,Papa ko kal se dast ho rahe hain aur khade hone par chakar aata hai,hinglish,paramedic_home_visit,same_day
+DEV_0199,I have small sores inside the mouth for 2 days,en,gp_teleconsult,routine
+DEV_0200,"My father has a red, watery eye for a few hours. Please help",en,gp_teleconsult,same_day
+DEV_0201,My brother has a mild headache since this morning,en,gp_teleconsult,routine
+DEV_0202,My 75 year old father feels dizzy when getting up from bed since yesterday,en,paramedic_home_visit,same_day
+DEV_0203,"My grandfather fell since this morning, the wrist is swollen and painful, talking normally",en,paramedic_home_visit,same_day
+DEV_0204,My grandmother has severe chest pain and is sweating for the last 10 minutes. What should we do?,en,emergency_referral,immediate
+DEV_0205,"papa ka catheter badalna hai, ghar par nurse chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
+DEV_0206,"nani ka ghar par blood sample lena hai, lab nahi ja sakte, please help",hinglish,paramedic_home_visit,routine
+DEV_0207,"dada ji ko kal se tez bukhar hai, gardan akad gayi hai aur behki behki baatein kar rahe hain, kya karein?",hinglish,emergency_referral,immediate
+DEV_0208,"report aayi hai, doctor se baat karni h",hinglish,gp_teleconsult,routine
+DEV_0209,My wife's periods have been very heavy and long for 3 months,en,specialist_referral,same_day
+DEV_0210,"My husband got a small cut on the hand since this morning, needs cleaning and dressing. What should we do?",en,paramedic_home_visit,same_day
+DEV_0211,"मम्मी को कल से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0212,"नानी को दो दिन से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0213,My old mother has a urine catheter that needs to be changed. What should we do?,en,nurse_home_visit,routine
+DEV_0214,मम्मी को सुबह से बहुत खांसी और 101 बुखार है। क्या करें?,hi,paramedic_home_visit,same_day
+DEV_0215,"दादी को रोज़ इंसुलिन का इंजेक्शन लगवाना है, खुद नहीं लगा पाते",hi,nurse_home_visit,routine
+DEV_0216,My old mother's legs have been swelling for 3 months and gets breathless on walking,en,specialist_referral,same_day
+DEV_0217,"Dada ji hosh mein nahi hain, doctor chahiye",hinglish,emergency_referral,immediate
+DEV_0218,"दादाजी को फीडिंग ट्यूब लगी है, रोज़ घर पर नर्स की देखभाल चाहिए",hi,nurse_home_visit,routine
+DEV_0219,"mujhe hafte bhar se bahut tension aur ghabrahat rehti hai, neend nahi aati",hinglish,specialist_referral,routine
+DEV_0220,मेरी पत्नी को कई महीनों से बार बार आधे सिर में तेज़ दर्द होता है,hi,specialist_referral,routine
+DEV_0221,bhai ko kal se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
+DEV_0222,"मुझे सुबह से हल्का बुखार है, खाना पीना ठीक है",hi,gp_teleconsult,same_day
+DEV_0223,My old mother had surgery last week and needs wound dressing at home. What should we do?,en,nurse_home_visit,routine
+DEV_0224,"Wife ka c-section hua hai, taankon ki dressing ghar par chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0225,My child has a mild fever since yesterday and is playing normally. Need a doctor,en,gp_teleconsult,same_day
+DEV_0226,My daughter cannot concentrate at school and is very irritable for a year. What should we do?,en,specialist_referral,routine
+DEV_0227,"My father fell today, the wrist is swollen and painful, talking normally. Please help",en,paramedic_home_visit,same_day
+DEV_0228,"पापा का कैथेटर बदलना है, घर पर नर्स चाहिए। क्या करें?",hi,nurse_home_visit,routine
+DEV_0229,"दादी को तीन महीने से धुंधला दिख रहा है, पढ़ने में दिक्कत है",hi,specialist_referral,routine
+DEV_0230,doctor se phone par baat karni h,hinglish,gp_teleconsult,routine
+DEV_0231,meri wife ko do din se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
+DEV_0232,डॉक्टर ने दादी को घर पर ड्रिप लगवाने को कहा है। कृपया मदद करें,hi,nurse_home_visit,same_day
+DEV_0233,My mother is extremely breathless for the last 10 minutes and cannot even speak,en,emergency_referral,immediate
+DEV_0234,nani bistar par hain aur peeth par ghaav badh raha hai,hinglish,nurse_home_visit,same_day
+DEV_0235,"papa ki diet ke liye doctor se salaah chahiye, kya karein?",hinglish,gp_teleconsult,routine
+DEV_0236,"बेटा को साँस नहीं आ रही, होंठ नीले पड़ रहे हैं। क्या करें?",hi,emergency_referral,immediate
+DEV_0237,"My mother got a mosquito or insect bite today, small itchy bump only",en,gp_teleconsult,routine
+DEV_0238,"mummy ke ghutne ka operation hua hai, ghar par dressing aur exercise chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0239,पापा को सुबह से बुखार है और खांसी भी,hi,paramedic_home_visit,same_day
+DEV_0240,दीदी को पाँच दिन से खाने के बाद एसिडिटी और जलन हो रही है,hi,gp_teleconsult,routine
+DEV_0241,"नानी को छह महीने से धुंधला दिख रहा है, पढ़ने में दिक्कत है",hi,specialist_referral,routine
+DEV_0242,"Dada ji ko kai mahino se dhundhla dikh raha hai, padhne mein dikkat hai",hinglish,specialist_referral,routine
+DEV_0243,Nani ko do din se dast ho rahe hain aur khade hone par chakar aata hai,hinglish,paramedic_home_visit,same_day
+DEV_0244,"mummy achanak ek haath utha nahin pa rahe aur awaaz atak rahi hai, please help",hinglish,emergency_referral,immediate
+DEV_0245,meri wife ko subah se bag uthane ke baad kamar mein halka dard hai,hinglish,gp_teleconsult,routine
+DEV_0246,"nana ji bistar par hain, har hafte ghar par bp sugar check karwana he",hinglish,paramedic_home_visit,routine
+DEV_0247,"दादी को फीडिंग ट्यूब लगी है, रोज़ घर पर नर्स की देखभाल चाहिए",hi,nurse_home_visit,routine
+DEV_0248,"My old mother has had blurry vision for many months, difficulty reading",en,specialist_referral,routine
+DEV_0249,"बेटी को दो दिन से हल्का बुखार है, ठीक से खेल रहा है। क्या करें?",hi,gp_teleconsult,same_day
+DEV_0250,"दादी का बीपी आज बहुत ज़्यादा आ रहा है, सिर भारी है। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0251,"Mere husband ko hafte bhar se kabz hai, pet saaf nahi hota, please help",hinglish,gp_teleconsult,routine
+DEV_0252,बेटी ने गलती से चूहे मारने की दवा पी ली,hi,emergency_referral,immediate
+DEV_0253,"My brother twisted an ankle since this morning, it is swollen and walking is hard",en,paramedic_home_visit,same_day
+DEV_0254,"Beti ko kal se haath par chhota sa cut lag gaya, dressing karwani hai",hinglish,paramedic_home_visit,same_day
+DEV_0255,dada ji ke haath 6 mahine se kaanpte hain aur chaal dheemi ho gayi hai,hinglish,specialist_referral,routine
+DEV_0256,My wife is 7 months pregnant and is bleeding with severe pain,en,emergency_referral,immediate
+DEV_0257,पापा के हाथ कई महीनों से काँपते हैं और चाल धीमी हो गई है। डॉक्टर चाहिए,hi,specialist_referral,routine
+DEV_0258,"bachche ko 2 din se halka bukar hai, khel rha hai theek se, please help",hinglish,gp_teleconsult,same_day
+DEV_0259,दादी को कल से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है,hi,paramedic_home_visit,same_day
+DEV_0260,"didi ko 10 din se bahut tension aur ghabrahat rehti hai, neend nahi aati",hinglish,specialist_referral,routine
+DEV_0261,मेरे पति को कुछ घंटों से आँख लाल है और पानी आ रहा है। डॉक्टर चाहिए,hi,gp_teleconsult,same_day
+DEV_0262,My wife has a mild headache since this morning,en,gp_teleconsult,routine
+DEV_0263,"पापा को कल से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे",hi,paramedic_home_visit,same_day
+DEV_0264,"Wife ka c-section hua hai, taankon ki dressing ghar par chahiye",hinglish,nurse_home_visit,routine
+DEV_0265,My mother has diabetes and a foot wound for 10 days that needs regular dressing. Please help,en,nurse_home_visit,same_day
+DEV_0266,"Bhai ko 5 din se kabz hai, pet saaf nahin hota",hinglish,gp_teleconsult,routine
+DEV_0267,my grandfather needs daily insulin injections at home and cannot do it alone. Need a doctor,en,nurse_home_visit,routine
+DEV_0268,"After the knee replacement surgery, mother needs dressing and exercises at home",en,nurse_home_visit,routine
+DEV_0269,"Bete ko 2 din se pair mein moch aa gayi, sujan h aur chalne mein dikkat h, please help",hinglish,paramedic_home_visit,same_day
+DEV_0270,My mother has not passed stool since this morning and the stomach is bloated. Need a doctor,en,paramedic_home_visit,same_day
+DEV_0271,"मेरे पति का एक्सीडेंट हो गया, बहुत खून बह रहा है",hi,emergency_referral,immediate
+DEV_0272,My brother has had lower back pain for 6 months going down one leg. Please help,en,specialist_referral,routine
+DEV_0273,bachcha ne galti se kerosene pee liya,hinglish,emergency_referral,immediate
+DEV_0274,My 75 year old father is bedridden and has a bedsore that is getting worse. Please help,en,nurse_home_visit,same_day
+DEV_0275,"दादी को शुगर है और पाँच दिन से पैर में घाव है, रोज़ ड्रेसिंग चाहिए। कृपया मदद करें",hi,nurse_home_visit,same_day
+DEV_0276,"Beti ko 3 mahine se skin par safed daag hain jo badh rahe hain, doctor chahiye",hinglish,specialist_referral,routine
+DEV_0277,"Mere husband ko 3 mahine se baar baar aadhe sar mein tez dard hota h, please help",hinglish,specialist_referral,routine
+DEV_0278,"nani ka catheter badalna hai, ghar par nurse chahiye",hinglish,nurse_home_visit,routine
+DEV_0279,My 75 year old father has a urine catheter that needs to be changed. What should we do?,en,nurse_home_visit,routine
+DEV_0280,"Papa ko achanak bahut paseena aa rha hai aur baayein haath mein dard ja raha hai, seene mein bhaaripan",hinglish,emergency_referral,immediate
+DEV_0281,"दादी को फीडिंग ट्यूब लगी है, रोज़ घर पर नर्स की देखभाल चाहिए। डॉक्टर चाहिए",hi,nurse_home_visit,routine
+DEV_0282,"पापा गिर गए और सिर पर चोट लगी, अब उल्टी हो रही है और भ्रमित हैं। डॉक्टर चाहिए",hi,emergency_referral,immediate
+DEV_0283,"Nani ko do din se urine karte waqt jalan hoti hai, kya karein?",hinglish,gp_teleconsult,same_day
+DEV_0284,my 6 year old has a mild fever since yesterday and is playing normally. Need a doctor,en,gp_teleconsult,same_day
+DEV_0285,"papa teen din se bathroom mein fisal gaye, ghutne mein chot aur dard hai par baat theek se kar rahe hain",hinglish,paramedic_home_visit,same_day
+DEV_0286,"I have gas and bloating since this morning, no chest pain. Need a doctor",en,gp_teleconsult,routine
+DEV_0287,"Nana ji ko kal se tez bukhar hai aur bahut kamzori, bistar se uth nhi pa rahe, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0288,I have been passing urine very often and feeling very thirsty for 3 months,en,specialist_referral,routine
+DEV_0289,"Need a blood sample collected at home, My father cannot go to the lab",en,paramedic_home_visit,routine
+DEV_0290,"नानी का कैथेटर बदलना है, घर पर नर्स चाहिए। डॉक्टर चाहिए",hi,nurse_home_visit,routine
+DEV_0291,"My father got a small cut on the hand since this morning, needs cleaning and dressing. Please help",en,paramedic_home_visit,same_day
+DEV_0292,"My 75 year old father cannot travel, need a BP and sugar check at home. Need a doctor",en,paramedic_home_visit,routine
+DEV_0293,"My 75 year old father is bedridden and needs help with bathing, turning and hygiene",en,nurse_home_visit,routine
+DEV_0294,Bhai ko 6 mahine se baar baar aadhe sar mein tez dard hota hai,hinglish,specialist_referral,routine
+DEV_0295,बच्चे के टीकों के बारे में डॉक्टर से पूछना है,hi,gp_teleconsult,routine
+DEV_0296,My grandfather had surgery last week and needs wound dressing at home. Need a doctor,en,nurse_home_visit,routine
+DEV_0297,दीदी को एक साल से चेहरे पर मुहांसे हैं जो जाते नहीं,hi,specialist_referral,routine
+DEV_0298,"Nani ka BP aaj bahut high aa raha hai, sar bhaari he",hinglish,paramedic_home_visit,same_day
+DEV_0299,"didi ko kal se bukar aur khansi hai, saans ki dikkat nahi hai",hinglish,gp_teleconsult,same_day
+DEV_0300,"My old mother is bedridden and needs help with bathing, turning and hygiene",en,nurse_home_visit,routine
+DEV_0301,Dada ji ko 3 mahine se kam sunai de raha hai,hinglish,specialist_referral,routine
+DEV_0302,My father has not passed stool since yesterday and the stomach is bloated. What should we do?,en,paramedic_home_visit,same_day
+DEV_0303,"My brother has had a cold for 2 days, nothing else",en,gp_teleconsult,routine
+DEV_0304,"mummy bistar par hain, nahlane aur karwat dilane ke liye nurse chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
+DEV_0305,"My 75 year old father slipped today, ankle hurts, fully alert",en,paramedic_home_visit,same_day
+DEV_0306,"dada ji ko kuch ghante se aankh mein kuch chala gaya, jalan ho rhi hai",hinglish,gp_teleconsult,same_day
+DEV_0307,दीदी को छह महीने से मन बहुत उदास रहता है और नींद नहीं आती,hi,specialist_referral,routine
+DEV_0308,My grandmother has heavy pressure in the chest just now. Please help,en,emergency_referral,immediate
+DEV_0309,My brother has had repeated severe one-sided headaches for 3 months,en,specialist_referral,routine
+DEV_0310,"My old mother has had blurry vision for a year, difficulty reading. Need a doctor",en,specialist_referral,routine
+DEV_0311,दीदी को पाँच दिन से खाने के बाद एसिडिटी और जलन हो रही है। डॉक्टर चाहिए,hi,gp_teleconsult,routine
+DEV_0312,My 6 year old accidentally swallowed rat poison,en,emergency_referral,immediate
+DEV_0313,I have had loose motions for 2 days but is drinking fluids. Please help,en,gp_teleconsult,same_day
+DEV_0314,My grandfather has had loose motions for 3 days and feels dizzy when standing,en,paramedic_home_visit,same_day
+DEV_0315,"my husband has had a dry cough for a week, no fever and breathing is fine",en,gp_teleconsult,same_day
+DEV_0316,"papa ko teen din se bukhar aur khansi hai, kamzori bhi hai",hinglish,paramedic_home_visit,same_day
+DEV_0317,I have an itchy rash on the arm for 3 days,en,gp_teleconsult,routine
+DEV_0318,"Fever and cough for 3 days, breathing is fine. Please help",en,gp_teleconsult,same_day
+DEV_0319,didi garam tel se bahut buri tarah jal gaye hain,hinglish,emergency_referral,immediate
+DEV_0320,"I don't want to live anymore, I am thinking of ending my life. What should we do?",en,emergency_referral,immediate
+DEV_0321,"dada ji bistar par hain aur peeth par ghaav badh rha hai, doctor chahiye",hinglish,nurse_home_visit,same_day
+DEV_0322,My 6 year old drank kerosene by mistake. Please help,en,emergency_referral,immediate
+DEV_0323,"पापा को तीन दिन से शौच नहीं हुआ, पेट फूला हुआ है। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0324,"My wife is having a fit just now, the whole body is shaking. Please help",en,emergency_referral,immediate
+DEV_0325,"Nani kuch ghante se gir gaye, kalai sooj gayi hai aur dard hai, baat theek kar rahe hain",hinglish,paramedic_home_visit,same_day
+DEV_0326,"Doctor ne bola thyroid badha hua hai, specialist ko dikhana hai, kya karein?",hinglish,specialist_referral,routine
+DEV_0327,"नानी का कैथेटर बदलना है, घर पर नर्स चाहिए",hi,nurse_home_visit,routine
+DEV_0328,"My husband has body ache and fever for 2 days, otherwise fine",en,gp_teleconsult,same_day
+DEV_0329,नानी को कल से हल्का सिर दर्द है,hi,gp_teleconsult,routine
+DEV_0330,"मेरे पति को एक हफ्ते से बहुत तनाव और घबराहट रहती है, नींद नहीं आती",hi,specialist_referral,routine
+DEV_0331,"Meri wife ko ek saal se chehre par pimples hain jo jaate nahin, kya karein?",hinglish,specialist_referral,routine
+DEV_0332,My old mother has high temperature since this morning and is too weak to get out of bed. What should we do?,en,paramedic_home_visit,same_day
+DEV_0333,My brother has constipation for a week but is eating normally,en,gp_teleconsult,routine
+DEV_0334,My brother has been feeling weak and tired for a week,en,gp_teleconsult,routine
+DEV_0335,the doctor said my thyroid is high and i should see a specialist. Please help,en,specialist_referral,routine
+DEV_0336,दीदी गरम तेल से बहुत बुरी तरह जल गए हैं,hi,emergency_referral,immediate
+DEV_0337,Papa ke pairon mein 3 mahine se sujan h aur chalne par saans phoolti hai,hinglish,specialist_referral,same_day
+DEV_0338,"Didi ko hafte bhar se gardan mein gaanth hai, dard nahi, please help",hinglish,specialist_referral,same_day
+DEV_0339,My mother had a road accident and is bleeding heavily. What should we do?,en,emergency_referral,immediate
+DEV_0340,"there is a swelling in the armpit for a week, not painful. What should we do?",en,specialist_referral,same_day
+DEV_0341,दादी को सुबह से बुखार है और खांसी भी,hi,paramedic_home_visit,same_day
+DEV_0342,My brother has had loose motions since yesterday but is drinking fluids. Please help,en,gp_teleconsult,same_day
+DEV_0343,Mummy ko teen din se bahut khansi aur 101 bukhaar h,hinglish,paramedic_home_visit,same_day
+DEV_0344,"My sister has been very anxious and tense for a week, cannot sleep. Please help",en,specialist_referral,routine
+DEV_0345,Bhai ko 3 mahine se chehre par pimples hain jo jaate nahi,hinglish,specialist_referral,routine
+DEV_0346,"mummy ko roz insulin ka injection lagwana hai, khud nahi laga pate",hinglish,nurse_home_visit,routine
+DEV_0347,My wife has had sugar readings above 300 for 10 days even with regular medicines. What should we do?,en,specialist_referral,same_day
+DEV_0348,My grandmother is unconscious and not waking up,en,emergency_referral,immediate
+DEV_0349,भाई को छह महीने से कमर दर्द है जो पैर तक जाता है। कृपया मदद करें,hi,specialist_referral,routine
+DEV_0350,"Didi ko doctor ne injection bataye hain, roz ghar par lagwane hain",hinglish,nurse_home_visit,routine
+DEV_0351,"मम्मी को सुबह से पैर में मोच आ गई, सूजन है और चलने में दिक्कत है",hi,paramedic_home_visit,same_day
+DEV_0352,"Mere husband ko 10 din se dil ki dhadkan tez ho jaati hai, seene mein dard nahi h, kya karein?",hinglish,specialist_referral,same_day
+DEV_0353,I noticed a painless breast lump for a week. Please help,en,specialist_referral,same_day
+DEV_0354,"Beti ko 2 din se kaan dard ho raha hai, please help",hinglish,gp_teleconsult,same_day
+DEV_0355,meri wife ko teen din se dast ho rahe hain par paani pee rahe hain,hinglish,gp_teleconsult,same_day
+DEV_0356,"मुझे एक हफ्ते से दिल की धड़कन तेज़ हो जाती है, सीने में दर्द नहीं है",hi,specialist_referral,same_day
+DEV_0357,"My 6 year old twisted an ankle for 3 days, it is swollen and walking is hard",en,paramedic_home_visit,same_day
+DEV_0358,"My mother has had blurry vision for 6 months, difficulty reading. Need a doctor",en,specialist_referral,routine
+DEV_0359,I have had loose motions since this morning but is drinking fluids,en,gp_teleconsult,same_day
+DEV_0360,"dadi ka catheter aaj se band lag raha hai, urine nahi aa rahi",hinglish,nurse_home_visit,same_day
+DEV_0361,"बेटे को तीन दिन से हाथ पर छोटा सा कट लग गया, पट्टी करवानी है। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0362,"My father's urine catheter seems blocked for a few hours, nothing is draining. Need a doctor",en,nurse_home_visit,same_day
+DEV_0363,"Need a blood sample collected at home, My mother cannot go to the lab",en,paramedic_home_visit,routine
+DEV_0364,तीन हफ्ते के बच्चे को बुखार है। डॉक्टर चाहिए,hi,emergency_referral,immediate
+DEV_0365,"Need a blood sample collected at home, My grandfather cannot go to the lab. What should we do?",en,paramedic_home_visit,routine
+DEV_0366,"Nani ke pairon mein kai mahino se sujan hai aur chalne par saans phoolti hai, doctor chahiye",hinglish,specialist_referral,same_day
+DEV_0367,My old mother had a road accident and is bleeding heavily. What should we do?,en,emergency_referral,immediate
+DEV_0368,"Meri wife 5 mahine pregnant hai, regular checkup karwana hai",hinglish,specialist_referral,routine
+DEV_0369,My grandfather has been coughing a lot since yesterday with a temperature of 101. Need a doctor,en,paramedic_home_visit,same_day
+DEV_0370,"My old mother's urine catheter seems blocked for a few hours, nothing is draining. Please help",en,nurse_home_visit,same_day
+DEV_0371,My brother has a mild headache since this morning. Need a doctor,en,gp_teleconsult,routine
+DEV_0372,"mujhe hafte bhar se kamzori aur thakaan lag rahi hai, kya karein?",hinglish,gp_teleconsult,routine
+DEV_0373,"पापा को फीडिंग ट्यूब लगी है, रोज़ घर पर नर्स की देखभाल चाहिए। कृपया मदद करें",hi,nurse_home_visit,routine
+DEV_0374,"mujhe do din se gas aur pet phoolna hai, sine mein dard nahi hai",hinglish,gp_teleconsult,routine
+DEV_0375,"बेटी को सुबह से हल्का बुखार है, ठीक से खेल रहा है",hi,gp_teleconsult,same_day
+DEV_0376,"meri wife 5 mahine pregnant hai, regular checkup karwana hai",hinglish,specialist_referral,routine
+DEV_0377,"nana ji ka catheter subah se band lag raha hai, urine nahi aa rahi",hinglish,nurse_home_visit,same_day
+DEV_0378,"Mujhe 10 din se sookhi khansi hai, bukhar nahi, saans theek hai, please help",hinglish,gp_teleconsult,same_day
+DEV_0379,"didi ko 10 din se khane ke baad acidity aur jalan ho rahi hai, kya karein?",hinglish,gp_teleconsult,routine
+DEV_0380,"मेरे पति को कल से हल्का बुखार है, खाना पीना ठीक है",hi,gp_teleconsult,same_day
+DEV_0381,"Papa ko 3 mahine se kam sunai de raha h, kya karein?",hinglish,specialist_referral,routine
+DEV_0382,My 2 month old baby has a high fever and is not feeding,en,emergency_referral,immediate
+DEV_0383,"Papa gir gaye aur sar par chot lagi, ab ulti ho rahi h aur confuse hain, please help",hinglish,emergency_referral,immediate
+DEV_0384,"मुझे सुबह से बुखार और खांसी है, साँस की दिक्कत नहीं है। क्या करें?",hi,gp_teleconsult,same_day
+DEV_0385,"meri wife ko do din se bag uthane ke baad kamar mein halka dard hai, please help",hinglish,gp_teleconsult,routine
+DEV_0386,"Nani ko kal se latrine nahi hui, pet phoola hua hai",hinglish,paramedic_home_visit,same_day
+DEV_0387,"My wife twisted an ankle since yesterday, it is swollen and walking is hard",en,paramedic_home_visit,same_day
+DEV_0388,"दीदी को पाँच दिन से सूखी खांसी है, बुखार नहीं है, साँस ठीक है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
+DEV_0389,my sister has been passing urine very often and feeling very thirsty for 3 months,en,specialist_referral,routine
+DEV_0390,"Mere husband ko 2 din se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0391,"My child got a small cut on the hand since yesterday, needs cleaning and dressing. Please help",en,paramedic_home_visit,same_day
+DEV_0392,"Dada ji ko kal se pair mein moch aa gayi, sujan hai aur chalne mein dikkat hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0393,"पापा को रोज़ इंसुलिन का इंजेक्शन लगवाना है, खुद नहीं लगा पाते",hi,nurse_home_visit,routine
+DEV_0394,मेरी पत्नी को एक हफ्ते से स्तन में एक गांठ महसूस हो रही है,hi,specialist_referral,same_day
+DEV_0395,My sister has been feeling very low and not sleeping well for a year,en,specialist_referral,routine
+DEV_0396,My brother took far too many tablets on purpose,en,emergency_referral,immediate
+DEV_0397,I have mild back pain since this morning after lifting a bag,en,gp_teleconsult,routine
+DEV_0398,नानी को अभी अभी बहुत पसीना आ रहा है और सीने में भारीपन है। क्या करें?,hi,emergency_referral,immediate
+DEV_0399,"दीदी को दो दिन से हल्का बुखार है, खाना पीना ठीक है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
+DEV_0400,दादाजी को छह महीने से कम सुनाई दे रहा है,hi,specialist_referral,routine
+DEV_0401,"Mummy ko subah se bukhar hai aur do baar vomit hui, kamzori hai",hinglish,paramedic_home_visit,same_day
+DEV_0402,"My wife has a headache with pain behind the eyes for 3 days, no fever",en,gp_teleconsult,routine
+DEV_0403,"पापा का कैथेटर आज से बंद लग रहा है, पेशाब नहीं आ रहा",hi,nurse_home_visit,same_day
+DEV_0404,My grandmother has a mild headache for 2 days. Need a doctor,en,gp_teleconsult,routine
+DEV_0405,"Didi ko 2 din se halka bukhar hai, khana peena theek hai, please help",hinglish,gp_teleconsult,same_day
+DEV_0406,"Dada ji ka BP 180/110 aa raha hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0407,Need a doctor to explain my test results. Need a doctor,en,gp_teleconsult,routine
+DEV_0408,"Doctor ne bola thyroid badha hua hai, specialist ko dikhana hai",hinglish,specialist_referral,routine
+DEV_0409,"mujhe 2 din se gale mein kharash aur thodi khansi h, kya karein?",hinglish,gp_teleconsult,same_day
+DEV_0410,My sister has had sugar readings above 300 for 10 days even with regular medicines. What should we do?,en,specialist_referral,same_day
+DEV_0411,"Beti ko doctor ne injection bataye hain, roz ghar par lagwane hain, please help",hinglish,nurse_home_visit,routine
+DEV_0412,मेरी पत्नी को तीन दिन से मुँह में छाले हैं,hi,gp_teleconsult,routine
+DEV_0413,"Bete ko 2 din se haath par chhota sa cut lag gaya, dressing karwani hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0414,"bachcha ne galti se chuhe maarne ki dawai pee li, doctor chahiye",hinglish,emergency_referral,immediate
+DEV_0415,"Bachche ko subah se aankh mein kuch chala gaya, jalan ho rahi hai",hinglish,gp_teleconsult,same_day
+DEV_0416,"मम्मी को अभी अभी साँस लेने में बहुत दिक्कत है, इनहेलर से भी आराम नहीं",hi,emergency_referral,immediate
+DEV_0417,"nana ji bistar par hain, nahlane aur karwat dilane ke liye nurse chahiye, kya karein?",hinglish,nurse_home_visit,routine
+DEV_0418,My grandmother has had white patches on the skin for 3 months that keep spreading,en,specialist_referral,routine
+DEV_0419,मेरी पत्नी गरम तेल से बहुत बुरी तरह जल गए हैं। क्या करें?,hi,emergency_referral,immediate
+DEV_0420,I have a painless lump in the neck for 5 days. What should we do?,en,specialist_referral,same_day
+DEV_0421,"My brother has had a dry cough for 5 days, no fever and breathing is fine. Need a doctor",en,gp_teleconsult,same_day
+DEV_0422,बच्चे को दो दिन से गले में खराश और थोड़ी खांसी है,hi,gp_teleconsult,same_day
+DEV_0423,बेटी को कल से दाँत में दर्द और मसूड़े में सूजन है,hi,specialist_referral,same_day
+DEV_0424,"Mummy ko subah se bistar se uthne par chakkar aata hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0425,"मुझे अभी अभी साँस लेने में बहुत दिक्कत है, इनहेलर से भी आराम नहीं",hi,emergency_referral,immediate
+DEV_0426,"meri wife ko ek saal se baar baar peshab aata hai aur pyaas bahut lagti he, doctor chahiye",hinglish,specialist_referral,routine
+DEV_0427,my grandfather has not passed stool for 2 days and the stomach is bloated,en,paramedic_home_visit,same_day
+DEV_0428,दादी को सुबह से दाँत में दर्द और मसूड़े में सूजन है। क्या करें?,hi,specialist_referral,same_day
+DEV_0429,"पापा का घर पर खून का सैंपल लेना है, लैब नहीं जा सकते",hi,paramedic_home_visit,routine
+DEV_0430,"Nana ji ki awaaz achanak ladkhada rahi hai aur chehra ek taraf tedha ho gaya, doctor chahiye",hinglish,emergency_referral,immediate
+DEV_0431,बच्चे के टीकों के बारे में डॉक्टर से पूछना है। कृपया मदद करें,hi,gp_teleconsult,routine
+DEV_0432,"भाई को अचानक साँस लेने में बहुत दिक्कत है, इनहेलर से भी आराम नहीं। डॉक्टर चाहिए",hi,emergency_referral,immediate
+DEV_0433,नानी की आवाज़ अचानक लड़खड़ा रही है और चेहरा एक तरफ टेढ़ा हो गया है,hi,emergency_referral,immediate
+DEV_0434,"meri wife ko 6 mahine se kamar dard hai jo pair tak jaata hai, kya karein?",hinglish,specialist_referral,routine
+DEV_0435,मुझे अपनी खून की जाँच रिपोर्ट डॉक्टर को दिखानी है। क्या करें?,hi,gp_teleconsult,routine
+DEV_0436,"Mere 6 saal ke bete ko subah se pair mein moch aa gayi, sujan hai aur chalne mein dikkat h, please help",hinglish,paramedic_home_visit,same_day
+DEV_0437,"मेरे छह साल के बेटे को सुबह से कीड़े ने काटा, बस थोड़ी खुजली है। कृपया मदद करें",hi,gp_teleconsult,routine
+DEV_0438,"papa aaj se gir gaye, kalai sooj gayi hai aur dard hai, baat theek kar rahe hain, please help",hinglish,paramedic_home_visit,same_day
+DEV_0439,My 75 year old father is bedridden and has a bedsore that is getting worse,en,nurse_home_visit,same_day
+DEV_0440,"Bhai ko 6 mahine se chehre par pimples hain jo jaate nahi, kya karein?",hinglish,specialist_referral,routine
+DEV_0441,"My sister has had mild fever since yesterday, eating and drinking normally",en,gp_teleconsult,same_day
+DEV_0442,"report aayi hai, doctor se baat karni hai, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0443,"didi ko kai mahino se baar baar aadhe sir mein tez dard hota hai, doctor chahiye",hinglish,specialist_referral,routine
+DEV_0444,"nani ka catheter badalna hai, ghar par nurse chahiye, kya karein?",hinglish,nurse_home_visit,routine
+DEV_0445,"My 75 year old father slipped in the bathroom since yesterday, has knee pain and a bruise but is talking normally. What should we do?",en,paramedic_home_visit,same_day
+DEV_0446,"मम्मी को रोज़ इंसुलिन का इंजेक्शन लगवाना है, खुद नहीं लगा पाते। कृपया मदद करें",hi,nurse_home_visit,routine
+DEV_0447,"Mera 6 saal ka beta ka pichle hafte operation hua tha, ghar par dressing karwani hai, kya karein?",hinglish,nurse_home_visit,routine
+DEV_0448,"didi ko kal se 100 bukhar aur badan toot raha hai, please help",hinglish,gp_teleconsult,same_day
+DEV_0449,My son got badly burned by boiling oil over a large part of the body,en,emergency_referral,immediate
+DEV_0450,"papa ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye, doctor chahiye",hinglish,nurse_home_visit,routine
+DEV_0451,doctor ne dadi ko ghar par drip lagwane ko kaha hai,hinglish,nurse_home_visit,same_day
+DEV_0452,"नानी बिस्तर पर हैं, हर हफ्ते घर पर बीपी शुगर जाँच करवानी है। क्या करें?",hi,paramedic_home_visit,routine
+DEV_0453,"बेटे को सुबह से हल्का बुखार है, ठीक से खेल रहा है। डॉक्टर चाहिए",hi,gp_teleconsult,same_day
+DEV_0454,"My wife is having a fit just now, the whole body is shaking. Need a doctor",en,emergency_referral,immediate
+DEV_0455,Mujhe 2 din se bukhar khansi hai par saans theek hai,hinglish,gp_teleconsult,same_day
+DEV_0456,My brother has had lower back pain for 3 months going down one leg. Need a doctor,en,specialist_referral,routine
+DEV_0457,My daughter drank kerosene by mistake,en,emergency_referral,immediate
+DEV_0458,Bhai ko teen din se zukaam aur cheenk aa rahi hai,hinglish,gp_teleconsult,routine
+DEV_0459,"My brother is wheezing badly and the inhaler is not helping, struggling to breathe",en,emergency_referral,immediate
+DEV_0460,दादाजी को कल से दस्त हो रहे हैं और खड़े होने पर चक्कर आता है। कृपया मदद करें,hi,paramedic_home_visit,same_day
+DEV_0461,My 6 year old has a mild fever since this morning and is playing normally. What should we do?,en,gp_teleconsult,same_day
+DEV_0462,"bachche ko teen din se haath par chhota sa cut lag gaya, dressing karwani hai",hinglish,paramedic_home_visit,same_day
+DEV_0463,Didi ko 3 mahine se mann bahut udaas rehta h aur neend nahin aati,hinglish,specialist_referral,routine
+DEV_0464,नानी को दो दिन से गले में खराश और थोड़ी खांसी है। डॉक्टर चाहिए,hi,gp_teleconsult,same_day
+DEV_0465,मेरा तीन साल का बेटा अभी तक बोलता नहीं है,hi,specialist_referral,routine
+DEV_0466,"Mujhe kal se dast ho rahe hain par paani pee rahe hain, doctor chahiye",hinglish,gp_teleconsult,same_day
+DEV_0467,"Dadi ko 2 din se bukhar hai aur khansi bhi, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0468,"My daughter has a red, watery eye since this morning. Please help",en,gp_teleconsult,same_day
+DEV_0469,"BP machine shows 175/105 for My old mother, feeling uneasy. Please help",en,paramedic_home_visit,same_day
+DEV_0470,"मम्मी आज बहुत सुस्त हैं, खाना नहीं खा रहे और पहचान नहीं रहे। क्या करें?",hi,emergency_referral,immediate
+DEV_0471,डिलीवरी के बाद बच्चे की देखभाल और टांकों की ड्रेसिंग के लिए नर्स चाहिए,hi,nurse_home_visit,routine
+DEV_0472,My 75 year old father has had loose motions for 2 days and feels dizzy when standing. Need a doctor,en,paramedic_home_visit,same_day
+DEV_0473,मम्मी को सुबह से हाथ पर खुजली वाले दाने हैं,hi,gp_teleconsult,routine
+DEV_0474,Temperature of 100 with body pain for 3 days. What should we do?,en,gp_teleconsult,same_day
+DEV_0475,"mere husband ko ek hafte se khane ke baad acidity aur jalan ho rahi h, please help",hinglish,gp_teleconsult,routine
+DEV_0476,"I don't want to live anymore, I am thinking of ending my life",en,emergency_referral,immediate
+DEV_0477,My 3 week old baby has a temperature. Need a doctor,en,emergency_referral,immediate
+DEV_0478,"दादी को पिछले महीने लकवा हुआ था, अब घर पर रोज़ देखभाल चाहिए। क्या करें?",hi,nurse_home_visit,routine
+DEV_0479,"Nani ka catheter badalna hai, ghar par nurse chahiye",hinglish,nurse_home_visit,routine
+DEV_0480,"Not feeling well for 10 days, just tired",en,gp_teleconsult,routine
+DEV_0481,"Mummy gir gaye aur sar par chot lagi, ab ulti ho rahi hai aur confuse hain",hinglish,emergency_referral,immediate
+DEV_0482,my sister has mild back pain since yesterday after lifting a bag. Please help,en,gp_teleconsult,routine
+DEV_0483,"My old mother is having a fit for the last 10 minutes, the whole body is shaking",en,emergency_referral,immediate
+DEV_0484,"didi ko 3 mahine se periods mein bohot zyada bleeding hoti hai, kya karein?",hinglish,specialist_referral,same_day
+DEV_0485,"नानी सुबह से गिर गए, कलाई सूज गई है और दर्द है, होश में हैं। कृपया मदद करें",hi,paramedic_home_visit,same_day
+DEV_0486,"mummy ke ghutne ka operation hua hai, ghar par dressing aur exercise chahiye",hinglish,nurse_home_visit,routine
+DEV_0487,"mere husband ko 2 din se haath par chhota sa cut lag gaya, dressing karwani hai",hinglish,paramedic_home_visit,same_day
+DEV_0488,"मेरे पति को सुबह से पैर में मोच आ गई, सूजन है और चलने में दिक्कत है",hi,paramedic_home_visit,same_day
+DEV_0489,"दीदी का पिछले हफ्ते ऑपरेशन हुआ था, घर पर ड्रेसिंग करवानी है। क्या करें?",hi,nurse_home_visit,routine
+DEV_0490,"meri wife ko kal se sar dardh aur aankhon ke peeche dardh hai, bukhar nahi",hinglish,gp_teleconsult,routine
+DEV_0491,Bachche ko 2 din se urine karte waqt jalan hoti hai,hinglish,gp_teleconsult,same_day
+DEV_0492,I have acidity and burning after meals for a week,en,gp_teleconsult,routine
+DEV_0493,Temperature of 100 with body pain for 3 days,en,gp_teleconsult,same_day
+DEV_0494,"Dada ji subah se gir gaye, kalai sooj gayi hai aur dardh hai, baat theek kar rahe hain",hinglish,paramedic_home_visit,same_day
+DEV_0495,"I have a headache with pain behind the eyes for 2 days, no fever. Please help",en,gp_teleconsult,routine
+DEV_0496,दादाजी को एक साल से कम सुनाई दे रहा है,hi,specialist_referral,routine
+DEV_0497,"Bhai ka pichle hafte operation hua tha, ghar par dressing karwani hai",hinglish,nurse_home_visit,routine
+DEV_0498,"Mera 6 saal ka beta ne galti se chuhe maarne ki dawai pee li, kya karein?",hinglish,emergency_referral,immediate
+DEV_0499,"Dadi ko 6 mahine se ghutno mein dard hai, seedhi chadhne mein zyada",hinglish,specialist_referral,routine
+DEV_0500,My wife is 8 months pregnant and the baby has not moved since morning,en,emergency_referral,immediate
+DEV_0501,My wife has an itchy rash on the arm since yesterday,en,gp_teleconsult,routine
+DEV_0502,"Didi ko hafte bhar se dil ki dhadkan tez ho jaati hai, seene mein dardh nahin hai",hinglish,specialist_referral,same_day
+DEV_0503,My grandfather has diabetes and a foot wound for a week that needs regular dressing. What should we do?,en,nurse_home_visit,same_day
+DEV_0504,"nana ji bahar nahin ja sakte, ghar par bp aur sugar check karwana hai, doctor chahiye",hinglish,paramedic_home_visit,routine
+DEV_0505,"BP machine shows 175/105 for My grandfather, feeling uneasy",en,paramedic_home_visit,same_day
+DEV_0506,"I have had a dry cough for a week, no fever and breathing is fine",en,gp_teleconsult,same_day
+DEV_0507,"my 75 year old father slipped in the bathroom for 3 days, has knee pain and a bruise but is talking normally",en,paramedic_home_visit,same_day
+DEV_0508,bete ko ek saal se skin par safed daag hain jo badh rahe hain,hinglish,specialist_referral,routine
+DEV_0509,"My child is having a fit just now, the whole body is shaking. Need a doctor",en,emergency_referral,immediate
+DEV_0510,"madhumakkhi ne kaata aaj se, bas wahi thoda sooja hai",hinglish,gp_teleconsult,routine
+DEV_0511,बेटी को तीन दिन से गले में खराश और थोड़ी खांसी है,hi,gp_teleconsult,same_day
+DEV_0512,"Delivery ke baad bachche ki dekhbhal aur taankon ki dressing ke liye nurse chahiye, please help",hinglish,nurse_home_visit,routine
+DEV_0513,"Dada ji ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye",hinglish,nurse_home_visit,routine
+DEV_0514,मुझे छह महीने से बार बार आधे सिर में तेज़ दर्द होता है,hi,specialist_referral,routine
+DEV_0515,papa ko 10 minute se chest mein bahut dardh hai,hinglish,emergency_referral,immediate
+DEV_0516,"दादी को छह महीने से धुंधला दिख रहा है, पढ़ने में दिक्कत है। क्या करें?",hi,specialist_referral,routine
+DEV_0517,nana ji ke pairon mein kai mahino se sujan hai aur chalne par saans phoolti he,hinglish,specialist_referral,same_day
+DEV_0518,Mera 6 saal ka beta ne galti se chuhe maarne ki dawai pee li,hinglish,emergency_referral,immediate
+DEV_0519,My father has a urine catheter that needs to be changed. Please help,en,nurse_home_visit,routine
+DEV_0520,My sister has had sugar readings above 300 for 10 days even with regular medicines. Please help,en,specialist_referral,same_day
+DEV_0521,"dada ji ko do din se dast ho rahe hain aur khade hone par chakkar aata hai, please help",hinglish,paramedic_home_visit,same_day
+DEV_0522,My child drank kerosene by mistake. What should we do?,en,emergency_referral,immediate
+DEV_0523,"मेरी पत्नी को पाँच दिन से सूखी खांसी है, बुखार नहीं है, साँस ठीक है। कृपया मदद करें",hi,gp_teleconsult,same_day
+DEV_0524,My sister has had repeated severe one-sided headaches for 6 months,en,specialist_referral,routine
+DEV_0525,"I have gas and bloating for 2 days, no chest pain. What should we do?",en,gp_teleconsult,routine
+DEV_0526,"नानी को दो दिन से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे। डॉक्टर चाहिए",hi,paramedic_home_visit,same_day
+DEV_0527,"मम्मी को एक साल से घुटनों में दर्द है, सीढ़ी चढ़ने में ज़्यादा",hi,specialist_referral,routine
+DEV_0528,I have had lower back pain for many months going down one leg. Need a doctor,en,specialist_referral,routine
+DEV_0529,"मेरे पति को एक हफ्ते से सूखी खांसी है, बुखार नहीं है, साँस ठीक है। क्या करें?",hi,gp_teleconsult,same_day
+DEV_0530,मम्मी को तीन दिन से पेशाब में जलन हो रही है,hi,gp_teleconsult,same_day
+DEV_0531,"My grandmother has been running a temperature of 102 for 3 days, very weak. What should we do?",en,paramedic_home_visit,same_day
+DEV_0532,"didi ko do din se halka bukhaar hai, khana peena theek hai, kya karein?",hinglish,gp_teleconsult,same_day
+DEV_0533,"Wife ka c-section hua hai, taankon ki dressing ghar par chahiye, kya karein?",hinglish,nurse_home_visit,routine
+DEV_0534,My 3 week old baby has a temperature. What should we do?,en,emergency_referral,immediate
+DEV_0535,mummy bistar par hain aur peeth par ghaav badh raha hai,hinglish,nurse_home_visit,same_day
+DEV_0536,"my old mother is bedridden and needs help with bathing, turning and hygiene",en,nurse_home_visit,routine
+DEV_0537,my mother has had loose motions since yesterday and feels dizzy when standing,en,paramedic_home_visit,same_day
+DEV_0538,"Doctor ne Nana ji ko ghar par drip lagwane ko kaha hai, kya karein?",hinglish,nurse_home_visit,same_day
+DEV_0539,"भाई को पाँच दिन से कब्ज़ है, पेट साफ नहीं होता",hi,gp_teleconsult,routine
+DEV_0540,My brother has an itchy rash on the arm for 2 days,en,gp_teleconsult,routine
+DEV_0541,"My old mother has had blurry vision for a year, difficulty reading",en,specialist_referral,routine
+DEV_0542,Need regular home checks of vitals for My grandfather. Need a doctor,en,paramedic_home_visit,routine
+DEV_0543,"दादाजी को रोज़ इंसुलिन का इंजेक्शन लगवाना है, खुद नहीं लगा पाते",hi,nurse_home_visit,routine
+DEV_0544,बेटा ने गलती से चूहे मारने की दवा पी ली,hi,emergency_referral,immediate
+DEV_0545,"meri wife ko 2 din se bag uthane ke baad kamar mein halka dard hai, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0546,"दादाजी को तीन दिन से तेज़ बुखार है और बहुत कमज़ोरी है, बिस्तर से उठ नहीं पा रहे। क्या करें?",hi,paramedic_home_visit,same_day
+DEV_0547,मुझे तीन दिन से पेशाब में जलन हो रही है। डॉक्टर चाहिए,hi,gp_teleconsult,same_day
+DEV_0548,"nana ji ko pichle mahine lakwa hua tha, ab ghar par roz nursing care chahiye",hinglish,nurse_home_visit,routine
+DEV_0549,"दीदी को कल से सिर दर्द और आँखों के पीछे दर्द है, बुखार नहीं है",hi,gp_teleconsult,routine
+DEV_0550,mummy achanak ek haath utha nhi pa rahe aur awaaz atak rhi hai,hinglish,emergency_referral,immediate
+DEV_0551,"dada ji ko 10 minute se chest mein bahut dardh he, kya karein?",hinglish,emergency_referral,immediate
+DEV_0552,I have constipation for a week but is eating normally,en,gp_teleconsult,routine
+DEV_0553,"my husband has gas and bloating since yesterday, no chest pain. Please help",en,gp_teleconsult,routine
+DEV_0554,"Mere 6 saal ke bete ko kal se halka bukhar hai, khel rha hai theek se, please help",hinglish,gp_teleconsult,same_day
+DEV_0555,Temperature of 100 with body pain for 2 days. What should we do?,en,gp_teleconsult,same_day
+DEV_0556,"doctor se phone par baat karni hai, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0557,"Meri wife ko hafte bhar se kabz hai, pet saaf nahi hota, kya karein?",hinglish,gp_teleconsult,routine
+DEV_0558,I have had lower back pain for 3 months going down one leg,en,specialist_referral,routine
+DEV_0559,"my grandfather is bedridden, need someone to check bp and sugar at home every week",en,paramedic_home_visit,routine
+DEV_0560,"Bhai ka pichle hafte operation hua tha, ghar par dressing karwani h",hinglish,nurse_home_visit,routine
+DEV_0561,मेरी पत्नी को पाँच दिन से स्तन में एक गांठ महसूस हो रही है,hi,specialist_referral,same_day
+DEV_0562,"Mere husband ne bahut saari neend ki goliyan kha li hain, please help",hinglish,emergency_referral,immediate
+DEV_0563,"Nani ko achanak saans bht phool rhi hai, bol bhi nahi pa rahe",hinglish,emergency_referral,immediate
+DEV_0564,My brother has a mild headache for 2 days. Please help,en,gp_teleconsult,routine
+DEV_0565,Mujhe hafte bhar se khane ke baad acidity aur jalan ho rahi hai,hinglish,gp_teleconsult,routine
+DEV_0566,My daughter has a mild fever since yesterday and is playing normally,en,gp_teleconsult,same_day
+DEV_0567,my 6 year old cannot concentrate at school and is very irritable for a year,en,specialist_referral,routine
+DEV_0568,"Dada ji ko achanak bahut paseena aa rha hai aur baayein haath mein dard ja raha hai, sine mein bhaaripan",hinglish,emergency_referral,immediate
+DEV_0569,"My wife got a small cut on the hand for 3 days, needs cleaning and dressing",en,paramedic_home_visit,same_day
+DEV_0570,"मेरे छह साल के बेटे को दस मिनट से साँस लेने में बहुत दिक्कत है, इनहेलर से भी आराम नहीं",hi,emergency_referral,immediate
+DEV_0571,मेरे दो महीने के बच्चे को तेज़ बुखार है और दूध नहीं पी रहा। कृपया मदद करें,hi,emergency_referral,immediate
+DEV_0572,"दादाजी को अभी अभी साँस लेने में बहुत दिक्कत है, इनहेलर से भी आराम नहीं। क्या करें?",hi,emergency_referral,immediate
+DEV_0573,मेरे छह साल के बेटे को दो दिन से कान में दर्द है और हल्का बुखार है। डॉक्टर चाहिए,hi,gp_teleconsult,same_day
+DEV_0574,"There is a swelling in the armpit for 10 days, not painful. Please help",en,specialist_referral,same_day
+DEV_0575,"Mummy ko do din se bistar se uthne par chakkar aata hai, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0576,"My brother has had a dry cough for a week, no fever and breathing is fine",en,gp_teleconsult,same_day
+DEV_0577,"my 75 year old father cannot travel, need a bp and sugar check at home. Need a doctor",en,paramedic_home_visit,routine
+DEV_0578,My grandfather has been light-headed on standing since this morning,en,paramedic_home_visit,same_day
+DEV_0579,"नानी को शुगर है और पाँच दिन से पैर में घाव है, रोज़ ड्रेसिंग चाहिए। कृपया मदद करें",hi,nurse_home_visit,same_day
+DEV_0580,"Didi ko ek hafte se gardan mein gaanth hai, dard nahi, kya karein?",hinglish,specialist_referral,same_day
+DEV_0581,My husband has mild back pain since this morning after lifting a bag,en,gp_teleconsult,routine
+DEV_0582,"nana ji ko teen din se halka sar dard hai, doctor chahiye",hinglish,gp_teleconsult,routine
+DEV_0583,"papa ka catheter kuch ghante se band lag raha hai, urine nahi aa rhi",hinglish,nurse_home_visit,same_day
+DEV_0584,बच्चा ने गलती से चूहे मारने की दवा पी ली। क्या करें?,hi,emergency_referral,immediate
+DEV_0585,"mummy ko teen din se haath par chhota sa cut lag gaya, dressing karwani hai, kya karein?",hinglish,paramedic_home_visit,same_day
+DEV_0586,"I have had a dry cough for a week, no fever and breathing is fine. Need a doctor",en,gp_teleconsult,same_day
+DEV_0587,मम्मी को दस मिनट से बहुत पसीना आ रहा है और सीने में भारीपन है। डॉक्टर चाहिए,hi,emergency_referral,immediate
+DEV_0588,"dada ji ko feeding tube lagi hai, roz ghar par nurse ki dekhbhal chahiye",hinglish,nurse_home_visit,routine
+DEV_0589,My sister has constipation for 5 days but is eating normally. What should we do?,en,gp_teleconsult,routine
+DEV_0590,"Beta ka pichle hafte operation hua tha, ghar par dressing karwani hai",hinglish,nurse_home_visit,routine
+DEV_0591,"Didi ko aaj se aankh mein kuch chala gaya, jalan ho rahi he, doctor chahiye",hinglish,gp_teleconsult,same_day
+DEV_0592,"nani hosh mein nahi hain, please help",hinglish,emergency_referral,immediate
+DEV_0593,Dadi abhi abhi ek haath utha nahin pa rahe aur awaaz atak rahi hai,hinglish,emergency_referral,immediate
+DEV_0594,the doctor advised an iv drip at home for my grandmother,en,nurse_home_visit,same_day
+DEV_0595,My daughter fell while playing and the arm looks broken and bent. Need a doctor,en,emergency_referral,immediate
+DEV_0596,"Mujhe subah se gale mein kharash aur thodi khansi he, kya karein?",hinglish,gp_teleconsult,same_day
+DEV_0597,"didi ko 3 mahine se mann bahut udaas rehta hai aur neend nahi aati, kya karein?",hinglish,specialist_referral,routine
+DEV_0598,"Nana ji ko teen din se tez bukhaar he aur bahut kamzori, bistar se uth nahin pa rahe",hinglish,paramedic_home_visit,same_day
+DEV_0599,"mere husband ko 2 din se munh mein chhaale ho gaye hain, khane mein dard, please help",hinglish,gp_teleconsult,routine
+DEV_0600,"Dadi bistar par hain, har hafte ghar par BP sugar check karwana hai",hinglish,paramedic_home_visit,routine
