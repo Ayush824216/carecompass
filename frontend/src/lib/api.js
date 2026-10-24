@@ -32,5 +32,6 @@ export const api = {
   caregivers: () => req("/api/v1/caregivers"),
   book: (body) => req("/api/v1/book", { method: "POST", body: JSON.stringify(body) }),
   questions: () => req("/api/v1/questions"),
+  localities: () => req("/api/v1/localities"),
   health: () => req("/health"),
 };

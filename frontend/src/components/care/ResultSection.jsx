@@ -92,7 +92,7 @@ export default function ResultSection({ response }) {
           </div>
         ) : (
           <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
-            <CaregiverMap user={location} items={rows.filter((r) => r.cg).map((r) => ({ cg: r.cg, label: r.rank, top: r.rank === 1, sub: r.m.reason }))} height={480} />
+            <CaregiverMap user={location.lat != null ? location : null} items={rows.filter((r) => r.cg).map((r) => ({ cg: r.cg, label: r.rank, top: r.rank === 1, sub: r.m.reason }))} height={480} />
             <ol className="space-y-3">
               {rows.filter((r) => r.cg).map((r) => (
                 <li key={r.m.caregiver_id} className="card flex items-center gap-3 p-4">

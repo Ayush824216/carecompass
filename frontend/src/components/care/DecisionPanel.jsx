@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight, CheckCircle2, ChevronDown, Circle, Cpu, HelpCircle, Languages, ListChecks, MessageCircleQuestion,
-  ShieldAlert, ShieldCheck, Stethoscope, UsersRound,
+  MapPin, ShieldAlert, ShieldCheck, Stethoscope, UsersRound,
 } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { URGENCY_ORDER, URGENCY_STYLE } from "../../lib/care.js";
@@ -80,7 +80,7 @@ function UrgencyMeter({ urgency, t }) {
   );
 }
 
-export default function DecisionPanel({ phase, response, debug, ms }) {
+export default function DecisionPanel({ phase, response, debug, ms, locationText }) {
   const { t } = useApp();
   const [revealed, setRevealed] = useState(0);
   const stages = buildStages({ response, debug, t });
@@ -108,6 +108,11 @@ export default function DecisionPanel({ phase, response, debug, ms }) {
       <div>
         <h2 id="panel-title" className="text-2xl font-semibold">{t("panel.title")}</h2>
         <p className="text-sm text-muted">{t("panel.subtitle")}</p>
+        {locationText && (
+          <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-sunken px-2.5 py-1 text-sm font-semibold">
+            <MapPin className="h-4 w-4 text-primary" aria-hidden="true" />{t("panel.locationLine")}: {locationText}
+          </p>
+        )}
       </div>
 
       <ol className="relative space-y-1">

@@ -260,7 +260,8 @@
       "false": "No"
     },
     "whyFollowup": "We need one more detail before deciding, because the answer could change the care type or urgency: “{q}”",
-    "whyIdle": "The reason for the decision will appear here, in plain words."
+    "whyIdle": "The reason for the decision will appear here, in plain words.",
+    "locationLine": "Location"
   },
   "result": {
     "title": "Recommended care",
@@ -497,5 +498,23 @@
     "infant_danger_signs": "Danger signs in a young baby",
     "pregnancy_emergency": "Bleeding, severe pain or no movement in pregnancy",
     "severe_head_injury": "Serious head injury"
+  },
+  "location": {
+    "your": "Your location",
+    "change": "Change",
+    "choose": "Choose your location",
+    "chooseHint": "We use it only to find caregivers near you and to show the emergency operator where you are.",
+    "useCurrent": "Use my current location",
+    "detecting": "Finding your location…",
+    "denied": "Location permission was denied. Please pick your area below.",
+    "unavailable": "Your location could not be detected. Please pick your area below.",
+    "pickList": "Pick your area",
+    "pickMap": "Or tap on the map to drop a pin",
+    "near": "near {name}",
+    "pinned": "Pinned on map",
+    "gps": "Current location",
+    "required": "Choose your location first so we can find caregivers near you.",
+    "done": "Done",
+    "selectPlaceholder": "Select an area…"
   }
 }

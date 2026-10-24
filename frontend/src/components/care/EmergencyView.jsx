@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Ambulance, ArrowLeft, Ban, MapPin, Phone, ShieldAlert, Volume2 } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { speak } from "../../lib/speech.js";
+import { locationLabel } from "../../lib/locations.js";
 
 function steps(reasoning) {
   return (reasoning || "").split(/(?<=[.।!?])\s+/).map((s) => s.trim()).filter(Boolean);
@@ -12,7 +13,8 @@ export default function EmergencyView({ response, onBack }) {
   const { t, location, voice } = useApp();
   const headingRef = useRef(null);
   const list = steps(response.reasoning);
-  const gps = location.source === "gps";
+  const gps = location.lat != null;
+  const place = locationLabel(location, t);
 
   useEffect(() => {
     headingRef.current?.focus();
@@ -100,7 +102,8 @@ export default function EmergencyView({ response, onBack }) {
               <h2 id="em-loc" className="flex items-center gap-2 text-xl font-semibold"><MapPin className="h-5 w-5 text-emergency" aria-hidden="true" />{t("emergency.location")}</h2>
               {gps ? (
                 <>
-                  <p className="mt-3 font-mono text-2xl font-bold tracking-tight sm:text-3xl">{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</p>
+                  {place && <p className="mt-2 text-lg font-bold">{place}</p>}
+                  <p className="mt-1 font-mono text-2xl font-bold tracking-tight sm:text-3xl">{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</p>
                   <p className="mt-1 text-muted">{t("emergency.locationHint")}</p>
                 </>
               ) : (

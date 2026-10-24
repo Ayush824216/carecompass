@@ -134,7 +134,7 @@ export default function Caregivers() {
                 <button type="button" className="btn-primary" onClick={() => setF(EMPTY)}>{t("directory.reset")}</button>
               </EmptyState>
             ) : view === "map" ? (
-              <CaregiverMap user={location} height={620}
+              <CaregiverMap user={location.lat != null ? location : null} height={620}
                 items={rows.map((r, i) => ({ cg: r.cg, label: i + 1, top: false, sub: t(`roles.${r.cg.role}`) }))} />
             ) : (
               <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">

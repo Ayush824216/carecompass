@@ -3,6 +3,8 @@ import { useApp } from "../context/AppContext.jsx";
 import { api } from "../lib/api.js";
 import { speak, stopSpeaking } from "../lib/speech.js";
 import ChatPanel from "../components/care/ChatPanel.jsx";
+import LocationBar from "../components/care/LocationBar.jsx";
+import { locationLabel } from "../lib/locations.js";
 import DecisionPanel from "../components/care/DecisionPanel.jsx";
 import ResultSection from "../components/care/ResultSection.jsx";
 import EmergencyView from "../components/care/EmergencyView.jsx";
@@ -22,7 +24,7 @@ function quickRepliesFor(question, bank) {
 }
 
 export default function GetCare() {
-  const { t, lang, voice, location } = useApp();
+  const { t, lang, voice, location, hasLocation } = useApp();
   const welcome = useCallback(() => [{ id: nextId(), role: "assistant", content: t("care.welcome"), ts: Date.now() }], [t]);
   const [messages, setMessages] = useState(welcome);
   const [history, setHistory] = useState([]);
@@ -41,6 +43,7 @@ export default function GetCare() {
   useEffect(() => () => stopSpeaking(), []);
 
   const send = useCallback(async (text, hist = history) => {
+    if (!hasLocation) { setError(t("location.required")); return; }
     lastInput.current = { text, hist };
     setError("");
     setMessages((m) => [...m, { id: nextId(), role: "user", content: text, ts: Date.now() }]);
@@ -67,7 +70,7 @@ export default function GetCare() {
       setError(t("common.serverDown"));
       setMessages((m) => m.slice(0, -1));
     }
-  }, [history, location, voice, t, response]);
+  }, [history, location, hasLocation, voice, t, response]);
 
   const reset = () => {
     stopSpeaking();
@@ -90,10 +93,11 @@ export default function GetCare() {
           <ErrorState message={error} onRetry={lastInput.current ? () => send(lastInput.current.text, lastInput.current.hist) : undefined} />
         </div>
       )}
+      <LocationBar />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick}
           questionNo={response?.follow_up_question ? questionNo : 0} maxQuestions={MAX_Q} onReset={reset} />
-        <DecisionPanel phase={phase} response={response} debug={debug} ms={ms} />
+        <DecisionPanel phase={phase} response={response} debug={debug} ms={ms} locationText={locationLabel(location, t)} />
       </div>
       {final && emergency && !emOpen && (
         <button type="button" onClick={() => setEmOpen(true)}

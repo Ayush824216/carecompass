@@ -141,7 +141,7 @@ function Navbar() {
   const scale = basePx / 18;
   const fullNav = vw >= 1280 * scale;
   const showControls = vw >= 1024 * scale;
-  const showWordmark = vw >= 400 * scale;
+  const showWordmark = vw >= 360 * scale;
   const loc = useLocation();
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 

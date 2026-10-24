@@ -72,7 +72,7 @@ export default function BookingModal({ cg, careType, urgency, onClose, preferred
     try {
       // the phone number and notes stay in the browser (demo): they are not sent to the server
       const r = await api.book({ caregiver_id: cg.caregiver_id, slot: slot || null, care_type: careType, urgency,
-        patient_name: name || null, location: { lat: location.lat, lng: location.lng } });
+        patient_name: name || null, ...(location.lat != null ? { location: { lat: location.lat, lng: location.lng } } : {}) });
       if (r.status !== "confirmed") throw new Error(r.message);
       const b = { booking_id: r.booking_id, caregiver_id: cg.caregiver_id, caregiver_name: cg.name, role: cg.role,
         slot: r.slot || slot || null, care_type: careType, urgency, patient_name: name || null, notes: notes || null,
