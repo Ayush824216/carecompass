@@ -1,0 +1,77 @@
+{
+  "id": "chest_pain",
+  "label": {"en": "Chest pain", "hi": "सीने में दर्द", "hinglish": "Seene mein dard"},
+  "_principle": "Low threshold: diabetics, elderly and women often have atypical heart symptoms. When in doubt -> S3.",
+  "trigger": "chest_pain_any or chest_burning or sharp_breathing",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "chest_pain_any": {"patterns": ["chest\\s*(pain|ache|discomfort|tightness|pressure|heaviness)", "(pain|discomfort|pressure|heaviness|tightness) in (the |my |his |her )?chest", "(seene|sine|seena|sina|chhati|chati|chest) ?(mein |me |main )?(\\S+ ){0,3}(dard|dardh|pain|dabav|dabaav|bhaari|bhari|jakdan)", "dil (mein|me) dard", "(सीने|छाती|सीना).{0,20}(दर्द|दबाव|भारी|जकड़न)"],
+                       "label": {"en": "chest pain", "hi": "सीने में दर्द", "hinglish": "seene mein dard"}},
+    "pressure": {"patterns": ["bhaa?ri", "dabaa?v", "pressure", "heav(y|iness)", "squeez", "tight(ness)?", "jakdan", "कोई बैठा", "भारी", "दबाव", "जकड़न"],
+                 "label": {"en": "heaviness or pressure in the chest", "hi": "सीने में भारीपन या दबाव", "hinglish": "seene mein bhaaripan ya dabav"}},
+    "radiation": {"patterns": ["(baa?ye?i?n?|left) (\\S+ )?(haath|hath|arm|kandhe|shoulder)", "jab(a|d)\\w*", "\\bjaw\\b", "peeth (tak|mein)", "(spreading|going|radiat\\w*) (to|down|into) (the |my |his |her )?(arm|jaw|back|neck)", "बाएँ हाथ", "बाएं हाथ", "जबड़"],
+                  "label": {"en": "pain spreading to the arm, jaw or back", "hi": "दर्द बाएँ हाथ, जबड़े या पीठ तक", "hinglish": "dard baayen haath, jabde ya peeth tak"}},
+    "chest_burning": {"patterns": ["(seene|sine|chhati|chest) (mein |me )?(\\S+ )?(jalan|jalna|burning)", "heartburn", "acidity", "khatti dakaar", "सीने में जलन", "एसिडिटी"],
+                      "label": {"en": "burning in the chest", "hi": "सीने में जलन", "hinglish": "seene mein jalan"}},
+    "after_food": {"patterns": ["kha(a)?ne ke baad", "after (meals?|food|eating|dinner|lunch)", "खाने के बाद"], "label": {"en": "after meals", "hi": "खाने के बाद", "hinglish": "khaane ke baad"}},
+    "sharp_breathing": {"patterns": ["saa?ns lete (waqt|samay|hue) (\\S+ )?chubh", "chubhne wala", "sharp (pain )?(on|when|while) breath", "stabbing", "चुभने"], "label": {"en": "sharp pain on breathing", "hi": "साँस लेते समय चुभने वाला दर्द", "hinglish": "saans lete waqt chubhne wala dard"}},
+    "chest_wall": {"patterns": ["dabane (par|pe|se)", "press(ing)? (karne )?(par|pe)", "on pressing", "when i press", "hilne (par|pe)", "on movement", "(gym|workout|exercise|kasrat|weight uthane|lifting) (ke )?baad", "after (the )?(gym|workout|exercise|lifting)", "chot ke baad", "muscle (pain|pull|strain)", "दबाने पर"],
+                   "label": {"en": "pain on pressing or moving (muscle-like)", "hi": "दबाने या हिलने पर दर्द", "hinglish": "dabane ya hilne par dard"}},
+    "recurrent": {"patterns": ["aata[- ]jaata", "baar[- ]baar (hota|aata)", "comes and goes", "on and off", "kabhi kabhi", "आता-जाता"], "label": {"en": "comes and goes", "hi": "आता-जाता दर्द", "hinglish": "aata-jaata dard"}},
+    "longer_5min": {"patterns": ["\\d+ min\\w* se (zyada|jyada)", "(more|longer) than (5|five|10|ten) min", "continuous", "lagatar", "abhi (bhi )?ho raha", "still (going on|there)", "लगातार"], "label": {"en": "pain lasting more than 5 minutes", "hi": "5 मिनट से ज़्यादा दर्द", "hinglish": "5 minute se zyada dard"}}
+  },
+  "rules": [
+    {"id": "ch_red_flags", "stage": "S3", "when": "(chest_pain_any or chest_burning or pressure) and (pressure or radiation or sweating or breathless or dizziness_standing or longer_5min)", "pattern": "heart_like"},
+    {"id": "ch_sharp_breathless", "stage": "S3", "when": "sharp_breathing and breathless", "pattern": "breathing_related"},
+    {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure) and (age40 or diabetes or hypertension or heart) and not chest_wall", "pattern": "heart_like"},
+    {"id": "ch_not_explained", "stage": "S3", "when": "chest_pain_any and not chest_wall and not chest_burning", "pattern": "heart_like"},
+    {"id": "ch_recurrent_risk", "stage": "S2", "when": "recurrent and (diabetes or hypertension or heart or smoker or age40) and not chest_pain_any", "pattern": "heart_like"},
+    {"id": "ch_acidity_young", "stage": "S1", "when": "chest_burning and not age40 and not diabetes and not hypertension and not heart", "pattern": "acidity_like"},
+    {"id": "ch_chest_wall_young", "stage": "S0", "when": "chest_wall and not age40 and not diabetes and not hypertension and not heart", "pattern": "chest_wall_like"}
+  ],
+  "sufficient": "known(age_years) or chest_wall or chest_burning",
+  "questions": [
+    {"id": "chest.danger", "kind": "danger",
+     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "skip_if": "known(radiation) and known(sweating) and known(breathless)",
+     "chips": [
+       {"id": "rad", "label": {"en": "Pain to left arm / jaw / back", "hi": "दर्द बाएँ हाथ / जबड़े / पीठ तक", "hinglish": "Dard baayen haath / jabde / peeth tak"}, "facts": {"radiation": true}},
+       {"id": "sweat", "label": {"en": "Sweating", "hi": "पसीना", "hinglish": "Paseena"}, "facts": {"sweating": true}},
+       {"id": "breath", "label": {"en": "Breathlessness", "hi": "साँस फूलना", "hinglish": "Saans phoolna"}, "facts": {"breathless": true}},
+       {"id": "faint", "label": {"en": "Dizzy / fainting", "hi": "चक्कर / बेहोशी", "hinglish": "Chakkar / behoshi"}, "facts": {"dizziness_standing": true}}
+     ]},
+    {"id": "chest.character", "kind": "character",
+     "text": {"en": "What does the pain feel like?", "hi": "दर्द कैसा है?", "hinglish": "Dard kaisa hai?"},
+     "skip_if": "pressure or chest_burning or sharp_breathing or chest_wall",
+     "chips": [
+       {"id": "heavy", "label": {"en": "Heavy / pressure", "hi": "भारी / दबाव", "hinglish": "Bhaari / dabav"}, "facts": {"pressure": true}},
+       {"id": "burn", "label": {"en": "Burning", "hi": "जलन", "hinglish": "Jalan"}, "facts": {"chest_burning": true}},
+       {"id": "sharp", "label": {"en": "Sharp, on breathing", "hi": "चुभने जैसा, साँस लेने पर", "hinglish": "Chubhne jaisa, saans lene par"}, "facts": {"sharp_breathing": true}},
+       {"id": "press", "label": {"en": "On pressing / moving", "hi": "दबाने / हिलने पर", "hinglish": "Dabane / hilne par"}, "facts": {"chest_wall": true}}
+     ], "no_none_chip": true},
+    {"id": "chest.timing", "kind": "timing",
+     "text": {"en": "When does it happen?", "hi": "दर्द कब होता है?", "hinglish": "Dard kab hota hai?"},
+     "skip_if": "longer_5min or recurrent or after_food or chest_wall",
+     "chips": [
+       {"id": "now", "label": {"en": "Right now, more than 5 minutes", "hi": "अभी हो रहा, 5 मिनट से ज़्यादा", "hinglish": "Abhi ho raha, 5 min se zyada"}, "facts": {"longer_5min": true}},
+       {"id": "onoff", "label": {"en": "Comes and goes", "hi": "आता-जाता", "hinglish": "Aata-jaata"}, "facts": {"recurrent": true}},
+       {"id": "food", "label": {"en": "After meals", "hi": "खाने के बाद", "hinglish": "Khaane ke baad"}, "facts": {"after_food": true}},
+       {"id": "injury", "label": {"en": "After an injury", "hi": "चोट के बाद", "hinglish": "Chot ke baad"}, "facts": {"chest_wall": true}}
+     ], "no_none_chip": true},
+    {"id": "chest.risk", "kind": "who",
+     "text": {"en": "Any of these risk factors?", "hi": "क्या इनमें से कुछ है?", "hinglish": "Inme se kuch hai?"},
+     "skip_if": "known(age_years) and (diabetes or hypertension or heart or no(diabetes))",
+     "chips": [
+       {"id": "age", "label": {"en": "Age 40+", "hi": "उम्र 40+", "hinglish": "Umar 40+"}, "facts": {"age40": true}},
+       {"id": "sugar", "label": {"en": "Diabetes (sugar)", "hi": "शुगर", "hinglish": "Sugar"}, "facts": {"diabetes": true, "comorbid": true}},
+       {"id": "bp", "label": {"en": "High BP", "hi": "बीपी", "hinglish": "BP"}, "facts": {"hypertension": true}},
+       {"id": "heart", "label": {"en": "Heart patient", "hi": "दिल के मरीज़", "hinglish": "Heart patient"}, "facts": {"heart": true, "comorbid": true}},
+       {"id": "smoke", "label": {"en": "Smoking", "hi": "धूम्रपान", "hinglish": "Smoking"}, "facts": {"smoker": true}}
+     ], "none_label": {"en": "None of these", "hi": "कोई नहीं", "hinglish": "Koi nahi"}}
+  ]
+}

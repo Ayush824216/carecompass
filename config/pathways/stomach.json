@@ -1,0 +1,93 @@
+{
+  "id": "stomach",
+  "label": {"en": "Stomach", "hi": "पेट", "hinglish": "Pet"},
+  "trigger": "vomiting or diarrhoea or abdominal_pain or blood_in_stool or black_stool or blood_vomit or right_lower_pain or severe_pain or rigid_belly or vomit_count is not None or stool_count is not None",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "paramedic_home_visit", "urgency": "same_day"},
+    "S2": {"care_type": "nurse_home_visit", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "diarrhoea": {"patterns": ["dast", "loose (motion|stool)", "diarrh", "patli potty", "paani jaisi potty", "watery stool", "दस्त"], "label": {"en": "loose motions", "hi": "दस्त", "hinglish": "dast"}},
+    "blood_in_stool": {"patterns": ["potty (mein|me) (\\S+ )?kh(oo|u)n", "kh(oo|u)ni dast", "blood (in|with) (the )?(stool|potty|motion)", "bloody (stool|diarrh|motion)", "पॉटी में खून", "खूनी दस्त"], "label": {"en": "blood in stool", "hi": "पॉटी में खून", "hinglish": "potty mein khoon"}},
+    "black_stool": {"patterns": ["potty (\\S+ )?(bilkul )?kaa?li", "kaa?li (\\S+ )?potty", "पॉटी.{0,12}काली", "मल.{0,8}काला", "black (tarry )?(stool|potty)", "stool (is )?black", "tarry", "chipchipi", "काली पॉटी", "मल काला"], "label": {"en": "black, sticky stool", "hi": "काली चिपचिपी पॉटी", "hinglish": "kaali chipchipi potty"}},
+    "blood_vomit": {"patterns": ["kh(oo|u)n ki ult", "ult\\w* (mein|me) kh(oo|u)n", "coffee", "vomit\\w* (of )?blood", "blood (in|with) (the )?vomit", "खून की उल्टी", "उल्टी में खून"], "label": {"en": "blood or coffee-coloured vomit", "hi": "उल्टी में खून", "hinglish": "ulti mein khoon"}},
+    "severe_pain": {"patterns": ["pet (mein |me )?(bahut|tez|zyada|bhayankar) (\\S+ )?dard", "(bahut|tez|zyada) (\\S+ )?pet dard", "severe (abdominal|stomach|belly) pain", "unbearable", "पेट में (बहुत|तेज़|तेज) दर्द"], "label": {"en": "severe stomach pain", "hi": "पेट में बहुत तेज़ दर्द", "hinglish": "pet mein bahut tez dard"}},
+    "right_lower_pain": {"patterns": ["da(a)?y(e|ei)n (\\S+ ){0,2}neeche", "right (lower|side lower|bottom)", "lower right", "dahine neeche", "दाएँ नीचे", "दाईं ओर नीचे"], "label": {"en": "pain in the lower right of the belly", "hi": "पेट के दाईं ओर नीचे दर्द", "hinglish": "pet ke daayein neeche dard"}},
+    "pain_worse_walking": {"patterns": ["chalne (par|pe|se) (\\S+ )?(badh|zyada)", "worse (on|when|while) (walking|coughing|moving)", "khansne par (\\S+ )?(badh|zyada)", "चलने पर बढ़"], "label": {"en": "pain worse on walking or coughing", "hi": "चलने पर दर्द बढ़ना", "hinglish": "chalne par dard badhna"}},
+    "rigid_belly": {"patterns": ["pet (\\S+ )?(sakht|kada|patthar|tight)", "rigid (belly|abdomen|stomach)", "hard (belly|abdomen)", "पेट (सख्त|कड़ा)"], "label": {"en": "hard, rigid belly", "hi": "पेट सख्त", "hinglish": "pet sakht"}},
+    "no_stool_gas_swelling": {"patterns": ["(potty|latrine) (aur|ya) gas (\\S+ )?(nahi|nhi|band)", "no (stool|potty) (or|and) (no )?gas", "gas (bhi )?(nahi|nhi) (nikal|pas)", "not passing (stool|gas)"], "label": {"en": "no stool or gas with a swollen belly", "hi": "पॉटी और गैस बंद, पेट फूला", "hinglish": "potty aur gas band, pet phoola"}},
+    "dry_mouth": {"patterns": ["mu(h|nh) (\\S+ )?s(oo|u)kh", "dry (mouth|lips|tongue)", "honth s(oo|u)kh", "मुँह सूख"], "label": {"en": "dry mouth", "hi": "मुँह सूखना", "hinglish": "muh sookhna"}},
+    "sunken_eyes": {"patterns": ["aankh\\w* (\\S+ )?(dhans|andar)", "sunken eyes", "aansu (nahi|nhi)", "no tears", "(diaper|nappy) (\\S+ )?(sookha|dry)", "dry (diaper|nappy)", "आँखें धँस"], "label": {"en": "sunken eyes / no tears / dry nappy", "hi": "आँखें धँसी / आँसू नहीं", "hinglish": "aankhen dhansi / aansu nahi"}},
+    "iron_tablets": {"patterns": ["iron (ki )?(goli|tablet|syrup)", "iron tablets?", "ferrous", "आयरन की गोली"], "label": {"en": "taking iron tablets", "hi": "आयरन की गोली ले रहे हैं", "hinglish": "iron ki goli le rahe hain"}}
+  },
+  "rules": [
+    {"id": "s_blood_vomit", "stage": "S3", "when": "blood_vomit", "pattern": "gi_bleeding_like"},
+    {"id": "s_black_stool", "stage": "S3", "when": "black_stool and not iron_tablets", "pattern": "gi_bleeding_like"},
+    {"id": "s_appendix_like", "stage": "S3", "when": "right_lower_pain and (pain_worse_walking or fever or severe_pain)", "pattern": "appendicitis_like"},
+    {"id": "s_rigid_belly", "stage": "S3", "when": "rigid_belly"},
+    {"id": "s_pregnancy_pain", "stage": "S3", "when": "pregnant and abdominal_pain"},
+    {"id": "s_no_urine", "stage": "S3", "when": "urine_absent_hours is not None and (urine_absent_hours >= 12 or (child and urine_absent_hours >= 8))", "pattern": "dehydration"},
+    {"id": "s_very_drowsy", "stage": "S3", "when": "very_drowsy or unconscious"},
+    {"id": "s_obstruction_like", "stage": "S3", "when": "no_stool_gas_swelling and vomiting", "pattern": "obstruction_like"},
+    {"id": "s_infant_dehydration", "stage": "S3", "when": "infant and (cannot_drink or reduced_urine or vomits_everything or very_drowsy)", "pattern": "dehydration"},
+
+    {"id": "s_black_stool_on_iron", "stage": "S2", "when": "black_stool and iron_tablets", "care_type": "gp_teleconsult", "note": "doctor_today"},
+    {"id": "s_cannot_keep_fluids", "stage": "S2", "when": "cannot_drink or vomits_everything", "pattern": "dehydration"},
+    {"id": "s_low_urine", "stage": "S2", "when": "reduced_urine", "pattern": "dehydration"},
+    {"id": "s_dizzy", "stage": "S2", "when": "dizziness_standing and (vomiting or diarrhoea)", "pattern": "dehydration"},
+    {"id": "s_dysentery_fever", "stage": "S2", "when": "blood_in_stool and fever", "care_type": "gp_teleconsult", "pattern": "dysentery_like"},
+    {"id": "s_child_ongoing", "stage": "S2", "when": "child and diarrhoea and duration_days is not None and duration_days >= 2", "pattern": "dehydration"},
+    {"id": "s_many_vomits", "stage": "S2", "when": "vomit_count is not None and vomit_count >= 8", "pattern": "dehydration"},
+
+    {"id": "s_over_one_day", "stage": "S1", "when": "(diarrhoea or vomiting) and duration_days is not None and duration_days > 1"},
+    {"id": "s_six_motions", "stage": "S1", "when": "stool_count is not None and stool_count >= 6"},
+    {"id": "s_with_fever", "stage": "S1", "when": "fever and (diarrhoea or vomiting)"},
+    {"id": "s_mild_dehydration", "stage": "S1", "when": "dry_mouth or sunken_eyes", "pattern": "dehydration"},
+    {"id": "s_blood_in_stool", "stage": "S1", "when": "blood_in_stool", "care_type": "gp_teleconsult", "pattern": "dysentery_like"},
+
+    {"id": "s_mild", "stage": "S0", "when": "(diarrhoea or vomiting) and not fever and (duration_days is None or duration_days <= 1) and drinking_ok", "pattern": "gastroenteritis"}
+  ],
+  "sufficient": "known(duration_days) and (known(cannot_drink) or drinking_ok or n_signs >= 2)",
+  "questions": [
+    {"id": "stomach.danger", "kind": "danger",
+     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "skip_if": "known(blood_vomit) and known(severe_pain) and known(reduced_urine)",
+     "chips": [
+       {"id": "blood", "label": {"en": "Blood in vomit or stool / black stool", "hi": "उल्टी या पॉटी में खून / काली पॉटी", "hinglish": "Ulti ya potty mein khoon / kaali potty"}, "facts": {"blood_vomit": true}},
+       {"id": "pain", "label": {"en": "Very bad stomach pain", "hi": "पेट में बहुत तेज़ दर्द", "hinglish": "Pet mein bahut tez dard"}, "facts": {"severe_pain": true}},
+       {"id": "drowsy", "label": {"en": "Very weak / dizzy", "hi": "बहुत सुस्त / चक्कर", "hinglish": "Bahut sust / chakkar"}, "facts": {"dizziness_standing": true}},
+       {"id": "urine", "label": {"en": "Very little or no urine", "hi": "पेशाब बहुत कम या बंद", "hinglish": "Peshab bahut kam ya band"}, "facts": {"reduced_urine": true}}
+     ]},
+    {"id": "stomach.amount", "kind": "duration",
+     "text": {"en": "Since when, and how many times a day?", "hi": "कब से और दिन में कितनी बार?", "hinglish": "Kab se aur din mein kitni baar?"},
+     "skip_if": "known(duration_days) and (known(stool_count) or known(vomit_count))",
+     "chips": [
+       {"id": "today", "label": {"en": "Since today", "hi": "आज से", "hinglish": "Aaj se"}, "facts": {"duration_days": 0.5}},
+       {"id": "d2", "label": {"en": "1–2 days", "hi": "1–2 दिन", "hinglish": "1–2 din"}, "facts": {"duration_days": 2}},
+       {"id": "d3", "label": {"en": "More than 2 days", "hi": "2 दिन से ज़्यादा", "hinglish": "2 din se zyada"}, "facts": {"duration_days": 3}},
+       {"id": "few", "label": {"en": "1–5 times a day", "hi": "दिन में 1–5 बार", "hinglish": "Din mein 1–5 baar"}, "facts": {"stool_count": 4}},
+       {"id": "many", "label": {"en": "6+ times", "hi": "6+ बार", "hinglish": "6+ baar"}, "facts": {"stool_count": 7}}
+     ], "no_none_chip": true},
+    {"id": "stomach.fluids_pain", "kind": "associated",
+     "text": {"en": "Fluids and pain: what applies?", "hi": "पानी और दर्द: क्या-क्या है?", "hinglish": "Paani aur dard: kya-kya hai?"},
+     "skip_if": "n_signs >= 3",
+     "chips": [
+       {"id": "nofluid", "label": {"en": "Cannot keep even water down", "hi": "पानी भी नहीं रुक रहा", "hinglish": "Paani bhi nahi ruk raha"}, "facts": {"cannot_drink": true}},
+       {"id": "dry", "label": {"en": "Dry mouth", "hi": "मुँह सूख रहा", "hinglish": "Muh sookh raha"}, "facts": {"dry_mouth": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "rlq", "label": {"en": "Pain lower right", "hi": "दर्द दाईं ओर नीचे", "hinglish": "Dard daayein neeche"}, "facts": {"right_lower_pain": true}},
+       {"id": "all", "label": {"en": "Pain all over the belly", "hi": "पूरे पेट में दर्द", "hinglish": "Dard poore pet mein"}, "facts": {"abdominal_pain": true}}
+     ]},
+    {"id": "stomach.who", "kind": "who",
+     "text": {"en": "Who is the patient?", "hi": "मरीज़ कौन है?", "hinglish": "Patient kaun hai?"},
+     "skip_if": "known(age_years) or child or elderly or pregnant or comorbid",
+     "chips": [
+       {"id": "child", "label": {"en": "Child", "hi": "बच्चा", "hinglish": "Baccha"}, "facts": {"child": true, "under5": true}},
+       {"id": "old", "label": {"en": "Elderly", "hi": "बुज़ुर्ग", "hinglish": "Buzurg"}, "facts": {"elderly": true}},
+       {"id": "preg", "label": {"en": "Pregnant", "hi": "गर्भवती", "hinglish": "Pregnant"}, "facts": {"pregnant": true}},
+       {"id": "comorb", "label": {"en": "Sugar / kidney patient", "hi": "शुगर / किडनी के मरीज़", "hinglish": "Sugar / kidney patient"}, "facts": {"comorbid": true}}
+     ], "none_label": {"en": "None of these", "hi": "कोई नहीं", "hinglish": "Koi nahi"}}
+  ]
+}

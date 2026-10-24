@@ -138,7 +138,7 @@ NOT_PREG = r"(?!\s*(ki\s+|ka\s+|se\s+)?(pregnan|garbh|गर्भ|प्रे�
 DURATION_RULES: list[tuple[re.Pattern, object]] = [
     (_rx(r"\bparso\s*(raat|subah|shaam)?\s*se\b|day\s+before\s+yesterday|परसों"), 2.0),
     (_rx(r"\bkal\s*(raat|subah|shaam|dopahar)?\s*se\b|since\s+(last\s+night|yesterday)|\byesterday\b|कल\s*(रात|सुबह|शाम)?\s*से"), 1.0),
-    (_rx(r"\baaj\s*(subah|dopahar|shaam)?\s*se\b|\bsubah\s+se\b|since\s+(this\s+)?morning|\btoday\b|आज\s*(सुबह)?\s*से|सुबह\s*से"), 0.3),
+    (_rx(r"\baaj\s*(subah|subha|dopahar|shaam)?\s*se\b|\bsubh?ah?\s+se\b|since\s+(this\s+)?morning|\btoday\b|आज\s*(सुबह)?\s*से|सुबह\s*से"), 0.3),
     (_rx(rf"{NUM}\s*(?:-|–|to|se)\s*{NUM}\s*(din|dino|days?|दिन)"), "range_days"),
     (_rx(rf"{NUM}\s*(din|dino|dinon|days?|दिन)(?!\s*-?\s*(ka|ki|ke|old|का|की|के){END})"), "days"),
     (_rx(r"\b(hafte|hafta)\s+bhar\b|a\s+week"), 7.0),
@@ -220,7 +220,7 @@ def parse_age(text: str) -> tuple[Optional[float], Optional[str]]:
     return None, None
 
 
-PLT = _rx(r"(?:platelets?|plate\s*lets?|plt|प्लेटलेट\w*)\s*(?:count)?\s*(?:is|hai|h|aaye|aayi|aaya|aa\s+gaye|ho\s+gaye|:|-|=|ab)?\s*"
+PLT = _rx(r"(?:platelets?|plate\s*lets?|platlets?|pletlets?|plt|प्लेटलेट[ऀ-ॿ]*)\s*(?:count)?\s*(?:is|hai|h|aaye|aayi|aaya|aa\s+gaye|ho\s+gaye|:|-|=|ab)?\s*"
           r"(\d+(?:[.,]\d+)*)\s*(k\b|thousand|hazaa?r|hajaar|हज़ार|हजार|lakh|lac|लाख)?")
 PLT_REV = _rx(r"(\d+(?:[.,]\d+)*)\s*(k\b|thousand|hazaa?r|hajaar|हज़ार|हजार|lakh|lac|लाख)?\s*(?:platelets?|plate\s*lets?|प्लेटलेट)")
 

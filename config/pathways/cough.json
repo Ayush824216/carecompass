@@ -1,0 +1,91 @@
+{
+  "id": "cough",
+  "label": {"en": "Cough", "hi": "खांसी", "hinglish": "Khansi"},
+  "trigger": "cough or dry_cough or wet_cough or blood_in_cough or asthma_copd or barking or stridor or choking",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "paramedic_home_visit", "urgency": "same_day"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "dry_cough": {"patterns": ["s(u|oo)kh(i|ee) kh?aa?n?si", "s(u|oo)kh(i|ee) khasi", "dry cough", "सूखी खांसी"], "label": {"en": "dry cough", "hi": "सूखी खांसी", "hinglish": "sukhi khansi"}},
+    "wet_cough": {"patterns": ["balgam", "phlegm", "sputum", "mucus", "bal?gam wali", "बलगम"], "label": {"en": "cough with phlegm", "hi": "बलगम वाली खांसी", "hinglish": "balgam wali khansi"}},
+    "sputum_colored": {"patterns": ["(peela|peeli|hara|hari|yellow|green)\\w* (\\S+ )?(balgam|phlegm|sputum|mucus)", "(balgam|phlegm|sputum)\\w* (\\S+ )?(peela|peeli|hara|hari|yellow|green)", "पीला बलगम", "हरा बलगम"],
+                       "label": {"en": "yellow or green phlegm", "hi": "पीला या हरा बलगम", "hinglish": "peela ya hara balgam"}},
+    "blood_in_cough": {"patterns": ["kh?aa?n?si (mein|me|ke saath) (\\S+ ){0,3}kh(oo|u)n", "balgam (mein|me) (\\S+ ){0,3}kh(oo|u)n", "kh(oo|u)n (ke )?dhaag", "kh(oo|u)n wali kh?aa?n?si", "cough\\w* (up )?blood", "blood (in|with) (my |the )?(sputum|cough|phlegm|mucus)", "ha?emoptysis", "खांसी में खून", "बलगम में खून"],
+                       "label": {"en": "blood in the cough", "hi": "खांसी में खून", "hinglish": "khansi mein khoon"}},
+    "night_sweats": {"patterns": ["raat (ko )?(\\S+ )?paseen", "night sweats?", "sweating at night", "रात को पसीना"], "label": {"en": "night sweats", "hi": "रात को पसीना", "hinglish": "raat ko paseena"}},
+    "weight_loss": {"patterns": ["wa?zan (\\S+ )?(kam|ghat)", "weight (loss|is going down|dropped)", "losing weight", "दुबला", "वज़न कम", "वजन कम"], "label": {"en": "weight loss", "hi": "वज़न कम होना", "hinglish": "wazan kam hona"}},
+    "wheeze": {"patterns": ["seeti", "wheez", "whistl", "सीटी"], "label": {"en": "wheezing", "hi": "सीटी जैसी आवाज़", "hinglish": "seeti jaisi awaaz"}},
+    "asthma_copd": {"patterns": ["asthma", "\\bdama\\b", "copd", "inhaler", "pump", "दमा"], "label": {"en": "known asthma / COPD", "hi": "दमा / सीओपीडी", "hinglish": "asthma / COPD"}},
+    "inhaler_not_helping": {"patterns": ["(inhaler|pump) se (bhi )?(aaram|fayda|faayda) (nahi|nhi)", "(inhaler|pump) (is )?(not|isn'?t) (helping|working)", "इनहेलर से भी आराम नहीं"], "label": {"en": "inhaler not helping", "hi": "इनहेलर से भी आराम नहीं", "hinglish": "inhaler se bhi aaram nahi"}},
+    "barking": {"patterns": ["kutte (ke )?(bhaunk|bhonk|bhauk)", "bhaunkne", "barking", "seal[- ]like"], "label": {"en": "barking cough", "hi": "भौंकने जैसी खांसी", "hinglish": "bhaunkne jaisi khansi"}},
+    "stridor": {"patterns": ["saa?ns lete (waqt|samay|hue) (\\S+ )?awaa?z", "stridor", "noisy breathing", "sound (when|while) breathing", "सांस लेते समय आवाज़", "साँस लेते समय आवाज़"], "label": {"en": "noisy breathing (stridor)", "hi": "साँस लेते समय आवाज़", "hinglish": "saans lete waqt awaaz"}},
+    "whoop": {"patterns": ["whoop", "khansi ke baad (lambi )?saans ki awaaz"], "label": {"en": "whooping after cough", "hi": "खांसी के बाद लंबी साँस की आवाज़", "hinglish": "khansi ke baad lambi saans ki awaaz"}},
+    "choking": {"patterns": ["(kuch|sikka|coin|daana) (\\S+ )?nigal (liya|gaya)", "gale (mein|me) (\\S+ )?atak", "choking", "choked", "swallowed (a |an )?(coin|object|toy|seed)", "गले में अटक"], "label": {"en": "choking / something swallowed", "hi": "गले में कुछ अटक गया", "hinglish": "gale mein kuch atak gaya"}},
+    "chest_pain_breathing": {"patterns": ["saa?ns lene par (seene mein )?(\\S+ )?dard", "pain (in the chest )?(on|when) breath", "chubhne wala dard", "chubhta", "साँस लेने पर दर्द"], "label": {"en": "chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "saans lene par seene mein dard"}}
+  },
+  "rules": [
+    {"id": "c_breathless_rest", "stage": "S3", "when": "breathless_rest"},
+    {"id": "c_blue_lips", "stage": "S3", "when": "blue_lips"},
+    {"id": "c_large_blood", "stage": "S3", "when": "blood_in_cough and (blood_large or breathless)"},
+    {"id": "c_child_stridor", "stage": "S3", "when": "child and (stridor or (barking and breathless))"},
+    {"id": "c_choking", "stage": "S3", "when": "choking"},
+    {"id": "c_chest_pain_breathless", "stage": "S3", "when": "chest_pain_breathing and breathless"},
+    {"id": "c_asthma_not_relieved", "stage": "S3", "when": "asthma_copd and inhaler_not_helping and breathless"},
+
+    {"id": "c_tb_like", "stage": "S2", "when": "duration_days is not None and duration_days >= 14 and (fever or night_sweats or weight_loss)", "pattern": "tb_like"},
+    {"id": "c_blood_streaks", "stage": "S2", "when": "blood_in_cough"},
+    {"id": "c_asthma_wheeze", "stage": "S2", "when": "asthma_copd and (wheeze or inhaler_not_helping)", "pattern": "asthma_flare"},
+    {"id": "c_fast_breathing", "stage": "S2", "when": "fast_breathing", "care_type": "gp_teleconsult", "pattern": "pneumonia_like"},
+
+    {"id": "c_fever_two_days", "stage": "S1", "when": "fever and duration_days is not None and duration_days >= 2"},
+    {"id": "c_coloured_sputum_week", "stage": "S1", "when": "sputum_colored and duration_days is not None and duration_days > 7"},
+    {"id": "c_child", "stage": "S1", "when": "child"},
+    {"id": "c_three_weeks", "stage": "S1", "when": "duration_days is not None and duration_days >= 21", "care_type": "gp_teleconsult"},
+
+    {"id": "c_mild", "stage": "S0", "when": "cough and not fever and (duration_days is None or duration_days < 21) and not breathless and not blood_in_cough and not wheeze"}
+  ],
+  "sufficient": "known(duration_days) or n_signs >= 2",
+  "questions": [
+    {"id": "cough.danger", "kind": "danger",
+     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "skip_if": "known(breathless) and known(blood_in_cough) and known(blue_lips)",
+     "chips": [
+       {"id": "breath", "label": {"en": "Breathless / hard to speak", "hi": "साँस फूल रही / बोलने में दिक्कत", "hinglish": "Saans phool rahi / bolne mein dikkat"}, "facts": {"breathless": true}},
+       {"id": "blood", "label": {"en": "Blood in cough", "hi": "खांसी में खून", "hinglish": "Khansi mein khoon"}, "facts": {"blood_in_cough": true}},
+       {"id": "blue", "label": {"en": "Blue lips / nails", "hi": "होंठ / नाखून नीले", "hinglish": "Hoth / naakhun neele"}, "facts": {"blue_lips": true}},
+       {"id": "chest", "label": {"en": "Chest pain", "hi": "सीने में दर्द", "hinglish": "Seene mein dard"}, "facts": {"chest_pain_breathing": true}}
+     ]},
+    {"id": "cough.type_duration", "kind": "duration",
+     "text": {"en": "What kind of cough, and since when?", "hi": "खांसी कैसी है और कब से?", "hinglish": "Khansi kaisi hai aur kab se?"},
+     "skip_if": "known(duration_days) and (dry_cough or wet_cough or blood_in_cough)",
+     "chips": [
+       {"id": "dry", "label": {"en": "Dry", "hi": "सूखी", "hinglish": "Sukhi"}, "facts": {"dry_cough": true}},
+       {"id": "wet", "label": {"en": "With phlegm", "hi": "बलगम वाली", "hinglish": "Balgam wali"}, "facts": {"wet_cough": true}},
+       {"id": "bloody", "label": {"en": "With blood", "hi": "खून वाली", "hinglish": "Khoon wali"}, "facts": {"blood_in_cough": true}},
+       {"id": "w1", "label": {"en": "Less than a week", "hi": "1 हफ्ते से कम", "hinglish": "1 hafte se kam"}, "facts": {"duration_days": 4}},
+       {"id": "w2", "label": {"en": "1–2 weeks", "hi": "1–2 हफ्ते", "hinglish": "1–2 hafte"}, "facts": {"duration_days": 10}},
+       {"id": "w3", "label": {"en": "More than 2 weeks", "hi": "2 हफ्ते से ज़्यादा", "hinglish": "2 hafte se zyada"}, "facts": {"duration_days": 16}}
+     ], "no_none_chip": true},
+    {"id": "cough.associated", "kind": "associated",
+     "text": {"en": "What else is there with the cough?", "hi": "खांसी के साथ और क्या है?", "hinglish": "Khansi ke saath aur kya hai?"},
+     "skip_if": "n_signs >= 3",
+     "chips": [
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "sweat", "label": {"en": "Night sweats", "hi": "रात को पसीना", "hinglish": "Raat ko paseena"}, "facts": {"night_sweats": true}},
+       {"id": "wt", "label": {"en": "Weight loss", "hi": "वज़न कम होना", "hinglish": "Wazan kam hona"}, "facts": {"weight_loss": true}},
+       {"id": "wheeze", "label": {"en": "Whistling sound", "hi": "सीटी जैसी आवाज़", "hinglish": "Seeti jaisi awaaz"}, "facts": {"wheeze": true}},
+       {"id": "smoke", "label": {"en": "Smoking", "hi": "धूम्रपान", "hinglish": "Smoking"}, "facts": {"smoker": true}},
+       {"id": "asthma", "label": {"en": "Asthma / COPD", "hi": "दमा / सीओपीडी", "hinglish": "Asthma / COPD"}, "facts": {"asthma_copd": true}}
+     ]},
+    {"id": "cough.blood_amount", "kind": "blood", "only_if": "blood_in_cough",
+     "text": {"en": "How much blood?", "hi": "कितना खून?", "hinglish": "Kitna khoon?"},
+     "skip_if": "blood_large or blood_small",
+     "chips": [
+       {"id": "streaks", "label": {"en": "Thread-like streaks in phlegm", "hi": "बलगम में धागे जैसा", "hinglish": "Balgam mein dhaage jaisa"}, "facts": {"blood_small": true}},
+       {"id": "spoon", "label": {"en": "A spoonful or more / again and again", "hi": "चम्मच भर या ज़्यादा / बार-बार", "hinglish": "Chammach bhar ya zyada / baar-baar"}, "facts": {"blood_large": true}}
+     ], "no_none_chip": true}
+  ]
+}

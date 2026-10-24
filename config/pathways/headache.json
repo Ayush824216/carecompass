@@ -1,0 +1,85 @@
+{
+  "id": "headache",
+  "label": {"en": "Headache", "hi": "सिर दर्द", "hinglish": "Sir dard"},
+  "trigger": "headache or sudden_worst or head_injury",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "sudden_worst": {"patterns": ["achanak (\\S+ ){0,4}(tez|bahut|bhayankar) (\\S+ )?(sir|sar) ?dard", "achanak (\\S+ ){0,3}(itna|bahut) tez", "zindagi ka sabse (tez|bura)", "kabhi (nahi|nhi) hua", "worst (headache )?(of my life|ever)", "thunderclap", "sudden (severe|worst|very bad) headache", "अचानक.{0,20}(तेज़|बहुत).{0,10}दर्द", "ज़िंदगी का सबसे"],
+                     "label": {"en": "sudden, worst-ever headache", "hi": "अचानक, ज़िंदगी का सबसे तेज़ सिर दर्द", "hinglish": "achanak, zindagi ka sabse tez sir dard"}},
+    "weakness_one_side": {"patterns": ["ek (haath|hath|pair|taraf|side) (\\S+ ){0,2}(kamz?j?or|kamzori|kamjori|sunn|kaam nahi)", "(one|left|right) (arm|leg|side) (is )?(weak|numb)", "weakness (on|in) one side", "एक (हाथ|तरफ).{0,15}(कमज़ोर|कमजोर|कमज़ोरी|सुन्न)"],
+                          "label": {"en": "weakness on one side", "hi": "एक तरफ कमज़ोरी", "hinglish": "ek taraf kamzori"}},
+    "face_droop": {"patterns": ["mu(n)?h (\\S+ )?tedha", "chehra (\\S+ ){0,3}(tedha|latak)", "face (is )?(droop|drooping|crooked)", "मुँह टेढ़ा", "चेहरा.{0,10}टेढ़"], "label": {"en": "face drooping", "hi": "मुँह टेढ़ा होना", "hinglish": "muh tedha hona"}},
+    "slurred_speech": {"patterns": ["bolne m(ei|e|ai)n? (\\S+ )?(atak|dikk?at|ladkhad)", "awaa?z (\\S+ )?(atak|ladkhad)", "slurr", "speech (is )?(slurred|unclear)", "बोलने में (अटक|दिक्कत)", "आवाज़ लड़खड़"], "label": {"en": "difficulty speaking", "hi": "बोलने में दिक्कत", "hinglish": "bolne mein dikkat"}},
+    "head_injury": {"patterns": ["(sir|sar) (par|pe|mein) (\\S+ )?(chot|chott|lagi)", "gir (gaye|gayi|gaya|pade)[^.]*(sir|sar)", "head (injury|trauma)", "hit (his |her |my |the )?head", "सिर पर चोट"], "label": {"en": "head injury", "hi": "सिर पर चोट", "hinglish": "sir par chot"}},
+    "blood_thinners": {"patterns": ["kh(oo|u)n patla (karne|karnewali)", "blood thinner", "warfarin", "ecosprin", "aspirin", "clopidogrel", "apixaban", "rivaroxaban", "खून पतला"], "label": {"en": "on blood thinners", "hi": "खून पतला करने की दवा", "hinglish": "khoon patla karne ki dawai"}},
+    "new_pattern": {"patterns": ["pehli baar", "first time", "new (kind of )?headache", "never had (this|such) before", "पहली बार"], "label": {"en": "a new kind of headache", "hi": "पहली बार ऐसा सिर दर्द", "hinglish": "pehli baar aisa sir dard"}},
+    "progressive": {"patterns": ["roz (\\S+ ){0,3}badh", "din ba din badh", "hafton se badh", "badhta (ja )?raha", "getting worse (every day|day by day|over weeks)", "progressively worse", "रोज़ बढ़", "बढ़ता जा रहा"], "label": {"en": "getting worse over weeks", "hi": "हफ्तों से बढ़ता सिर दर्द", "hinglish": "hafton se badhta sir dard"}},
+    "wakes_sleep": {"patterns": ["neend se uth", "neend (mein )?(se )?jaga", "wakes (me |him |her )?(up|from sleep)", "नींद से उठ"], "label": {"en": "wakes from sleep", "hi": "नींद से जगा देता है", "hinglish": "neend se uthata hai"}},
+    "known_migraine": {"patterns": ["migraine", "purana (\\S+ )?(sir )?dard", "pehle bhi (aisa|hota|wahi)", "usual headache", "same as (always|before)", "wahi dard", "पुराना दर्द", "माइग्रेन"], "label": {"en": "the usual known headache", "hi": "पहले जैसा जाना-पहचाना सिर दर्द", "hinglish": "pehle jaisa jaana-pehchaana sir dard"}},
+    "light_sensitivity": {"patterns": ["roshni (se )?(\\S+ )?(takleef|chubh|dikkat)", "light (hurts|sensitiv)", "रोशनी से"], "label": {"en": "light hurts the eyes", "hi": "रोशनी से तकलीफ", "hinglish": "roshni se takleef"}}
+  },
+  "rules": [
+    {"id": "h_sudden_worst", "stage": "S3", "when": "sudden_worst"},
+    {"id": "h_stroke_signs", "stage": "S3", "when": "weakness_one_side or face_droop or slurred_speech", "pattern": "stroke_like"},
+    {"id": "h_meningitis_like", "stage": "S3", "when": "fever and (stiff_neck or confusion or non_fading_rash)", "pattern": "meningitis_like"},
+    {"id": "h_head_injury", "stage": "S3", "when": "head_injury and (vomiting or vomit_count is not None or very_drowsy or blood_thinners or confusion or unconscious)", "pattern": "head_injury"},
+    {"id": "h_bp_180", "stage": "S3", "when": "bp_sys is not None and (bp_sys >= 180 or bp_dia >= 120)", "pattern": "high_bp"},
+    {"id": "h_pregnancy", "stage": "S3", "when": "pregnant and (pregnancy_weeks is None or pregnancy_weeks > 20) and (vision_change or swelling_face_hands)", "pattern": "pregnancy_related"},
+    {"id": "h_seizure", "stage": "S3", "when": "seizure"},
+
+    {"id": "h_new_after_50", "stage": "S2", "when": "age_years is not None and age_years >= 50 and (new_pattern or progressive)"},
+    {"id": "h_progressive", "stage": "S2", "when": "progressive"},
+    {"id": "h_wakes", "stage": "S2", "when": "wakes_sleep"},
+    {"id": "h_bp_160", "stage": "S2", "when": "bp_sys is not None and (bp_sys >= 160 or bp_dia >= 100)", "pattern": "high_bp"},
+
+    {"id": "h_fever_vulnerable", "stage": "S1", "when": "fever and (elderly or child)", "care_type": "paramedic_home_visit"},
+    {"id": "h_fever", "stage": "S1", "when": "fever"},
+    {"id": "h_new", "stage": "S1", "when": "new_pattern"},
+
+    {"id": "h_known_pattern", "stage": "S0", "when": "known_migraine and not new_pattern", "pattern": "tension_migraine"}
+  ],
+  "sufficient": "known_migraine or n_signs >= 2 or known(duration_days)",
+  "questions": [
+    {"id": "headache.danger", "kind": "danger",
+     "text": {"en": "Is any of these happening?", "hi": "क्या इनमें से कुछ हो रहा है?", "hinglish": "Inme se kuch ho raha hai?"},
+     "skip_if": "known(sudden_worst) and known(weakness_one_side) and known(stiff_neck)",
+     "chips": [
+       {"id": "sudden", "label": {"en": "Sudden, worst-ever pain", "hi": "अचानक, ज़िंदगी का सबसे तेज़ दर्द", "hinglish": "Achanak, zindagi ka sabse tez dard"}, "facts": {"sudden_worst": true}},
+       {"id": "stroke", "label": {"en": "One-sided weakness / face droop / slurred speech", "hi": "एक तरफ कमज़ोरी / मुँह टेढ़ा / बोलने में दिक्कत", "hinglish": "Ek taraf kamzori / muh tedha / bolne mein dikkat"}, "facts": {"weakness_one_side": true}},
+       {"id": "neck", "label": {"en": "Stiff neck + fever", "hi": "गर्दन अकड़ना + बुखार", "hinglish": "Gardan akadna + bukhar"}, "facts": {"stiff_neck": true, "fever": true}},
+       {"id": "injury", "label": {"en": "Head injury", "hi": "सिर पर चोट", "hinglish": "Sir par chot"}, "facts": {"head_injury": true}}
+     ]},
+    {"id": "headache.pattern", "kind": "pattern",
+     "text": {"en": "Is this headache usual for them?", "hi": "क्या ऐसा सिर दर्द पहले भी होता है?", "hinglish": "Kya aisa sir dard pehle bhi hota hai?"},
+     "skip_if": "known_migraine or new_pattern or progressive or wakes_sleep",
+     "chips": [
+       {"id": "usual", "label": {"en": "Happens like this before", "hi": "पहले भी ऐसा होता है", "hinglish": "Pehle bhi aisa hota hai"}, "facts": {"known_migraine": true}},
+       {"id": "first", "label": {"en": "First time", "hi": "पहली बार", "hinglish": "Pehli baar"}, "facts": {"new_pattern": true}},
+       {"id": "worse", "label": {"en": "Getting worse over weeks", "hi": "हफ्तों से बढ़ रहा", "hinglish": "Hafton se badh raha"}, "facts": {"progressive": true}},
+       {"id": "sleep", "label": {"en": "Wakes from sleep", "hi": "नींद से जगा देता है", "hinglish": "Neend se uthata hai"}, "facts": {"wakes_sleep": true}}
+     ], "no_none_chip": true},
+    {"id": "headache.associated", "kind": "associated",
+     "text": {"en": "What else is there with the headache?", "hi": "सिर दर्द के साथ और क्या है?", "hinglish": "Sir dard ke saath aur kya hai?"},
+     "skip_if": "n_signs >= 3",
+     "chips": [
+       {"id": "vomit", "label": {"en": "Vomiting", "hi": "उल्टी", "hinglish": "Ulti"}, "facts": {"vomiting": true}},
+       {"id": "light", "label": {"en": "Light hurts", "hi": "रोशनी से तकलीफ", "hinglish": "Roshni se takleef"}, "facts": {"light_sensitivity": true}},
+       {"id": "blur", "label": {"en": "Blurred vision", "hi": "धुंधला दिखना", "hinglish": "Dhundhla dikhna"}, "facts": {"vision_change": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "bp", "label": {"en": "High BP", "hi": "बीपी हाई", "hinglish": "BP high"}, "facts": {"hypertension": true}}
+     ]},
+    {"id": "headache.who", "kind": "who",
+     "text": {"en": "Who is the patient? (You can also type the BP reading.)", "hi": "मरीज़ कौन है? (बीपी रीडिंग लिख भी सकते हैं।)", "hinglish": "Patient kaun hai? (BP reading likh bhi sakte hain.)"},
+     "skip_if": "known(age_years) or pregnant or blood_thinners",
+     "chips": [
+       {"id": "age50", "label": {"en": "Age 50+", "hi": "उम्र 50+", "hinglish": "50+ umar"}, "facts": {"age_years": 55}},
+       {"id": "preg", "label": {"en": "Pregnant", "hi": "गर्भवती", "hinglish": "Pregnant"}, "facts": {"pregnant": true}},
+       {"id": "thin", "label": {"en": "On blood thinners", "hi": "खून पतला करने की दवा", "hinglish": "Khoon patla karne ki dawai"}, "facts": {"blood_thinners": true}}
+     ], "none_label": {"en": "None of these", "hi": "कोई नहीं", "hinglish": "Koi nahi"}}
+  ]
+}
