@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, MapPin, Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
+import { Check, MapPin, Mic, MicOff, SendHorizontal, Trash2 } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { canListen, listen, stopSpeaking } from "../../lib/speech.js";
 import { CARE_EXAMPLES } from "../../lib/examples.js";
@@ -137,8 +137,8 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, cho
             <span className="chip border-sameday/40 bg-sameday-soft font-semibold text-[rgb(110_64_0)]">{t("care.questionOf", { n: questionNo, max: maxQuestions })}</span>
           )}
           {started && (
-            <button type="button" onClick={onReset} className="btn-ghost min-h-[44px] px-3 text-sm">
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />{t("common.startOver")}
+            <button type="button" onClick={onReset} className="btn-ghost h-11 w-11 justify-center p-0" aria-label={t("privacy.clearConversation")} title={t("privacy.clearConversation")}>
+              <Trash2 className="h-5 w-5" aria-hidden="true" />
             </button>
           )}
         </div>

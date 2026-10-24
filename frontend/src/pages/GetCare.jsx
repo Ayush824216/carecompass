@@ -9,8 +9,8 @@ import DecisionPanel from "../components/care/DecisionPanel.jsx";
 import ResultSection from "../components/care/ResultSection.jsx";
 import EmergencyView from "../components/care/EmergencyView.jsx";
 import { ErrorState } from "../components/ui.jsx";
-import { ShieldAlert, Trash2 } from "lucide-react";
-import { IncognitoBadge, ModeToggle, SaveToMemory } from "../components/Privacy.jsx";
+import { ShieldAlert } from "lucide-react";
+import { IncognitoBadge, SaveToMemory } from "../components/Privacy.jsx";
 import { loadMemory, memoryHints } from "../lib/memory.js";
 
 const MAX_Q = 4;
@@ -119,10 +119,6 @@ export default function GetCare() {
           <h1 className="text-3xl font-semibold md:text-4xl">{t("care.title")}</h1>
           <p className="mt-1 text-lg text-muted">{t("care.subtitle")}</p>
           <div className="mt-2"><IncognitoBadge /></div>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <ModeToggle />
-          <button type="button" onClick={reset} className="btn-ghost min-h-[44px] px-3 text-sm"><Trash2 className="h-4 w-4" aria-hidden="true" />{t("privacy.clearConversation")}</button>
         </div>
       </div>
       {error && (

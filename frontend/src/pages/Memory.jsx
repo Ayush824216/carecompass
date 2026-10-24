@@ -8,16 +8,16 @@ const AGE_GROUPS = ["infant", "child", "adult", "elderly"];
 
 /** "My health memory": everything this browser keeps about you, with edit / forget / delete all / export. */
 export default function Memory() {
-  const { t, incognito } = useApp();
+  const { t, incognito, setSosContacts } = useApp();
   const [m, setM] = useState(loadMemory);
   const [device, setDevice] = useState(() => Object.fromEntries(Object.entries(DEVICE_KEYS).map(([k, key]) => [k, load(key, null)])));
   const items = Object.values(m.items);
-  const forgetDevice = (k) => { remove(DEVICE_KEYS[k]); setDevice((d) => ({ ...d, [k]: null })); };
+  const forgetDevice = (k) => { remove(DEVICE_KEYS[k]); if (k === "emergencyContact") setSosContacts([]); setDevice((d) => ({ ...d, [k]: null })); };
   const ForgetBtn = ({ onClick }) => (
     <button type="button" onClick={onClick} className="btn-ghost min-h-[44px] px-3 text-sm"><Trash2 className="h-4 w-4" aria-hidden="true" />{t("memory.forget")}</button>
   );
   const deviceValue = (k, v) => k === "location" ? (v?.label || (v?.lat != null ? `${v.lat.toFixed(3)}, ${v.lng.toFixed(3)}` : null))
-    : k === "emergencyContact" ? (v?.name ? `${v.name} · ${v.phone}` : null) : v;
+    : k === "emergencyContact" ? (Array.isArray(v) && v.length ? v.map((c) => c.name).join(", ") : null) : v;
 
   return (
     <div className="container-page max-w-3xl py-8 md:py-10">
@@ -86,7 +86,7 @@ export default function Memory() {
       <div className="mt-6 flex flex-wrap gap-3">
         <button type="button" className="btn-ghost min-h-[48px]" onClick={exportMemory}><Download className="h-4 w-4" aria-hidden="true" />{t("memory.export")}</button>
         <button type="button" className="btn-ghost min-h-[48px] text-emergency" onClick={() => {
-          if (window.confirm(t("memory.deleteAllConfirm"))) { setM(forgetAll()); setDevice({ language: null, location: null, emergencyContact: null }); }
+          if (window.confirm(t("memory.deleteAllConfirm"))) { setM(forgetAll()); setSosContacts([]); setDevice({ language: null, location: null, emergencyContact: null }); }
         }}><Trash2 className="h-4 w-4" aria-hidden="true" />{t("memory.deleteAll")}</button>
       </div>
       <p className="mt-4 text-sm text-muted">{t("memory.serverNote")}</p>

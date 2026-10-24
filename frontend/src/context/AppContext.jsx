@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { translate } from "../i18n/index.js";
 import { load, save, setNoStore } from "../lib/storage.js";
 import { setIncognitoHeader } from "../lib/api.js";
+import { SOS_KEY, loadContacts } from "../lib/sos.js";
 import { stopSpeaking } from "../lib/speech.js";
 
 const SIZES = [16, 18, 20, 22, 24];
@@ -19,6 +20,9 @@ export function AppProvider({ children }) {
   const [location, setLocationState] = useState(() => load("cc.location", UNSET_LOC));
   const [geoStatus, setGeoStatus] = useState("idle"); // idle | asking | denied | unavailable | ok
   const [toasts, setToasts] = useState([]);
+  // SOS family contacts: device only (save() writes nothing in Incognito; the list then lives for this tab only)
+  const [sosContacts, setSosContactsState] = useState(loadContacts);
+  const setSosContacts = useCallback((list) => { setSosContactsState(list); save(SOS_KEY, list); }, []);
   // privacy mode lives in memory only: a fresh tab always starts in "memory" (device memory ON)
   const [mode, setModeState] = useState("memory"); // memory | incognito
   const [consent, setConsentState] = useState(() => load("cc.consent", null));
@@ -28,6 +32,8 @@ export function AppProvider({ children }) {
     setNoStore(inc); setIncognitoHeader(inc); setModeState(m);
   }, []);
   const endSession = useCallback(() => { setMode("memory"); setSession((n) => n + 1); }, [setMode]);
+  // one navbar switch: turning Incognito off ends the session (the conversation held in memory is wiped)
+  const toggleIncognito = useCallback(() => (mode === "incognito" ? endSession() : setMode("incognito")), [mode, endSession, setMode]);
   const giveConsent = useCallback((choice) => {
     const c = { choice, at: new Date().toISOString() };
     setConsentState(c);
@@ -84,9 +90,9 @@ export function AppProvider({ children }) {
     sizeIdx, basePx: SIZES[sizeIdx], canGrow: sizeIdx < SIZES.length - 1, canShrink: sizeIdx > 0,
     grow: () => setSizeIdx((i) => Math.min(SIZES.length - 1, i + 1)), shrink: () => setSizeIdx((i) => Math.max(0, i - 1)),
     location, setLocation, requestGps, geoStatus, hasLocation: location.lat != null, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast,
-    mode, setMode, incognito: mode === "incognito", endSession, session, consent, giveConsent,
+    mode, setMode, incognito: mode === "incognito", endSession, toggleIncognito, session, consent, giveConsent, sosContacts, setSosContacts,
   }), [lang, t, voice, contrast, sizeIdx, location, setLocation, requestGps, geoStatus, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast,
-    mode, setMode, endSession, session, consent, giveConsent]);
+    mode, setMode, endSession, toggleIncognito, session, consent, giveConsent, sosContacts, setSosContacts]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

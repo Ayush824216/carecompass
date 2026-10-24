@@ -9,10 +9,11 @@ from fastapi import FastAPI, Header, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
 
 import time
 
-from . import cache, data_adapter, intake, pathways, pipeline, privacy
+from . import cache, data_adapter, intake, pathways, pipeline, privacy, sms
 from .config import get_settings
 from .schemas import BookingRequest, BookingResponse, Caregiver, TriageRequest, TriageResponse
 
@@ -70,6 +71,23 @@ def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `de
         if not inc and not trace.get("error"):  # never pin a fallback produced by an internal error
             rc.put(k, body)
     return JSONResponse(body)
+
+
+class SosRequest(BaseModel):
+    to: list[str] = Field(default_factory=list, max_length=5)
+    message: str = Field("", max_length=600)
+
+
+@app.get("/api/v1/sos/status")
+def sos_status() -> dict:
+    """Whether the server can send SOS SMS itself (SMS_PROVIDER=twilio). Off by default."""
+    return {"enabled": sms.enabled()}
+
+
+@app.post("/api/v1/sos/send")
+def sos_send(req: SosRequest) -> dict:
+    """Send the SOS SMS through the configured provider. "sent" is true only if the provider accepted every one."""
+    return sms.send(req.to, req.message)
 
 
 @app.get("/metrics")

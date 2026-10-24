@@ -5,7 +5,7 @@ import { load, remove, save } from "./storage.js";
 
 export const MEMORY_KEY = "cc.memory";
 // other device-only data shown on the memory page (each has its own key)
-export const DEVICE_KEYS = { language: "cc.lang", location: "cc.location", emergencyContact: "cc.emergencyContact" };
+export const DEVICE_KEYS = { language: "cc.lang", location: "cc.location", emergencyContact: "cc.sosContacts" };
 const EMPTY = { v: 1, items: {}, assessments: [] };
 
 export function loadMemory() {
@@ -53,6 +53,7 @@ export function forgetAssessment(i) {
 export function forgetAll() {
   remove(MEMORY_KEY);
   Object.values(DEVICE_KEYS).forEach(remove);
+  remove("cc.emergencyContact"); // single contact of earlier versions
   return EMPTY;
 }
 

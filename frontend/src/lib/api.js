@@ -38,4 +38,6 @@ export const api = {
   questions: () => req("/api/v1/questions"),
   localities: () => req("/api/v1/localities"),
   health: () => req("/health"),
+  sosStatus: () => req("/api/v1/sos/status"),
+  sosSend: (to, message) => req("/api/v1/sos/send", { method: "POST", body: JSON.stringify({ to, message }) }),
 };

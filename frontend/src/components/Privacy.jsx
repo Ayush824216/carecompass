@@ -4,21 +4,14 @@ import { Database, EyeOff, ShieldCheck } from "lucide-react";
 import { useApp } from "../context/AppContext.jsx";
 import { addAssessment, loadMemory, saveItems } from "../lib/memory.js";
 
-/** Memory ON / Incognito switch (navbar and Get Care header). */
-export function ModeToggle({ compact = false }) {
-  const { t, incognito, setMode, endSession } = useApp();
+/** The one Incognito switch (navbar). Turning it off ends the session: the conversation in memory is wiped. */
+export function IncognitoToggle() {
+  const { t, incognito, toggleIncognito } = useApp();
   return (
-    <div className="flex items-center gap-2">
-      <button type="button" onClick={() => setMode(incognito ? "memory" : "incognito")} aria-pressed={incognito}
-        className={`btn-ghost min-h-[44px] px-3 text-sm font-semibold ${incognito ? "bg-ink text-bg" : ""}`}
-        title={incognito ? t("privacy.incognitoBadge") : t("privacy.memoryOnHint")}>
-        {incognito ? <EyeOff className="h-4 w-4" aria-hidden="true" /> : <Database className="h-4 w-4" aria-hidden="true" />}
-        {!compact && (incognito ? t("privacy.incognito") : t("privacy.memoryOn"))}
-      </button>
-      {incognito && !compact && (
-        <button type="button" onClick={endSession} className="btn-ghost min-h-[44px] px-3 text-sm">{t("privacy.endSession")}</button>
-      )}
-    </div>
+    <button type="button" onClick={toggleIncognito} aria-pressed={incognito} title={incognito ? t("privacy.incognitoOffHint") : t("privacy.incognitoOnHint")}
+      className={`btn-ghost min-h-[44px] px-3 text-sm font-semibold ${incognito ? "bg-ink text-bg" : ""}`}>
+      <EyeOff className="h-4 w-4" aria-hidden="true" />{t("privacy.incognito")}
+    </button>
   );
 }
 

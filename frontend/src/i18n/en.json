@@ -29,7 +29,8 @@
     "voiceOff": "Voice off",
     "voiceAria": "Read answers aloud",
     "settings": "Display",
-    "memory": "My health memory"
+    "memory": "My health memory",
+    "sos": "SOS contacts"
   },
   "footer": {
     "tagline": "Care routing for every Indian home: what care, how urgent, and who should go.",
@@ -383,7 +384,12 @@
       "deviceOnly": "The contact is saved only in this browser on this device. It never leaves this device."
     },
     "teleManas": "Tele-MANAS: talk to a counsellor",
-    "teleManasD": "Free, 24x7, many languages. You are not alone."
+    "teleManasD": "Free, 24x7, many languages. You are not alone.",
+    "quick1": "Call 112 or 108 now.",
+    "quick2": "Stay with the person; keep them lying comfortably.",
+    "quick3": "No food, water or medicine unless the operator says.",
+    "blinkit": "Blinkit Ambulance (Delhi NCR)",
+    "blinkitNote": "Private service, check availability in the app; call 108/112 first."
   },
   "directory": {
     "title": "Caregivers",
@@ -846,7 +852,9 @@
     "consentPoints": "We process what you type only to suggest the right care and how urgent it is. This is not a diagnosis.|Your health memory is saved only on this device, never on our server. You can see, edit, export or delete it under \"My health memory\".|Names, phone numbers and addresses are removed before any AI service sees the text.|Sensitive topics (mental health, sexual health, pregnancy, HIV, alcohol or drugs) are never saved unless you tick \"Save this\".|Want nothing saved at all? Use Incognito: nothing is written, and the session is wiped when you close the tab or tap \"End session\".|In an emergency, call 112.",
     "consentOk": "I understand, continue",
     "consentIncognito": "Use Incognito",
-    "manage": "Manage my health memory"
+    "manage": "Manage my health memory",
+    "incognitoOnHint": "Turn on Incognito: nothing will be saved",
+    "incognitoOffHint": "Turn off Incognito: ends this session and wipes the chat"
   },
   "memory": {
     "title": "My health memory",
@@ -882,7 +890,7 @@
     "deviceKeys": {
       "language": "Preferred language",
       "location": "Saved location",
-      "emergencyContact": "Emergency contact"
+      "emergencyContact": "SOS contacts"
     },
     "cat": {
       "fever": "Fever",
@@ -895,5 +903,32 @@
       "urinary": "Urine problem",
       "mood": "Mood"
     }
+  },
+  "sos": {
+    "title": "SOS contacts",
+    "lead": "Up to {n} family members to alert in an emergency. Saved only on this device.",
+    "incognito": "Incognito: these contacts are not saved and disappear when the session ends.",
+    "empty": "No contacts yet.",
+    "addTitle": "Add a contact",
+    "editTitle": "Edit contact",
+    "name": "Name",
+    "phone": "10-digit mobile number",
+    "relation": "Relation",
+    "relationHint": "e.g. son, neighbour",
+    "add": "Add",
+    "save": "Save",
+    "edit": "Edit",
+    "remove": "Remove",
+    "call": "Call",
+    "invalid": "Enter a name and a 10-digit mobile number.",
+    "full": "You have {n} contacts, the most allowed.",
+    "privacy": "Contacts never leave this device unless you send a message yourself.",
+    "button": "SOS to family",
+    "none": "No SOS contacts saved yet.",
+    "addLink": "Add contacts",
+    "sending": "Preparing the message…",
+    "sent": "Sent to your SOS contacts.",
+    "tapSend": "Your SMS app is open with the message: tap send in your SMS app.",
+    "manage": "SOS contacts"
   }
 }
