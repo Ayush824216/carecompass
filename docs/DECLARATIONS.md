@@ -26,7 +26,7 @@ No real patient data is used.
 | Hosted LLM API (provider TBD: OpenAI-compatible / Gemini / Anthropic) | Model B triage call, 6 s timeout, local fallback. |
 | Browser Web Speech API (SpeechRecognition, speechSynthesis) | Voice input (hi-IN / en-IN) and read-aloud in the frontend; runs in the user's browser. |
 | OpenStreetMap tile servers | Map tiles in the web app (© OpenStreetMap contributors, ODbL). |
-| Google Fonts (Fraunces, Source Sans 3, Noto Sans/Serif Devanagari, JetBrains Mono; SIL OFL) | Web fonts. |
+| Google Fonts (Plus Jakarta Sans, Source Sans 3, Noto Sans Devanagari, JetBrains Mono; SIL OFL) | Web fonts. |
 | Browser Geolocation API | User location for caregiver distance (fallback: central Delhi). |
 
 ## Libraries

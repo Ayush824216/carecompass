@@ -51,7 +51,7 @@ export default function LocationBar() {
           ) : hasLocation ? (
             <span className="font-bold">{label}{sourceText && <span className="ml-2 text-sm font-semibold text-muted">({sourceText})</span>}</span>
           ) : (
-            <span className="font-bold text-[rgb(140_70_10)]">{t("location.choose")}</span>
+            <span className="font-bold text-accent">{t("location.choose")}</span>
           )}
         </p>
         {hasLocation && (

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
+import { MapPin, Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { canListen, listen, stopSpeaking } from "../../lib/speech.js";
 import { CARE_EXAMPLES } from "../../lib/examples.js";
@@ -19,7 +19,7 @@ function Bubble({ m, lang, t }) {
       <div className={`flex max-w-[85%] flex-col ${user ? "items-end" : "items-start"}`}>
         <div className={`rounded-2xl px-4 py-3 text-[1.02rem] leading-relaxed ${user
           ? "rounded-tr-md bg-primary text-primary-ink"
-          : m.kind === "question" ? "rounded-tl-md border-2 border-accent/60 bg-accent-soft/60 font-semibold"
+          : m.kind === "question" ? "rounded-tl-md border-2 border-primary/40 bg-primary-soft/50 font-semibold"
           : m.kind === "redirect" ? "rounded-tl-md border border-dashed border-primary/50 bg-primary-soft/40" : "rounded-tl-md border border-line bg-surface"}`}>
           {m.content}
         </div>
@@ -44,7 +44,7 @@ function Typing({ t }) {
   );
 }
 
-export default function ChatPanel({ messages, loading, onSend, quickReplies, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine }) {
+export default function ChatPanel({ messages, loading, onSend, quickReplies, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine, locationText }) {
   const { t, lang } = useApp();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
@@ -85,16 +85,20 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, que
   return (
     <section className="card flex flex-col overflow-hidden" aria-label={t("care.title")}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3">
-        <div className="flex items-center gap-2">
-          <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-routine opacity-60 motion-safe:animate-ping" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-routine" />
-          </span>
-          <span className="font-semibold">{t("common.assistant")}</span>
+        <div className="flex min-w-0 items-center gap-3">
+          <BrandAvatar className="h-9 w-9" />
+          <div className="min-w-0">
+            <p className="font-bold leading-tight">{t("common.assistant")}</p>
+            {locationText && (
+              <p className="flex items-center gap-1 truncate text-xs font-semibold text-muted">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" /><span className="truncate">{locationText}</span>
+              </p>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {questionNo > 0 && (
-            <span className="chip border-accent/50 bg-accent-soft font-semibold">{t("care.questionOf", { n: questionNo, max: maxQuestions })}</span>
+            <span className="chip border-sameday/40 bg-sameday-soft font-semibold text-[rgb(110_64_0)]">{t("care.questionOf", { n: questionNo, max: maxQuestions })}</span>
           )}
           {started && (
             <button type="button" onClick={onReset} className="btn-ghost min-h-[44px] px-3 text-sm">

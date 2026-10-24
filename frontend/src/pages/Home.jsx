@@ -192,7 +192,7 @@ export default function Home() {
             <p className="mt-3 flex flex-wrap items-center gap-3 text-xl font-semibold text-primary-deep" lang={lang === "en" ? "hi" : "en"}>
               {lang === "en" ? t("landing.subHi") : t("landing.subEn")}
               <button type="button" onClick={() => setLang(lang === "en" ? "hi" : "en")}
-                className="rounded-full border border-primary/30 px-3 py-1 text-sm font-semibold text-primary hover:bg-primary-soft">
+                className="min-h-[44px] rounded-full border border-primary/30 px-4 text-sm font-semibold text-primary hover:bg-primary-soft">
                 {t("landing.subToggle")}
               </button>
             </p>

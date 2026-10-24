@@ -29,7 +29,7 @@ export function CareGlyph({ careType, className = "h-12 w-12", iconClass = "h-6 
   );
 }
 
-const AVATAR_TONES = ["bg-primary-soft text-primary-deep", "bg-accent-soft text-[rgb(140_70_10)]", "bg-routine-soft text-routine", "bg-sunken text-ink"];
+const AVATAR_TONES = ["bg-primary-soft text-primary-deep", "bg-accent-soft text-accent", "bg-routine-soft text-routine", "bg-sunken text-ink"];
 
 export function Avatar({ name = "?", seed = 0, className = "h-14 w-14 text-lg" }) {
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
@@ -47,7 +47,7 @@ export function Stars({ rating = 0 }) {
     <span className="inline-flex items-center gap-1" aria-label={`${t("common.rating")} ${rating} / 5`}>
       <span className="inline-flex" aria-hidden="true">
         {[1, 2, 3, 4, 5].map((i) => (
-          <Star key={i} className={`h-4 w-4 ${i <= full ? "fill-accent text-accent" : "text-line"}`} />
+          <Star key={i} className={`h-4 w-4 ${i <= full ? "fill-[#e3a008] text-[#e3a008]" : "text-line"}`} />
         ))}
       </span>
       <span className="text-sm font-bold">{Number(rating).toFixed(1)}</span>

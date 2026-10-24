@@ -103,7 +103,8 @@ export default function GetCare() {
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick}
           questionNo={questionNo} maxQuestions={MAX_Q} onReset={reset}
-          quickTitle={redirect || !started ? t("guard.chipsTitle") : t("care.answerHint")} emptyLine={!started ? t("care.emptyLine") : ""} />
+          quickTitle={redirect || !started ? t("guard.chipsTitle") : t("care.answerHint")} emptyLine={!started ? t("care.emptyLine") : ""}
+          locationText={hasLocation ? locationLabel(location, t) : ""} />
         <DecisionPanel phase={phase} response={response} debug={debug} ms={ms} locationText={locationLabel(location, t)} />
       </div>
       {final && emergency && !emOpen && (

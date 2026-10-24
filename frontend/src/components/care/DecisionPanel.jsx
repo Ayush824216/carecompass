@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, CheckCircle2, ChevronDown, Circle, Cpu, HelpCircle, Languages, ListChecks, MessageCircleQuestion,
-  MapPin, ShieldAlert, ShieldCheck, Stethoscope, UsersRound,
+  ArrowRight, CheckCircle2, ChevronDown, Circle, ClipboardList, Cpu, HelpCircle, Languages, MessageCircleQuestion,
+  MapPin, ShieldAlert, ShieldCheck, Stethoscope, UserCheck,
 } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { URGENCY_ORDER, URGENCY_STYLE } from "../../lib/care.js";
 import { Spinner } from "../ui.jsx";
 
 const STAGES = [
-  ["language", Languages], ["symptoms", ListChecks], ["safety", ShieldCheck],
-  ["followup", MessageCircleQuestion], ["triage", Stethoscope], ["matching", UsersRound],
+  ["language", Languages], ["symptoms", ClipboardList], ["safety", ShieldCheck],
+  ["followup", MessageCircleQuestion], ["triage", Stethoscope], ["matching", UserCheck],
 ];
 
 export function modelKey(name = "") {
@@ -68,9 +68,9 @@ function buildStages({ response, debug, t }) {
 
 function StatusIcon({ status, running }) {
   if (running) return <Spinner className="h-5 w-5 text-primary" />;
-  if (status === "done") return <CheckCircle2 className="h-5 w-5 text-routine" aria-hidden="true" />;
+  if (status === "done") return <CheckCircle2 className="h-5 w-5 text-primary" aria-hidden="true" />;
   if (status === "alert") return <ShieldAlert className="h-5 w-5 text-emergency" aria-hidden="true" />;
-  if (status === "question") return <HelpCircle className="h-5 w-5 text-accent" aria-hidden="true" />;
+  if (status === "question") return <HelpCircle className="h-5 w-5 text-sameday" aria-hidden="true" />;
   return <Circle className="h-5 w-5 text-line" aria-hidden="true" />;
 }
 
@@ -122,7 +122,7 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
     : response?.reasoning;
 
   return (
-    <aside className="card flex flex-col gap-6 p-5 lg:sticky lg:top-[92px]" aria-labelledby="panel-title">
+    <aside className={`card flex flex-col gap-6 p-5 transition-colors lg:sticky lg:top-[92px] ${phase === "done" && response?.care_type === "emergency_referral" ? "border-2 border-emergency bg-emergency-soft/40" : ""}`} aria-labelledby="panel-title">
       <div>
         <h2 id="panel-title" className="text-2xl font-semibold">{t("panel.title")}</h2>
         <p className="text-sm text-muted">{t("panel.subtitle")}</p>
@@ -139,9 +139,9 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
           const shown = phase === "done" && i < revealed;
           const running = phase === "loading" && i === 0;
           const status = shown ? st?.status : "idle";
-          const tone = status === "alert" ? "border-emergency/40 bg-emergency-soft/60"
-            : status === "question" ? "border-accent/50 bg-accent-soft/50"
-            : shown && status !== "pending" && status !== "skipped" ? "border-line bg-surface" : "border-transparent";
+          const tone = status === "alert" ? "border-emergency/40 bg-emergency-soft/70"
+            : status === "question" ? "border-sameday/40 bg-sameday-soft/60"
+            : shown && status === "done" ? "border-primary/20 bg-primary-soft/30" : "border-transparent";
           return (
             <li key={key} className="relative flex gap-3">
               {i < STAGES.length - 1 && <span className="absolute left-[22px] top-11 h-[calc(100%-28px)] w-px bg-line" aria-hidden="true" />}
