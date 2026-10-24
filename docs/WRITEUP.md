@@ -56,3 +56,7 @@ These sources informed the mentor's thresholds. SwasthMitra uses them only to ch
 
 ## 7. Declarations
 All models, APIs, libraries, datasets and the references above are listed in `docs/DECLARATIONS.md`. All code was written during the event.
+
+## Abstention, hallucination control and consistency
+
+After round-2 feedback, clinical questioning needs an evidence span in the user's words. A person mention such as "abba" is not enough. Every extracted symptom and number keeps its span, LLM output is restricted to closed enums, and explanations cite chunks from our own knowledge base. A deterministic decision path plus a versioned response cache gives 100% consistency over 25 inputs × 20 runs (docs/EVAL.md).

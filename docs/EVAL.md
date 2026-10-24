@@ -161,3 +161,35 @@ Every missed emergency in these first looks was a phrasing gap in the rules. Eac
 - `/api/v1/triage` latency (in-process, 60 calls, no LLM): p50 **7.0 ms**, p95 **9.6 ms**
 
 > Dev data is template-generated, so these validation scores are optimistic. Treat them as a regression check, not as the expected hidden-test score.
+
+## Input type (abstention)
+
+`scripts/train_input_type.py`: TF-IDF char 2-5 + word 1-2 grams, calibrated logistic regression. Rows: health 2227, greeting_smalltalk 706, off_topic 1171, gibberish 2496, math_or_code 1440. Split: GroupShuffleSplit by template/generator id (test_size=0.25); 6148 train / 1892 validation rows, so every validation template is unseen.
+
+| Class | F1 | support |
+|---|---|---|
+| health | 0.998 | 584 |
+| greeting_smalltalk | 0.971 | 141 |
+| off_topic | 0.839 | 251 |
+| gibberish | 0.985 | 676 |
+| math_or_code | 0.823 | 240 |
+| **macro** | **0.923** | |
+
+Confusion (rows = true, columns = predicted):
+
+| | health | greeting_smalltalk | off_topic | gibberish | math_or_code |
+|---|---|---|---|---|---|
+| health | 582 | 0 | 2 | 0 | 0 |
+| greeting_smalltalk | 0 | 134 | 3 | 4 | 0 |
+| off_topic | 0 | 1 | 237 | 12 | 1 |
+| gibberish | 0 | 0 | 2 | 672 | 2 |
+| math_or_code | 0 | 0 | 70 | 0 | 170 |
+
+The classifier never opens clinical questioning on its own: a clinical follow-up needs an evidence span in the user's words (`app/evidence.py`). It only chooses a more specific non-health reply; the regex rules for maths and code run first, which covers most of the maths templates it confuses with off-topic.
+
+## Abstention, hallucination control and consistency (round 2)
+
+- **Abstention:** a clinical follow-up is asked only when the user's own words contain an evidence span (`app/evidence.py`). Gibberish, maths/code, off-topic and unknown medical words get a specific non-clinical reply; after 3 unclear turns in a row the assistant stops asking (doctor / 112 advice). `tests/test_abstention.py`: 20 non-health inputs, 0 clinical questions. All 1,157 dev requests still reach the health path (0 false redirects).
+- **Hallucination:** every symptom, number and sign carries its span; values without one are dropped. LLM output is closed-enum JSON only, and LLM text never reaches the user. `tests/test_hallucination.py`: 32 inputs, no unsupported number, symptom or disease name.
+- **Grounding:** explanations cite chunks from `kb/chunks.jsonl` (90 chunks from our pathway configs, docs and curated precautions; TF-IDF char n-grams, fixed top-k, ties broken by id, nothing cited below score 0.12).
+- **Consistency:** `tests/test_consistency.py`, 25 inputs × 20 runs: identical care_type, urgency, red_flags, follow-up and caregiver order in **100%** of inputs with the cache off, with the cache on, and with a deliberately random fake LLM (cache on). Without the cache that random LLM gives 88%, which is what the cache prevents.

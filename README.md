@@ -169,3 +169,7 @@ Latest metrics: [docs/EVAL.md](docs/EVAL.md).
 - [docs/EVAL.md](docs/EVAL.md): evaluation
 - [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md): demo video plan
 - [docs/DATA_NOTES.md](docs/DATA_NOTES.md): data structure
+
+## Abstention, grounding and consistency
+
+No clinical question without health evidence in the user's own words; gibberish, maths and off-topic text get a specific reply. Every value shown has an evidence span, the LLM may return only closed-enum labels, and explanations cite our knowledge base (`kb/`, built by `python scripts/build_kb.py`). The same request gives the same answer (deterministic path and a versioned response cache). Train the input-type classifier with `python scripts/train_input_type.py`. Results: docs/EVAL.md.

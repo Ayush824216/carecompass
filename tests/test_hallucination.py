@@ -98,7 +98,7 @@ def _user_facing(r) -> list[str]:
     sections = card.get("sections", {})
     texts = [r["follow_up_question"] or "", r["reasoning"] or ""]
     # possible causes and tests are closed lists (ids checked below); everything else is free-standing text
-    texts += list(_strings({k: v for k, v in sections.items() if k not in ("causes", "tests")}, skip=("id", "evidence")))
+    texts += list(_strings({k: v for k, v in sections.items() if k not in ("causes", "tests")}, skip=("id", "evidence", "sources", "source")))
     return texts
 
 
@@ -174,3 +174,14 @@ def test_unsupported_number_is_dropped():
     s = Slots(temp_f=103.0, platelets=50000)
     spans = evidence.enforce_value_spans(s, ["papa ko bukhar hai"])
     assert s.temp_f is None and s.platelets is None and spans == {}
+
+
+def test_citations_are_kb_chunks_and_deterministic():
+    from app import kb
+    r, _ = _run("Papa ko 39 C bukhar hai 3 din se")
+    why = r["debug"]["assessment"]["sections"]["why"]
+    assert why["sources"] and why["sources"][0]["id"].startswith("pathway:fever:")
+    ids = {c["id"] for c in kb.chunks()}
+    assert all(x["id"] in ids for x in why["sources"])
+    assert kb.retrieve("abba dabba jabba") == []  # nothing relevant -> nothing cited
+    assert len({tuple(x["id"] for x in kb.retrieve("fever cough breathing")) for _ in range(10)}) == 1

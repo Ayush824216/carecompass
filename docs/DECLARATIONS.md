@@ -63,3 +63,6 @@ The clinical pathway thresholds and danger signs (`docs/CLINICAL_PATHWAYS.md`, `
 | Vite, @vitejs/plugin-react | MIT | Frontend build |
 | nginx (Docker image) | BSD-2 | Serving the built frontend |
 | Docker, Docker Compose | Apache-2.0 | Packaging |
+
+| Input-type classifier (`models/input_type.joblib`) | Ours: scikit-learn TF-IDF + calibrated logistic regression, trained by `scripts/train_input_type.py` on our synthetic vignettes, sampled public Symptoms-to-Diseases text and generated gibberish / maths / off-topic lines. |
+| Knowledge base (`kb/chunks.jsonl`) | Ours: chunks of our own pathway configs, docs and curated precautions, retrieved with scikit-learn TF-IDF. No external text, no embeddings model. |

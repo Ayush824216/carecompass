@@ -73,6 +73,7 @@ export default function AssessmentCard({ card, onGoToCaregivers }) {
           )}
           <p className="leading-relaxed">{s.why.text}</p>
           {s.why.contradictions.map((c) => <p key={c} className="mt-2 text-sm font-semibold text-[rgb(110_64_0)]">{c}</p>)}
+          {s.why.sources?.length > 0 && <p className="mt-2 text-sm text-muted">{t("assessment.source")}: {s.why.sources.map((x) => x.title).join(" · ")}</p>}
         </Section>
 
         {s.causes.shown && s.causes.items.length > 0 && (
@@ -84,6 +85,7 @@ export default function AssessmentCard({ card, onGoToCaregivers }) {
                     <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${STRENGTH[c.strength]}`}>{t(`assessment.strength.${c.strength}`)}</span></p>
                   {c.matched.length > 0 && <p className="mt-1 text-sm"><span className="font-semibold">{t("assessment.matched")}:</span> {c.matched.join(", ")}</p>}
                   {c.missing.length > 0 && <p className="text-sm text-muted"><span className="font-semibold">{t("assessment.missing")}:</span> {c.missing.join(", ")}</p>}
+                  {c.source && <p className="mt-1 text-xs text-muted">{t("assessment.source")}: {c.source.title}</p>}
                 </li>
               ))}
             </ul>

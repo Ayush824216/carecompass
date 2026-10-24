@@ -222,6 +222,17 @@ def build_card(out: PathwayOutcome, care_type: str, urgency: str, reasoning: str
     fn = engine._funcs(fx, out.neg, out.known)
 
     causes = possible_causes(cat, out.facts, lang)
+    # grounding: every explanation cites a knowledge-base chunk; a cause line without a relevant chunk loses its
+    # explanation (matched / missing findings) rather than being explained from nothing
+    from . import kb
+    cat_label = _t(pathways[prim.pathway].label, "en")
+    for c in causes:
+        hit = kb.retrieve(f"{cat} {cat_label} " + " ".join(c["matched"]), k=1, prefix="sc:")
+        c["source"] = hit[0] if hit else None
+        if not hit:
+            c["matched"], c["missing"] = [], []
+    why_sources = [x for x in [kb.cite(f"pathway:{prim.pathway}:{prim.stage}")] if x]
+    why_sources += kb.retrieve(f"{cat_label} {prim.stage} " + " ".join(proute.danger_labels(out, "en")), k=2, prefix="cp:")
     test_ids: list[str] = []
     for c in causes:
         if c["strength"] != "weak":
@@ -257,7 +268,7 @@ def build_card(out: PathwayOutcome, care_type: str, urgency: str, reasoning: str
         "sections": {
             "symptoms": {"title": TEXT["symptoms"][i], "items": symptoms_checked(out, lang)},
             "why": {"title": TEXT["why"][i], "signs": proute.danger_labels(out, lang), "text": reasoning,
-                    "contradictions": [TEXT["contradiction"][i].format(x=x) for x in contra]},
+                    "contradictions": [TEXT["contradiction"][i].format(x=x) for x in contra], "sources": why_sources},
             "causes": {"title": TEXT["causes"][i], "shown": show_causes, "items": causes if show_causes else [],
                        "note": _t(cfg["common"]["only_doctor"], lang), "notes": notes},
             "tests": {"title": TEXT["tests"][i], "lead": TEXT["tests_lead"][i], "items": tests,
