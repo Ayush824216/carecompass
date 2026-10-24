@@ -174,7 +174,15 @@ EXCLUDE: dict[str, list[str]] = {
                        r"(bleed\w*|blood|kh[oo]+n|khun)\s+(\S+\s+)?(a\s+(bit|little)|thoda|slightly)",
                        r"(small|minor|chhota|chhoti|tiny)\s+(\S+\s+)?(cut|wound|scratch|kat|ghaav|kharonch)",
                        r"(थोड़ा|थोड़ी|हल्का)\s*(सा\s*)?(खून)", r"(छोटा|छोटी)\s*(सा\s*)?(कट|घाव)",
-                       r"period|mahwari|maahwari|masik|menstru|पीरियड|माहवारी|मासिक"],
+                       r"period|mahwari|maahwari|masik|menstru|पीरियड|माहवारी|मासिक",
+                       # "khoon ki kami" (anaemia) and "khoon ki jaanch" (blood test) are not bleeding
+                       r"(kh[oo]+n|khun)\s+(ki|ka)\s+(kami|kamee|jaa?n?ch|test|report|sample)|blood\s+(test|report|sample)|an(a)?emi",
+                       r"(खून|ख़ून)\s*(की|का)\s*(कमी|जाँच|जांच|टेस्ट|रिपोर्ट)"],
+    # clearly chest-wall pain (on pressing / movement / after gym or a knock) with no cardiac feature in the clause
+    "chest_pain": [r"^(?!.*(bhaari|bhari|dabav|dabaav|pressure|heav|squeez|tight|paseen|pasin|sweat|saans|breath|jabd|jaw|left\s+arm|"
+                   r"baa?ye?i?n?\s+haath|भारी|दबाव|पसीना|साँस|सांस)).*((dabane|daba\w*|press\w*)\s+(par|pe|karne|se)|on\s+pressing|when\s+i\s+press|"
+                   r"(gym|workout|exercise|lifting|weight\s+uthane|kasrat)\s+(ke\s+)?baad|after\s+(the\s+)?(gym|workout|exercise|lifting)|"
+                   r"hilne\s+par|on\s+movement|muscle\s+(pain|pull|strain)|chot\s+ke\s+baad|दबाने\s*पर)"],
     # a blocked catheter is a same-day nursing problem; low sugar target talk ("keep sugar above 70") is not an event
     "low_blood_sugar": [r"\b(target|keep|should\s+be|range|normal)\b"],
     # gradual vision trouble over months is a specialist problem
@@ -238,9 +246,9 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
     ),
     "pregnancy_emergency": (
         [r"pregnan", r"garbh|garbhvati|garbhwati|pet\s+se\s+hai|expecting", r"गर्भ|प्रेग्नेंट|गर्भवती"],
-        [r"bleed|blood(?!\s*(test|report|sugar|pressure|sample|group|check|bp))|spotting",
-         r"(kh[oo]+n|khun)(?!\s*(ki\s+)?(jaa?n?ch|test|report|sample))",
-         r"(खून|ख़ून|रक्त)(?!\s*(की)?\s*(जाँच|जांच|टेस्ट|रिपोर्ट|सैंपल))", r"(severe|tez|tej|bahut|unbearable)\s+(\S+\s+)?(pain|dard)",
+        [r"bleed|blood(?!\s*(ki\s+|ka\s+)?(test|report|sugar|pressure|sample|group|check|bp|kami|kamee|jaa?n?ch))|spotting",
+         r"(kh[oo]+n|khun)(?!\s*(ki\s+|ka\s+)?(jaa?n?ch|test|report|sample|kami|kamee))",
+         r"(खून|ख़ून|रक्त)(?!\s*(की|का)?\s*(जाँच|जांच|टेस्ट|रिपोर्ट|सैंपल|कमी))", r"(severe|tez|tej|bahut|unbearable)\s+(\S+\s+)?(pain|dard)",
          r"(तेज़|तेज|बहुत)\s*दर्द", r"water\s+(broke|break)|paani\s+(gir|nikal|aa)", r"पानी\s*(गिर|निकल)",
          r"seizure|fit|daura|दौरा",
          r"(baby|bachch?[aei])\s+(\S+\s+){0,2}(not\s+mov|hasn'?t\s+mov|stopped\s+mov|hil\s+(nahi|nhi)|hilna\s+band)",

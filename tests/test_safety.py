@@ -281,3 +281,17 @@ def test_regression_v3_positive(text, flag):
 ])
 def test_regression_v3_benign(text):
     assert safety.check([text]).red_flags == [], text
+
+
+@pytest.mark.parametrize("text", [
+    "khoon ki kami hai, bahut kamzori lagti hai",
+    "garbhvati hoon, doctor ne bola khoon ki kami hai",
+    "khoon ki jaanch karayi thi, report normal",
+    "Gym ke baad chest dabane par dard hota hai, 22 saal",
+])
+def test_pathway_spec_benign(text):
+    assert safety.check([text]).red_flags == [], text
+
+
+def test_chest_wall_exclusion_keeps_cardiac_features():
+    assert "chest_pain" in safety.check(["chest dabane par dard aur bhaari pan, paseena"]).red_flags
