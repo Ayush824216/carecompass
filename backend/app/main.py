@@ -28,7 +28,7 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
-    title="CareCompass API",
+    title="SwasthMitra API",
     version="0.1.0",
     description="Care routing support (care type, urgency, caregiver match). Does not diagnose or prescribe.",
 )

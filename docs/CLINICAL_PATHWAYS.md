@@ -1,4 +1,4 @@
-# CareCompass Clinical Pathways Spec
+# SwasthMitra Clinical Pathways Spec
 
 Version 1 · Team OCTUPUS · HackIIITD
 

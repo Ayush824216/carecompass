@@ -5,7 +5,7 @@ All code was written during the event by team OCTUPUS. Open-source components ar
 ## Datasets
 | Dataset | Use | Link |
 |---|---|---|
-| CareCompass dev data (`dev_data/`) | **Synthetic, self-generated** by `scripts/make_dev_data.py` (templates + seeded randomisation, no LLM, no real patients). Includes the clinical pathway vignettes from `scripts/pathway_vignettes.py`, hand-labelled by the team from the stage tables in `docs/CLINICAL_PATHWAYS.md`. Development/validation only. | this repo |
+| SwasthMitra dev data (`dev_data/`) | **Synthetic, self-generated** by `scripts/make_dev_data.py` (templates + seeded randomisation, no LLM, no real patients). Includes the clinical pathway vignettes from `scripts/pathway_vignettes.py`, hand-labelled by the team from the stage tables in `docs/CLINICAL_PATHWAYS.md`. Development/validation only. | this repo |
 | KTAS emergency triage (Kaggle, ilkeryildiz) | Urgency model training/validation (`KTAS_expert`), red-flag recall checks. Triage-time fields only. | https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application |
 | Disease Symptom Description (Kaggle, itachi9604) | `Symptom-severity.csv` weights for the severity lexicon; `dataset.csv` symptom lists as extra English training text (disease mapped internally to care type). Precautions are **not** used. | https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset |
 | Symptoms to Diseases (Kaggle, abhishekgodara) | Sampled symptom lists (20 per disease) as extra English care-type training text; diseases mapped internally via `config/disease_to_care_type.json`, never shown to users. | https://www.kaggle.com/datasets/abhishekgodara/symptoms-to-diseases |

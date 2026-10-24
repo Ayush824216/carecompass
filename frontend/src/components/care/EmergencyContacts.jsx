@@ -10,7 +10,7 @@ function digits(p) {
   return d.length === 10 ? `91${d}` : d;
 }
 
-/** Pre-filled message the user sends themselves. Nothing is sent by CareCompass. */
+/** Pre-filled message the user sends themselves. Nothing is sent by SwasthMitra. */
 export function shareText({ t, signs, location, when }) {
   const lines = [t("emergency.share.line1")];
   if (signs.length) lines.push(`${t("emergency.share.signs")}: ${signs.join(", ")}`);

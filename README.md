@@ -1,8 +1,10 @@
-# CareCompass
+# SwasthMitra (स्वस्थमित्र)
+
+> SwasthMitra is our solution to the CareCompass problem statement (CAI, IIIT-Delhi).
 
 **AI care routing for home healthcare in India.** Built at the HackIIITD grand finale (CAI, IIIT-Delhi), track *AI for Healthcare Access*, by team **OCTUPUS** (KIET Group of Institutions).
 
-A user, often elderly or with low literacy, types or speaks a request in **English, Hindi or Hinglish** ("Papa ko do din se bukhar hai aur khansi bhi"). CareCompass decides:
+A user, often elderly or with low literacy, types or speaks a request in **English, Hindi or Hinglish** ("Papa ko do din se bukhar hai aur khansi bhi"). SwasthMitra decides:
 
 1. **What care** fits: paramedic home visit, nurse home visit, GP teleconsult, specialist referral, or emergency referral
 2. **How urgent** it is: routine, same-day, or immediate
@@ -10,7 +12,7 @@ A user, often elderly or with low literacy, types or speaks a request in **Engli
 
 **Any red flag skips matching** and shows an emergency screen with one-tap 112 / 108 calls and call-for-help steps.
 
-> ⚠️ CareCompass supports **routing only**. It does not diagnose or prescribe, and it never shows disease or medicine names.
+> ⚠️ SwasthMitra supports **routing only**. It does not diagnose or prescribe, and it never shows disease or medicine names.
 
 ---
 

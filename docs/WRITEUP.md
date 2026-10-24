@@ -1,8 +1,11 @@
-# CareCompass: multilingual care routing with safety-first triage
+# SwasthMitra: multilingual care routing with safety-first triage
+
+> SwasthMitra is our solution to the CareCompass problem statement (CAI, IIIT-Delhi).
+
 **Team OCTUPUS (KIET Group of Institutions) · HackIIITD 2026, AI for Healthcare Access**
 
 ## 1. Problem and approach
-Families, often elderly or with low literacy, describe a health need in English, Hindi or Hinglish ("Papa ko do din se bukhar hai aur khansi bhi"). CareCompass answers three questions: **what care** (paramedic home visit, nurse home visit, GP teleconsult, specialist referral, emergency referral), **how urgent** (routine, same-day, immediate) and **who should go** (a ranked caregiver with a reason). It is a **routing** tool. It never diagnoses, never prescribes, and never shows disease or medicine names.
+Families, often elderly or with low literacy, describe a health need in English, Hindi or Hinglish ("Papa ko do din se bukhar hai aur khansi bhi"). SwasthMitra answers three questions: **what care** (paramedic home visit, nurse home visit, GP teleconsult, specialist referral, emergency referral), **how urgent** (routine, same-day, immediate) and **who should go** (a ranked caregiver with a reason). It is a **routing** tool. It never diagnoses, never prescribes, and never shows disease or medicine names.
 
 The design principle is *deterministic safety, clinical pathways, learned routing*. Auditable rules catch emergencies before and after the models. Mentor-specified pathways grade the five most common complaints. A learned model handles everything else.
 
@@ -49,7 +52,7 @@ We report **blind first-look** numbers on purpose. Each new phrasing set exposed
 - National TB Elimination Programme (NTEP), India: cough of 2 weeks or more as presumptive TB.
 - Standard emergency chest pain red flags (e.g. NICE CG95, *Chest pain of recent onset*) and the stroke FAST signs.
 
-These sources informed the mentor's thresholds. CareCompass uses them only to choose the care type and urgency, never to diagnose.
+These sources informed the mentor's thresholds. SwasthMitra uses them only to choose the care type and urgency, never to diagnose.
 
 ## 7. Declarations
 All models, APIs, libraries, datasets and the references above are listed in `docs/DECLARATIONS.md`. All code was written during the event.

@@ -4,7 +4,7 @@ Record on a phone-sized browser window (Chrome DevTools device mode, 390×844) w
 
 | # | Time | Shot | What to show / say |
 |---|---|---|---|
-| 1 | 0:00–0:15 | Title card, then app home | "In India, an elderly parent with a fever often doesn't know whether to call a doctor, a nurse or an ambulance. CareCompass answers three questions: what care, how urgent, and who should go." |
+| 1 | 0:00–0:15 | Title card, then app home | "In India, an elderly parent with a fever often doesn't know whether to call a doctor, a nurse or an ambulance. SwasthMitra answers three questions: what care, how urgent, and who should go." |
 | 2 | 0:15–0:45 | **Hinglish voice input.** Tap the big mic and say *"Papa ko do din se bukhar hai aur khansi bhi"* | The transcript appears live. Result: **Paramedic visit at home · Today**. The *Why* line quotes the user's own words ("Do din se bukhar aur khansi"), and the answer is read aloud. |
 | 3 | 0:45–1:10 | **Follow-up flow.** Start again and type *"mujhe khansi hai"* (or pick a vague input such as "tabiyat kharab hai") | One short question appears in the user's language with one-tap chips (**Haan / Nahi**). Tap **Nahi**, and the decision follows. Point out that the system asks only when the answer could change the decision, with at most 4 questions. Most inputs need none (average 0.09 on dev). |
 | 4 | 1:10–1:40 | **Caregiver match + booking** | Three caregiver cards, each with a reason built from real data: "Hindi bolte hain, 5 km door, aaj 3 pm free, rating 4.6". Tap **Book**, and the confirmation screen shows the booking ID and time. |

@@ -1,4 +1,4 @@
-# CareCompass Symptom Categories
+# SwasthMitra Symptom Categories
 
 Companion to `docs/CLINICAL_PATHWAYS.md`. This file defines the eight symptom categories the assessment must support.
 Possible causes are educational only and never a diagnosis. Urgency always comes from the deterministic safety rules and pathways.

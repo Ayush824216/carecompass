@@ -158,9 +158,9 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/95 backdrop-blur">
       <div className="container-page flex h-[72px] items-center gap-3">
-        <Link to="/" className="flex items-center gap-2.5 rounded-lg pr-2" aria-label="CareCompass home">
+        <Link to="/" className="flex items-center gap-2.5 rounded-lg pr-2" aria-label={t("meta.homeAria")}>
           <Logo />
-          {showWordmark && <span className="font-display text-xl font-bold tracking-tight">Care<span className="text-primary">Compass</span></span>}
+          {showWordmark && <span className="font-display text-xl font-bold tracking-tight">{t("meta.brandA")}<span className="text-primary">{t("meta.brandB")}</span></span>}
         </Link>
         {fullNav && <nav className="ml-4 flex items-center gap-1" aria-label="Main">
           {LINKS.map(([to, key]) => (
@@ -215,7 +215,7 @@ function Footer() {
     <footer className="mt-24 border-t border-line bg-sunken/60">
       <div className="container-page grid gap-10 py-12 md:grid-cols-[1.6fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-2.5"><Logo className="h-8 w-8" /><span className="font-display text-lg font-bold">Care<span className="text-primary">Compass</span></span></div>
+          <div className="flex items-center gap-2.5"><Logo className="h-8 w-8" /><span className="font-display text-lg font-bold">{t("meta.brandA")}<span className="text-primary">{t("meta.brandB")}</span></span></div>
           <p className="mt-3 max-w-md text-muted">{t("footer.tagline")}</p>
           <p className="mt-5 text-sm font-semibold">{t("footer.team")}</p>
           <p className="text-sm text-muted">{t("footer.event")}</p>
