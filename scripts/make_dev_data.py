@@ -475,6 +475,10 @@ SCENARIOS += [
       ["{S} {has} a toothache with swelling of the gum {D}"],
       ["{W} {D} daant mein dard aur masoode mein sujan hai"],
       ["{W} {D} दाँत में दर्द और मसूड़े में सूजन है"]),
+    S(SP, "routine", "any", "week",
+      ["{S} {has} had an itchy skin rash {D} that is not going away", "{S} {has} red patches on the skin {D}, not improving"],
+      ["{W} {D} skin pe rash hai jo theek nahi ho raha", "{W} {D} skin par laal daane hain, jaa nahi rahe"],
+      ["{W} {D} त्वचा पर दाने हैं जो ठीक नहीं हो रहे"]),
     S(SP, "routine", "adult", "week",
       ["{S} {has} been very anxious and tense {D}, cannot sleep"],
       ["{W} {D} bahut tension aur ghabrahat rehti hai, neend nahi aati"],
@@ -604,9 +608,10 @@ ROLES = {
                    "newborn_care", "bedsore_care", "feeding_tube_care", "diabetic_foot_care"]),
     "gp": (14, ["general_medicine", "pediatrics_basic", "teleconsult", "report_review", "elderly_care"]),
 }
-# 8 core specialties x2 + 4 others x2 = 24 specialists
-SPECIALTIES = ["dermatology", "orthopedics", "cardiology", "pediatrics", "ent", "gynecology", "neurology",
-               "pulmonology", "ophthalmology", "endocrinology", "psychiatry", "oncology"]
+# 8 core specialties x3 + 4 others x2 = 32 specialists (>=3 per core specialty so every referral shows 3 options)
+CORE_SPECIALTIES = ["dermatology", "orthopedics", "cardiology", "pediatrics", "ent", "gynecology", "neurology", "pulmonology"]
+OTHER_SPECIALTIES = ["ophthalmology", "endocrinology", "psychiatry", "oncology"]
+SPECIALTIES = CORE_SPECIALTIES + OTHER_SPECIALTIES
 SPECIALTY_QUAL = {
     "dermatology": "MBBS, MD (Dermatology)", "orthopedics": "MBBS, MS (Orthopaedics)",
     "cardiology": "MBBS, MD, DM (Cardiology)", "pediatrics": "MBBS, MD (Paediatrics)", "ent": "MBBS, MS (ENT)",
@@ -648,7 +653,7 @@ def _slots(rng: random.Random, base: date) -> list[str]:
 
 def make_caregivers(rng: random.Random, base: date) -> list[dict]:
     locs = _localities()
-    plan = [(r, None) for r, (n, _) in ROLES.items() for _ in range(n)] + [("specialist", s) for s in SPECIALTIES for _ in range(2)]
+    plan = [(r, None) for r, (n, _) in ROLES.items() for _ in range(n)] + [("specialist", s) for s in CORE_SPECIALTIES for _ in range(3)]         + [("specialist", s) for s in OTHER_SPECIALTIES for _ in range(2)]
     out = []
     for i, (role, spec) in enumerate(plan, start=1):
         loc = locs[(i * 7) % len(locs)]  # spread every role across all localities

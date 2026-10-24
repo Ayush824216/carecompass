@@ -30,6 +30,8 @@ def test_dev_data_depth():
         assert sum(c["role"] == role for c in cgs) >= 12, role
     specs = {c.get("specialty") for c in cgs if c["role"] == "specialist"}
     assert set(REQUIRED_SPECIALTIES) <= specs
+    for sp in REQUIRED_SPECIALTIES:
+        assert sum(c.get("specialty") == sp for c in cgs) >= 3, sp
     for c in cgs:
         for k in ("caregiver_id", "name", "role", "skills", "lat", "lng", "languages", "rating", "availability_slots",
                   "qualification", "years_experience", "locality", "consultation_modes"):

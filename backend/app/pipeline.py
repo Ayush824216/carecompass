@@ -50,6 +50,21 @@ def _extra_flags(state: intake.IntakeState) -> list[str]:
     return flags
 
 
+def apply_persistence_rule(dec: Decision, slots, text: str) -> bool:
+    """Long-standing, organ-specific problems favour a specialist over a GP teleconsult (taxonomy definition).
+    Only flips GP -> specialist when the local model already gives the specialist some probability."""
+    if dec.care_type != "gp_teleconsult" or slots.duration not in ("week", "chronic"):
+        return False
+    if not matching.infer_specialties(slots.symptoms, None, text):
+        return False
+    p_spec = (dec.probs or {}).get("care_type", {}).get("specialist_referral", 0.0)
+    if p_spec < 0.15:
+        return False
+    dec.care_type = "specialist_referral"
+    dec.source = f"{dec.source}+persistence_rule"
+    return True
+
+
 def emergency_response(flags: list[str], lang: str, prefix: str = "") -> TriageResponse:
     return TriageResponse(follow_up_question=None, care_type=EMERGENCY_CARE_TYPE, urgency=MOST_URGENT,
                           red_flags=flags, reasoning=prefix + safety.emergency_reasoning(flags, lang)
@@ -124,6 +139,9 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             tr["safety_checks"]["model_emergency"] = True
             return emergency_response([], lang, prefix=MODEL_EMERGENCY.get(lang, MODEL_EMERGENCY["en"]))
 
+        apply_persistence_rule(dec, state.slots, " ".join(turns))
+        tr["model_used"] = dec.source
+
         # elderly / infant who cannot drink: never leave as routine
         if state.slots.answers.get("drinking") == "no" and URGENCY_RANK[dec.urgency] < URGENCY_RANK["same_day"]:
             dec.urgency = "same_day"
@@ -132,14 +150,18 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
 
         t = time.perf_counter()
         loc = req.location.model_dump() if req.location else None
-        ranked = matching.rank(dec.care_type, dec.urgency, lang, loc, state.slots.symptoms, state.slots.age_group,
-                               text=" ".join(turns))
+        ranked, minfo = matching.rank_with_info(dec.care_type, dec.urgency, lang, loc, state.slots.symptoms,
+                                                state.slots.age_group, text=" ".join(turns))
         matched = [MatchedCaregiver(caregiver_id=s.cg["caregiver_id"], score=s.score,
                                     reason=matching.reason(s, dec.care_type, lang)) for s in ranked]
         timings["matching"] = time.perf_counter() - t
-        tr["matching"] = [{"caregiver_id": s.cg["caregiver_id"], "distance_km": None if s.dist_km is None else round(s.dist_km, 2),
-                           "next_slot": s.slot.isoformat() if s.slot else None, "skills_hit": s.skills_hit,
-                           "language_match": s.lang_ok} for s in ranked]
+        tr["location_received"] = loc
+        tr["matching_filters"] = asdict(minfo)
+        tr["matching"] = [{"caregiver_id": s.cg["caregiver_id"], "name": s.cg.get("name"), "role": s.cg.get("role"),
+                           "specialty": s.cg.get("specialty"), "locality": s.cg.get("locality"),
+                           "distance_km": None if s.dist_km is None else round(s.dist_km, 2),
+                           "next_slot": s.slot.isoformat() if s.slot else None, "free_in_window": s.in_window,
+                           "skills_hit": s.skills_hit, "language_match": s.lang_ok, "score": s.score} for s in ranked]
         return TriageResponse(follow_up_question=None, care_type=dec.care_type, urgency=dec.urgency, red_flags=[],
                               reasoning=reasoning, matched_caregivers=matched)
     except Exception:
@@ -181,6 +203,8 @@ def final_decision(text: str, model=None, cfg: Optional[dict] = None, use_llm: b
                 "reasoning": safety.emergency_reasoning(dec.red_flags, lang), "source": dec.source}
     if dec.care_type == EMERGENCY_CARE_TYPE or dec.urgency == MOST_URGENT:
         dec.care_type, dec.urgency = EMERGENCY_CARE_TYPE, MOST_URGENT
+    else:
+        apply_persistence_rule(dec, state.slots, text)
     reasoning = dec.llm_reasoning or (explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
                                       if dec.care_type != EMERGENCY_CARE_TYPE else safety.STEPS.get(lang, safety.STEPS["en"]))
     return {"care_type": dec.care_type, "urgency": dec.urgency, "red_flags": [], "reasoning": reasoning,

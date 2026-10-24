@@ -1726,14 +1726,13 @@
     "caregiver_id": "CG_045",
     "name": "Dr. Nisha Thomas",
     "role": "specialist",
-    "specialty": "orthopedics",
+    "specialty": "dermatology",
     "skills": [
-      "orthopedics",
-      "joint_pain",
-      "back_pain",
-      "fracture_follow_up"
+      "dermatology",
+      "skin_conditions",
+      "rash_assessment"
     ],
-    "qualification": "MBBS, MS (Orthopaedics)",
+    "qualification": "MBBS, MD (Dermatology)",
     "years_experience": 20,
     "lat": 28.54188,
     "lng": 77.24373,
@@ -1810,13 +1809,14 @@
     "caregiver_id": "CG_047",
     "name": "Dr. Shabnam Mishra",
     "role": "specialist",
-    "specialty": "cardiology",
+    "specialty": "orthopedics",
     "skills": [
-      "cardiology",
-      "heart_checkup",
-      "bp_management"
+      "orthopedics",
+      "joint_pain",
+      "back_pain",
+      "fracture_follow_up"
     ],
-    "qualification": "MBBS, MD, DM (Cardiology)",
+    "qualification": "MBBS, MS (Orthopaedics)",
     "years_experience": 21,
     "lat": 28.58231,
     "lng": 77.35924,
@@ -1846,13 +1846,14 @@
     "caregiver_id": "CG_048",
     "name": "Dr. Deepak Singh",
     "role": "specialist",
-    "specialty": "cardiology",
+    "specialty": "orthopedics",
     "skills": [
-      "cardiology",
-      "heart_checkup",
-      "bp_management"
+      "orthopedics",
+      "joint_pain",
+      "back_pain",
+      "fracture_follow_up"
     ],
-    "qualification": "MBBS, MD, DM (Cardiology)",
+    "qualification": "MBBS, MS (Orthopaedics)",
     "years_experience": 21,
     "lat": 28.5133,
     "lng": 77.20434,
@@ -1883,13 +1884,13 @@
     "caregiver_id": "CG_049",
     "name": "Dr. Shabnam Thomas",
     "role": "specialist",
-    "specialty": "pediatrics",
+    "specialty": "cardiology",
     "skills": [
-      "pediatrics",
-      "child_health",
-      "growth_development"
+      "cardiology",
+      "heart_checkup",
+      "bp_management"
     ],
-    "qualification": "MBBS, MD (Paediatrics)",
+    "qualification": "MBBS, MD, DM (Cardiology)",
     "years_experience": 19,
     "lat": 28.75215,
     "lng": 77.05476,
@@ -1927,13 +1928,13 @@
     "caregiver_id": "CG_050",
     "name": "Dr. Ritu Das",
     "role": "specialist",
-    "specialty": "pediatrics",
+    "specialty": "cardiology",
     "skills": [
-      "pediatrics",
-      "child_health",
-      "growth_development"
+      "cardiology",
+      "heart_checkup",
+      "bp_management"
     ],
-    "qualification": "MBBS, MD (Paediatrics)",
+    "qualification": "MBBS, MD, DM (Cardiology)",
     "years_experience": 25,
     "lat": 28.65496,
     "lng": 77.13236,
@@ -1962,13 +1963,13 @@
     "caregiver_id": "CG_051",
     "name": "Dr. Kavita Sharma",
     "role": "specialist",
-    "specialty": "ent",
+    "specialty": "cardiology",
     "skills": [
-      "ent",
-      "ear_nose_throat",
-      "hearing_assessment"
+      "cardiology",
+      "heart_checkup",
+      "bp_management"
     ],
-    "qualification": "MBBS, MS (ENT)",
+    "qualification": "MBBS, MD, DM (Cardiology)",
     "years_experience": 13,
     "lat": 28.6487,
     "lng": 77.34842,
@@ -2006,13 +2007,13 @@
     "caregiver_id": "CG_052",
     "name": "Dr. Vikas Kaur",
     "role": "specialist",
-    "specialty": "ent",
+    "specialty": "pediatrics",
     "skills": [
-      "ent",
-      "ear_nose_throat",
-      "hearing_assessment"
+      "pediatrics",
+      "child_health",
+      "growth_development"
     ],
-    "qualification": "MBBS, MS (ENT)",
+    "qualification": "MBBS, MD (Paediatrics)",
     "years_experience": 18,
     "lat": 28.54763,
     "lng": 77.25075,
@@ -2046,13 +2047,13 @@
     "caregiver_id": "CG_053",
     "name": "Dr. Harpreet Mishra",
     "role": "specialist",
-    "specialty": "gynecology",
+    "specialty": "pediatrics",
     "skills": [
-      "gynecology",
-      "pregnancy_care",
-      "womens_health"
+      "pediatrics",
+      "child_health",
+      "growth_development"
     ],
-    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "qualification": "MBBS, MD (Paediatrics)",
     "years_experience": 20,
     "lat": 28.60016,
     "lng": 77.28528,
@@ -2084,13 +2085,13 @@
     "caregiver_id": "CG_054",
     "name": "Dr. Meena Das",
     "role": "specialist",
-    "specialty": "gynecology",
+    "specialty": "pediatrics",
     "skills": [
-      "gynecology",
-      "pregnancy_care",
-      "womens_health"
+      "pediatrics",
+      "child_health",
+      "growth_development"
     ],
-    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "qualification": "MBBS, MD (Paediatrics)",
     "years_experience": 19,
     "lat": 28.49436,
     "lng": 77.08842,
@@ -2125,13 +2126,13 @@
     "caregiver_id": "CG_055",
     "name": "Dr. Rohit Kumar",
     "role": "specialist",
-    "specialty": "neurology",
+    "specialty": "ent",
     "skills": [
-      "neurology",
-      "headache_clinic",
-      "nerve_conditions"
+      "ent",
+      "ear_nose_throat",
+      "hearing_assessment"
     ],
-    "qualification": "MBBS, MD, DM (Neurology)",
+    "qualification": "MBBS, MS (ENT)",
     "years_experience": 26,
     "lat": 28.5793,
     "lng": 77.23735,
@@ -2164,13 +2165,13 @@
     "caregiver_id": "CG_056",
     "name": "Dr. Farah Rawat",
     "role": "specialist",
-    "specialty": "neurology",
+    "specialty": "ent",
     "skills": [
-      "neurology",
-      "headache_clinic",
-      "nerve_conditions"
+      "ent",
+      "ear_nose_throat",
+      "hearing_assessment"
     ],
-    "qualification": "MBBS, MD, DM (Neurology)",
+    "qualification": "MBBS, MS (ENT)",
     "years_experience": 23,
     "lat": 28.70942,
     "lng": 77.12663,
@@ -2202,13 +2203,13 @@
     "caregiver_id": "CG_057",
     "name": "Dr. Farah Das",
     "role": "specialist",
-    "specialty": "pulmonology",
+    "specialty": "ent",
     "skills": [
-      "pulmonology",
-      "breathing_conditions",
-      "chronic_cough"
+      "ent",
+      "ear_nose_throat",
+      "hearing_assessment"
     ],
-    "qualification": "MBBS, MD (Pulmonary Medicine)",
+    "qualification": "MBBS, MS (ENT)",
     "years_experience": 26,
     "lat": 28.57215,
     "lng": 77.32132,
@@ -2238,13 +2239,13 @@
     "caregiver_id": "CG_058",
     "name": "Dr. Rohit Verma",
     "role": "specialist",
-    "specialty": "pulmonology",
+    "specialty": "gynecology",
     "skills": [
-      "pulmonology",
-      "breathing_conditions",
-      "chronic_cough"
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
     ],
-    "qualification": "MBBS, MD (Pulmonary Medicine)",
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
     "years_experience": 17,
     "lat": 28.40239,
     "lng": 77.32499,
@@ -2278,13 +2279,13 @@
     "caregiver_id": "CG_059",
     "name": "Dr. Mary Das",
     "role": "specialist",
-    "specialty": "ophthalmology",
+    "specialty": "gynecology",
     "skills": [
-      "ophthalmology",
-      "eye_checkup",
-      "vision_care"
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
     ],
-    "qualification": "MBBS, MS (Ophthalmology)",
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
     "years_experience": 14,
     "lat": 28.6263,
     "lng": 77.2213,
@@ -2317,13 +2318,13 @@
     "caregiver_id": "CG_060",
     "name": "Dr. Ritu Mishra",
     "role": "specialist",
-    "specialty": "ophthalmology",
+    "specialty": "gynecology",
     "skills": [
-      "ophthalmology",
-      "eye_checkup",
-      "vision_care"
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
     ],
-    "qualification": "MBBS, MS (Ophthalmology)",
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
     "years_experience": 22,
     "lat": 28.59118,
     "lng": 77.05276,
@@ -2357,13 +2358,13 @@
     "caregiver_id": "CG_061",
     "name": "Dr. Sanjay Mehta",
     "role": "specialist",
-    "specialty": "endocrinology",
+    "specialty": "neurology",
     "skills": [
-      "endocrinology",
-      "diabetes_care",
-      "thyroid_care"
+      "neurology",
+      "headache_clinic",
+      "nerve_conditions"
     ],
-    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "qualification": "MBBS, MD, DM (Neurology)",
     "years_experience": 10,
     "lat": 28.42731,
     "lng": 77.11259,
@@ -2397,13 +2398,13 @@
     "caregiver_id": "CG_062",
     "name": "Dr. Shabnam Yadav",
     "role": "specialist",
-    "specialty": "endocrinology",
+    "specialty": "neurology",
     "skills": [
-      "endocrinology",
-      "diabetes_care",
-      "thyroid_care"
+      "neurology",
+      "headache_clinic",
+      "nerve_conditions"
     ],
-    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "qualification": "MBBS, MD, DM (Neurology)",
     "years_experience": 16,
     "lat": 28.55879,
     "lng": 77.19999,
@@ -2434,13 +2435,13 @@
     "caregiver_id": "CG_063",
     "name": "Dr. Lakshmi Nair",
     "role": "specialist",
-    "specialty": "psychiatry",
+    "specialty": "neurology",
     "skills": [
-      "psychiatry",
-      "mental_health",
-      "sleep_problems"
+      "neurology",
+      "headache_clinic",
+      "nerve_conditions"
     ],
-    "qualification": "MBBS, MD (Psychiatry)",
+    "qualification": "MBBS, MD, DM (Neurology)",
     "years_experience": 15,
     "lat": 28.72611,
     "lng": 77.18104,
@@ -2473,13 +2474,13 @@
     "caregiver_id": "CG_064",
     "name": "Dr. Lakshmi Khan",
     "role": "specialist",
-    "specialty": "psychiatry",
+    "specialty": "pulmonology",
     "skills": [
-      "psychiatry",
-      "mental_health",
-      "sleep_problems"
+      "pulmonology",
+      "breathing_conditions",
+      "chronic_cough"
     ],
-    "qualification": "MBBS, MD (Psychiatry)",
+    "qualification": "MBBS, MD (Pulmonary Medicine)",
     "years_experience": 8,
     "lat": 28.63262,
     "lng": 77.3713,
@@ -2516,13 +2517,13 @@
     "caregiver_id": "CG_065",
     "name": "Dr. Farah Kumar",
     "role": "specialist",
-    "specialty": "oncology",
+    "specialty": "pulmonology",
     "skills": [
-      "oncology",
-      "lump_assessment",
-      "cancer_screening"
+      "pulmonology",
+      "breathing_conditions",
+      "chronic_cough"
     ],
-    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "qualification": "MBBS, MD (Pulmonary Medicine)",
     "years_experience": 25,
     "lat": 28.38422,
     "lng": 77.30835,
@@ -2555,13 +2556,13 @@
     "caregiver_id": "CG_066",
     "name": "Dr. Rohit Malik",
     "role": "specialist",
-    "specialty": "oncology",
+    "specialty": "pulmonology",
     "skills": [
-      "oncology",
-      "lump_assessment",
-      "cancer_screening"
+      "pulmonology",
+      "breathing_conditions",
+      "chronic_cough"
     ],
-    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "qualification": "MBBS, MD (Pulmonary Medicine)",
     "years_experience": 12,
     "lat": 28.65577,
     "lng": 77.18262,
@@ -2584,5 +2585,311 @@
       "en"
     ],
     "rating": 4.5
+  },
+  {
+    "caregiver_id": "CG_067",
+    "name": "Dr. Nisha Chauhan",
+    "role": "specialist",
+    "specialty": "ophthalmology",
+    "skills": [
+      "ophthalmology",
+      "eye_checkup",
+      "vision_care"
+    ],
+    "qualification": "MBBS, MS (Ophthalmology)",
+    "years_experience": 24,
+    "lat": 28.62846,
+    "lng": 77.09133,
+    "locality": "Janakpuri, West Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T12:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.7
+  },
+  {
+    "caregiver_id": "CG_068",
+    "name": "Dr. Kavita Malik",
+    "role": "specialist",
+    "specialty": "ophthalmology",
+    "skills": [
+      "ophthalmology",
+      "eye_checkup",
+      "vision_care"
+    ],
+    "qualification": "MBBS, MS (Ophthalmology)",
+    "years_experience": 17,
+    "lat": 28.63654,
+    "lng": 77.35807,
+    "locality": "Indirapuram, Ghaziabad",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T19:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_069",
+    "name": "Dr. Shabnam Das",
+    "role": "specialist",
+    "specialty": "endocrinology",
+    "skills": [
+      "endocrinology",
+      "diabetes_care",
+      "thyroid_care"
+    ],
+    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "years_experience": 17,
+    "lat": 28.54644,
+    "lng": 77.23846,
+    "locality": "Greater Kailash, South Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T19:00:00+05:30"
+    ],
+    "languages": [
+      "hi"
+    ],
+    "rating": 4.6
+  },
+  {
+    "caregiver_id": "CG_070",
+    "name": "Dr. Sunita Verma",
+    "role": "specialist",
+    "specialty": "endocrinology",
+    "skills": [
+      "endocrinology",
+      "diabetes_care",
+      "thyroid_care"
+    ],
+    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "years_experience": 14,
+    "lat": 28.626,
+    "lng": 77.26647,
+    "locality": "Laxmi Nagar, East Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T17:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "bn"
+    ],
+    "rating": 4.3
+  },
+  {
+    "caregiver_id": "CG_071",
+    "name": "Dr. Rahul Rawat",
+    "role": "specialist",
+    "specialty": "psychiatry",
+    "skills": [
+      "psychiatry",
+      "mental_health",
+      "sleep_problems"
+    ],
+    "qualification": "MBBS, MD (Psychiatry)",
+    "years_experience": 27,
+    "lat": 28.57084,
+    "lng": 77.36598,
+    "locality": "Noida Sector 50, Noida",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T12:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.4
+  },
+  {
+    "caregiver_id": "CG_072",
+    "name": "Dr. Tarun Nair",
+    "role": "specialist",
+    "specialty": "psychiatry",
+    "skills": [
+      "psychiatry",
+      "mental_health",
+      "sleep_problems"
+    ],
+    "qualification": "MBBS, MD (Psychiatry)",
+    "years_experience": 21,
+    "lat": 28.53574,
+    "lng": 77.21685,
+    "locality": "Saket, South Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T10:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T13:30:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.3
+  },
+  {
+    "caregiver_id": "CG_073",
+    "name": "Dr. Ritu Saxena",
+    "role": "specialist",
+    "specialty": "oncology",
+    "skills": [
+      "oncology",
+      "lump_assessment",
+      "cancer_screening"
+    ],
+    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "years_experience": 28,
+    "lat": 28.75124,
+    "lng": 77.04766,
+    "locality": "Rohini, North Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T11:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T19:30:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "ta"
+    ],
+    "rating": 3.9
+  },
+  {
+    "caregiver_id": "CG_074",
+    "name": "Dr. Amit Ansari",
+    "role": "specialist",
+    "specialty": "oncology",
+    "skills": [
+      "oncology",
+      "lump_assessment",
+      "cancer_screening"
+    ],
+    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "years_experience": 8,
+    "lat": 28.65315,
+    "lng": 77.12275,
+    "locality": "Rajouri Garden, West Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T19:00:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "ml"
+    ],
+    "rating": 4.9
   }
 ]

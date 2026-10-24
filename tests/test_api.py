@@ -111,3 +111,17 @@ def test_debug_emergency_trace():
 def test_list_caregivers():
     r = client.get("/api/v1/caregivers")
     assert r.status_code == 200 and len(r.json()) >= 10
+
+
+def test_persistent_skin_rash_goes_to_dermatology():
+    body = {**BODY, "user_input": "skin pe rash hai 2 hafte se", "debug": True}
+    r = client.post("/api/v1/triage", json=body).json()
+    assert r["care_type"] == "specialist_referral"
+    specs = [m["specialty"] for m in r["debug"]["matching"]]
+    assert len(r["matched_caregivers"]) >= 3 and specs[0] == "dermatology" and specs.count("dermatology") >= 3
+
+
+def test_every_decided_case_returns_caregivers():
+    for text in ("papa ko do din se bukhar hai aur khansi bhi", "diabetic father needs wound dressing", "beta ko halka cold hai"):
+        r = client.post("/api/v1/triage", json={**BODY, "user_input": text}).json()
+        assert r["care_type"] != "emergency_referral" and len(r["matched_caregivers"]) >= 3, text
