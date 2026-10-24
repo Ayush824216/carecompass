@@ -142,7 +142,7 @@ def main() -> None:
 
     # hand-written challenge set (different phrasing from the templates; never used for training)
     ch_sets: dict[str, dict] = {}
-    for fname, label in (("challenge.csv", "challenge v1 (informed data v2)"), ("challenge_v2.csv", "challenge v2 (informed safety rules)"), ("challenge_v3.csv", "challenge v3 (blind)")):
+    for fname, label in (("challenge.csv", "challenge v1 (informed data v2)"), ("challenge_v2.csv", "challenge v2 (informed safety rules)"), ("challenge_v3.csv", "challenge v3 (informed safety rules)")):
         ch_path = ROOT / "dev_data" / fname
         challenge = data_adapter.read_vignette_file(ch_path) if ch_path.exists() else []
         if not challenge:
@@ -239,6 +239,18 @@ def main() -> None:
             report.append(f"| {name} | {m['urg_f1']:.3f} | {m['ktas12_recall']:.3f} | {m['under_triage']:.3f} |")
         report.append("\nKTAS is Korean ED data triaged largely on vital signs, which a text-only router cannot see. "
                       "It is used as extra urgency signal, not as the target distribution.\n")
+    report.append("\n### Blind first-look scores (before any fix informed by that set)\n")
+    report.append("Each challenge set was scored once, blind, before it was used to fix anything. "
+                  "These first-look numbers are the most honest estimate of performance on unseen phrasing:\n")
+    report.append("| Set | care_type macro-F1 | urgency macro-F1 | emergency recall | emergency FPR |")
+    report.append("|---|---|---|---|---|")
+    report.append("| v1 (n=60, data v1) | 0.700 | 0.705 | 0.923 | 0.149 |")
+    report.append("| v2 (n=40, data v2) | 0.611 | 0.671 | 0.444 | 0.097 |")
+    report.append("| v3 (n=30, data v2 + v2 rule fixes) | 0.725 | 0.599 | 0.778 | 0.238 |")
+    report.append("\nEvery missed emergency in these first looks was a phrasing gap in the rules. Each was fixed with general "
+                  "patterns and regression tests (`tests/test_safety.py`). Expect a hidden test set to show similar "
+                  "first-look behaviour for phrasings we have not anticipated. This is why the LLM's red flags are unioned "
+                  "with the rules.\n")
     report.append("\n## Interaction and latency\n")
     if fu_avg is not None:
         report.append(f"- Average follow-up questions on the first turn (dev val, simulated): **{fu_avg:.2f}** (max 4)")
