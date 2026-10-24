@@ -10,7 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from . import data_adapter, intake, pathways, pipeline
+from . import cache, data_adapter, intake, pathways, pipeline
 from .config import get_settings
 from .schemas import BookingRequest, BookingResponse, Caregiver, TriageRequest, TriageResponse
 
@@ -48,11 +48,19 @@ def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `de
     The response is exactly the official schema unless `debug` is true (body field or `?debug=true`),
     in which case one extra key, `debug`, is added.
     """
-    if not (debug or req.debug):
-        return pipeline.run(req)
+    want_debug = bool(debug or req.debug)
+    rc, k = cache.response_cache(), cache.key(req, want_debug)
+    hit = rc.get(k)
+    if hit is not None:  # same request -> identical answer (see app/cache.py)
+        return JSONResponse(hit)
     trace: dict = {}
-    resp = pipeline.run(req, trace=trace)
-    return JSONResponse({**jsonable_encoder(resp), "debug": jsonable_encoder(trace)})
+    body = jsonable_encoder(pipeline.run(req, trace=trace))
+    if want_debug:
+        trace["cache"] = {"key": k[:12], "version": cache.version()}
+        body["debug"] = jsonable_encoder(trace)
+    if not trace.get("error"):  # never pin a fallback produced by an internal error
+        rc.put(k, body)
+    return JSONResponse(body)
 
 
 @app.get("/api/v1/localities")

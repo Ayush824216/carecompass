@@ -39,6 +39,10 @@ class Settings:
         # "Your assessment" card: educational possible causes (never a diagnosis); off -> section hidden
         self.show_possible_causes = os.getenv("SHOW_POSSIBLE_CAUSES", "true").strip().lower() in ("1", "true", "yes", "on")
         # local development only: when true the server log may include raw user text. Default false (DPDP Act 2023)
+        # consistency: identical requests within this many seconds get the identical cached answer (0 = off)
+        self.response_cache_ttl_s = float(os.getenv("RESPONSE_CACHE_TTL_S", "900"))
+        # fixed sampling seed for LLM providers that support one (temperature is always 0)
+        self.llm_seed = int(os.getenv("LLM_SEED", "7"))
         self.debug_log_text = os.getenv("DEBUG_LOG_TEXT", "false").strip().lower() in ("1", "true", "yes", "on")
 
     def __repr__(self) -> str:  # never leak the key

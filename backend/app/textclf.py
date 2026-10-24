@@ -149,7 +149,7 @@ class EnsembleModel:
         self.name = f"ensemble({a.name}+{c.name})"
 
     def _avg(self, pa: dict, pc: dict) -> dict:
-        return {t: {k: self.wa * pa[t].get(k, 0.0) + (1 - self.wa) * pc[t].get(k, 0.0) for k in set(pa[t]) | set(pc[t])}
+        return {t: {k: self.wa * pa[t].get(k, 0.0) + (1 - self.wa) * pc[t].get(k, 0.0) for k in sorted(set(pa[t]) | set(pc[t]))}
                 for t in pa}
 
     def predict_proba(self, text: str) -> dict:

@@ -73,7 +73,7 @@ def chat_json(system: str, user: str, max_tokens: int = 400, temperature: float 
             r = _http().post(
                 f"{base.rstrip('/')}/chat/completions",
                 headers={"Authorization": f"Bearer {s.llm_api_key}"},
-                json={"model": s.llm_model, "temperature": temperature, "max_tokens": max_tokens,
+                json={"model": s.llm_model, "temperature": temperature, "max_tokens": max_tokens, "seed": s.llm_seed,
                       "response_format": {"type": "json_object"},
                       "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}]},
                 timeout=timeout,
@@ -86,7 +86,7 @@ def chat_json(system: str, user: str, max_tokens: int = 400, temperature: float 
                 headers={"x-goog-api-key": s.llm_api_key},
                 json={"systemInstruction": {"parts": [{"text": system}]},
                       "contents": [{"role": "user", "parts": [{"text": user}]}],
-                      "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens,
+                      "generationConfig": {"temperature": temperature, "maxOutputTokens": max_tokens, "seed": s.llm_seed,
                                            "responseMimeType": "application/json"}},
                 timeout=timeout,
             )
