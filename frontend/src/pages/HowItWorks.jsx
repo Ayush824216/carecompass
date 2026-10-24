@@ -1,5 +1,5 @@
 import {
-  ArrowDown, ArrowRight, Brain, CalendarCheck, Cpu, ExternalLink, Gauge, HeartPulse, Languages, MessageCircleQuestion, Mic,
+  Activity, ArrowDown, ArrowRight, Brain, CalendarCheck, Cpu, Droplets, ExternalLink, FlaskConical, Gauge, HeartPulse, Languages, MessageCircleQuestion, Mic,
   ShieldAlert, ShieldCheck, Siren, Thermometer, UsersRound, Utensils, Wind,
 } from "lucide-react";
 import PageHeader from "../components/PageHeader.jsx";
@@ -63,7 +63,8 @@ function Flowchart({ t }) {
   );
 }
 
-const PATHWAY_ICON = { fever: Thermometer, cough: Wind, stomach: Utensils, chest_pain: HeartPulse, headache: Brain };
+const PATHWAY_ICON = { fever: Thermometer, cough: Wind, breathing: Activity, chest_pain: HeartPulse, headache: Brain,
+  abdominal: Utensils, vomiting: Droplets, urinary: FlaskConical };
 const STAGE_URGENCY = { S0: "routine", S1: "same_day", S2: "same_day", S3: "immediate" };
 
 function Pathways({ t }) {

@@ -42,7 +42,7 @@
                    "label": {"en": "fever went down", "hi": "बुखार उतर गया", "hinglish": "bukhar utar gaya"}},
     "severe_headache": {"patterns": ["(bahut|bohot|bht|boht|itna|bahot) (zyada |jyada )?tez (sir|sar) ?(mein |me )?dard", "(sir|sar) (mein |me )?(bahut|bohot|bht|itna) (tez|zyada|jyada) dard", "(severe|very bad|terrible|bad) headache", "बहुत तेज़ सिर ?दर्द", "सिर में बहुत तेज़ दर्द"],
                         "label": {"en": "very bad headache", "hi": "बहुत तेज़ सिर दर्द", "hinglish": "bahut tez sir dard"}},
-    "breathless_exertion": {"patterns": ["(chalne|seedhi chadhne|kaam karne) (par|pe|se) saa?ns (phool|ful|phul)", "breathless (on|when|while) (walking|climbing|exertion)", "चलने पर साँस"],
+    "breathless_exertion": {"patterns": ["(chalne|seedhi chadhne|kaam karne) (par|pe|se) saa?ns (zyada |jyada |thodi |thoda |jaldi )?(phool|ful|phul)", "saa?ns (\\S+ ){0,3}(chalne|seedhi chadhne|kaam karne) (par|pe|se)", "चलने पर", "सीढ़ी चढ़ने पर", "breathless (on|when|while) (walking|climbing|exertion)", "चलने पर साँस"],
                             "label": {"en": "breathless on walking", "hi": "चलने पर साँस फूलना", "hinglish": "chalne par saans phoolna"}},
     "weakness_severe": {"patterns": ["bahut (zyada )?kamz?j?ori", "very weak", "extremely weak", "(bistar|bed) se uth nahi", "can'?t get out of bed", "बिस्तर से उठ नहीं", "bechain", "restless", "बहुत कमज़ोरी", "बहुत कमजोरी", "बेचैन"],
                         "label": {"en": "severe weakness or restlessness", "hi": "बहुत कमज़ोरी या बेचैनी", "hinglish": "bahut kamzori ya bechaini"}}
@@ -177,6 +177,42 @@
        {"id": "belly", "label": {"en": "Stomach pain", "hi": "पेट दर्द", "hinglish": "Pet dard"}, "facts": {"abdominal_pain": true}},
        {"id": "urine", "label": {"en": "Burning urine", "hi": "पेशाब में जलन", "hinglish": "Peshab mein jalan"}, "facts": {"burning_urine": true}},
        {"id": "cough", "label": {"en": "Cough", "hi": "खांसी", "hinglish": "Khansi"}, "facts": {"cough": true}}
+     ]},
+    {"id": "fever.sub_breath", "kind": "subtree", "only_if": "(cough or breathless or breathless_exertion) and not breathless_rest",
+     "text": {"en": "With the fever and cough or breathing trouble, what else is there?", "hi": "बुखार और खांसी या साँस की तकलीफ के साथ और क्या है?", "hinglish": "Bukhar aur khansi ya saans ki takleef ke saath aur kya hai?"},
+     "skip_if": "known(fast_breathing) and known(chest_pain_breathing)",
+     "chips": [
+       {"id": "fast", "label": {"en": "Breathes faster than usual", "hi": "तेज़-तेज़ साँस", "hinglish": "Tez-tez saans"}, "facts": {"fast_breathing": true}},
+       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "Saans lene par seene mein dard"}, "facts": {"chest_pain_breathing": true}},
+       {"id": "phlegm", "label": {"en": "Yellow or green phlegm", "hi": "पीला या हरा बलगम", "hinglish": "Peela ya hara balgam"}, "facts": {"sputum_colored": true}},
+       {"id": "wheeze", "label": {"en": "Whistling sound when breathing", "hi": "साँस में सीटी जैसी आवाज़", "hinglish": "Saans mein seeti ki awaaz"}, "facts": {"wheeze": true}}
+     ]},
+    {"id": "fever.sub_stomach", "kind": "subtree", "only_if": "abdominal_pain or vomiting or persistent_vomiting or diarrhoea",
+     "text": {"en": "With the fever and stomach trouble, is any of these there?", "hi": "बुखार और पेट की तकलीफ के साथ क्या इनमें से कुछ है?", "hinglish": "Bukhar aur pet ki takleef ke saath inme se kuch hai?"},
+     "skip_if": "known(cannot_drink) and known(black_stool)",
+     "chips": [
+       {"id": "nofluid", "label": {"en": "Cannot keep water down", "hi": "पानी भी नहीं रुकता", "hinglish": "Paani bhi nahi rukta"}, "facts": {"cannot_drink": true}},
+       {"id": "black", "severity": "definite_S3", "label": {"en": "Black stool", "hi": "काली पॉटी", "hinglish": "Kaali potty"}, "facts": {"black_stool": true}},
+       {"id": "urine", "label": {"en": "Passing very little urine", "hi": "पेशाब बहुत कम हो रहा", "hinglish": "Peshab bahut kam ho raha"}, "facts": {"reduced_urine": true}},
+       {"id": "worse", "label": {"en": "Stomach pain getting worse", "hi": "पेट दर्द बढ़ता जा रहा", "hinglish": "Pet dard badhta ja raha"}, "facts": {"progressive_pain": true}}
+     ]},
+    {"id": "fever.sub_ache", "kind": "subtree", "only_if": "body_ache or severe_joint_pain or headache",
+     "text": {"en": "With the fever and body pain, is any of these there?", "hi": "बुखार और बदन दर्द के साथ क्या इनमें से कुछ है?", "hinglish": "Bukhar aur badan dard ke saath inme se kuch hai?"},
+     "skip_if": "known(retro_orbital) and known(rash)",
+     "chips": [
+       {"id": "eyes", "label": {"en": "Pain behind the eyes", "hi": "आँखों के पीछे दर्द", "hinglish": "Aankhon ke peeche dard"}, "facts": {"retro_orbital": true}},
+       {"id": "rash", "label": {"en": "Red rash", "hi": "लाल दाने", "hinglish": "Laal daane"}, "facts": {"rash": true}},
+       {"id": "gums", "label": {"en": "Bleeding gums", "hi": "मसूड़ों से खून", "hinglish": "Masoodon se khoon"}, "facts": {"bleeding_any": true}},
+       {"id": "swollen", "label": {"en": "Swollen joints", "hi": "जोड़ों में सूजन", "hinglish": "Jodon mein sujan"}, "facts": {"severe_joint_pain": true}}
+     ]},
+    {"id": "fever.sub_chills", "kind": "subtree", "only_if": "chills",
+     "text": {"en": "About the chills, which of these fit?", "hi": "कंपकंपी के बारे में, इनमें से क्या सही है?", "hinglish": "Kapkapi ke baare mein, inme se kya sahi hai?"},
+     "skip_if": "known(cyclic) and known(sweating)",
+     "chips": [
+       {"id": "cycle", "label": {"en": "Comes at the same time each day", "hi": "रोज़ एक ही समय पर आता है", "hinglish": "Roz ek hi samay par aata hai"}, "facts": {"cyclic": true}},
+       {"id": "sweat", "label": {"en": "Heavy sweating after the fever", "hi": "बुखार के बाद बहुत पसीना", "hinglish": "Bukhar ke baad bahut paseena"}, "facts": {"sweating": true}},
+       {"id": "yellow", "label": {"en": "Yellow eyes", "hi": "आँखें पीली", "hinglish": "Aankhen peeli"}, "facts": {"yellow_eyes": true}},
+       {"id": "dark", "label": {"en": "Dark yellow urine", "hi": "गहरा पीला पेशाब", "hinglish": "Gehra peela peshab"}, "facts": {"dark_urine": true}}
      ]},
     {"id": "fever.who", "kind": "who",
      "text": {"en": "Who is the patient? Any report? (You can also type the platelet count.)", "hi": "मरीज़ कौन है? कोई रिपोर्ट है? (प्लेटलेट्स कितने आए, लिख भी सकते हैं।)", "hinglish": "Patient kaun hai? Koi report hai? (Platelets kitne aaye, likh bhi sakte hain.)"},

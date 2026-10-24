@@ -68,7 +68,7 @@
        {"id": "speech", "severity": "definite_S3", "label": {"en": "Difficulty speaking", "hi": "बोलने में दिक्कत", "hinglish": "Bolne mein dikkat"}, "facts": {"slurred_speech": true}},
        {"id": "neck", "severity": "needs_confirmation", "label": {"en": "Stiff neck", "hi": "गर्दन में अकड़न", "hinglish": "Gardan mein akadan"}, "facts": {"stiff_neck": true}},
        {"id": "injury", "severity": "needs_confirmation", "label": {"en": "Head injury", "hi": "सिर पर चोट", "hinglish": "Sir par chot"}, "facts": {"head_injury": true}},
-       {"id": "faint", "severity": "needs_confirmation", "label": {"en": "Fainted or nearly fainted", "hi": "बेहोश हुए या होने वाले थे", "hinglish": "Behosh hue ya hone wale the"}, "facts": {"fainted": true}}
+       {"id": "faint", "severity": "definite_S3", "label": {"en": "Fainted", "hi": "बेहोश हो गए थे", "hinglish": "Behosh ho gaye the"}, "facts": {"fainted": true}}
      ]},
     {"id": "headache.confirm_neck", "kind": "confirm", "only_if": "stiff_neck and not fever and not no(fever)",
      "text": {"en": "With the stiff neck, is there fever too?", "hi": "गर्दन की अकड़न के साथ बुखार भी है?", "hinglish": "Gardan ki akadan ke saath bukhar bhi hai?"},
@@ -83,14 +83,6 @@
        {"id": "drowsy", "severity": "definite_S3", "label": {"en": "Very sleepy since", "hi": "तब से बहुत नींद", "hinglish": "Tab se bahut neend"}, "facts": {"very_drowsy": true}},
        {"id": "thin", "severity": "definite_S3", "label": {"en": "Takes blood thinners", "hi": "खून पतला करने की दवा लेते हैं", "hinglish": "Khoon patla karne ki dawai lete hain"}, "facts": {"blood_thinners": true}}
      ]},
-    {"id": "headache.confirm_faint", "kind": "confirm", "only_if": "fainted and not unconscious",
-     "text": {"en": "About the fainting, which of these is true?", "hi": "बेहोशी के बारे में क्या सही है?", "hinglish": "Behoshi ke baare mein kya sahi hai?"},
-     "chips": [
-       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain or racing heart before it", "hi": "उससे पहले सीने में दर्द या तेज़ धड़कन", "hinglish": "Usse pehle seene mein dard ya tez dhadkan"}, "facts": {"faint_cardiac": true}},
-       {"id": "exert", "severity": "definite_S3", "label": {"en": "Happened during exercise or effort", "hi": "मेहनत करते समय हुआ", "hinglish": "Mehnat karte samay hua"}, "facts": {"faint_cardiac": true}},
-       {"id": "still", "severity": "definite_S3", "label": {"en": "Still not fully awake", "hi": "अब भी पूरी तरह होश में नहीं", "hinglish": "Ab bhi poori tarah hosh mein nahi"}, "facts": {"unconscious": true}},
-       {"id": "stand", "label": {"en": "Only on standing up quickly", "hi": "सिर्फ़ जल्दी खड़े होने पर", "hinglish": "Sirf jaldi khade hone par"}, "facts": {"faint_postural": true}}
-     ], "no_none_chip": true},
     {"id": "headache.pattern", "kind": "pattern",
      "text": {"en": "Is this headache usual for them?", "hi": "क्या ऐसा सिर दर्द पहले भी होता है?", "hinglish": "Kya aisa sir dard pehle bhi hota hai?"},
      "skip_if": "known_migraine or new_pattern or progressive or wakes_sleep",

@@ -1,10 +1,10 @@
-"""stomach pathway: rules, signs and questions live in config/pathways/stomach.json (mentor-reviewable)."""
+"""Vomiting and loose motions pathway: rules, signs and questions live in config/pathways/vomiting.json (mentor-reviewable)."""
 from __future__ import annotations
 
 from .engine import PathwayResult, build_facts, detect_signs, evaluate_pathway, load
 from .slots import parse
 
-PATHWAY_ID = "stomach"
+PATHWAY_ID = "vomiting"
 NOTES = {"doctor_today": {"en": "Iron tablets can darken stool, but a doctor should check today.", "hi": "आयरन की गोली से पॉटी काली हो सकती है, फिर भी आज ही डॉक्टर को दिखाएँ।", "hinglish": "Iron ki goli se potty kaali ho sakti hai, phir bhi aaj hi doctor ko dikhayein."}}
 
 

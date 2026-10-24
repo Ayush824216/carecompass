@@ -7,6 +7,13 @@ Version 1 · Team OCTUPUS · HackIIITD
 > user-facing text talks about "danger signs" and "what to do next". Thresholds below are conservative routing
 > thresholds for a prototype and must be reviewed with the clinical mentors.
 
+> **Version 2 (eight symptom categories, `docs/SYMPTOM_CATEGORIES.md`).** The stomach pathway (section 3) is now split
+> into `vomiting` (vomiting and loose motions: the section 3 stage table, unchanged) and `abdominal` (abdominal pain:
+> location, onset, progression; never auto-labelled as acidity). New pathways: `breathing` (severe or sudden
+> breathlessness goes to S3 at once, with no interview) and `urinary`. The headache pathway also covers dizziness and fainting.
+> Rules live in `config/pathways/<id>.json`. Danger chips carry one sign each and are marked `definite_S3` or
+> `needs_confirmation` (one targeted confirmation question, outside the 4-question cap).
+
 ---
 
 ## 0. How the pathways work

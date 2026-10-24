@@ -1,0 +1,97 @@
+{
+  "id": "urinary",
+  "raise_care": "keep",
+  "label": {"en": "Urine problem", "hi": "पेशाब की तकलीफ", "hinglish": "Peshab ki takleef"},
+  "_spec": "docs/SYMPTOM_CATEGORIES.md category 8. Not being able to pass urine at all is an emergency (also a safety red flag).",
+  "trigger": "burning_urine or frequent_urine or urgency_urine or blood_urine or cannot_pass_urine or weak_stream or (lower_belly_pain and (burning_urine or frequent_urine))",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "frequent_urine": {"patterns": ["baar[- ]baar (\\S+ )?peshab", "pe?i?shaa?b (\\S+ )?baar[- ]baar", "jaldi jaldi peshab", "frequent(ly)? (urinat|urine|peeing)", "(urinat|peeing) (a lot|often|frequently)", "(pass|passing|passes) urine (\\S+ )?(often|again and again|frequently|a lot)", "बार-बार पेशाब", "बार बार पेशाब"],
+                       "label": {"en": "passing urine often", "hi": "बार-बार पेशाब", "hinglish": "baar-baar peshab"}},
+    "urgency_urine": {"patterns": ["peshab rok nahi pa", "rok (nahi|nhi) paate", "can'?t hold (my )?urine", "urgent(ly)? (need to )?(urinate|pee)", "पेशाब रोक नहीं"],
+                      "label": {"en": "cannot hold urine", "hi": "पेशाब रोक नहीं पाते", "hinglish": "peshab rok nahi paate"}},
+    "blood_urine": {"patterns": ["pe?i?shaa?b (mein|me) (\\S+ )?kh(oo|u)n", "laal peshab", "peshab (\\S+ )?(laal|gulabi)", "blood (in|with) (the )?urine", "(red|pink) urine", "पेशाब में खून", "लाल पेशाब"],
+                    "label": {"en": "blood in urine", "hi": "पेशाब में खून", "hinglish": "peshab mein khoon"}},
+    "cannot_pass_urine": {"patterns": ["pe?i?shaa?b (bilkul )?(nahi|nhi) (ho|utar|aa|nikal) (raha|rahi|rha|rhi|pa)", "peshab ruk gaya", "peshab band ho gaya", "can'?t (pass|do) urine", "(cannot|can not) pass (any )?urine", "unable to (pass urine|urinate|pee)", "not able to (pass urine|urinate)", "पेशाब (बिल्कुल )?नहीं (हो|उतर|निकल) रहा", "पेशाब रुक गया"],
+                          "label": {"en": "cannot pass urine", "hi": "पेशाब नहीं हो पा रहा", "hinglish": "peshab nahi ho pa raha"}},
+    "weak_stream": {"patterns": ["dhaar (\\S+ )?(patli|kam|kamzor)", "boond[- ]boond", "weak (urine )?stream", "dribbl", "पेशाब की धार", "बूँद-बूँद"],
+                    "label": {"en": "weak urine stream", "hi": "पेशाब की धार कमज़ोर", "hinglish": "peshab ki dhaar kamzor"}},
+    "thirst": {"patterns": ["bahut (\\S+ )?pyaas", "pyaas (bahut|zyada)", "(very|always|excessively) thirsty", "excessive thirst", "बहुत प्यास"],
+               "label": {"en": "very thirsty", "hi": "बहुत प्यास", "hinglish": "bahut pyaas"}},
+    "urine_clots": {"patterns": ["kh(oo|u)n ke thakke", "clots? (in|with) (the )?urine", "खून के थक्के"], "label": {"en": "blood clots in urine", "hi": "पेशाब में खून के थक्के", "hinglish": "peshab mein khoon ke thakke"}}
+  },
+  "rules": [
+    {"id": "u_retention", "stage": "S3", "when": "cannot_pass_urine", "pattern": "retention_like"},
+    {"id": "u_sepsis_like", "stage": "S3", "when": "(fever or chills) and (flank_pain or burning_urine) and (confusion or very_drowsy or cannot_drink or vomits_everything or cold_clammy)", "pattern": "kidney_infection_like"},
+    {"id": "u_pregnancy_fever", "stage": "S3", "when": "pregnant and (fever or chills) and (flank_pain or burning_urine)", "pattern": "kidney_infection_like"},
+    {"id": "u_clots", "stage": "S3", "when": "urine_clots and (lower_belly_pain or weak_stream)", "pattern": "retention_like"},
+
+    {"id": "u_kidney_infection", "stage": "S2", "when": "(fever or chills) and (flank_pain or burning_urine or frequent_urine)", "pattern": "kidney_infection_like", "note": "urine_test"},
+    {"id": "u_flank_vomit", "stage": "S2", "when": "flank_pain and (vomiting or persistent_vomiting)", "pattern": "stone_like"},
+    {"id": "u_blood", "stage": "S2", "when": "blood_urine or urine_clots", "note": "urine_test"},
+    {"id": "u_pregnant", "stage": "S2", "when": "pregnant and (burning_urine or frequent_urine or urgency_urine)", "note": "urine_test"},
+    {"id": "u_child", "stage": "S2", "when": "child and (burning_urine or frequent_urine or urgency_urine)", "note": "urine_test"},
+    {"id": "u_flank", "stage": "S2", "when": "flank_pain and (burning_urine or frequent_urine or blood_urine)", "pattern": "kidney_infection_like"},
+
+    {"id": "u_lower", "stage": "S1", "when": "burning_urine or frequent_urine or urgency_urine", "pattern": "uti_like", "note": "urine_test"},
+    {"id": "u_thirst", "stage": "S1", "when": "frequent_urine and thirst", "note": "sugar_test"},
+    {"id": "u_stream_old", "stage": "S1", "when": "weak_stream and (elderly or age_years is not None and age_years >= 50)", "care_type": "specialist_referral"},
+
+    {"id": "u_stream", "stage": "S0", "when": "weak_stream and not burning_urine and not blood_urine and not fever"}
+  ],
+  "sufficient": "known(fever) and (known(flank_pain) or burning_urine) and known(duration_days)",
+  "questions": [
+    {"id": "urinary.danger", "kind": "danger",
+     "text": {"en": "With the urine problem, is any of these happening?", "hi": "पेशाब की तकलीफ के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Peshab ki takleef ke saath inme se kuch ho raha hai?"},
+     "skip_if": "known(cannot_pass_urine) and known(fever) and known(blood_urine) and known(flank_pain)",
+     "chips": [
+       {"id": "none_pass", "severity": "definite_S3", "label": {"en": "Cannot pass urine at all", "hi": "पेशाब बिल्कुल नहीं हो रहा", "hinglish": "Peshab bilkul nahi ho raha"}, "facts": {"cannot_pass_urine": true}},
+       {"id": "fever", "severity": "needs_confirmation", "label": {"en": "Fever with shivering", "hi": "कंपकंपी के साथ बुखार", "hinglish": "Kapkapi ke saath bukhar"}, "facts": {"fever": true}},
+       {"id": "flank", "label": {"en": "Pain in one side of the back", "hi": "कमर के एक तरफ दर्द", "hinglish": "Kamar ke ek taraf dard"}, "facts": {"flank_pain": true}},
+       {"id": "blood", "label": {"en": "Blood in urine", "hi": "पेशाब में खून", "hinglish": "Peshab mein khoon"}, "facts": {"blood_urine": true}},
+       {"id": "vomit", "label": {"en": "Vomiting", "hi": "उल्टी", "hinglish": "Ulti"}, "facts": {"vomiting": true}}
+     ]},
+    {"id": "urinary.confirm_fever", "kind": "confirm", "only_if": "fever and (burning_urine or frequent_urine or flank_pain or urgency_urine or blood_urine)",
+     "text": {"en": "With the fever and urine problem, is any of these true?", "hi": "बुखार और पेशाब की तकलीफ के साथ क्या इनमें से कुछ सही है?", "hinglish": "Bukhar aur peshab ki takleef ke saath inme se kuch sahi hai?"},
+     "chips": [
+       {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती", "hinglish": "Bhram ya bahut susti"}, "facts": {"confusion": true}},
+       {"id": "nofluid", "severity": "definite_S3", "label": {"en": "Cannot keep water down", "hi": "पानी भी नहीं रुक रहा", "hinglish": "Paani bhi nahi ruk raha"}, "facts": {"cannot_drink": true}},
+       {"id": "cold", "severity": "definite_S3", "label": {"en": "Cold, clammy skin", "hi": "ठंडा पसीना, हाथ-पैर ठंडे", "hinglish": "Thanda paseena, haath-pair thande"}, "facts": {"cold_clammy": true}},
+       {"id": "flank", "label": {"en": "Pain in one side of the back", "hi": "कमर के एक तरफ दर्द", "hinglish": "Kamar ke ek taraf dard"}, "facts": {"flank_pain": true}}
+     ]},
+    {"id": "urinary.symptoms", "kind": "associated",
+     "text": {"en": "Which of these are there?", "hi": "इनमें से क्या-क्या है?", "hinglish": "Inme se kya-kya hai?"},
+     "skip_if": "n_signs >= 3",
+     "chips": [
+       {"id": "burn", "label": {"en": "Burning while passing urine", "hi": "पेशाब में जलन", "hinglish": "Peshab mein jalan"}, "facts": {"burning_urine": true}},
+       {"id": "often", "label": {"en": "Passing urine often", "hi": "बार-बार पेशाब", "hinglish": "Baar-baar peshab"}, "facts": {"frequent_urine": true}},
+       {"id": "hold", "label": {"en": "Cannot hold urine", "hi": "पेशाब रोक नहीं पाते", "hinglish": "Peshab rok nahi paate"}, "facts": {"urgency_urine": true}},
+       {"id": "lower", "label": {"en": "Pain below the navel", "hi": "नाभि के नीचे दर्द", "hinglish": "Naabhi ke neeche dard"}, "facts": {"lower_belly_pain": true}},
+       {"id": "stream", "label": {"en": "Weak urine stream", "hi": "पेशाब की धार कमज़ोर", "hinglish": "Peshab ki dhaar kamzor"}, "facts": {"weak_stream": true}},
+       {"id": "thirst", "label": {"en": "Very thirsty", "hi": "बहुत प्यास", "hinglish": "Bahut pyaas"}, "facts": {"thirst": true}}
+     ]},
+    {"id": "urinary.duration", "kind": "duration", "single": true,
+     "text": {"en": "Since when is the urine problem?", "hi": "पेशाब की तकलीफ कब से है?", "hinglish": "Peshab ki takleef kab se hai?"},
+     "skip_if": "known(duration_days)",
+     "chips": [
+       {"id": "today", "label": {"en": "Since today", "hi": "आज से", "hinglish": "Aaj se"}, "facts": {"duration_days": 0.5}},
+       {"id": "d2", "label": {"en": "1–2 days", "hi": "1–2 दिन", "hinglish": "1–2 din"}, "facts": {"duration_days": 2}},
+       {"id": "d7", "label": {"en": "3–7 days", "hi": "3–7 दिन", "hinglish": "3–7 din"}, "facts": {"duration_days": 5}},
+       {"id": "long", "label": {"en": "More than a week", "hi": "1 हफ्ते से ज़्यादा", "hinglish": "1 hafte se zyada"}, "facts": {"duration_days": 10}}
+     ], "no_none_chip": true},
+    {"id": "urinary.who", "kind": "who",
+     "text": {"en": "Is any of these true for the patient?", "hi": "क्या मरीज़ के लिए इनमें से कुछ सही है?", "hinglish": "Kya patient ke liye inme se kuch sahi hai?"},
+     "skip_if": "known(age_years) or child or elderly or pregnant or comorbid",
+     "chips": [
+       {"id": "child", "label": {"en": "Child", "hi": "बच्चा", "hinglish": "Baccha"}, "facts": {"child": true}},
+       {"id": "old", "label": {"en": "Age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}, "facts": {"elderly": true}},
+       {"id": "preg", "label": {"en": "Pregnant", "hi": "गर्भवती", "hinglish": "Pregnant"}, "facts": {"pregnant": true}},
+       {"id": "sugar", "label": {"en": "Diabetes (sugar)", "hi": "शुगर", "hinglish": "Sugar"}, "facts": {"diabetes": true, "comorbid": true}}
+     ], "none_label": {"en": "None of these", "hi": "कोई नहीं", "hinglish": "Koi nahi"}}
+  ]
+}

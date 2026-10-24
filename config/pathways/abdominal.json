@@ -1,0 +1,113 @@
+{
+  "id": "abdominal",
+  "label": {"en": "Abdominal pain", "hi": "पेट दर्द", "hinglish": "Pet dard"},
+  "_spec": "docs/SYMPTOM_CATEGORIES.md category 6, split from the former stomach pathway (docs/CLINICAL_PATHWAYS.md section 3). Never auto-labelled as acidity: belly pain is at least S1 unless clearly mild and short.",
+  "trigger": "abdominal_pain or severe_pain or right_lower_pain or right_upper_pain or upper_pain or rigid_belly or bloating or no_stool_gas_swelling or (lower_belly_pain and not burning_urine and not frequent_urine)",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "severe_pain": {"patterns": ["pet (mein |me )?(bahut|tez|zyada|bhayankar) (\\S+ )?dard", "(bahut|tez|zyada) (\\S+ )?pet dard", "severe (abdominal|stomach|belly) pain", "(very bad|terrible|unbearable|severe) (stomach|abdominal|belly|tummy) (pain|ache)", "unbearable", "पेट में (बहुत |तेज़ |तेज )+दर्द"], "label": {"en": "severe stomach pain", "hi": "पेट में बहुत तेज़ दर्द", "hinglish": "pet mein bahut tez dard"}},
+    "right_lower_pain": {"patterns": ["da(a)?y(e|ei)n (\\S+ ){0,2}neeche", "right (lower|side lower|bottom)", "lower right", "dahine neeche", "दाएँ नीचे", "दाईं ओर नीचे"], "label": {"en": "pain in the lower right of the belly", "hi": "पेट के दाईं ओर नीचे दर्द", "hinglish": "pet ke daayein neeche dard"}},
+    "right_upper_pain": {"patterns": ["da(a)?y(e|ei)n (\\S+ ){0,2}upar", "right upper", "upper right", "pasliyon ke neeche daay", "दाएँ ऊपर", "दाईं ओर ऊपर"], "label": {"en": "pain in the upper right of the belly", "hi": "पेट के दाईं ओर ऊपर दर्द", "hinglish": "pet ke daayein upar dard"}},
+    "upper_pain": {"patterns": ["pet ke upar", "upar (wale )?pet", "upper (abdomen|belly|stomach)", "seene ke (theek )?neeche", "epigastr", "पेट के ऊपर", "सीने के नीचे"], "label": {"en": "pain in the upper belly", "hi": "पेट के ऊपरी हिस्से में दर्द", "hinglish": "pet ke upar dard"}},
+    "lower_belly_pain": {"patterns": ["pet ke neeche", "naa?bhi ke neeche", "lower (abdomen|belly|stomach|tummy)", "पेट के नीचे", "नाभि के नीचे"], "label": {"en": "pain in the lower belly", "hi": "पेट के निचले हिस्से में दर्द", "hinglish": "pet ke neeche dard"}},
+    "pain_worse_walking": {"patterns": ["chalne (par|pe|se) (\\S+ )?(badh|zyada)", "worse (on|when|while) (walking|coughing|moving)", "khansne par (\\S+ )?(badh|zyada)", "चलने पर बढ़"], "label": {"en": "pain worse on walking or coughing", "hi": "चलने पर दर्द बढ़ना", "hinglish": "chalne par dard badhna"}},
+    "rigid_belly": {"patterns": ["pet (\\S+ )?(sakht|kada|patthar|tight)", "rigid (belly|abdomen|stomach)", "hard (belly|abdomen)", "(belly|abdomen|stomach) (\\S+ ){0,3}(hard|rigid)", "पेट.{0,15}(सख्त|कड़ा)"], "label": {"en": "hard, rigid belly", "hi": "पेट सख्त", "hinglish": "pet sakht"}},
+    "no_stool_gas_swelling": {"patterns": ["(potty|latrine) (aur|ya) gas (\\S+ )?(nahi|nhi|band)", "no (stool|potty) (or|and) (no )?gas", "gas (bhi )?(nahi|nhi) (nikal|pas)", "not passing (stool|gas)"], "label": {"en": "no stool or gas with a swollen belly", "hi": "पॉटी और गैस बंद, पेट फूला", "hinglish": "potty aur gas band, pet phoola"}},
+    "bloating": {"patterns": ["pet (\\S+ )?(phool|fool|ful) (gaya|raha|jaata)", "pet phoola", "bloat", "swollen (belly|abdomen|stomach)", "abdominal swelling", "पेट फूल"], "label": {"en": "swollen or bloated belly", "hi": "पेट फूला हुआ", "hinglish": "pet phoola hua"}},
+    "mild_pain": {"patterns": ["halka (sa )?(pet )?(mein )?dard", "thoda (sa )?(pet )?dard", "mild (stomach |abdominal |belly )?(pain|ache)", "slight (stomach )?(pain|ache)", "हल्का (सा )?दर्द"], "label": {"en": "mild pain", "hi": "हल्का दर्द", "hinglish": "halka dard"}},
+    "sudden_pain": {"patterns": ["achanak (\\S+ ){0,3}(pet )?(mein )?dard", "sudden(ly)? (severe )?(stomach |abdominal |belly )?pain", "अचानक (\\S+ )?दर्द"], "label": {"en": "pain that started suddenly", "hi": "अचानक शुरू हुआ दर्द", "hinglish": "achanak shuru hua dard"}},
+    "progressive_pain": {"patterns": ["dardh? (\\S+ )?badh(ta)? (ja )?(raha|rha)", "dardh? (aur )?zyada ho (raha|gaya)", "pain (is )?getting worse", "(keeps|keep|is) getting worse", "worsening pain", "दर्द बढ़ता जा रहा", "दर्द बढ़ रहा"], "label": {"en": "pain getting worse", "hi": "दर्द बढ़ता जा रहा है", "hinglish": "dard badhta ja raha hai"}},
+    "colicky": {"patterns": ["marod", "ainthan", "cramp", "मरोड़", "ऐंठन"], "label": {"en": "cramping pain", "hi": "मरोड़ जैसा दर्द", "hinglish": "marod jaisa dard"}}
+  },
+  "rules": [
+    {"id": "a_blood_vomit", "stage": "S3", "when": "blood_vomit", "pattern": "gi_bleeding_like"},
+    {"id": "a_black_stool", "stage": "S3", "when": "black_stool and not iron_tablets", "pattern": "gi_bleeding_like"},
+    {"id": "a_appendix_like", "stage": "S3", "when": "right_lower_pain and (pain_worse_walking or fever or severe_pain)", "pattern": "appendicitis_like"},
+    {"id": "a_rigid_belly", "stage": "S3", "when": "rigid_belly", "pattern": "peritonitis_like"},
+    {"id": "a_pregnancy_pain", "stage": "S3", "when": "pregnant and (abdominal_pain or severe_pain or lower_belly_pain)", "pattern": "pregnancy_related"},
+    {"id": "a_obstruction_like", "stage": "S3", "when": "no_stool_gas_swelling and (vomiting or bloating)", "pattern": "obstruction_like"},
+    {"id": "a_very_drowsy", "stage": "S3", "when": "very_drowsy or unconscious or confusion"},
+    {"id": "a_faint", "stage": "S3", "when": "(abdominal_pain or severe_pain) and (fainted or cold_clammy)", "pattern": "internal_bleeding_like"},
+    {"id": "a_severe_sweating", "stage": "S3", "when": "severe_pain and (sweating or dizziness_standing)", "pattern": "internal_bleeding_like"},
+
+    {"id": "a_severe", "stage": "S2", "when": "severe_pain"},
+    {"id": "a_rlq", "stage": "S2", "when": "right_lower_pain", "pattern": "appendicitis_like"},
+    {"id": "a_fever", "stage": "S2", "when": "(abdominal_pain or upper_pain or right_upper_pain or lower_belly_pain) and fever"},
+    {"id": "a_progressive", "stage": "S2", "when": "progressive_pain"},
+    {"id": "a_ruq", "stage": "S2", "when": "right_upper_pain and (yellow_eyes or vomiting or fever)", "pattern": "gallbladder_like"},
+    {"id": "a_kidney", "stage": "S2", "when": "(abdominal_pain or lower_belly_pain) and (flank_pain or blood_urine)", "pattern": "kidney_like"},
+    {"id": "a_vomiting", "stage": "S2", "when": "(abdominal_pain or upper_pain) and (persistent_vomiting or (vomit_count is not None and vomit_count >= 3))"},
+    {"id": "a_long", "stage": "S2", "when": "duration_days is not None and duration_days >= 3"},
+    {"id": "a_black_stool_on_iron", "stage": "S2", "when": "black_stool and iron_tablets", "note": "doctor_today"},
+    {"id": "a_swelling", "stage": "S2", "when": "bloating and (vomiting or progressive_pain)", "pattern": "obstruction_like"},
+
+    {"id": "a_default", "stage": "S1", "when": "(abdominal_pain or upper_pain or right_upper_pain or lower_belly_pain or bloating) and not (mild_pain and (duration_days is None or duration_days <= 1))", "_note": "belly pain is never auto-labelled as acidity: a doctor today"},
+
+    {"id": "a_mild", "stage": "S0", "when": "mild_pain and not severe_pain and not fever and not vomiting and not right_lower_pain and not progressive_pain and (duration_days is None or duration_days <= 1)"}
+  ],
+  "sufficient": "known(duration_days) and (right_lower_pain or right_upper_pain or upper_pain or lower_belly_pain or known(abdominal_location))",
+  "questions": [
+    {"id": "abdominal.danger", "kind": "danger",
+     "text": {"en": "With the stomach pain, is any of these happening?", "hi": "पेट दर्द के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Pet dard ke saath inme se kuch ho raha hai?"},
+     "skip_if": "known(blood_vomit) and known(black_stool) and known(rigid_belly) and known(fainted)",
+     "chips": [
+       {"id": "blood_vomit", "severity": "definite_S3", "label": {"en": "Vomiting blood", "hi": "खून की उल्टी", "hinglish": "Khoon ki ulti"}, "facts": {"blood_vomit": true}},
+       {"id": "black", "severity": "needs_confirmation", "label": {"en": "Black, sticky stool", "hi": "काली चिपचिपी पॉटी", "hinglish": "Kaali chipchipi potty"}, "facts": {"black_stool": true}},
+       {"id": "hard", "severity": "definite_S3", "label": {"en": "Belly hard like a board", "hi": "पेट पत्थर जैसा सख्त", "hinglish": "Pet patthar jaisa sakht"}, "facts": {"rigid_belly": true}},
+       {"id": "pain", "severity": "needs_confirmation", "label": {"en": "Unbearable pain", "hi": "असहनीय दर्द", "hinglish": "Bardasht se bahar dard"}, "facts": {"severe_pain": true}},
+       {"id": "faint", "severity": "definite_S3", "label": {"en": "Fainting or nearly fainting", "hi": "बेहोशी या बेहोशी जैसा", "hinglish": "Behoshi ya behoshi jaisa"}, "facts": {"fainted": true}},
+       {"id": "noflow", "severity": "definite_S3", "label": {"en": "No stool or gas passing", "hi": "पॉटी या गैस नहीं निकल रही", "hinglish": "Potty ya gas nahi nikal rahi"}, "facts": {"no_stool_gas_swelling": true}}
+     ]},
+    {"id": "abdominal.confirm_black", "kind": "confirm", "only_if": "black_stool and not iron_tablets and not no(iron_tablets)",
+     "text": {"en": "With the stomach pain, are iron tablets being taken?", "hi": "पेट दर्द के साथ, क्या आयरन की गोली ले रहे हैं?", "hinglish": "Pet dard ke saath, kya iron ki goli le rahe hain?"},
+     "chips": [
+       {"id": "iron", "label": {"en": "Yes, iron tablets", "hi": "हाँ, आयरन की गोली", "hinglish": "Haan, iron ki goli"}, "facts": {"iron_tablets": true}}
+     ], "none_label": {"en": "No iron tablets", "hi": "आयरन की गोली नहीं", "hinglish": "Iron ki goli nahi"}},
+    {"id": "abdominal.confirm_pain", "kind": "confirm", "only_if": "severe_pain and not right_lower_pain and not rigid_belly",
+     "text": {"en": "About the stomach pain, is any of these true?", "hi": "पेट दर्द के बारे में क्या इनमें से कुछ सही है?", "hinglish": "Pet dard ke baare mein inme se kuch sahi hai?"},
+     "chips": [
+       {"id": "rlq", "severity": "definite_S3", "label": {"en": "Pain in the lower right side", "hi": "दर्द दाएँ नीचे की तरफ", "hinglish": "Dard daayein neeche ki taraf"}, "facts": {"right_lower_pain": true}},
+       {"id": "hard", "severity": "definite_S3", "label": {"en": "Belly hard like a board", "hi": "पेट पत्थर जैसा सख्त", "hinglish": "Pet patthar jaisa sakht"}, "facts": {"rigid_belly": true}},
+       {"id": "swollen", "severity": "definite_S3", "label": {"en": "Belly swollen, no stool or gas passing", "hi": "पेट फूला, पॉटी या गैस नहीं निकल रही", "hinglish": "Pet phoola, potty ya gas nahi nikal rahi"}, "facts": {"no_stool_gas_swelling": true}},
+       {"id": "sweat", "severity": "definite_S3", "label": {"en": "Cold sweat with the pain", "hi": "दर्द के साथ ठंडा पसीना", "hinglish": "Dard ke saath thanda paseena"}, "facts": {"cold_clammy": true}},
+       {"id": "worse", "label": {"en": "Pain worse on walking or coughing", "hi": "चलने या खांसने पर दर्द बढ़ता है", "hinglish": "Chalne ya khaansne par dard badhta hai"}, "facts": {"pain_worse_walking": true}}
+     ]},
+    {"id": "abdominal.where", "kind": "location",
+     "text": {"en": "Where is the pain mostly?", "hi": "दर्द ज़्यादातर कहाँ है?", "hinglish": "Dard zyadatar kahan hai?"},
+     "skip_if": "right_lower_pain or right_upper_pain or upper_pain or lower_belly_pain",
+     "chips": [
+       {"id": "upper", "label": {"en": "Upper belly, below the chest", "hi": "ऊपरी पेट, सीने के नीचे", "hinglish": "Upar pet, seene ke neeche"}, "facts": {"upper_pain": true, "abdominal_location": true}},
+       {"id": "ruq", "label": {"en": "Upper right, under the ribs", "hi": "दाएँ ऊपर, पसलियों के नीचे", "hinglish": "Daayein upar, pasliyon ke neeche"}, "facts": {"right_upper_pain": true, "abdominal_location": true}},
+       {"id": "rlq", "label": {"en": "Lower right", "hi": "दाएँ नीचे", "hinglish": "Daayein neeche"}, "facts": {"right_lower_pain": true, "abdominal_location": true}},
+       {"id": "lower", "label": {"en": "Below the navel", "hi": "नाभि के नीचे", "hinglish": "Naabhi ke neeche"}, "facts": {"lower_belly_pain": true, "abdominal_location": true}},
+       {"id": "all", "label": {"en": "All over the belly", "hi": "पूरे पेट में", "hinglish": "Poore pet mein"}, "facts": {"abdominal_pain": true, "abdominal_location": true}}
+     ], "no_none_chip": true},
+    {"id": "abdominal.course", "kind": "duration",
+     "text": {"en": "Since when, and how is the pain changing?", "hi": "दर्द कब से है और कैसा बदल रहा है?", "hinglish": "Dard kab se hai aur kaisa badal raha hai?"},
+     "skip_if": "known(duration_days) and (progressive_pain or sudden_pain or colicky or mild_pain)",
+     "chips": [
+       {"id": "today", "label": {"en": "Since today", "hi": "आज से", "hinglish": "Aaj se"}, "facts": {"duration_days": 0.5}},
+       {"id": "d2", "label": {"en": "1–2 days", "hi": "1–2 दिन", "hinglish": "1–2 din"}, "facts": {"duration_days": 2}},
+       {"id": "d3", "label": {"en": "3 days or more", "hi": "3 दिन या ज़्यादा", "hinglish": "3 din ya zyada"}, "facts": {"duration_days": 4}},
+       {"id": "sudden", "label": {"en": "Started suddenly", "hi": "अचानक शुरू हुआ", "hinglish": "Achanak shuru hua"}, "facts": {"sudden_pain": true}},
+       {"id": "worse", "label": {"en": "Getting worse", "hi": "बढ़ता जा रहा है", "hinglish": "Badhta ja raha hai"}, "facts": {"progressive_pain": true}},
+       {"id": "cramps", "label": {"en": "Comes and goes as cramps", "hi": "मरोड़ की तरह आता-जाता", "hinglish": "Marod ki tarah aata-jaata"}, "facts": {"colicky": true}}
+     ], "no_none_chip": true},
+    {"id": "abdominal.associated", "kind": "associated",
+     "text": {"en": "What else is there with the stomach pain?", "hi": "पेट दर्द के साथ और क्या है?", "hinglish": "Pet dard ke saath aur kya hai?"},
+     "skip_if": "n_signs >= 4",
+     "chips": [
+       {"id": "vomit", "label": {"en": "Vomiting", "hi": "उल्टी", "hinglish": "Ulti"}, "facts": {"vomiting": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "loose", "label": {"en": "Loose motions", "hi": "दस्त", "hinglish": "Dast"}, "facts": {"diarrhoea": true}},
+       {"id": "swollen", "label": {"en": "Swollen belly", "hi": "पेट फूला हुआ", "hinglish": "Pet phoola hua"}, "facts": {"bloating": true}},
+       {"id": "urine", "label": {"en": "Burning urine", "hi": "पेशाब में जलन", "hinglish": "Peshab mein jalan"}, "facts": {"burning_urine": true}},
+       {"id": "stool_blood", "label": {"en": "Blood in stool", "hi": "पॉटी में खून", "hinglish": "Potty mein khoon"}, "facts": {"blood_in_stool": true}}
+     ]}
+  ]
+}

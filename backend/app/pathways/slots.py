@@ -48,6 +48,8 @@ def _rx(p: str) -> re.Pattern:
 # ---------------------------------------------------------------- context filters
 THIRD_PARTY = _rx(r"\b(padosi|padosan|pados|neighbou?rs?|dost|friends?|colleague|mohall\w*|society\s+mein|area\s+mein|"
                   r"unke\s+ghar|kisi\s+aur|someone\s+else)\b|पड़ोसी|पड़ोस|दोस्त")
+# "ghar mein dadi ko TB hai": a household contact, not the patient (the exposure is kept separately)
+HOUSEHOLD = _rx(r"\b(ghar|family|parivaar|parivar)\s+(mein|me|main)\b|\bat\s+home\b.*\bhas\b|घर\s+में")
 PAST = _rx(r"\b(pichle|pichhle|last)\s+(saal|sal|year|mahine|month)\b|\b\d+\s+(saal|years?|mahine|months?)\s+"
            r"(pehle|ago)\b|\bhistory\s+of\b|\bhad\s+\w+\s+(last|before|ago)\b|पिछले\s+साल|साल\s+पहले")
 # "hua tha" marks past history only when the clause also names a disease ("bukhar 3 din pehle shuru hua tha" is current)
@@ -301,7 +303,7 @@ def patient_clauses(text: str) -> tuple[list[str], list[str]]:
     keep, context = [], []
     for cl in split_clauses(text):
         named = any(rx.search(cl) for rx in NAMED_C.values())
-        if THIRD_PARTY.search(cl) or PAST.search(cl) or (named and PAST_DISEASE.search(cl)):
+        if THIRD_PARTY.search(cl) or PAST.search(cl) or (named and (PAST_DISEASE.search(cl) or HOUSEHOLD.search(cl))):
             context.append(cl)
         else:
             keep.append(cl)
@@ -315,7 +317,7 @@ def parse(texts: list[str], today: Optional[datetime] = None) -> Slots:
     s = Slots(patient_clauses=keep)
     s.temp_f, s.high_fever_reported, s.mild_fever_reported = parse_temperature(now_text)
     s.duration_days = parse_duration(now_text, today)
-    s.age_years, s.age_group = parse_age(raw)  # age words can sit in any clause
+    s.age_years, s.age_group = parse_age(now_text or raw)  # someone else's age ("dadi ko TB hai") is not the patient's
     s.platelets = parse_platelets(now_text)
     s.bp_sys, s.bp_dia, s.bp_high_reported = parse_bp(now_text)
     low = now_text.lower()

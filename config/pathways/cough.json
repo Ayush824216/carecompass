@@ -9,6 +9,10 @@
     "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
   },
   "signs": {
+    "recurring_cough": {"patterns": ["baar[- ]baar (\\S+ )?khansi", "khansi baar[- ]baar", "har (saal|mausam|sardi) (\\S+ )?khansi", "recurr\\w* cough", "cough (keeps )?coming back", "बार-बार खांसी"],
+                        "label": {"en": "cough that keeps coming back", "hi": "बार-बार होने वाली खांसी", "hinglish": "baar-baar hone wali khansi"}},
+    "tb_contact": {"patterns": ["(ghar|family|parivaar) (mein|me) (\\S+ ){0,3}(tb|t\\.b\\.)", "(tb|t\\.b\\.) (ke )?(mareez|patient) (ke )?(saath|sampark|paas)", "contact with (a |an )?(tb|tuberculosis)", "(tb|tuberculosis) (patient|case) (at|in) (home|the family)", "टीबी के मरीज़"],
+                   "label": {"en": "contact with a TB patient", "hi": "टीबी के मरीज़ से संपर्क", "hinglish": "TB ke mareez se sampark"}},
     "dry_cough": {"patterns": ["s(u|oo)kh(i|ee) kh?aa?n?si", "s(u|oo)kh(i|ee) khasi", "dry cough", "सूखी खांसी"], "label": {"en": "dry cough", "hi": "सूखी खांसी", "hinglish": "sukhi khansi"}},
     "wet_cough": {"patterns": ["balgam", "phlegm", "sputum", "mucus", "bal?gam wali", "बलगम"], "label": {"en": "cough with phlegm", "hi": "बलगम वाली खांसी", "hinglish": "balgam wali khansi"}},
     "sputum_colored": {"patterns": ["(peela|peeli|hara|hari|yellow|green)\\w* (\\S+ )?(balgam|phlegm|sputum|mucus)", "(balgam|phlegm|sputum)\\w* (\\S+ )?(peela|peeli|hara|hari|yellow|green)", "पीला बलगम", "हरा बलगम"],
@@ -21,7 +25,7 @@
     "asthma_copd": {"patterns": ["asthma", "\\bdama\\b", "copd", "inhaler", "pump", "दमा"], "label": {"en": "known asthma / COPD", "hi": "दमा / सीओपीडी", "hinglish": "asthma / COPD"}},
     "inhaler_not_helping": {"patterns": ["(inhaler|pump) se (bhi )?(aaram|fayda|faayda) (nahi|nhi)", "(inhaler|pump) (is )?(not|isn'?t) (helping|working)", "इनहेलर से भी आराम नहीं"], "label": {"en": "inhaler not helping", "hi": "इनहेलर से भी आराम नहीं", "hinglish": "inhaler se bhi aaram nahi"}},
     "barking": {"patterns": ["kutte (ke )?(bhaunk|bhonk|bhauk)", "bhaunkne", "barking", "seal[- ]like"], "label": {"en": "barking cough", "hi": "भौंकने जैसी खांसी", "hinglish": "bhaunkne jaisi khansi"}},
-    "stridor": {"patterns": ["saa?ns lete (waqt|samay|hue) (\\S+ )?awaa?z", "stridor", "noisy breathing", "(sound|noise) (when|while) breathing", "सांस लेते समय आवाज़", "साँस लेते समय आवाज़"], "label": {"en": "noisy breathing (stridor)", "hi": "साँस लेते समय आवाज़", "hinglish": "saans lete waqt awaaz"}},
+    "stridor": {"patterns": ["saa?ns lete (waqt|samay|hue) (\\S+ )?awaa?z", "stridor", "noisy breathing", "(?<!whistling )(?<!whistle )(sound|noise) (when|while) breathing", "सांस लेते समय आवाज़", "साँस लेते समय आवाज़"], "label": {"en": "noisy breathing (stridor)", "hi": "साँस लेते समय आवाज़", "hinglish": "saans lete waqt awaaz"}},
     "whoop": {"patterns": ["whoop", "khansi ke baad (lambi )?saans ki awaaz"], "label": {"en": "whooping after cough", "hi": "खांसी के बाद लंबी साँस की आवाज़", "hinglish": "khansi ke baad lambi saans ki awaaz"}},
     "choking": {"patterns": ["(kuch|sikka|coin|daana) (\\S+ )?nigal (liya|gaya)", "gale (mein|me) (\\S+ )?atak", "choking", "choked", "swallowed (a |an )?(coin|object|toy|seed)", "गले में अटक"], "label": {"en": "choking / something swallowed", "hi": "गले में कुछ अटक गया", "hinglish": "gale mein kuch atak gaya"}},
     "chest_pain_breathing": {"patterns": ["saa?ns lene par (seene mein )?(\\S+ )?dard", "pain (in the chest )?(on|when) breath", "chubhne wala dard", "chubhta", "साँस लेने पर दर्द"], "label": {"en": "chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "saans lene par seene mein dard"}}
@@ -35,11 +39,14 @@
     {"id": "c_chest_pain_breathless", "stage": "S3", "when": "chest_pain_breathing and breathless"},
     {"id": "c_asthma_not_relieved", "stage": "S3", "when": "asthma_copd and inhaler_not_helping and breathless"},
 
-    {"id": "c_tb_like", "stage": "S2", "when": "duration_days is not None and duration_days >= 14 and (fever or night_sweats or weight_loss)", "pattern": "tb_like"},
+    {"id": "c_tb_like", "stage": "S2", "when": "duration_days is not None and duration_days >= 14 and (fever or night_sweats or weight_loss or tb_contact or blood_in_cough)", "note": "tb_test", "pattern": "tb_like"},
     {"id": "c_blood_streaks", "stage": "S2", "when": "blood_in_cough"},
     {"id": "c_asthma_wheeze", "stage": "S2", "when": "asthma_copd and (wheeze or inhaler_not_helping)", "pattern": "asthma_flare"},
     {"id": "c_fast_breathing", "stage": "S2", "when": "fast_breathing", "care_type": "gp_teleconsult", "pattern": "pneumonia_like"},
 
+    {"id": "c_tb_contact", "stage": "S2", "when": "tb_contact and duration_days is not None and duration_days >= 14", "care_type": "specialist_referral", "note": "tb_test"},
+    {"id": "c_wheeze_tight", "stage": "S1", "when": "wheeze or chest_tightness", "care_type": "gp_teleconsult"},
+    {"id": "c_recurring", "stage": "S1", "when": "recurring_cough", "care_type": "gp_teleconsult"},
     {"id": "c_fever_two_days", "stage": "S1", "when": "fever and duration_days is not None and duration_days >= 2"},
     {"id": "c_coloured_sputum_week", "stage": "S1", "when": "sputum_colored and duration_days is not None and duration_days > 7"},
     {"id": "c_child", "stage": "S1", "when": "child"},
@@ -58,7 +65,7 @@
        {"id": "breath_walk", "severity": "needs_confirmation", "label": {"en": "Breathless on walking", "hi": "चलने पर साँस फूलती है", "hinglish": "Chalne par saans phoolti hai"}, "facts": {"breathless": true}},
        {"id": "blood", "severity": "needs_confirmation", "label": {"en": "Blood in cough", "hi": "खांसी में खून", "hinglish": "Khansi mein khoon"}, "facts": {"blood_in_cough": true}},
        {"id": "blue", "severity": "definite_S3", "label": {"en": "Blue lips or nails", "hi": "होंठ या नाखून नीले", "hinglish": "Hoth ya naakhun neele"}, "facts": {"blue_lips": true}},
-       {"id": "chest", "label": {"en": "Chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "Saans lene par seene mein dard"}, "facts": {"chest_pain_breathing": true}}
+       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "Saans lene par seene mein dard"}, "facts": {"chest_pain_breathing": true}}
      ]},
     {"id": "cough.type_duration", "kind": "duration",
      "text": {"en": "What kind of cough, and since when?", "hi": "खांसी कैसी है और कब से?", "hinglish": "Khansi kaisi hai aur kab se?"},
@@ -80,6 +87,9 @@
        {"id": "wt", "label": {"en": "Weight loss", "hi": "वज़न कम होना", "hinglish": "Wazan kam hona"}, "facts": {"weight_loss": true}},
        {"id": "wheeze", "label": {"en": "Whistling sound", "hi": "सीटी जैसी आवाज़", "hinglish": "Seeti jaisi awaaz"}, "facts": {"wheeze": true}},
        {"id": "smoke", "label": {"en": "Smoking", "hi": "धूम्रपान", "hinglish": "Smoking"}, "facts": {"smoker": true}},
+       {"id": "tight", "severity": "needs_confirmation", "label": {"en": "Chest feels tight with the cough", "hi": "खांसी के साथ सीना जकड़ा लगता है", "hinglish": "Khansi ke saath seena jakda lagta hai"}, "facts": {"chest_tightness": true}},
+       {"id": "recur", "label": {"en": "Keeps coming back", "hi": "बार-बार होती है", "hinglish": "Baar-baar hoti hai"}, "facts": {"recurring_cough": true}},
+       {"id": "tbc", "label": {"en": "Someone at home has TB", "hi": "घर में किसी को टीबी है", "hinglish": "Ghar mein kisi ko TB hai"}, "facts": {"tb_contact": true}},
        {"id": "asthma", "label": {"en": "Asthma / COPD", "hi": "दमा / सीओपीडी", "hinglish": "Asthma / COPD"}, "facts": {"asthma_copd": true}}
      ]},
     {"id": "cough.blood_amount", "kind": "confirm", "only_if": "blood_in_cough and not blood_large and not blood_small",
@@ -89,6 +99,14 @@
        {"id": "spoon", "severity": "definite_S3", "label": {"en": "A spoonful or more", "hi": "चम्मच भर या ज़्यादा", "hinglish": "Chammach bhar ya zyada"}, "facts": {"blood_large": true}},
        {"id": "again", "severity": "definite_S3", "label": {"en": "Blood again and again", "hi": "बार-बार खून", "hinglish": "Baar-baar khoon"}, "facts": {"blood_large": true}},
        {"id": "pain", "severity": "definite_S3", "label": {"en": "With chest or upper-back pain", "hi": "साथ में सीने या पीठ के ऊपर दर्द", "hinglish": "Saath mein seene ya upar peeth mein dard"}, "facts": {"blood_with_pain": true}}
+     ], "no_none_chip": true},
+    {"id": "cough.confirm_tight", "kind": "confirm", "only_if": "chest_tightness and not chest_pain_any",
+     "text": {"en": "With the tight chest, is any of these true?", "hi": "सीने की जकड़न के साथ क्या इनमें से कुछ सही है?", "hinglish": "Seene ki jakdan ke saath inme se kuch sahi hai?"},
+     "chips": [
+       {"id": "spread", "severity": "definite_S3", "label": {"en": "Pain going to arm, jaw or back", "hi": "दर्द हाथ, जबड़े या पीठ तक जाता है", "hinglish": "Dard haath, jabde ya peeth tak jaata hai"}, "facts": {"radiation": true}},
+       {"id": "sweat", "severity": "definite_S3", "label": {"en": "Sweating with it", "hi": "साथ में पसीना", "hinglish": "Saath mein paseena"}, "facts": {"sweating": true}},
+       {"id": "rest", "severity": "definite_S3", "label": {"en": "Breathless even sitting still", "hi": "बैठे-बैठे भी साँस फूलती है", "hinglish": "Baithe-baithe bhi saans phoolti hai"}, "facts": {"breathless_rest": true}},
+       {"id": "wheeze", "label": {"en": "Only with coughing and a whistling sound", "hi": "सिर्फ़ खांसी और सीटी जैसी आवाज़ के साथ", "hinglish": "Sirf khansi aur seeti jaisi awaaz ke saath"}, "facts": {"wheeze": true}}
      ], "no_none_chip": true},
     {"id": "cough.confirm_breath", "kind": "confirm", "only_if": "breathless and not breathless_rest and not blue_lips",
      "text": {"en": "With the cough, how is the breathing?", "hi": "खांसी के साथ साँस कैसी है?", "hinglish": "Khansi ke saath saans kaisi hai?"},

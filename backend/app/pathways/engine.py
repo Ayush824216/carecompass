@@ -298,6 +298,7 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
     })
     for d in slots.named_diseases:
         f[f"named_{d}"] = True
+    f["tb_contact"] = f.get("tb_contact") or "tuberculosis" in slots.context_diseases  # exposure, never a diagnosis
     known: set[str] = {k for k, v in f.items() if v not in (None, False)} | neg
     if answers:
         for k, v in answers.facts.items():
@@ -512,6 +513,14 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
     if n_clinical_asked >= max_q:
         return None
     if expr.evaluate(p.cfg.get("sufficient", "False"), facts, fn):
+        # enough to decide; but once questioning has started, a sub-tree that follows up on an answer
+        # (fever + cough -> fast breathing? chest pain?) is still asked
+        if out.answers.asked:
+            for q in p.cfg["questions"]:
+                if q.get("kind") == "subtree" and q["id"] not in out.answers.asked \
+                        and expr.evaluate(q.get("only_if", "False"), facts, fn) \
+                        and not expr.evaluate(q.get("skip_if", "False"), facts, fn):
+                    return q
         return None
     for q in p.cfg["questions"]:
         if q["id"] in out.answers.asked or q.get("kind") == "confirm":

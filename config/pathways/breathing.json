@@ -1,0 +1,90 @@
+{
+  "id": "breathing",
+  "label": {"en": "Breathing problem", "hi": "साँस की तकलीफ", "hinglish": "Saans ki takleef"},
+  "_spec": "docs/SYMPTOM_CATEGORIES.md category 3. Severe or sudden breathlessness -> S3 at once, no interview. Never reassured as 'just anxiety or allergy': any breathing complaint is at least S1.",
+  "trigger": "breathless or breathless_rest or breathless_exertion or wheeze or chest_tightness or fast_breathing or blue_lips or stridor or choking or lying_breathless",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "paramedic_home_visit", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "sudden_onset": {"patterns": ["achanak (\\S+ ){0,3}saa?ns", "saa?ns (\\S+ ){0,3}achanak", "sudden(ly)? (\\S+ ){0,2}(breathless|short of breath|can'?t breathe)", "came on suddenly", "sudden (onset (of )?)?(shortness of breath|breathlessness|breathing (difficulty|trouble))", "अचानक.{0,15}साँस", "अचानक.{0,15}सांस"],
+                     "label": {"en": "breathlessness that started suddenly", "hi": "अचानक साँस फूलना", "hinglish": "achanak saans phoolna"}},
+    "gradual_breathless": {"patterns": ["(dheere|dhire)[- ](dheere|dhire)", "(hafton|mahino|mahinon|weeks|months) se (\\S+ )?saa?ns", "over (weeks|months)", "gradually", "धीरे-धीरे", "हफ्तों से"],
+                           "label": {"en": "breathlessness building up slowly", "hi": "धीरे-धीरे बढ़ती साँस की तकलीफ", "hinglish": "dheere-dheere badhti saans ki takleef"}},
+    "lying_breathless": {"patterns": ["let(ne|te) (par|pe|hi) (\\S+ )?saa?ns", "raat ko saa?ns (\\S+ )?(phool|ful) (kar|ke) uth", "breathless (when|on) lying", "can'?t lie flat", "lying down", "लेटने पर साँस"],
+                         "label": {"en": "breathless on lying down", "hi": "लेटने पर साँस फूलना", "hinglish": "letne par saans phoolna"}},
+    "swelling_feet": {"patterns": ["pair (\\S+ )?(sooj|suj)", "pairon (mein|me) (\\S+ )?(sooj|suj)", "(ankles?|feet|legs) (are |is )?swollen", "swelling (of |in )?(the )?(feet|legs|ankles)", "पैर.{0,10}(सूज|सूजन)"],
+                      "label": {"en": "swollen feet", "hi": "पैरों में सूजन", "hinglish": "pairon mein sujan"}},
+    "chest_tightness": {"patterns": ["seene mein jakdan", "seena jakda", "chest (is |feels )?tight", "tight chest", "tight(ness)? in (the )?chest", "सीने में जकड़न", "सीना जकड़ा"],
+                        "label": {"en": "chest tightness", "hi": "सीने में जकड़न", "hinglish": "seene mein jakdan"}},
+    "tingling_hands": {"patterns": ["haath (\\S+ )?(jhunjhuni|sunn)", "tingling", "pins and needles", "झुनझुनी"],
+                       "label": {"en": "tingling in hands", "hi": "हाथों में झुनझुनी", "hinglish": "haathon mein jhunjhuni"}},
+    "weakness": {"patterns": ["\\bkamz?j?or(i|ee)?\\b", "\\bweak(ness)?\\b", "tired all the time", "कमज़ोरी", "कमजोरी"],
+                 "label": {"en": "weakness", "hi": "कमज़ोरी", "hinglish": "kamzori"}}
+  },
+  "rules": [
+    {"id": "b_rest", "stage": "S3", "when": "breathless_rest"},
+    {"id": "b_blue", "stage": "S3", "when": "blue_lips"},
+    {"id": "b_sudden", "stage": "S3", "when": "sudden_onset and (breathless or breathless_rest or chest_tightness)", "_note": "sudden breathing difficulty: escalate at once"},
+    {"id": "b_with_chest_pain", "stage": "S3", "when": "(breathless or breathless_exertion) and (chest_pain_any or sharp_breathing)", "pattern": "heart_like"},
+    {"id": "b_confused", "stage": "S3", "when": "(breathless or breathless_exertion or wheeze) and (confusion or very_drowsy or fainted or unconscious)"},
+    {"id": "b_stridor", "stage": "S3", "when": "stridor or choking"},
+    {"id": "b_asthma_not_relieved", "stage": "S3", "when": "asthma_copd and inhaler_not_helping and breathless"},
+
+    {"id": "b_heart_signs", "stage": "S2", "when": "lying_breathless or swelling_feet", "care_type": "specialist_referral", "pattern": "heart_like"},
+    {"id": "b_wheeze_asthma", "stage": "S2", "when": "wheeze and (asthma_copd or chest_tightness or inhaler_not_helping)", "care_type": "specialist_referral", "pattern": "asthma_like"},
+    {"id": "b_gradual", "stage": "S2", "when": "gradual_breathless or ((breathless or breathless_exertion) and duration_days is not None and duration_days >= 14)", "care_type": "specialist_referral"},
+    {"id": "b_breathless", "stage": "S2", "when": "breathless and not breathless_exertion"},
+    {"id": "b_fast", "stage": "S2", "when": "fast_breathing"},
+    {"id": "b_fever", "stage": "S2", "when": "(breathless or breathless_exertion) and fever", "pattern": "pneumonia_like"},
+    {"id": "b_pregnant", "stage": "S2", "when": "pregnant and (breathless or breathless_exertion)"},
+
+    {"id": "b_exertion", "stage": "S1", "when": "breathless_exertion or breathless"},
+    {"id": "b_any", "stage": "S1", "when": "wheeze or chest_tightness", "_note": "never reassured as anxiety or allergy"}
+  ],
+  "sufficient": "(known(sudden_onset) or gradual_breathless or breathless_exertion) and n_signs >= 2",
+  "questions": [
+    {"id": "breathing.danger", "kind": "danger",
+     "text": {"en": "With the breathing trouble, is any of these happening?", "hi": "साँस की तकलीफ के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Saans ki takleef ke saath inme se kuch ho raha hai?"},
+     "skip_if": "known(breathless_rest) and known(blue_lips) and known(chest_pain_any) and known(confusion)",
+     "chips": [
+       {"id": "rest", "severity": "definite_S3", "label": {"en": "Breathless even sitting still", "hi": "बैठे-बैठे भी साँस फूल रही है", "hinglish": "Baithe-baithe bhi saans phool rahi"}, "facts": {"breathless_rest": true}},
+       {"id": "speak", "severity": "definite_S3", "label": {"en": "Cannot finish a sentence", "hi": "पूरा वाक्य नहीं बोल पा रहे", "hinglish": "Poora vakya nahi bol pa rahe"}, "facts": {"breathless_rest": true}},
+       {"id": "blue", "severity": "definite_S3", "label": {"en": "Lips or nails blue or grey", "hi": "होंठ या नाखून नीले या भूरे", "hinglish": "Hont ya naakhun neele ya bhoore"}, "facts": {"blue_lips": true}},
+       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain with it", "hi": "साथ में सीने में दर्द", "hinglish": "Saath mein seene mein dard"}, "facts": {"chest_pain_any": true}},
+       {"id": "faint", "severity": "definite_S3", "label": {"en": "Fainted or nearly fainted", "hi": "बेहोश हुए या होने वाले थे", "hinglish": "Behosh hue ya hone wale the"}, "facts": {"fainted": true}},
+       {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती", "hinglish": "Bhram ya bahut susti"}, "facts": {"confusion": true}}
+     ]},
+    {"id": "breathing.onset", "kind": "onset", "single": true,
+     "text": {"en": "How did the breathing trouble start?", "hi": "साँस की तकलीफ कैसे शुरू हुई?", "hinglish": "Saans ki takleef kaise shuru hui?"},
+     "skip_if": "sudden_onset or gradual_breathless or breathless_exertion",
+     "chips": [
+       {"id": "sudden", "severity": "definite_S3", "label": {"en": "Suddenly, in the last minutes or hours", "hi": "अचानक, पिछले कुछ मिनट या घंटों में", "hinglish": "Achanak, pichhle kuch minute ya ghanton mein"}, "facts": {"sudden_onset": true}},
+       {"id": "gradual", "label": {"en": "Slowly, over days or weeks", "hi": "धीरे-धीरे, दिनों या हफ्तों में", "hinglish": "Dheere-dheere, dinon ya hafton mein"}, "facts": {"gradual_breathless": true}},
+       {"id": "exertion", "label": {"en": "Only on walking or stairs", "hi": "सिर्फ़ चलने या सीढ़ी पर", "hinglish": "Sirf chalne ya seedhi par"}, "facts": {"breathless_exertion": true}}
+     ], "no_none_chip": true},
+    {"id": "breathing.associated", "kind": "associated",
+     "text": {"en": "What else is there with the breathing trouble?", "hi": "साँस की तकलीफ के साथ और क्या है?", "hinglish": "Saans ki takleef ke saath aur kya hai?"},
+     "skip_if": "n_signs >= 4",
+     "chips": [
+       {"id": "wheeze", "label": {"en": "Whistling sound when breathing", "hi": "साँस में सीटी जैसी आवाज़", "hinglish": "Saans mein seeti jaisi awaaz"}, "facts": {"wheeze": true}},
+       {"id": "tight", "label": {"en": "Chest feels tight", "hi": "सीना जकड़ा लगता है", "hinglish": "Seena jakda lagta hai"}, "facts": {"chest_tightness": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "cough", "label": {"en": "Cough", "hi": "खांसी", "hinglish": "Khansi"}, "facts": {"cough": true}},
+       {"id": "lying", "label": {"en": "Worse on lying down", "hi": "लेटने पर बढ़ती है", "hinglish": "Letne par badhti hai"}, "facts": {"lying_breathless": true}},
+       {"id": "feet", "label": {"en": "Swollen feet", "hi": "पैरों में सूजन", "hinglish": "Pairon mein sujan"}, "facts": {"swelling_feet": true}}
+     ]},
+    {"id": "breathing.who", "kind": "who",
+     "text": {"en": "Any of these for the patient?", "hi": "मरीज़ के लिए क्या इनमें से कुछ है?", "hinglish": "Patient ke liye inme se kuch hai?"},
+     "skip_if": "asthma_copd or heart or elderly or pregnant or known(age_years)",
+     "chips": [
+       {"id": "asthma", "label": {"en": "Known asthma or COPD", "hi": "दमा या सीओपीडी है", "hinglish": "Asthma ya COPD hai"}, "facts": {"asthma_copd": true}},
+       {"id": "heart", "label": {"en": "Heart patient", "hi": "दिल के मरीज़", "hinglish": "Heart patient"}, "facts": {"heart": true, "comorbid": true}},
+       {"id": "old", "label": {"en": "Age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}, "facts": {"elderly": true}},
+       {"id": "smoke", "label": {"en": "Smoker", "hi": "धूम्रपान करते हैं", "hinglish": "Smoking karte hain"}, "facts": {"smoker": true}}
+     ], "none_label": {"en": "None of these", "hi": "कोई नहीं", "hinglish": "Koi nahi"}}
+  ]
+}

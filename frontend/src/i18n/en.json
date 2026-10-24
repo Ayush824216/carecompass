@@ -395,7 +395,7 @@
       "yes": "Danger sign",
       "no": "Clear",
       "pathways": "Clinical pathways",
-      "pathwaysD": "Fever, cough, stomach, chest pain and headache are graded S0–S3 from danger signs, readings and who the patient is. S3 goes straight to emergency."
+      "pathwaysD": "Eight symptom categories (fever, cough, breathing, chest pain, headache or dizziness, abdominal pain, vomiting or loose motions, urine problems) are graded S0–S3 from danger signs, readings and who the patient is. S3 goes straight to emergency."
     },
     "layersTitle": "Five layers",
     "layers": [
@@ -472,20 +472,20 @@
       {
         "id": "fever",
         "name": "Fever",
-        "asks": "Danger signs, how many days and how high, platelets, rash, who the patient is",
+        "asks": "Danger signs, how many days, thermometer reading, then follow-ups on headache, cough, body pain, stomach or chills",
         "example": "Platelets 80,000 + stomach pain → S2, same-day doctor and a home blood test"
       },
       {
         "id": "cough",
         "name": "Cough",
-        "asks": "Breathlessness at rest, blood, how long, fever, wheeze",
-        "example": "Cough for 3 weeks with night sweats → S2, chest specialist"
+        "asks": "Breathing at rest, blood (streaks or a spoonful), how long, wheeze, TB contact",
+        "example": "Cough for 3 weeks with night sweats → S2, formal TB test at a TB centre"
       },
       {
-        "id": "stomach",
-        "name": "Stomach upset",
-        "asks": "Can they keep fluids down, urine, blood or black stool, where the pain is",
-        "example": "Vomited 10 times, can't keep water down → S2, nurse home visit"
+        "id": "breathing",
+        "name": "Breathing problem",
+        "asks": "Breathless at rest, can they speak, sudden or gradual, wheeze, chest pain, lip colour",
+        "example": "Breathless even at rest → S3 at once, no further questions"
       },
       {
         "id": "chest_pain",
@@ -495,9 +495,27 @@
       },
       {
         "id": "headache",
-        "name": "Headache",
-        "asks": "Sudden worst-ever pain, one-sided weakness, stiff neck, BP reading",
+        "name": "Headache or dizziness",
+        "asks": "Sudden worst-ever pain, one-sided weakness, stiff neck, head injury, fainting, BP",
         "example": "BP 190/120 with headache → S3"
+      },
+      {
+        "id": "abdominal",
+        "name": "Abdominal pain",
+        "asks": "Where it hurts, how it started and is changing, vomiting, fever, swelling, blood",
+        "example": "Pain moving to the lower right, worse on walking → S3"
+      },
+      {
+        "id": "vomiting",
+        "name": "Vomiting or loose motions",
+        "asks": "How often, fluids kept down, urine, dehydration signs, blood, who the patient is",
+        "example": "Vomited 10 times, can't keep water down → S2, nurse home visit"
+      },
+      {
+        "id": "urinary",
+        "name": "Urine problem",
+        "asks": "Burning, how often, blood, fever with shivering, side pain, unable to pass urine",
+        "example": "Burning urine with fever and side pain → S2, doctor today and a urine test"
       }
     ],
     "notDiagnosis": "Pathways choose care and urgency only. CareCompass never names a disease."
@@ -732,9 +750,12 @@
   "pathways": {
     "fever": "Fever",
     "cough": "Cough",
-    "stomach": "Stomach upset",
+    "breathing": "Breathing problem",
     "chest_pain": "Chest pain",
-    "headache": "Headache"
+    "headache": "Headache or dizziness",
+    "abdominal": "Abdominal pain",
+    "vomiting": "Vomiting or loose motions",
+    "urinary": "Urine problem"
   },
   "severity": {
     "S0": {

@@ -99,12 +99,15 @@ SIMPLE: dict[str, list[str]] = {
         r"(keeps|keep|kept|still|continuous\w*|constantly)\s+(on\s+)?bleeding", r"bleeding\s+(\S+\s+)?(through|soak)", r"soak\w*\s+(\S+\s+){0,3}blood",
         r"blood\s+(\S+\s+){0,2}(soak|gushing|spurting|pouring|squirting)", r"(deep|big|large|gaping)\s+(cut|wound|gash|laceration)",
         r"(gehra|gahra|bada)\s+(kat|cut|ghaav|zakhm)", r"(गहरा|बड़ा)\s*(कट|घाव|ज़ख्म|जख्म)",
-        r"vomit\w*\s+(of\s+)?blood", r"ha?ematemesis|melena|ha?emoptysis", r"blood\s+in\s+(the\s+)?vomit", r"cough\w*\s+(up\s+)?blood",
+        # blood in the cough of unstated amount is NOT flagged here: the cough pathway asks how much (streaks vs a
+        # spoonful) and escalates large amounts or blood with breathlessness, chest pain or fainting at once
+        r"vomit\w*\s+(of\s+)?blood", r"ha?ematemesis|melena", r"blood\s+in\s+(the\s+)?vomit",
+        r"cough\w*\s+(up\s+)?(a\s+lot\s+of|lots\s+of|so\s+much|a\s+cup|cups|a\s+spoon\w*|spoonfuls?)\s+(of\s+)?blood",
         rf"\b(bahut|bohot|bht|zyada|jyada|kaafi|lagatar|bahot)\s+{W}{{0,2}}(kh[oo]+n|khun|blood|bleeding)",
         rf"\b(kh[oo]+n|khun|blood|bleeding)\s+{W}{{0,3}}(ruk\s+nahi|ruk\s+nhi|band\s+nahi|band\s+nhi|rukta\s+nahi)",
-        r"(kh[oo]+n|khun)\s+ki\s+ult", r"ult\w*\s+(mein|me)\s+(kh[oo]+n|khun)", r"khansi\s+(mein|me)\s+(kh[oo]+n|khun)",
+        r"(kh[oo]+n|khun)\s+ki\s+ult", r"ult\w*\s+(mein|me)\s+(kh[oo]+n|khun)",
         r"(बहुत|ज़्यादा|ज्यादा|लगातार|काफी)[^।,.!?]{0,10}(खून|ख़ून|रक्त)", r"(खून|ख़ून)[^।,.!?]{0,15}(रुक नहीं|बंद नहीं)",
-        r"खून की उल्टी", r"उल्टी में खून", r"खांसी में खून",
+        r"खून की उल्टी", r"उल्टी में खून",
     ],
     "severe_allergic_reaction": [
         r"(face|tongue|lips?)\s+(is\s+|are\s+|has\s+|have\s+)?(\S+\s+)?(swelling|swollen|swelled|puff)",

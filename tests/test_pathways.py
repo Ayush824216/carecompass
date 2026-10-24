@@ -185,7 +185,7 @@ def test_e11_multiple_complaints_chest_dominates():
 
 def test_e12_mixed_scripts():
     o = pw.run(["मम्मी को fever hai aur ulti"])
-    assert {r.pathway for r in o.results} >= {"fever", "stomach"}
+    assert {r.pathway for r in o.results} >= {"fever", "vomiting"}
 
 
 def test_e13_age_in_months():
@@ -231,14 +231,14 @@ def test_e19_fever_down_but_worse():
 
 def test_e20_iron_tablets_black_stool():
     o = pw.run(["iron ki goli le rahi hoon, potty kaali"])
-    st = next(r for r in o.results if r.pathway == "stomach")
+    st = next(r for r in o.results if r.pathway == "vomiting")
     assert st.stage == "S2" and st.urgency == "same_day" and "doctor_today" in st.notes
 
 
 # ---------------------------------------------------------------- engine behaviour
 def test_missing_slots_never_lower_and_rules_validate():
     common, pathways, signs = pw.load()  # loading validates every rule expression
-    assert set(pathways) == {"fever", "cough", "stomach", "chest_pain", "headache"} and len(signs) > 50
+    assert set(pathways) == {"fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary"} and len(signs) > 50
 
 
 def test_questions_danger_first_and_stop_on_s3():

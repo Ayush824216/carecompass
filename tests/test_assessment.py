@@ -76,7 +76,8 @@ def test_cough_tb_note_never_concludes():
     assert "formal test" in notes or "pakki jaanch" in notes
     labels = [c["label"] for c in s["causes"]["items"]]
     assert len(labels) >= 2  # TB is one option among several, never the verdict
-    assert "tb" not in r["reasoning"].lower()
+    low = r["reasoning"].lower()  # guidance about formal testing, never a conclusion
+    assert ("pakka nahi" in low or "never confirm" in low) and "aapko tb" not in low and "you have tb" not in low
 
 
 def test_possible_causes_flag_off(monkeypatch):
