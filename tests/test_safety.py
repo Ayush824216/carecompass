@@ -210,3 +210,50 @@ def test_infant_and_pregnancy_extra(text, flag):
 
 def test_older_baby_mild_fever_is_not_flagged():
     assert safety.check(["mere 10 mahine ke bete ko halka bukhar hai, khel raha hai"]).red_flags == []
+
+
+# regressions from blind challenge set v2 (general phrasings, not the exact sentences)
+@pytest.mark.parametrize("text,flag", [
+    ("I can't see properly from my right eye since this morning", "sudden_vision_loss"),
+    ("papa ko achanak ek aankh se dikhna band ho gaya", "sudden_vision_loss"),
+    ("there is a deep cut on his leg, it keeps bleeding through the cloth", "heavy_bleeding"),
+    ("the wound is still bleeding after 20 minutes of pressing", "heavy_bleeding"),
+    ("a small child is bleeding heavily from the head", "heavy_bleeding"),
+    ("my grandmother has a fever and is talking strangely", "fever_stiff_neck_confusion"),
+    ("he is shaking all over and frothing at the mouth", "seizure"),
+    ("munh se jhaag aa raha hai aur poora sharir akad gaya", "seizure"),
+    ("my wife says she wants to end it all", "suicidal_intent"),
+    ("bas ab zindagi khatam kar dunga", "suicidal_intent"),
+])
+def test_regression_v2_positive(text, flag):
+    assert flag in safety.check([text]).red_flags, text
+
+
+@pytest.mark.parametrize("text", [
+    "fever with chills, shaking all over from the cold",
+    "my vision has been getting blurry slowly for 6 months",
+    "small cut on the finger, bleeding a bit",
+    "dog bit my son, small wound, thoda khoon nikla",
+])
+def test_regression_v2_benign(text):
+    assert safety.check([text]).red_flags == [], text
+
+
+@pytest.mark.parametrize("text,flag", [
+    ("He suddenly can't lift his right arm and his words are coming out jumbled", "stroke_signs"),
+    ("My mom's face has suddenly gone crooked on one side", "stroke_signs"),
+    ("papa ek haath utha nahi pa rahe", "stroke_signs"),
+    ("Uncle is sweating a lot and has pain going down his left arm", "chest_pain"),
+    ("baayein haath mein dard aur paseena", "chest_pain"),
+    ("Bacche ne galti se mitti ka tel pee liya", "poisoning_overdose"),
+])
+def test_regression_v1_rules(text, flag):
+    assert flag in safety.check([text]).red_flags, text
+
+
+def test_left_arm_negated():
+    assert safety.check(["no pain in the left arm or jaw, just a sprained wrist"]).red_flags == []
+
+
+def test_left_arm_pain_alone_is_not_flagged():
+    assert safety.check(["left arm pain since I lifted a heavy box yesterday"]).red_flags == []

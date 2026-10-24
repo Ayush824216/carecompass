@@ -141,17 +141,21 @@ def main() -> None:
         print(f"[{'official' if is_official else 'dev'} val n={m['n']}] {name}: {fmt(m)}")
 
     # hand-written challenge set (different phrasing from the templates; never used for training)
-    ch_res = {}
-    ch_path = ROOT / "dev_data" / "challenge.csv"
-    challenge = data_adapter.read_vignette_file(ch_path) if ch_path.exists() else []
-    if challenge:
+    ch_sets: dict[str, dict] = {}
+    for fname, label in (("challenge.csv", "challenge v1 (informed data v2)"), ("challenge_v2.csv", "challenge v2 (blind)")):
+        ch_path = ROOT / "dev_data" / fname
+        challenge = data_adapter.read_vignette_file(ch_path) if ch_path.exists() else []
+        if not challenge:
+            continue
+        ch_res = {}
         for name, rules, pipe in variants:
             pr, _ = predict_rows(model, challenge, cfg, use_rules=rules, use_pipeline=pipe)
             yc, yu = [r["care_type"] for r in challenge], [r["urgency"] for r in challenge]
             pc, pu = [x[0] for x in pr], [x[1] for x in pr]
             m = metrics(yc, pc, yu, pu)
             ch_res[name] = (m, yc, pc, yu, pu)
-            print(f"[challenge n={m['n']}] {name}: {fmt(m)}")
+            print(f"[{label} n={m['n']}] {name}: {fmt(m)}")
+        ch_sets[label] = ch_res
         if a.show_errors:
             m, yc, pc, yu, pu = ch_res[list(ch_res)[-1]]
             for r, c, u in zip(challenge, pc, pu):
@@ -217,6 +221,16 @@ def main() -> None:
                   + "\n" + classification_report(yu, pu, labels=list(URGENCIES), zero_division=0) + "```\n")
     report.append("Care type confusion:\n\n" + cm_md(yc, pc, list(CARE_TYPES)) + "\n")
     report.append("\nUrgency confusion:\n\n" + cm_md(yu, pu, list(URGENCIES)) + "\n")
+    for label, ch_res in ch_sets.items():
+        n = next(iter(ch_res.values()))[0]["n"]
+        report.append(f"\n## Hand-written {label} (n={n})\n")
+        report.append("Free-text cases written by the team in new phrasings, never used for training. "
+                      "This is the closest proxy here for unseen real inputs.\n")
+        report.append("| Variant | care_type macro-F1 | urgency macro-F1 | emergency recall | emergency FPR | under-triage |")
+        report.append("|---|---|---|---|---|---|")
+        for name, (m, *_r) in ch_res.items():
+            report.append(f"| {name} | {m['care_f1']:.3f} | {m['urg_f1']:.3f} | {m['emerg_recall']:.3f} | "
+                          f"{m['emerg_fpr']:.3f} | {m['under_triage']:.3f} |")
     if k_res:
         report.append(f"\n## KTAS validation split (urgency only, n={len(ktas_val)})\n")
         report.append("| Variant | urgency macro-F1 | KTAS 1-2 → immediate recall | under-triage |")

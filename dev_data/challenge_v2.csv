@@ -1,0 +1,41 @@
+id,text,language,care_type,urgency
+C2_001,"Amma has had a running nose and mild cough for two days, she is 78 and cannot climb down the stairs",en,paramedic_home_visit,same_day
+C2_002,"Mujhe 3 din se gale mein dard hai, nigalne mein thodi dikkat, bukhar nahi",hinglish,gp_teleconsult,same_day
+C2_003,"मेरे बेटे को कल रात से कान बह रहा है",hi,gp_teleconsult,same_day
+C2_004,"Papa ne kaha seene mein jakdan si hai aur baayan haath sunn ho raha hai",hinglish,emergency_referral,immediate
+C2_005,"My mother needs her blood drawn at home for a thyroid test, she uses a wheelchair",en,paramedic_home_visit,routine
+C2_006,"Daadi ke pair ke ghaav mein pus aa raha hai, sugar ki mareez hain",hinglish,nurse_home_visit,same_day
+C2_007,"I've had heartburn on and off for a few weeks, worse at night",en,gp_teleconsult,routine
+C2_008,"मेरी माँ को आठ महीने से जोड़ों में सूजन और सुबह जकड़न रहती है",hi,specialist_referral,routine
+C2_009,"Bete ko machhar ne kaata hai, bas khujli ho rahi hai",hinglish,gp_teleconsult,routine
+C2_010,"my brother is unconscious after drinking, we can't wake him",en,emergency_referral,immediate
+C2_011,"नवजात बच्चे की नाभि की देखभाल और माँ के टांकों के लिए घर पर नर्स चाहिए",hi,nurse_home_visit,routine
+C2_012,"My son has been coughing at night for 2 weeks and wheezes a little when running",en,gp_teleconsult,same_day
+C2_013,"Nani ko kal se bahut ulti ho rahi hai, kuch bhi pet mein nahi tik raha, 80 saal ki hain",hinglish,paramedic_home_visit,same_day
+C2_014,"I can't see properly from my right eye since this morning, everything is dark on one side",en,emergency_referral,immediate
+C2_015,"पापा का बीपी रोज़ नापना है, घर पर कोई आ सके तो अच्छा",hi,paramedic_home_visit,routine
+C2_016,"Mujhe kai saalon se migraine jaisa sar dard hota hai, mahine mein 4-5 baar",hinglish,specialist_referral,routine
+C2_017,"There is a deep cut on my father's leg from a sheet of tin, it keeps bleeding through the cloth",en,emergency_referral,immediate
+C2_018,"Mere husband ki kamar mein moch aa gayi hai kal se, jhuk nahi pa rahe",hinglish,paramedic_home_visit,same_day
+C2_019,"My grandmother has a fever and is talking strangely since this afternoon",en,emergency_referral,immediate
+C2_020,"मेरी पत्नी को पेशाब में जलन और बार बार पेशाब आ रहा है, दो दिन से",hi,gp_teleconsult,same_day
+C2_021,"Need a nurse to change the dressing on my mother's chest port every two days",en,nurse_home_visit,routine
+C2_022,"Bachche ke daant nikal rahe hain, chidchida hai, halka bukhar, 9 mahine ka hai",hinglish,gp_teleconsult,routine
+C2_023,"My father's feet have been numb and tingling for months, he has sugar",en,specialist_referral,routine
+C2_024,"She has been vomiting blood since an hour",en,emergency_referral,immediate
+C2_025,"मुझे दो हफ्ते से हल्का बुखार रहता है शाम को, वज़न भी कम हो रहा है",hi,gp_teleconsult,same_day
+C2_026,"Didi ko 4 mahine se pet ke neeche dard rehta hai periods ke time zyada",hinglish,specialist_referral,routine
+C2_027,"Our dog bit my son on the leg, it is a small wound but bleeding a bit",en,paramedic_home_visit,same_day
+C2_028,"Nana ji bistar par hain, unhe roz drip aur injection lagwana hai doctor ke kehne par",hinglish,nurse_home_visit,routine
+C2_029,"He is shaking all over and frothing at the mouth",en,emergency_referral,immediate
+C2_030,"मेरे पति को कल से पीठ के एक तरफ दाने और जलन है",hi,gp_teleconsult,same_day
+C2_031,"My mother keeps forgetting things for a year now, gets lost in the house",en,specialist_referral,routine
+C2_032,"Sar ghoom raha hai aur kamzori hai, BP low lag raha hai, papa 70 ke hain",hinglish,paramedic_home_visit,same_day
+C2_033,"I want to get my blood sugar report explained, fasting was 140",en,gp_teleconsult,routine
+C2_034,"Beti 15 saal ki hai, 3 mahine se periods nahi aaye",hinglish,specialist_referral,routine
+C2_035,"मेरे दादाजी को साँस लेने में बहुत तकलीफ है और होंठ नीले लग रहे हैं",hi,emergency_referral,immediate
+C2_036,"Toddler has a rash with fever for 2 days, still drinking and playing",en,gp_teleconsult,same_day
+C2_037,"Mummy ke ghutne mein operation ke baad sujan badh gayi hai aur laal hai",hinglish,nurse_home_visit,same_day
+C2_038,"my wife says she wants to end it all, she has been crying for days",en,emergency_referral,immediate
+C2_039,"Kal se aankh mein dard aur roshni mein chubhan, laal bhi hai",hinglish,gp_teleconsult,same_day
+C2_040,"I feel tired all the time for 2 months and my hair is falling",en,gp_teleconsult,routine
