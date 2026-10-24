@@ -261,7 +261,10 @@
     },
     "whyFollowup": "We need one more detail before deciding, because the answer could change the care type or urgency: “{q}”",
     "whyIdle": "The reason for the decision will appear here, in plain words.",
-    "locationLine": "Location"
+    "locationLine": "Location",
+    "matchedWithin": "{n} found within {km} km · best: {name}, {dist} km",
+    "matchedAll": "{n} found across Delhi NCR · best: {name}, {dist} km",
+    "matchedTele": "{n} doctors on video call · best: {name}"
   },
   "result": {
     "title": "Recommended care",
@@ -279,7 +282,16 @@
     "book": "Book",
     "noCaregivers": "No caregiver is free for this right now. Try again later or call your nearest clinic.",
     "matchScore": "Match score",
-    "teleconsult": "Video / phone"
+    "teleconsult": "Video / phone",
+    "heading": {
+      "paramedic_home_visit": "Paramedics near you",
+      "nurse_home_visit": "Nurses near you",
+      "gp_teleconsult": "Doctors available on video call",
+      "specialist_referral": "Specialists near you"
+    },
+    "specialistHeading": "{spec} near you",
+    "inPlace": "({place})",
+    "bestHere": "Best match"
   },
   "booking": {
     "title": "Book {name}",
@@ -516,5 +528,43 @@
     "required": "Choose your location first so we can find caregivers near you.",
     "done": "Done",
     "selectPlaceholder": "Select an area…"
+  },
+  "modes": {
+    "home_visit": "Home visit",
+    "teleconsult": "Video call",
+    "clinic": "Clinic visit"
+  },
+  "card": {
+    "experience": "{n} yrs experience",
+    "qualification": "Qualification",
+    "mode": "Mode"
+  },
+  "specialtyPlural": {
+    "dermatology": "Skin specialists (dermatologists)",
+    "orthopedics": "Bone & joint specialists (orthopaedists)",
+    "cardiology": "Heart specialists (cardiologists)",
+    "pediatrics": "Child specialists (paediatricians)",
+    "ent": "Ear-nose-throat specialists (ENT)",
+    "gynecology": "Women's health specialists (gynaecologists)",
+    "neurology": "Nerve & brain specialists (neurologists)",
+    "pulmonology": "Lung specialists (pulmonologists)",
+    "ophthalmology": "Eye specialists (ophthalmologists)",
+    "endocrinology": "Sugar & thyroid specialists (endocrinologists)",
+    "psychiatry": "Mental health specialists (psychiatrists)",
+    "oncology": "Lump & cancer-screening specialists (oncologists)"
+  },
+  "specialty": {
+    "dermatology": "Dermatology (skin)",
+    "orthopedics": "Orthopaedics (bones & joints)",
+    "cardiology": "Cardiology (heart)",
+    "pediatrics": "Paediatrics (children)",
+    "ent": "ENT (ear, nose, throat)",
+    "gynecology": "Gynaecology (women's health)",
+    "neurology": "Neurology (nerves & brain)",
+    "pulmonology": "Pulmonology (lungs)",
+    "ophthalmology": "Ophthalmology (eyes)",
+    "endocrinology": "Endocrinology (sugar & thyroid)",
+    "psychiatry": "Psychiatry (mental health)",
+    "oncology": "Oncology (lumps & cancer screening)"
   }
 }

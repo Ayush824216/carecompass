@@ -261,7 +261,10 @@
     },
     "whyFollowup": "फ़ैसले से पहले एक और जानकारी चाहिए, क्योंकि इसका जवाब देखभाल या जल्दी बदल सकता है: “{q}”",
     "whyIdle": "फ़ैसले का कारण यहाँ आसान शब्दों में दिखेगा।",
-    "locationLine": "जगह"
+    "locationLine": "जगह",
+    "matchedWithin": "{km} किमी के अंदर {n} मिले · सबसे सही: {name}, {dist} किमी",
+    "matchedAll": "दिल्ली NCR में {n} मिले · सबसे सही: {name}, {dist} किमी",
+    "matchedTele": "वीडियो कॉल पर {n} डॉक्टर · सबसे सही: {name}"
   },
   "result": {
     "title": "सुझाई गई देखभाल",
@@ -279,7 +282,16 @@
     "book": "बुक करें",
     "noCaregivers": "अभी इसके लिए कोई देखभालकर्ता खाली नहीं है। बाद में कोशिश करें या पास के क्लिनिक को कॉल करें।",
     "matchScore": "मेल स्कोर",
-    "teleconsult": "वीडियो / फ़ोन"
+    "teleconsult": "वीडियो / फ़ोन",
+    "heading": {
+      "paramedic_home_visit": "आपके पास के पैरामेडिक",
+      "nurse_home_visit": "आपके पास की नर्स",
+      "gp_teleconsult": "वीडियो कॉल पर उपलब्ध डॉक्टर",
+      "specialist_referral": "आपके पास के विशेषज्ञ"
+    },
+    "specialistHeading": "आपके पास के {spec}",
+    "inPlace": "({place})",
+    "bestHere": "सबसे सही"
   },
   "booking": {
     "title": "{name} को बुक करें",
@@ -552,5 +564,43 @@
     "required": "पहले अपनी जगह चुनें ताकि हम पास के देखभालकर्ता ढूँढ सकें।",
     "done": "ठीक है",
     "selectPlaceholder": "इलाका चुनें…"
+  },
+  "modes": {
+    "home_visit": "घर पर",
+    "teleconsult": "वीडियो कॉल",
+    "clinic": "क्लिनिक पर"
+  },
+  "card": {
+    "experience": "{n} साल का अनुभव",
+    "qualification": "योग्यता",
+    "mode": "तरीका"
+  },
+  "specialtyPlural": {
+    "dermatology": "त्वचा विशेषज्ञ (डर्मेटोलॉजिस्ट)",
+    "orthopedics": "हड्डी व जोड़ विशेषज्ञ (ऑर्थोपेडिक)",
+    "cardiology": "हृदय विशेषज्ञ (कार्डियोलॉजिस्ट)",
+    "pediatrics": "बाल रोग विशेषज्ञ",
+    "ent": "नाक-कान-गला विशेषज्ञ (ENT)",
+    "gynecology": "महिला रोग विशेषज्ञ",
+    "neurology": "नस व दिमाग विशेषज्ञ (न्यूरोलॉजिस्ट)",
+    "pulmonology": "फेफड़ों के विशेषज्ञ",
+    "ophthalmology": "आँखों के विशेषज्ञ",
+    "endocrinology": "शुगर व थायरॉइड विशेषज्ञ",
+    "psychiatry": "मानसिक स्वास्थ्य विशेषज्ञ",
+    "oncology": "गांठ व कैंसर जाँच विशेषज्ञ"
+  },
+  "specialty": {
+    "dermatology": "त्वचा रोग",
+    "orthopedics": "हड्डी व जोड़",
+    "cardiology": "हृदय रोग",
+    "pediatrics": "बाल रोग",
+    "ent": "नाक-कान-गला",
+    "gynecology": "महिला रोग",
+    "neurology": "नस व दिमाग",
+    "pulmonology": "फेफड़े",
+    "ophthalmology": "आँखें",
+    "endocrinology": "शुगर व थायरॉइड",
+    "psychiatry": "मानसिक स्वास्थ्य",
+    "oncology": "गांठ व कैंसर जाँच"
   }
 }

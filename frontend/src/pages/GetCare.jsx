@@ -106,7 +106,7 @@ export default function GetCare() {
           <span><span className="block text-xl font-bold">{t("emergency.title")}</span><span className="block">{t("emergency.call112")} · {t("emergency.call108")}</span></span>
         </button>
       )}
-      {final && !emergency && <ResultSection response={response} />}
+      {final && !emergency && <ResultSection response={response} debug={debug} />}
       {final && emergency && emOpen && <EmergencyView response={response} onBack={() => setEmOpen(false)} />}
     </div>
   );

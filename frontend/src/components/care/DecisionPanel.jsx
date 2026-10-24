@@ -22,6 +22,18 @@ export function modelKey(name = "") {
   return "default";
 }
 
+function matchSummary(response, dbg, t) {
+  const n = response.matched_caregivers.length;
+  const best = dbg.matching?.[0];
+  const f = dbg.matching_filters || {};
+  if (!best) return t("panel.matched", { n });
+  if (response.care_type === "gp_teleconsult") return t("panel.matchedTele", { n, name: best.name });
+  const dist = best.distance_km != null ? best.distance_km.toFixed(1) : "—";
+  return f.radius_km
+    ? t("panel.matchedWithin", { n, km: f.radius_km, name: best.name, dist })
+    : t("panel.matchedAll", { n, name: best.name, dist });
+}
+
 function buildStages({ response, debug, t }) {
   if (!response) return null;
   const dbg = debug || {};
@@ -45,7 +57,7 @@ function buildStages({ response, debug, t }) {
   out.triage = followup ? { status: "pending", value: "" }
     : { status: emergency ? "alert" : "done", value: `${t(`careTypes.${response.care_type}.name`)} · ${t(`urgency.${response.urgency}.label`)}` };
   out.matching = emergency ? { status: "skipped", value: t("panel.matchSkipped") }
-    : followup ? { status: "pending", value: "" } : { status: "done", value: t("panel.matched", { n: response.matched_caregivers.length }) };
+    : followup ? { status: "pending", value: "" } : { status: "done", value: matchSummary(response, dbg, t) };
   return out;
 }
 
