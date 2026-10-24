@@ -1,0 +1,5 @@
+{
+  "_note": "Follow-up policy knobs (backend/app/intake.py). A question is asked only if the local model is below these confidences, or a high-risk screen applies.",
+  "min_care_conf": 0.6,
+  "min_urgency_conf": 0.6
+}
