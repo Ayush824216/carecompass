@@ -193,6 +193,7 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
         })}
       </ol>
       {phase === "idle" && <p className="-mt-3 text-center text-sm text-muted">{t("panel.idle")}</p>}
+      {phase === "done" && debug?.processing?.local && <p className="-mt-3 text-center text-sm font-semibold text-muted">{t("privacy.processedLocally")}</p>}
 
       {notHealth && phase === "done" && (
         <div className="rounded-xl2 border-2 border-dashed border-line bg-sunken/60 px-4 py-4" role="status">

@@ -5,12 +5,14 @@ import logging
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, Header, HTTPException, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from . import cache, data_adapter, intake, pathways, pipeline
+import time
+
+from . import cache, data_adapter, intake, pathways, pipeline, privacy
 from .config import get_settings
 from .schemas import BookingRequest, BookingResponse, Caregiver, TriageRequest, TriageResponse
 
@@ -42,25 +44,38 @@ def health() -> dict:
 
 
 @app.post("/api/v1/triage", response_model=TriageResponse, response_model_exclude_none=False)
-def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `debug` decision trace to the response")):
+def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `debug` decision trace to the response"),
+           x_incognito: str = Header("", description="`1`: incognito. Nothing cached, counted or logged; local models only")):
     """Stateless: send the full conversation_history each turn. Returns a follow-up question OR a decision.
 
     The response is exactly the official schema unless `debug` is true (body field or `?debug=true`),
-    in which case one extra key, `debug`, is added.
+    in which case one extra key, `debug`, is added. Nothing is stored on the server (see docs/PRIVACY.md).
     """
     want_debug = bool(debug or req.debug)
-    rc, k = cache.response_cache(), cache.key(req, want_debug)
-    hit = rc.get(k)
-    if hit is not None:  # same request -> identical answer (see app/cache.py)
-        return JSONResponse(hit)
-    trace: dict = {}
-    body = jsonable_encoder(pipeline.run(req, trace=trace))
-    if want_debug:
-        trace["cache"] = {"key": k[:12], "version": cache.version()}
-        body["debug"] = jsonable_encoder(trace)
-    if not trace.get("error"):  # never pin a fallback produced by an internal error
-        rc.put(k, body)
+    inc = x_incognito.strip().lower() in ("1", "true", "yes", "on")
+    with privacy.request_mode(inc):
+        t0 = time.perf_counter()
+        rc, k = cache.response_cache(), cache.key(req, want_debug)
+        hit = None if inc else rc.get(k)
+        if hit is not None:  # same request -> identical answer (see app/cache.py)
+            return JSONResponse(hit)
+        trace: dict = {}
+        body = jsonable_encoder(pipeline.run(req, use_llm=not privacy.local_only(), trace=trace))
+        trace["processing"] = {"local": privacy.local_only() or not trace.get("llm", {}).get("used", False),
+                               "incognito": inc, "llm_used": bool(trace.get("llm", {}).get("used"))}
+        if want_debug:
+            trace["cache"] = {"key": k[:12], "version": cache.version(), "skipped": inc}
+            body["debug"] = jsonable_encoder(trace)
+        privacy.record(body, trace, (time.perf_counter() - t0) * 1000)
+        if not inc and not trace.get("error"):  # never pin a fallback produced by an internal error
+            rc.put(k, body)
     return JSONResponse(body)
+
+
+@app.get("/metrics")
+def metrics() -> dict:
+    """Anonymised counters only (decision labels, stages, latency buckets): no text, no per-user data."""
+    return privacy.metrics()
 
 
 @app.get("/api/v1/localities")

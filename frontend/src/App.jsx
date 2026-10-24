@@ -8,6 +8,7 @@ import HowItWorks from "./pages/HowItWorks.jsx";
 import Developers from "./pages/Developers.jsx";
 import Bookings from "./pages/Bookings.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Memory from "./pages/Memory.jsx";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="how-it-works" element={<HowItWorks />} />
             <Route path="developers" element={<Developers />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="memory" element={<Memory />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

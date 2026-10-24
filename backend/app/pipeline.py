@@ -7,7 +7,7 @@ from dataclasses import asdict
 from functools import lru_cache
 from typing import Optional
 
-from . import assessment, domain_guard, evidence, explain, intake, llm_triage, matching, pathways, safety
+from . import assessment, domain_guard, evidence, explain, intake, llm_triage, matching, memory, pathways, safety
 from .config import get_settings
 from .pathways import route as proute
 from .lang import clean, detect_language, normalise, resolve_language, term_matches
@@ -217,7 +217,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         # clinical pathways (fever, cough, stomach, chest pain, headache): stage rules + senior-doctor questions
         t = time.perf_counter()
         pout = pathways.run(turns, history=[h.model_dump() for h in req.conversation_history], user_input=req.user_input,
-                            state=req.assessment_state)
+                            state=req.assessment_state, memory=req.memory)
         prim = pout.primary
         timings["pathways"] = time.perf_counter() - t
         tr["pathways"] = proute.trace(pout, lang)
@@ -291,6 +291,12 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             reasoning = proute.reasoning(pout, dec.care_type, dec.urgency, lang)
         else:
             reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
+        # what the user may save ON THEIR DEVICE (debug block only; sensitive items need an explicit tick)
+        tr["memory_candidates"] = memory.candidates(turns, pout, age["group"], lang)
+        cat = assessment.category_for(prim.pathway, pout.facts) if prim is not None else None
+        tr["memory_summary"] = {"category": cat, "stage": prim.stage if prim is not None else None,
+                                "care_type": dec.care_type, "urgency": dec.urgency,
+                                "sensitive": cat in memory.SENSITIVE_CATEGORIES}
         if prim is not None:  # "Your assessment" card (optional block only; official fields unchanged)
             tr["assessment"] = assessment.build_card(pout, dec.care_type, dec.urgency, reasoning, lang)
 
@@ -312,7 +318,11 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         return TriageResponse(follow_up_question=None, care_type=dec.care_type, urgency=dec.urgency, red_flags=[],
                               reasoning=reasoning, matched_caregivers=matched)
     except Exception:
-        log.exception("pipeline error; returning safe response")
+        if get_settings().debug_log_text:  # local development only: tracebacks may quote user text
+            log.exception("pipeline error; returning safe response")
+        else:
+            import sys
+            log.error("pipeline error %s; returning safe response", sys.exc_info()[0].__name__)
         tr["error"] = True
         try:
             doubt = safety.check([t for t in turns if not is_entry_chip(t)])
@@ -325,7 +335,9 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
     finally:
         timings["total"] = time.perf_counter() - t0
         tr["per_stage_latency_ms"] = {k: round(v * 1000, 2) for k, v in timings.items()}
-        log.info("triage latency_ms %s", " ".join(f"{k}={v * 1000:.1f}" for k, v in timings.items()))
+        from .privacy import incognito
+        if not incognito():  # timings only, never text
+            log.info("triage latency_ms %s", " ".join(f"{k}={v * 1000:.1f}" for k, v in timings.items()))
 
 
 def final_decision(text: str, model=None, cfg: Optional[dict] = None, use_llm: bool = False,

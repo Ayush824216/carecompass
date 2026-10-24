@@ -181,6 +181,9 @@ def identify_question(text: str) -> Optional[str]:
     hit = question_index().get(_norm(text or ""))
     if hit:
         return hit[1]["id"]
+    from ..memory import QID, is_memory_question
+    if is_memory_question(text or ""):  # "Last time you told us ... still true?" (device memory, confirmed once)
+        return QID
     contra = _match_contradiction(text or "")  # dynamic "you said both X and not X" confirmation
     return contra["id"] if contra else None
 
@@ -217,8 +220,10 @@ class Answers:
         return len([q for q in self.asked if q not in self.confirm_asked and q not in self.meta_asked])
 
 
-def parse_answers(history: list[dict], user_input: str) -> Answers:
-    """Read chip / free-text answers to pathway questions out of the (stateless) conversation history."""
+def parse_answers(history: list[dict], user_input: str, extra: Optional[list[dict]] = None) -> Answers:
+    """Read chip / free-text answers to pathway questions out of the (stateless) conversation history.
+    `extra`: dynamic questions built for this request (the memory confirmation)."""
+    extra_idx = {_norm(q["text"][l]): q for q in (extra or []) for l in LANGS}
     turns = [(t.get("role", "user"), t.get("content", "") or "") for t in history]
     if not turns or turns[-1] != ("user", user_input):
         turns.append(("user", user_input))
@@ -227,12 +232,12 @@ def parse_answers(history: list[dict], user_input: str) -> Answers:
     for role, content in turns:
         if role == "assistant":
             hit = question_index().get(_norm(content))
-            pending = hit[1] if hit else _match_contradiction(content)
+            pending = hit[1] if hit else (extra_idx.get(_norm(content)) or _match_contradiction(content))
             if pending:
                 ans.asked.append(pending["id"])
                 if pending.get("kind") == "confirm":
                     ans.confirm_asked.append(pending["id"])
-                elif pending.get("kind") == "age":
+                elif pending.get("kind") in ("age", "memory"):
                     ans.meta_asked.append(pending["id"])
             continue
         if role != "user" or pending is None:
@@ -444,6 +449,7 @@ class PathwayOutcome:
     answers: Answers
     contradictions: set[str] = field(default_factory=set)  # said both "X" and "no X"; the more severe was used
     spans: dict = field(default_factory=dict)  # slot / sign id -> evidence span in the user's words (app.evidence)
+    memory_q: Optional[dict] = None  # one confirmation of remembered items (device memory), asked once
 
     @property
     def primary(self) -> Optional[PathwayResult]:
@@ -478,12 +484,14 @@ def merge_state_answers(ans: Answers, state: Optional[dict]) -> None:
 
 
 def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input: str = "",
-        state: Optional[dict] = None) -> PathwayOutcome:
+        state: Optional[dict] = None, memory: Optional[dict] = None) -> PathwayOutcome:
     common, pathways, _ = load()
     slots = parse(user_texts)
     spans = evidence.enforce_value_spans(slots, user_texts)  # a number without a span is dropped, never estimated
     signs, contra = detect_signs_detail(slots)
-    answers = parse_answers(history or [], user_input) if history is not None else Answers()
+    from .. import memory as mem
+    memq = mem.question(memory)
+    answers = parse_answers(history or [], user_input, [memq] if memq else None) if history is not None else Answers()
     merge_state_answers(answers, state)
     spans.update(evidence.sign_spans(signs, answers, user_texts))
     facts, neg, known = build_facts(slots, signs, answers)
@@ -497,7 +505,7 @@ def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input:
         p = pathways[pid]
         if expr.evaluate(p.cfg["trigger"], facts, fn):
             results.append(evaluate_pathway(p, facts, neg, known))
-    return PathwayOutcome(results, facts, neg, known, slots, answers, contra, spans)
+    return PathwayOutcome(results, facts, neg, known, slots, answers, contra, spans, memq)
 
 
 # ---------------------------------------------------------------- senior-doctor questioning
@@ -524,14 +532,17 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
                 if q.get("kind") == "confirm" and expr.evaluate(q.get("only_if", "False"), facts, fn) \
                         and not expr.evaluate(q.get("skip_if", "False"), facts, fn):
                     return q
-    # age unknown: one chip question early (after the first danger screen), outside the cap of max_q
+    # remembered items (confirmed once), then an unknown age: chip questions early (after the first danger
+    # screen), outside the cap of max_q
+    danger_open = any(q.get("kind") == "danger" and q["id"] not in out.answers.asked
+                      and expr.evaluate(q.get("only_if", "True"), facts, fn)
+                      and not expr.evaluate(q.get("skip_if", "False"), facts, fn) for q in p.cfg["questions"])
+    early = bool(out.answers.asked) or not danger_open
+    if out.memory_q and out.memory_q["id"] not in out.answers.asked and early:
+        return out.memory_q
     age_q = next((q for q in p.cfg["questions"] if q.get("kind") == "age"), None)
-    if age_q and not facts.get("age_known") and age_q["id"] not in out.answers.asked:
-        danger_open = any(q.get("kind") == "danger" and q["id"] not in out.answers.asked
-                          and expr.evaluate(q.get("only_if", "True"), facts, fn)
-                          and not expr.evaluate(q.get("skip_if", "False"), facts, fn) for q in p.cfg["questions"])
-        if out.answers.asked or not danger_open:
-            return age_q
+    if age_q and not facts.get("age_known") and age_q["id"] not in out.answers.asked and early:
+        return age_q
     if n_clinical_asked >= max_q:
         return None
     if expr.evaluate(p.cfg.get("sufficient", "False"), facts, fn):

@@ -38,8 +38,10 @@ def _http() -> httpx.Client:
 
 
 def available() -> bool:
+    """False in LOCAL_ONLY mode and for incognito requests: then no external API is called."""
+    from .privacy import local_only
     s = get_settings()
-    return s.llm_provider not in ("", "none") and bool(s.llm_api_key) and bool(s.llm_model)
+    return not local_only() and s.llm_provider not in ("", "none") and bool(s.llm_api_key) and bool(s.llm_model)
 
 
 def _extract_json(text: str) -> Optional[dict]:
@@ -64,6 +66,8 @@ def chat_json(system: str, user: str, max_tokens: int = 400, temperature: float 
     """Return the parsed JSON object from the model, or None on timeout/error/invalid JSON."""
     if not available():
         return None
+    from .redact import redact
+    user = redact(user)  # names, phones, emails, addresses and ID numbers never leave the server
     s = get_settings()
     timeout = timeout or s.llm_timeout_s
     t0 = time.perf_counter()

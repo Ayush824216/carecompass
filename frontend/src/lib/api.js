@@ -8,10 +8,14 @@ export class ApiError extends Error {
   }
 }
 
+// Incognito: every request says so; the server then skips its cache, metrics and logs, and uses local models only
+let incognito = false;
+export function setIncognitoHeader(v) { incognito = Boolean(v); }
+
 async function req(path, opts = {}) {
   let r;
   try {
-    r = await fetch(`${API_BASE}${path}`, { headers: { "Content-Type": "application/json" }, ...opts });
+    r = await fetch(`${API_BASE}${path}`, { headers: { "Content-Type": "application/json", ...(incognito ? { "X-Incognito": "1" } : {}) }, ...opts });
   } catch {
     throw new ApiError("network", { network: true });
   }

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { translate } from "../i18n/index.js";
-import { load, save } from "../lib/storage.js";
+import { load, save, setNoStore } from "../lib/storage.js";
+import { setIncognitoHeader } from "../lib/api.js";
 import { stopSpeaking } from "../lib/speech.js";
 
 const SIZES = [16, 18, 20, 22, 24];
@@ -18,6 +19,20 @@ export function AppProvider({ children }) {
   const [location, setLocationState] = useState(() => load("cc.location", UNSET_LOC));
   const [geoStatus, setGeoStatus] = useState("idle"); // idle | asking | denied | unavailable | ok
   const [toasts, setToasts] = useState([]);
+  // privacy mode lives in memory only: a fresh tab always starts in "memory" (device memory ON)
+  const [mode, setModeState] = useState("memory"); // memory | incognito
+  const [consent, setConsentState] = useState(() => load("cc.consent", null));
+  const [session, setSession] = useState(0); // bumped by "End session" / "Clear conversation" to wipe chat state
+  const setMode = useCallback((m) => {
+    const inc = m === "incognito";
+    setNoStore(inc); setIncognitoHeader(inc); setModeState(m);
+  }, []);
+  const endSession = useCallback(() => { setMode("memory"); setSession((n) => n + 1); }, [setMode]);
+  const giveConsent = useCallback((choice) => {
+    const c = { choice, at: new Date().toISOString() };
+    setConsentState(c);
+    if (choice === "incognito") setMode("incognito"); else save("cc.consent", c);
+  }, [setMode]);
 
   useEffect(() => { save("cc.lang", lang); document.documentElement.lang = lang; }, [lang]);
   useEffect(() => {
@@ -69,7 +84,9 @@ export function AppProvider({ children }) {
     sizeIdx, basePx: SIZES[sizeIdx], canGrow: sizeIdx < SIZES.length - 1, canShrink: sizeIdx > 0,
     grow: () => setSizeIdx((i) => Math.min(SIZES.length - 1, i + 1)), shrink: () => setSizeIdx((i) => Math.max(0, i - 1)),
     location, setLocation, requestGps, geoStatus, hasLocation: location.lat != null, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast,
-  }), [lang, t, voice, contrast, sizeIdx, location, setLocation, requestGps, geoStatus, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast]);
+    mode, setMode, incognito: mode === "incognito", endSession, session, consent, giveConsent,
+  }), [lang, t, voice, contrast, sizeIdx, location, setLocation, requestGps, geoStatus, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast,
+    mode, setMode, endSession, session, consent, giveConsent]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

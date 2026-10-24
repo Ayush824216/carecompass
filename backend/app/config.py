@@ -43,6 +43,8 @@ class Settings:
         self.response_cache_ttl_s = float(os.getenv("RESPONSE_CACHE_TTL_S", "900"))
         # fixed sampling seed for LLM providers that support one (temperature is always 0)
         self.llm_seed = int(os.getenv("LLM_SEED", "7"))
+        # no external API calls at all (LLM off); the decision panel shows "Processed locally"
+        self.local_only = os.getenv("LOCAL_ONLY", "false").strip().lower() in ("1", "true", "yes", "on")
         self.debug_log_text = os.getenv("DEBUG_LOG_TEXT", "false").strip().lower() in ("1", "true", "yes", "on")
 
     def __repr__(self) -> str:  # never leak the key

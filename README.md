@@ -173,3 +173,7 @@ Latest metrics: [docs/EVAL.md](docs/EVAL.md).
 ## Abstention, grounding and consistency
 
 No clinical question without health evidence in the user's own words; gibberish, maths and off-topic text get a specific reply. Every value shown has an evidence span, the LLM may return only closed-enum labels, and explanations cite our knowledge base (`kb/`, built by `python scripts/build_kb.py`). The same request gives the same answer (deterministic path and a versioned response cache). Train the input-type classifier with `python scripts/train_input_type.py`. Results: docs/EVAL.md.
+
+## Privacy and memory
+
+Nothing about the user is stored on the server: no account, no database, no chat logs. Health memory (age group, confirmed conditions, short assessment summaries) is saved only on the user's device and confirmed once before it is used; memory can raise urgency but never lower it. Sensitive topics are never saved without an explicit tick. Incognito writes nothing anywhere and skips the server cache, metrics, logs and LLM. PII is redacted before any LLM call, and `LOCAL_ONLY=true` disables external APIs. Details, retention and DPDP Act 2023 notes: docs/PRIVACY.md.

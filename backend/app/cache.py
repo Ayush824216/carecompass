@@ -52,6 +52,7 @@ def key(req, debug: bool) -> str:
         "u": _norm(req.user_input),
         "h": [[t.role, _norm(t.content)] for t in req.conversation_history if t.content],
         "s": req.assessment_state or None,
+        "m": req.memory or None,
         "l": req.language,
         "loc": [round(req.location.lat, 5), round(req.location.lng, 5)] if req.location else None,
         "d": bool(debug),

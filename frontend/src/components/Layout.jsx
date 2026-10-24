@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { ConsentNotice, ModeToggle } from "./Privacy.jsx";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Contrast, Github, Menu, Minus, Phone, Plus, SlidersHorizontal, Volume2, VolumeX, X, XCircle } from "lucide-react";
@@ -127,7 +128,7 @@ function DisplayMenu() {
 
 const LINKS = [
   ["/care", "nav.getCare"], ["/caregivers", "nav.caregivers"], ["/how-it-works", "nav.how"],
-  ["/developers", "nav.developers"], ["/bookings", "nav.bookings"],
+  ["/developers", "nav.developers"], ["/bookings", "nav.bookings"], ["/memory", "nav.memory"],
 ];
 
 function useViewportWidth() {
@@ -173,6 +174,7 @@ function Navbar() {
           ))}
         </nav>}
         <div className="ml-auto flex items-center gap-2">
+          {fullNav && <ModeToggle />}
           {showControls && (
             <div className="flex items-center gap-2">
               <DisplayMenu />
@@ -194,6 +196,7 @@ function Navbar() {
               {LINKS.map(([to, key]) => (
                 <NavLink key={to} to={to} className={({ isActive }) => `${linkCls({ isActive })} min-h-[48px] flex items-center`}>{t(key)}</NavLink>
               ))}
+              <div className="mt-2 border-t border-line pt-3"><ModeToggle /></div>
               {!showControls && <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-line pt-3">
                 <span className="eyebrow w-full">{t("nav.settings")}</span>
                 <TextSizeControl />
@@ -278,6 +281,7 @@ export default function Layout() {
       <Navbar />
       <main id="main" className="flex-1">
         <Outlet />
+        <ConsentNotice />
       </main>
       <Footer />
       <Toasts />

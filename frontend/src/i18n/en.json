@@ -28,7 +28,8 @@
     "voiceOn": "Voice on",
     "voiceOff": "Voice off",
     "voiceAria": "Read answers aloud",
-    "settings": "Display"
+    "settings": "Display",
+    "memory": "My health memory"
   },
   "footer": {
     "tagline": "Care routing for every Indian home: what care, how urgent, and who should go.",
@@ -832,5 +833,67 @@
     "youSaid": "You said: “{text}”",
     "fromAnswer": "From your earlier answer",
     "source": "Source"
+  },
+  "privacy": {
+    "memoryOn": "Memory ON",
+    "memoryOnHint": "Saved only on this device. Tap for Incognito.",
+    "incognito": "Incognito",
+    "incognitoBadge": "Incognito: nothing is saved",
+    "endSession": "End session",
+    "clearConversation": "Clear conversation",
+    "processedLocally": "Processed locally",
+    "consentTitle": "Before you start",
+    "consentPoints": "We process what you type only to suggest the right care and how urgent it is. This is not a diagnosis.|Your health memory is saved only on this device, never on our server. You can see, edit, export or delete it under \"My health memory\".|Names, phone numbers and addresses are removed before any AI service sees the text.|Sensitive topics (mental health, sexual health, pregnancy, HIV, alcohol or drugs) are never saved unless you tick \"Save this\".|Want nothing saved at all? Use Incognito: nothing is written, and the session is wiped when you close the tab or tap \"End session\".|In an emergency, call 112.",
+    "consentOk": "I understand, continue",
+    "consentIncognito": "Use Incognito",
+    "manage": "Manage my health memory"
+  },
+  "memory": {
+    "title": "My health memory",
+    "lead": "Everything below is saved only in this browser on this device. Nothing is stored on our server.",
+    "profile": "Health profile",
+    "past": "Past assessments (summaries)",
+    "device": "Other things this device remembers",
+    "empty": "Nothing saved yet.",
+    "forget": "Mat yaad rakho / Forget",
+    "savedOn": "Saved {d}",
+    "stillTrue": "Still true",
+    "editAge": "Change age group",
+    "export": "Export as JSON",
+    "deleteAll": "Delete all",
+    "deleteAllConfirm": "Delete your whole health memory from this device?",
+    "notSaved": "Not saved",
+    "noChat": "Only the date, category, stage and care type are kept. The chat itself is never saved.",
+    "serverNote": "The server keeps nothing about you: no account, no database, no chat logs (docs/PRIVACY.md).",
+    "saveTitle": "Remember for next time?",
+    "saveHint": "Saved only on this device. Next time we will ask you once if it is still true.",
+    "sensitive": "Sensitive",
+    "saveThis": "Save this",
+    "summaryLine": "A short summary of this assessment (date, category, care type)",
+    "saveButton": "Save on this device",
+    "dontSave": "Don't save",
+    "saved": "Saved on this device",
+    "age": {
+      "infant": "Age under 1 year",
+      "child": "Age under 18",
+      "adult": "Age 18–64",
+      "elderly": "Age 65+"
+    },
+    "deviceKeys": {
+      "language": "Preferred language",
+      "location": "Saved location",
+      "emergencyContact": "Emergency contact"
+    },
+    "cat": {
+      "fever": "Fever",
+      "cough": "Cough",
+      "breathing": "Breathing",
+      "chest_pain": "Chest pain",
+      "headache": "Headache / dizziness",
+      "abdominal": "Abdominal pain",
+      "vomiting": "Vomiting / loose motions",
+      "urinary": "Urine problem",
+      "mood": "Mood"
+    }
   }
 }

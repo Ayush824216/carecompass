@@ -60,3 +60,7 @@ All models, APIs, libraries, datasets and the references above are listed in `do
 ## Abstention, hallucination control and consistency
 
 After round-2 feedback, clinical questioning needs an evidence span in the user's words. A person mention such as "abba" is not enough. Every extracted symptom and number keeps its span, LLM output is restricted to closed enums, and explanations cite chunks from our own knowledge base. A deterministic decision path plus a versioned response cache gives 100% consistency over 25 inputs × 20 runs (docs/EVAL.md).
+
+## Privacy and memory
+
+Nothing about the user is stored on the server: no account, no database, no chat logs. Health memory (age group, confirmed conditions, short assessment summaries) is saved only on the user's device and confirmed once before it is used; memory can raise urgency but never lower it. Sensitive topics are never saved without an explicit tick. Incognito writes nothing anywhere and skips the server cache, metrics, logs and LLM. PII is redacted before any LLM call, and `LOCAL_ONLY=true` disables external APIs. Details, retention and DPDP Act 2023 notes: docs/PRIVACY.md.

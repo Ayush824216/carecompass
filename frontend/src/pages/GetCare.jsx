@@ -9,7 +9,9 @@ import DecisionPanel from "../components/care/DecisionPanel.jsx";
 import ResultSection from "../components/care/ResultSection.jsx";
 import EmergencyView from "../components/care/EmergencyView.jsx";
 import { ErrorState } from "../components/ui.jsx";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, Trash2 } from "lucide-react";
+import { IncognitoBadge, ModeToggle, SaveToMemory } from "../components/Privacy.jsx";
+import { loadMemory, memoryHints } from "../lib/memory.js";
 
 const MAX_Q = 4;
 let uid = 0;
@@ -24,7 +26,7 @@ function quickRepliesFor(question, bank) {
 }
 
 export default function GetCare() {
-  const { t, lang, voice, location, hasLocation } = useApp();
+  const { t, lang, voice, location, hasLocation, incognito, session } = useApp();
   const welcome = useCallback(() => [{ id: nextId(), role: "assistant", content: t("care.welcome"), ts: Date.now() }], [t]);
   const [messages, setMessages] = useState(welcome);
   const [history, setHistory] = useState([]);
@@ -53,7 +55,9 @@ export default function GetCare() {
     try {
       const { data, ms: took } = await api.triage(
         { user_input: text, language: "auto", location: { lat: location.lat, lng: location.lng }, conversation_history: hist,
-          ...(hist.length && debug?.assessment_state ? { assessment_state: debug.assessment_state } : {}) },
+          ...(hist.length && debug?.assessment_state ? { assessment_state: debug.assessment_state } : {}),
+          // device memory (Memory ON only): confirmed once in the chat before it is used, never sent in Incognito
+          ...(!incognito && memoryHints(loadMemory()) ? { memory: memoryHints(loadMemory()) } : {}) },
         { debug: true });
       const { debug: dbg, ...official } = data;
       setResponse(official); setDebug(dbg || null); setMs(took); setPhase("done");
@@ -74,7 +78,7 @@ export default function GetCare() {
       setError(t("common.serverDown"));
       setMessages((m) => m.slice(0, -1));
     }
-  }, [history, location, hasLocation, voice, t, response, messages, debug, phase]);
+  }, [history, location, hasLocation, voice, t, response, messages, debug, phase, incognito]);
 
   // only when the emergency came from answering one of our questions (a chip tapped by mistake)
   const canUndo = Boolean(snapshot.current?.response?.follow_up_question);
@@ -86,10 +90,13 @@ export default function GetCare() {
     setEmOpen(false); snapshot.current = null;
   };
 
-  const reset = () => {
+  const reset = useCallback(() => {
     stopSpeaking();
     setMessages(welcome()); setHistory([]); setPhase("idle"); setResponse(null); setDebug(null); setError(""); setEmOpen(false);
-  };
+    snapshot.current = null; lastInput.current = null;
+  }, [welcome]);
+  // "End session" (Incognito) wipes the conversation held in memory
+  useEffect(() => { if (session) reset(); }, [session, reset]);
 
   // "Question X of max 4" counts clinical follow-ups only (redirects for greetings / off-topic do not count)
   const clinicalQ = Boolean(debug?.followup?.question_id) && debug?.domain_class === "health_request";
@@ -107,9 +114,16 @@ export default function GetCare() {
 
   return (
     <div className="container-page py-8 md:py-10">
-      <div className="mb-6">
-        <h1 className="text-3xl font-semibold md:text-4xl">{t("care.title")}</h1>
-        <p className="mt-1 text-lg text-muted">{t("care.subtitle")}</p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-semibold md:text-4xl">{t("care.title")}</h1>
+          <p className="mt-1 text-lg text-muted">{t("care.subtitle")}</p>
+          <div className="mt-2"><IncognitoBadge /></div>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <ModeToggle />
+          <button type="button" onClick={reset} className="btn-ghost min-h-[44px] px-3 text-sm"><Trash2 className="h-4 w-4" aria-hidden="true" />{t("privacy.clearConversation")}</button>
+        </div>
       </div>
       {error && (
         <div className="mb-5">
@@ -132,6 +146,7 @@ export default function GetCare() {
         </button>
       )}
       {final && !emergency && <ResultSection response={response} debug={debug} />}
+      {final && !emergency && <SaveToMemory key={messages.length} debug={debug} />}
       {final && emergency && emOpen && <EmergencyView response={response} debug={debug} onBack={() => setEmOpen(false)} onUndo={canUndo ? undo : undefined} />}
     </div>
   );
