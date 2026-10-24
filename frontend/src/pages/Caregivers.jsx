@@ -14,15 +14,15 @@ const ROLES = ["paramedic", "nurse", "gp", "specialist"];
 const CARE_FOR_ROLE = Object.fromEntries(CARE_ORDER.filter((c) => ROLE_FOR_CARE[c]).map((c) => [ROLE_FOR_CARE[c], c]));
 const EMPTY = { q: "", role: "", language: "", today: false, maxKm: 0, minRating: 0 };
 
-function Filters({ f, set, langs, t, onReset }) {
+function Filters({ f, set, langs, t, onReset, idp }) {
   const field = "mb-1.5 block font-semibold";
   return (
     <div className="space-y-5">
       <div>
-        <label htmlFor="f-q" className={field}>{t("directory.search")}</label>
+        <label htmlFor={`${idp}-f-q`} className={field}>{t("directory.search")}</label>
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden="true" />
-          <input id="f-q" type="search" value={f.q} onChange={(e) => set({ q: e.target.value })} className="input pl-10" />
+          <input id={`${idp}-f-q`} type="search" value={f.q} onChange={(e) => set({ q: e.target.value })} className="input pl-10" />
         </div>
       </div>
       <fieldset>
@@ -37,23 +37,23 @@ function Filters({ f, set, langs, t, onReset }) {
         </div>
       </fieldset>
       <div>
-        <label htmlFor="f-lang" className={field}>{t("directory.language")}</label>
-        <select id="f-lang" value={f.language} onChange={(e) => set({ language: e.target.value })} className="input">
+        <label htmlFor={`${idp}-f-lang`} className={field}>{t("directory.language")}</label>
+        <select id={`${idp}-f-lang`} value={f.language} onChange={(e) => set({ language: e.target.value })} className="input">
           <option value="">{t("common.all")}</option>
           {langs.map((l) => <option key={l} value={l}>{t(`langNames.${l}`)}</option>)}
         </select>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
         <div>
-          <label htmlFor="f-km" className={field}>{t("directory.distance")}</label>
-          <select id="f-km" value={f.maxKm} onChange={(e) => set({ maxKm: Number(e.target.value) })} className="input">
+          <label htmlFor={`${idp}-f-km`} className={field}>{t("directory.distance")}</label>
+          <select id={`${idp}-f-km`} value={f.maxKm} onChange={(e) => set({ maxKm: Number(e.target.value) })} className="input">
             <option value={0}>{t("directory.anyDistance")}</option>
             {[5, 10, 20].map((k) => <option key={k} value={k}>{k} {t("common.km")}</option>)}
           </select>
         </div>
         <div>
-          <label htmlFor="f-rating" className={field}>{t("directory.rating")}</label>
-          <select id="f-rating" value={f.minRating} onChange={(e) => set({ minRating: Number(e.target.value) })} className="input">
+          <label htmlFor={`${idp}-f-rating`} className={field}>{t("directory.rating")}</label>
+          <select id={`${idp}-f-rating`} value={f.minRating} onChange={(e) => set({ minRating: Number(e.target.value) })} className="input">
             <option value={0}>{t("directory.anyRating")}</option>
             {[4, 4.5].map((r) => <option key={r} value={r}>{r}+</option>)}
           </select>
@@ -106,11 +106,11 @@ export default function Caregivers() {
         <aside className="lg:sticky lg:top-[92px] lg:self-start" aria-label={t("directory.filters")}>
           <details className="card p-5 lg:hidden">
             <summary className="flex min-h-[44px] cursor-pointer items-center gap-2 font-bold"><SlidersHorizontal className="h-5 w-5" aria-hidden="true" />{t("directory.filters")}</summary>
-            <div className="mt-4"><Filters f={f} set={set} langs={langs} t={t} onReset={() => setF(EMPTY)} /></div>
+            <div className="mt-4"><Filters idp="m" f={f} set={set} langs={langs} t={t} onReset={() => setF(EMPTY)} /></div>
           </details>
           <div className="card hidden p-5 lg:block">
             <h2 className="mb-4 flex items-center gap-2 font-sans text-lg font-bold"><SlidersHorizontal className="h-5 w-5" aria-hidden="true" />{t("directory.filters")}</h2>
-            <Filters f={f} set={set} langs={langs} t={t} onReset={() => setF(EMPTY)} />
+            <Filters idp="d" f={f} set={set} langs={langs} t={t} onReset={() => setF(EMPTY)} />
           </div>
         </aside>
 

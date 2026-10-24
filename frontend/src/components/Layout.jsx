@@ -123,9 +123,25 @@ const LINKS = [
   ["/developers", "nav.developers"], ["/bookings", "nav.bookings"],
 ];
 
+function useViewportWidth() {
+  const [w, setW] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const on = () => setW(window.innerWidth);
+    window.addEventListener("resize", on);
+    return () => window.removeEventListener("resize", on);
+  }, []);
+  return w;
+}
+
 function Navbar() {
-  const { t, bookings } = useApp();
+  const { t, bookings, basePx } = useApp();
   const [open, setOpen] = useState(false);
+  // breakpoints scale with the chosen text size, so large text collapses the nav instead of overflowing
+  const vw = useViewportWidth();
+  const scale = basePx / 18;
+  const fullNav = vw >= 1280 * scale;
+  const showControls = vw >= 1024 * scale;
+  const showWordmark = vw >= 400 * scale;
   const loc = useLocation();
   useEffect(() => { setOpen(false); }, [loc.pathname]);
 
@@ -137,9 +153,9 @@ function Navbar() {
       <div className="container-page flex h-[72px] items-center gap-3">
         <Link to="/" className="flex items-center gap-2.5 rounded-lg pr-2" aria-label="CareCompass home">
           <Logo />
-          <span className="font-display text-xl font-semibold tracking-tight">CareCompass</span>
+          {showWordmark && <span className="font-display text-xl font-semibold tracking-tight">CareCompass</span>}
         </Link>
-        <nav className="ml-4 hidden xl:flex items-center gap-1" aria-label="Main">
+        {fullNav && <nav className="ml-4 flex items-center gap-1" aria-label="Main">
           {LINKS.map(([to, key]) => (
             <NavLink key={to} to={to} className={linkCls}>
               {t(key)}
@@ -148,34 +164,36 @@ function Navbar() {
               )}
             </NavLink>
           ))}
-        </nav>
+        </nav>}
         <div className="ml-auto flex items-center gap-2">
-          <div className="hidden lg:flex items-center gap-2">
-            <DisplayMenu />
-            <LanguageToggle />
-          </div>
+          {showControls && (
+            <div className="flex items-center gap-2">
+              <DisplayMenu />
+              <LanguageToggle />
+            </div>
+          )}
           <EmergencyButton compact />
-          <button type="button" className="xl:hidden flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-surface"
+          {!fullNav && <button type="button" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-line bg-surface"
             onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? t("nav.closeMenu") : t("nav.menu")}>
             {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
-          </button>
+          </button>}
         </div>
       </div>
       <AnimatePresence>
-        {open && (
+        {open && !fullNav && (
           <motion.div id="mobile-nav" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-            className="xl:hidden overflow-hidden border-t border-line bg-bg">
+            className="overflow-hidden border-t border-line bg-bg">
             <nav className="container-page flex flex-col gap-1 py-3" aria-label="Mobile">
               {LINKS.map(([to, key]) => (
                 <NavLink key={to} to={to} className={({ isActive }) => `${linkCls({ isActive })} min-h-[48px] flex items-center`}>{t(key)}</NavLink>
               ))}
-              <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-line pt-3 lg:hidden">
+              {!showControls && <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-line pt-3">
                 <span className="eyebrow w-full">{t("nav.settings")}</span>
                 <TextSizeControl />
                 <ContrastToggle />
                 <VoiceToggle withLabel />
                 <LanguageToggle />
-              </div>
+              </div>}
             </nav>
           </motion.div>
         )}

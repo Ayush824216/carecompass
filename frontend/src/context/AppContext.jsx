@@ -53,7 +53,7 @@ export function AppProvider({ children }) {
 
   const value = useMemo(() => ({
     lang, setLang, t, voice, setVoice, contrast, setContrast,
-    sizeIdx, canGrow: sizeIdx < SIZES.length - 1, canShrink: sizeIdx > 0,
+    sizeIdx, basePx: SIZES[sizeIdx], canGrow: sizeIdx < SIZES.length - 1, canShrink: sizeIdx > 0,
     grow: () => setSizeIdx((i) => Math.min(SIZES.length - 1, i + 1)), shrink: () => setSizeIdx((i) => Math.max(0, i - 1)),
     location, setLocation, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast,
   }), [lang, t, voice, contrast, sizeIdx, location, bookings, addBooking, updateBooking, removeBooking, toasts, toast, dismissToast]);

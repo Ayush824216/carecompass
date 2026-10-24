@@ -34,7 +34,7 @@ function buildStages({ response, debug, t }) {
   out.language = { status: "done", value: dbg.detected_language ? t(`langNames.${dbg.detected_language}`) : "—" };
   out.symptoms = {
     status: "done",
-    value: syms.length ? [syms.join(", "), slots.duration_text].filter(Boolean).join(" · ") : t("panel.noSymptoms"),
+    value: syms.length ? [syms.map((x) => { const v = t(`symptoms.${x}`); return v.startsWith("symptoms.") ? x : v; }).join(", "), slots.duration_text].filter(Boolean).join(" · ") : t("panel.noSymptoms"),
   };
   out.safety = flags.length
     ? { status: "alert", value: t("panel.redFlags", { flags: flags.map((f) => t(`flags.${f}`)).join(", ") }) }
