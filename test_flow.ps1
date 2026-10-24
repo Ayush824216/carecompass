@@ -43,4 +43,13 @@ if ($r.matched_caregivers.Count -ge 1) {
   Check "booking confirmed" ($b.status -eq "confirmed")
 }
 
+$saket = Post "/api/v1/triage" @{ user_input = "papa ko do din se bukhar hai aur khansi bhi"; location = @{ lat = 28.5245; lng = 77.2066 }; conversation_history = @() }
+$noida = Post "/api/v1/triage" @{ user_input = "papa ko do din se bukhar hai aur khansi bhi"; location = @{ lat = 28.6270; lng = 77.3649 }; conversation_history = @() }
+Check "at least 3 caregivers at each location" ($saket.matched_caregivers.Count -ge 3 -and $noida.matched_caregivers.Count -ge 3)
+Check "ranking changes with location" ($saket.matched_caregivers[0].caregiver_id -ne $noida.matched_caregivers[0].caregiver_id)
+
+$derm = Post "/api/v1/triage?debug=true" @{ user_input = "skin pe rash hai 2 hafte se"; location = @{ lat = 28.5245; lng = 77.2066 }; conversation_history = @() }
+Check "persistent rash -> specialist" ($derm.care_type -eq "specialist_referral")
+Check "dermatologists matched" (($derm.debug.matching | Where-Object { $_.specialty -eq "dermatology" }).Count -ge 3)
+
 if ($fail -gt 0) { Write-Host "$fail check(s) failed" -ForegroundColor Red; exit 1 } else { Write-Host "All checks passed" -ForegroundColor Green }
