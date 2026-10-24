@@ -52,4 +52,14 @@ $derm = Post "/api/v1/triage?debug=true" @{ user_input = "skin pe rash hai 2 haf
 Check "persistent rash -> specialist" ($derm.care_type -eq "specialist_referral")
 Check "dermatologists matched" (($derm.debug.matching | Where-Object { $_.specialty -eq "dermatology" }).Count -ge 3)
 
+# domain guard: non-health turns get a redirect in follow_up_question and no decision; safety still wins
+$g = Post "/api/v1/triage?debug=true" @{ user_input = "hello Babu tum kaise ho aajkal etc question kya hai"; conversation_history = @() }
+Check "greeting -> redirect, no decision" ($g.care_type -eq $null -and $g.follow_up_question -ne $null -and $g.matched_caregivers.Count -eq 0 -and $g.debug.domain_class -eq "greeting_smalltalk")
+$o = Post "/api/v1/triage" @{ user_input = "who won the cricket match yesterday"; conversation_history = @() }
+Check "off-topic -> redirect with official keys" ($o.care_type -eq $null -and $o.follow_up_question -ne $null -and (Compare-Object (Keys $o) $official) -eq $null)
+$mx = Post "/api/v1/triage" @{ user_input = "hi, mummy ko chakkar aa rahe hain"; conversation_history = @() }
+Check "greeting + symptom -> health" ($mx.care_type -ne $null -or ($mx.follow_up_question -ne $null))
+$ge = Post "/api/v1/triage" @{ user_input = "hello, papa behosh ho gaye"; conversation_history = @() }
+Check "greeting + red flag -> emergency" ($ge.care_type -eq "emergency_referral")
+
 if ($fail -gt 0) { Write-Host "$fail check(s) failed" -ForegroundColor Red; exit 1 } else { Write-Host "All checks passed" -ForegroundColor Green }

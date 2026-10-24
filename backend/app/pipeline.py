@@ -6,7 +6,7 @@ import time
 from dataclasses import asdict
 from typing import Optional
 
-from . import explain, intake, llm_triage, matching, safety
+from . import domain_guard, explain, intake, llm_triage, matching, safety
 from .config import get_settings
 from .lang import detect_language, normalise, resolve_language, term_matches
 from .llm import available as llm_available
@@ -72,6 +72,16 @@ def emergency_response(flags: list[str], lang: str, prefix: str = "") -> TriageR
                           matched_caregivers=[])
 
 
+def _pending_clinical_question(req: TriageRequest):
+    """Id of the clinical follow-up the user is answering now, if the last assistant turn was one."""
+    for t in reversed(req.conversation_history):
+        if t.role == "assistant":
+            return intake.identify_question(t.content)
+        if t.role == "user" and t.content and t.content != req.user_input:
+            return None
+    return None
+
+
 def _history_text(req: TriageRequest) -> str:
     return "\n".join(f"{t.role}: {t.content}" for t in req.conversation_history[-8:] if t.content)
 
@@ -104,8 +114,18 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         tr["safety_checks"] = {"red_flags": sres.red_flags, "evidence": sres.evidence,
                                "categories_checked": len(safety.FLAG_LABELS), "stage": "pre_model"}
         if sres.is_emergency:
+            tr["domain_class"] = domain_guard.HEALTH
             tr["model_used"] = "rules"
             return emergency_response(sres.red_flags, lang)
+
+        # domain guard: only health requests go further (safety above always runs first)
+        answering = _pending_clinical_question(req) is not None
+        dclass = domain_guard.classify(req.user_input, answering_clinical_question=answering)
+        tr["domain_class"] = dclass
+        if dclass != domain_guard.HEALTH:
+            tr["model_used"] = "domain_guard"
+            return TriageResponse(follow_up_question=domain_guard.redirect_text(dclass, lang), care_type=None,
+                                  urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
 
         t = time.perf_counter()
         local = local_decision(state.model_text)

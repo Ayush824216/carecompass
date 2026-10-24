@@ -195,7 +195,8 @@
       "english": "English: cold",
       "nurse": "Nurse: injections",
       "emergency": "Emergency: chest pain"
-    }
+    },
+    "emptyLine": "Describe the problem, who it is for, and since when."
   },
   "panel": {
     "title": "How we decided",
@@ -566,5 +567,26 @@
     "endocrinology": "Endocrinology (sugar & thyroid)",
     "psychiatry": "Psychiatry (mental health)",
     "oncology": "Oncology (lumps & cancer screening)"
+  },
+  "guard": {
+    "notHealth": "Not a health request — waiting for symptoms",
+    "notHealthHint": "Nothing was triaged and no question was used. Describe the problem, who it is for and since when.",
+    "classes": {
+      "greeting_smalltalk": "Greeting / small talk",
+      "off_topic": "Off topic",
+      "unclear_or_gibberish": "Could not understand",
+      "medicine_or_diagnosis_request": "Asked for medicine or a diagnosis",
+      "abusive_or_prompt_injection": "Not a valid request"
+    },
+    "chipsTitle": "Choose what is wrong",
+    "stageSkipped": "Not started",
+    "chips": [
+      "Bukhar / Fever",
+      "Saans ki dikkat",
+      "Chot lagi / Injury",
+      "Buzurg ki dekhbhal",
+      "Bacche ki tabiyat",
+      "Dawai/injection ke liye nurse"
+    ]
   }
 }

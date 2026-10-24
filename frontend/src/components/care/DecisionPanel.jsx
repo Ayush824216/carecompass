@@ -44,6 +44,11 @@ function buildStages({ response, debug, t }) {
   const syms = slots.symptoms || [];
   const out = {};
   out.language = { status: "done", value: dbg.detected_language ? t(`langNames.${dbg.detected_language}`) : "—" };
+  if (dbg.domain_class && dbg.domain_class !== "health_request") {
+    const skip = { status: "skipped", value: t("guard.stageSkipped") };
+    return { ...out, notHealth: dbg.domain_class, symptoms: skip, safety: { status: "done", value: t("panel.noRedFlags") },
+      followup: skip, triage: skip, matching: skip };
+  }
   out.symptoms = {
     status: "done",
     value: syms.length ? [syms.map((x) => { const v = t(`symptoms.${x}`); return v.startsWith("symptoms.") ? x : v; }).join(", "), slots.duration_text].filter(Boolean).join(" · ") : t("panel.noSymptoms"),
@@ -111,8 +116,9 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
   const slots = debug?.extracted_slots || {};
   const slotRows = ["duration", "age_group", "severity", "breathing", "can_travel"]
     .map((k) => [k, slots[k]]).filter(([, v]) => v !== null && v !== undefined && v !== "");
-  const why = response?.follow_up_question
-    ? t("panel.whyFollowup", { q: response.follow_up_question })
+  const notHealth = stages?.notHealth;
+  const why = notHealth ? t("guard.notHealthHint")
+    : response?.follow_up_question ? t("panel.whyFollowup", { q: response.follow_up_question })
     : response?.reasoning;
 
   return (
@@ -157,7 +163,14 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
       </ol>
       {phase === "idle" && <p className="-mt-3 text-center text-sm text-muted">{t("panel.idle")}</p>}
 
-      {terms.length > 0 && phase === "done" && (
+      {notHealth && phase === "done" && (
+        <div className="rounded-xl2 border-2 border-dashed border-line bg-sunken/60 px-4 py-4" role="status">
+          <p className="flex items-center gap-2 font-bold"><MessageCircleQuestion className="h-5 w-5 text-muted" aria-hidden="true" />{t("guard.notHealth")}</p>
+          <p className="mt-1 text-sm text-muted">{t(`guard.classes.${notHealth}`)}</p>
+        </div>
+      )}
+
+      {terms.length > 0 && phase === "done" && !notHealth && (
         <div>
           <p className="eyebrow mb-2">{t("panel.symptomChips")}</p>
           <div className="flex flex-wrap gap-2">

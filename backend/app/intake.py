@@ -284,7 +284,7 @@ def build_state(user_input: str, history: list[dict]) -> IntakeState:
     for role, content in turns:
         if role == "assistant":
             pending = identify_question(content)
-            if pending or content.strip().endswith("?"):
+            if pending:  # only real clinical follow-ups count toward the limit (redirects do not)
                 n_q += 1
             if pending:
                 asked.append(pending)

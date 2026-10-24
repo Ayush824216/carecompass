@@ -20,8 +20,11 @@ HINGLISH_TOKENS = {
     "pitaji", "mataji", "ji", "wale", "wala", "wali", "lag", "laga", "lagi", "pa", "rahein", "karein", "karna",
     "chahiye", "kaise", "kyun", "jab", "phir", "lekin", "par", "sath", "saath", "behosh", "khoon", "khun",
     "jukam", "zukaam", "zukam", "sardi", "neend", "dawai", "dawa", "haan", "nahin", "ab", "tak", "wo", "woh",
-    "unhe", "unhein", "hua", "hui", "hue", "tha", "thi", "the_", "baje", "subah", "shaam", "raat",
+    "unhe", "unhein", "hua", "hui", "hue", "tha", "thi", "baje", "subah", "shaam", "raat",
+    "kaunsi", "konsi", "kaun", "lun", "loon", "batao", "bataiye", "batayein", "kaisa", "kaisi", "kaise", "aaj", "tum",
+    "aap", "mausam", "dawai", "bimari", "bimaari", "haal", "aajkal", "sunao", "chahiye",
 }
+STRONG_EXTRA = {"kaunsi", "konsi", "kaise", "kaisa", "kaisi", "batao", "bimari", "mausam", "aajkal", "sunao"}
 # a single generic token (e.g. "ho", "se") is weak evidence; symptom words are strong
 STRONG_HINGLISH = {"bukhar", "bukhaar", "khansi", "khaansi", "saans", "chakkar", "ulti", "dast", "behosh",
                    "mujhe", "nahi", "nhi", "hai", "hain", "khoon", "dard", "kamzori", "seene", "zukaam", "jukam",
@@ -38,7 +41,7 @@ def detect_language(text: str) -> str:
     if not words:
         return "en"
     hits = [w for w in words if w in HINGLISH_TOKENS]
-    if any(w in STRONG_HINGLISH for w in hits) or len(hits) >= 2:
+    if any(w in STRONG_HINGLISH or w in STRONG_EXTRA for w in hits) or len(hits) >= 2:
         return "hinglish"
     return "en"
 

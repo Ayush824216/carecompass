@@ -19,7 +19,8 @@ function Bubble({ m, lang, t }) {
       <div className={`flex max-w-[85%] flex-col ${user ? "items-end" : "items-start"}`}>
         <div className={`rounded-2xl px-4 py-3 text-[1.02rem] leading-relaxed ${user
           ? "rounded-tr-md bg-primary text-primary-ink"
-          : m.kind === "question" ? "rounded-tl-md border-2 border-accent/60 bg-accent-soft/60 font-semibold" : "rounded-tl-md border border-line bg-surface"}`}>
+          : m.kind === "question" ? "rounded-tl-md border-2 border-accent/60 bg-accent-soft/60 font-semibold"
+          : m.kind === "redirect" ? "rounded-tl-md border border-dashed border-primary/50 bg-primary-soft/40" : "rounded-tl-md border border-line bg-surface"}`}>
           {m.content}
         </div>
         <span className="mt-1 px-1 text-xs text-muted">{user ? t("common.you") : t("common.assistant")} · {time(m.ts, lang)}</span>
@@ -43,7 +44,7 @@ function Typing({ t }) {
   );
 }
 
-export default function ChatPanel({ messages, loading, onSend, quickReplies, questionNo, maxQuestions, onReset, disabled }) {
+export default function ChatPanel({ messages, loading, onSend, quickReplies, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine }) {
   const { t, lang } = useApp();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
@@ -112,7 +113,7 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, que
         <AnimatePresence>
           {quickReplies?.length > 0 && !loading && (
             <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <p className="mb-2 text-sm font-semibold text-muted">{t("care.answerHint")}</p>
+              <p className="mb-2 text-sm font-semibold text-muted">{quickTitle || t("care.answerHint")}</p>
               <div className="flex flex-wrap gap-2">
                 {quickReplies.map((c) => (
                   <button key={c} type="button" onClick={() => submit(c)}
@@ -144,6 +145,7 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, que
         </div>
         {micError && <p className="text-sm font-semibold text-emergency" role="alert">{micError}</p>}
 
+        {emptyLine && <p className="font-semibold text-ink/80">{emptyLine}</p>}
         {!started && (
           <div>
             <p className="eyebrow mb-2">{t("care.examples")}</p>

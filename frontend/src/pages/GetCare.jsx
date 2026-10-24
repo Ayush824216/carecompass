@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { api } from "../lib/api.js";
 import { speak, stopSpeaking } from "../lib/speech.js";
@@ -57,7 +57,8 @@ export default function GetCare() {
       setEmOpen(official.care_type === "emergency_referral");
       const newHist = [...hist, { role: "user", content: text }];
       if (official.follow_up_question) {
-        setMessages((m) => [...m, { id: nextId(), role: "assistant", kind: "question", content: official.follow_up_question, ts: Date.now() }]);
+        const redirect = dbg?.domain_class && dbg.domain_class !== "health_request";
+        setMessages((m) => [...m, { id: nextId(), role: "assistant", kind: redirect ? "redirect" : "question", content: official.follow_up_question, ts: Date.now() }]);
         setHistory([...newHist, { role: "assistant", content: official.follow_up_question }]);
         speak(official.follow_up_question, voice);
       } else {
@@ -77,10 +78,15 @@ export default function GetCare() {
     setMessages(welcome()); setHistory([]); setPhase("idle"); setResponse(null); setDebug(null); setError(""); setEmOpen(false);
   };
 
-  const questionNo = useMemo(() => history.filter((h) => h.role === "assistant").length, [history]);
+  // "Question X of max 4" counts clinical follow-ups only (redirects for greetings / off-topic do not count)
+  const clinicalQ = Boolean(debug?.followup?.question_id) && debug?.domain_class === "health_request";
+  const questionNo = clinicalQ ? (debug.followup.asked_so_far || 0) + 1 : 0;
+  const redirect = phase === "done" && debug?.domain_class && debug.domain_class !== "health_request";
   const final = phase === "done" && response && !response.follow_up_question;
   const emergency = response?.care_type === "emergency_referral";
-  const quick = response?.follow_up_question && phase === "done" ? quickRepliesFor(response.follow_up_question, bank) : [];
+  const started = history.length > 0;
+  const quick = redirect || !started ? t("guard.chips")
+    : response?.follow_up_question && phase === "done" ? quickRepliesFor(response.follow_up_question, bank) : [];
 
   return (
     <div className="container-page py-8 md:py-10">
@@ -96,7 +102,8 @@ export default function GetCare() {
       <LocationBar />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick}
-          questionNo={response?.follow_up_question ? questionNo : 0} maxQuestions={MAX_Q} onReset={reset} />
+          questionNo={questionNo} maxQuestions={MAX_Q} onReset={reset}
+          quickTitle={redirect || !started ? t("guard.chipsTitle") : t("care.answerHint")} emptyLine={!started ? t("care.emptyLine") : ""} />
         <DecisionPanel phase={phase} response={response} debug={debug} ms={ms} locationText={locationLabel(location, t)} />
       </div>
       {final && emergency && !emOpen && (
