@@ -57,6 +57,17 @@ SIMPLE: dict[str, list[str]] = {
         r"(eyes?\s+(rolled|rolling)\s+(up|back))|(aankh\w*\s+(upar|ulat)\w*)",
         r"(poora|pura|saara|sara)\s+(sharir|shareer|badan|body)\s+(\S+\s+)?(kaanp|kanp|akad|jhatk)", r"(पूरा|सारा)\s*(शरीर|बदन)\s*(\S+\s*)?(काँप|कांप|अकड़|झटक)",
     ],
+    "low_blood_sugar": [
+        r"hypoglyc", r"(sugar|glucose|शुगर)\s+(\S+\s+){0,3}([2-5]\d|6[0-5])\b(?!\s*(saal|years?|sal|%|mg/dl\s+high))",
+        r"(sugar|glucose)\s+(\S+\s+){0,2}(is\s+|has\s+)?(very\s+)?(low|dropped|crashed|fallen)", r"low\s+(blood\s+)?sugar",
+        r"(sugar|shugar)\s+(\S+\s+){0,2}(kam|low|gir)\s+(ho\s+)?(gayi|gai|gyi|hai)", r"शुगर\s*(\S+\s*)?(कम|गिर|लो)",
+    ],
+    "urinary_retention": [
+        r"(can'?t|cannot|unable\s+to|not\s+able\s+to)\s+(pass\s+urine|urinate|pee)", r"(no|not\s+passed\s+any)\s+urine\s+(since|for)",
+        r"(haven'?t|hasn'?t|not)\s+(passed|peed)\s+(any\s+)?(urine)?\s*(since|for|all)",
+        r"(peshab|pishab|pesab|urine)\s+(\S+\s+){0,2}(ruk\s+gay|band\s+ho\s+gay|nahi\s+(ho|aa|utar)\s+(raha|rahi|rha|rhi))",
+        r"(पेशाब)\s*(\S+\s*)?(रुक\s*गया|बंद\s*हो|नहीं\s*(हो|आ|उतर))",
+    ],
     "sudden_vision_loss": [
         r"(can'?t|cannot|unable\s+to|not\s+able\s+to)\s+see\b", r"(lost|losing|loss\s+of)\s+(\S+\s+)?(vision|sight|eyesight)",
         r"(vision|sight)\s+(\S+\s+)?(gone|went|blacked|blacking|disappeared|suddenly)", r"everything\s+(is\s+|went\s+)?(dark|black)",
@@ -164,6 +175,8 @@ EXCLUDE: dict[str, list[str]] = {
                        r"(small|minor|chhota|chhoti|tiny)\s+(\S+\s+)?(cut|wound|scratch|kat|ghaav|kharonch)",
                        r"(थोड़ा|थोड़ी|हल्का)\s*(सा\s*)?(खून)", r"(छोटा|छोटी)\s*(सा\s*)?(कट|घाव)",
                        r"period|mahwari|maahwari|masik|menstru|पीरियड|माहवारी|मासिक"],
+    # a blocked catheter is a same-day nursing problem; low sugar target talk ("keep sugar above 70") is not an event
+    "low_blood_sugar": [r"\b(target|keep|should\s+be|range|normal)\b"],
     # gradual vision trouble over months is a specialist problem
     "sudden_vision_loss": [r"(months?|years?|mahin|saal|महीन|साल|gradual|slowly|dheere)"],
     "major_trauma": [r"\b(minor|small|chhota|chhoti|halka)\b\s+(\S+\s+)?accident"],
@@ -172,12 +185,17 @@ EXCLUDE: dict[str, list[str]] = {
 # Per-pattern exclusions: only the bare keyword is suppressed, acute signs in the same clause still fire.
 # e.g. "discharged after a stroke" (history) vs "had a stroke last year, now slurred speech again" (acute sign).
 STROKE_HISTORY = [r"(after|since|post|had|history\s+of|old|previous|past|pichle\s+saal)\s+(\S+\s+){0,2}(stroke|paraly|lakwa|lakva)",
+                  r"(stroke|paraly\w*|lakwa|lakva|लकवा)\s+(\S+\s+){0,3}(for|since|से)\s+(\S+\s+)?(years?|months?|saal|mahin\w*|साल|महीन)",
+                  r"(years?|months?|saal|mahin\w*|साल|महीन\w*)\s+(\S+\s+){0,2}(se\s+|से\s+)?(\S+\s+)?(paraly|lakwa|लकवा)",
+                  r"bedridden|bistar\s+par|बिस्तर\s*पर",
                   r"(stroke|lakwa|lakva|paralysis)\s+(\S+\s+){0,2}(ke\s+baad|hua\s+tha|aaya\s+tha|pada\s+tha|last\s+year|years?\s+ago)",
                   r"(लकवा|स्ट्रोक)\s*(के बाद|हुआ था|पड़ा था)"]
 PATTERN_EXCLUDE: dict[str, list[str]] = {
     r"paraly": STROKE_HISTORY, r"\bstroke\b": STROKE_HISTORY, r"lakwa|lakva|laqwa": STROKE_HISTORY, r"लकवा": STROKE_HISTORY,
     r"dysarthria|hemipar|hemipleg|facial\s+palsy": STROKE_HISTORY,
 }
+# Message-level exclusions (checked against the whole text, not just the clause).
+TEXT_EXCLUDE: dict[str, list[str]] = {"urinary_retention": [r"catheter|कैथेटर"]}
 CHRONIC = re.compile(r"(months?|years?|mahin|saal|महीन|साल)")
 EXERTION = re.compile(r"(stairs|walk|exercise|exertion|climb|seedh?i|chadhne|chalne|chalte|daudne|सीढ़ी|चढ़ने|चलने)", re.I)
 
@@ -197,6 +215,12 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
          r"(not|isn'?t|stopped|refus\w*)\s+(feeding|drinking|taking\s+(milk|feeds))", r"(doodh|feed|milk)\s+(\S+\s+)?(nahi|nhi|nahin)",
          r"दूध[^।,.!?]{0,10}नहीं", r"letharg|limp|floppy|\bsust\b|सुस्त", r"not\s+moving|hil\s+nahi|हिल\s*नहीं",
          r"breathing\s+fast|tez\s+saans|तेज़? साँस", r"blue|neela|नीला", r"seizure|fit|daura|दौरा", r"(won'?t|not)\s+wak"],
+    ),
+    # an (elderly) fall followed by inability to stand / hip pain: possible fracture
+    "fall_cannot_stand": (
+        [r"\b(fell|fall|fallen|slipped|slip|gir|girr|fisal)\w*", r"(गिर|फिसल)"],
+        [r"(can'?t|cannot|unable\s+to|not\s+able\s+to)\s+(stand|get\s+up|bear\s+weight|move\s+(the\s+)?(leg|hip))",
+         r"\bhip\b|kulh|कूल्ह", r"(uth|khade|khada|khadi)\s+(\S+\s+)?(nahi|nhi)\s+(ho\s+)?(pa|sak)", r"(उठ|खड़े|खड़ी)\s*(\S+\s*)?नहीं\s*(हो\s*)?(पा|सक)"],
     ),
     # pain spreading to the left arm / jaw is cardiac only together with sweating, chest or breathing symptoms
     "cardiac_referred_pain": (
@@ -232,7 +256,7 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
     ),
 }
 
-FLAG_ALIAS = {"young_infant_fever": "infant_danger_signs", "cardiac_referred_pain": "chest_pain"}
+FLAG_ALIAS = {"young_infant_fever": "infant_danger_signs", "cardiac_referred_pain": "chest_pain", "fall_cannot_stand": "major_trauma"}
 
 # --- negation ------------------------------------------------------------------------------------
 CLAUSE_SPLIT = re.compile(r"[,.;!?।|\n]+|\s(?:but|however|although|lekin|magar|parantu|लेकिन|मगर|परंतु|किंतु)\s", re.I)
@@ -263,6 +287,7 @@ def _compile(pats: list[str]) -> list[re.Pattern]:
 _SIMPLE_C = {k: _compile(v) for k, v in SIMPLE.items()}
 _PEXCL_C = {re.compile(k, re.I).pattern: _compile(v) for k, v in PATTERN_EXCLUDE.items()}
 _EXCL_C = {k: _compile(v) for k, v in EXCLUDE.items()}
+_TEXCL_C = {k: _compile(v) for k, v in TEXT_EXCLUDE.items()}
 _COMBO_C = {k: (_compile(a), _compile(b)) for k, (a, b) in COMBOS.items()}
 _TOKEN = re.compile(r"[\wऀ-ॿ']+")
 
@@ -298,7 +323,7 @@ def _scan_text(text: str, found: dict[str, str]) -> None:
         for flag, pats in _SIMPLE_C.items():
             if flag in found:
                 continue
-            if any(x.search(cl) for x in _EXCL_C.get(flag, [])):
+            if any(x.search(cl) for x in _EXCL_C.get(flag, [])) or any(x.search(text) for x in _TEXCL_C.get(flag, [])):
                 continue
             # long-standing breathlessness only on exertion -> specialist, not emergency (unless severe at rest)
             if (flag == "severe_breathing_difficulty" and CHRONIC.search(text) and EXERTION.search(cl)
@@ -366,6 +391,8 @@ FLAG_LABELS = {
     "blue_lips": ("blue lips or face", "होंठ या चेहरा नीला पड़ना", "hont ya chehra neela padna"),
     "unconscious": ("unconscious or not responding", "बेहोशी या जवाब न देना", "behoshi ya jawab na dena"),
     "seizure": ("a seizure / fit", "दौरा पड़ना", "daura padna"),
+    "low_blood_sugar": ("very low blood sugar", "शुगर बहुत कम होना", "sugar bahut kam hona"),
+    "urinary_retention": ("unable to pass urine", "पेशाब पूरी तरह रुक जाना", "peshab ruk jaana"),
     "sudden_vision_loss": ("sudden loss of vision", "अचानक दिखना बंद होना", "achanak dikhna band hona"),
     "stroke_signs": ("signs of a stroke (face drooping, slurred speech or one-sided weakness)",
                      "लकवे के लक्षण (चेहरा टेढ़ा, बोली लड़खड़ाना या एक तरफ कमज़ोरी)",

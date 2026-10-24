@@ -142,7 +142,7 @@ def main() -> None:
 
     # hand-written challenge set (different phrasing from the templates; never used for training)
     ch_sets: dict[str, dict] = {}
-    for fname, label in (("challenge.csv", "challenge v1 (informed data v2)"), ("challenge_v2.csv", "challenge v2 (blind)")):
+    for fname, label in (("challenge.csv", "challenge v1 (informed data v2)"), ("challenge_v2.csv", "challenge v2 (informed safety rules)"), ("challenge_v3.csv", "challenge v3 (blind)")):
         ch_path = ROOT / "dev_data" / fname
         challenge = data_adapter.read_vignette_file(ch_path) if ch_path.exists() else []
         if not challenge:

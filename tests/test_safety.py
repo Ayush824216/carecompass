@@ -257,3 +257,27 @@ def test_left_arm_negated():
 
 def test_left_arm_pain_alone_is_not_flagged():
     assert safety.check(["left arm pain since I lifted a heavy box yesterday"]).red_flags == []
+
+
+# regressions from blind challenge set v3
+@pytest.mark.parametrize("text,flag", [
+    ("Grandma slipped on the floor an hour ago, hip hurts a lot and she can't stand up", "major_trauma"),
+    ("dadi gir gayi aur ab khadi nahi ho pa rahi", "major_trauma"),
+    ("Papa ko diabetes hai, aaj sugar 45 aa gayi, paseena aa raha hai", "low_blood_sugar"),
+    ("his sugar has dropped very low and he is confused", "low_blood_sugar"),
+    ("मेरे दादाजी का पेशाब रुक गया है सुबह से", "urinary_retention"),
+    ("he hasn't passed urine since last night and his belly hurts", "urinary_retention"),
+])
+def test_regression_v3_positive(text, flag):
+    assert flag in safety.check([text]).red_flags, text
+
+
+@pytest.mark.parametrize("text", [
+    "My mother has bed sores and needs regular dressing, she is paralysed for years",
+    "the catheter is not draining, urine nahi aa rahi bag mein",
+    "doctor said keep sugar above 70",
+    "sugar 300 aa rahi hai 5 din se",
+    "slipped in the bathroom, small bruise on the knee, walking fine",
+])
+def test_regression_v3_benign(text):
+    assert safety.check([text]).red_flags == [], text

@@ -1,0 +1,31 @@
+id,text,language,care_type,urgency
+C3_001,"Meri saas 75 saal ki hain, 2 din se khaansi aur halka bukhar, chal phir nahi paati",hinglish,paramedic_home_visit,same_day
+C3_002,"I need a sick note and advice for a mild stomach upset since this morning",en,gp_teleconsult,routine
+C3_003,"मेरे पापा अचानक गिर पड़े और अब उठ नहीं रहे, साँस चल रही है पर आँखें नहीं खोल रहे",hi,emergency_referral,immediate
+C3_004,"Bachche ka sar garam hai aur naak beh rahi hai, 5 saal ka hai, khel raha hai",hinglish,gp_teleconsult,same_day
+C3_005,"My father's colostomy bag needs changing and the skin around it is sore",en,nurse_home_visit,routine
+C3_006,"Mummy ko bahut tez sar dard hua achanak, zindagi ka sabse bura, aur ulti",hinglish,emergency_referral,immediate
+C3_007,"मुझे एक साल से एड़ी में दर्द रहता है, सुबह उठते ही ज़्यादा",hi,specialist_referral,routine
+C3_008,"Grandma slipped on the floor an hour ago, hip hurts a lot and she can't stand up",en,emergency_referral,immediate
+C3_009,"Papa ko diabetes hai, aaj sugar 45 aa gayi, paseena aur kaanp rahe hain",hinglish,emergency_referral,immediate
+C3_010,"I have itchy red eyes and sneezing every spring",en,gp_teleconsult,routine
+C3_011,"मम्मी को नसों में दवा (ड्रिप) घर पर लगवानी है, डॉक्टर ने 5 दिन के लिए कहा है",hi,nurse_home_visit,routine
+C3_012,"My son swallowed a coin about 30 minutes ago and is now drooling and can't swallow",en,emergency_referral,immediate
+C3_013,"Pichle 2 hafte se raat ko pasina aata hai aur khansi jaati nahi",hinglish,gp_teleconsult,same_day
+C3_014,"Need an elderly care paramedic to check on my father daily while I am travelling, he is 82",en,paramedic_home_visit,routine
+C3_015,"बच्ची के कान के पीछे गांठ है एक महीने से",hi,specialist_referral,routine
+C3_016,"He had chest pain yesterday for 5 minutes, it went away, now feeling okay",en,emergency_referral,immediate
+C3_017,"Didi ko pregnancy ka 3rd mahina hai, ulti bahut ho rahi hai, kuch khaya nahi ja raha",hinglish,specialist_referral,same_day
+C3_018,"My wife cut her palm with a knife, small cut, need it cleaned and dressed",en,paramedic_home_visit,same_day
+C3_019,"मेरे दादाजी का पेशाब रुक गया है सुबह से, पेट में दर्द है",hi,emergency_referral,immediate
+C3_020,"Mere bete ko school mein chot lagi, ghutna chhil gaya hai",hinglish,paramedic_home_visit,routine
+C3_021,"My mother has bed sores and needs regular dressing, she is paralysed for years",en,nurse_home_visit,routine
+C3_022,"I keep feeling my heart racing when I lie down, for 3 weeks",en,specialist_referral,same_day
+C3_023,"बेटी को दो दिन से हल्का बुखार और गले में दर्द है",hi,gp_teleconsult,same_day
+C3_024,"Bhai ko bijli ka jhatka laga, abhi hosh mein hai par haath jal gaya",hinglish,emergency_referral,immediate
+C3_025,"My 70 year old aunt has had loose motions 6 times today and feels faint",en,paramedic_home_visit,same_day
+C3_026,"Can someone explain my father's MRI report on a video call?",en,gp_teleconsult,routine
+C3_027,"मुझे कई महीनों से बहुत ज़्यादा उदासी है, किसी काम में मन नहीं लगता",hi,specialist_referral,routine
+C3_028,"Baby 6 mahine ka hai, potty mein thoda khoon dikha, baaki theek hai",hinglish,gp_teleconsult,same_day
+C3_029,"My husband is breathing very fast and is very cold and sweaty after a bee sting",en,emergency_referral,immediate
+C3_030,"Nani ko roz ki dawai aur insulin dene ke liye nurse chahiye",hinglish,nurse_home_visit,routine
