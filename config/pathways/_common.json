@@ -56,6 +56,8 @@
                             "label": {"en": "swelling of face, hands or feet", "hi": "चेहरे/हाथ-पैर में सूजन", "hinglish": "chehre ya haath-pair mein sujan"}}
   },
   "modifiers": [
+    {"id": "definite_s3_chip", "when": "definite_s3_answer", "effect": "min_stage", "stage": "S3", "pathways": "*", "_note": "a chip marked definite_S3 was selected: emergency at once, no further questions",
+     "label": {"en": "a danger sign you selected", "hi": "आपका चुना खतरे का संकेत", "hinglish": "aapka chuna khatre ka sanket"}},
     {"id": "young_infant_fever", "when": "young_infant and fever and (temp_f is None or temp_f >= 100.4)", "effect": "min_stage", "stage": "S3", "pathways": ["fever"],
      "label": {"en": "a baby under 3 months with fever", "hi": "3 महीने से छोटे शिशु को बुखार", "hinglish": "3 mahine se chhote baby ko bukhar"}},
     {"id": "child_danger", "when": "child and under5 and (cannot_drink or vomits_everything or seizure or very_drowsy or unconscious)", "effect": "min_stage", "stage": "S3", "pathways": "*",

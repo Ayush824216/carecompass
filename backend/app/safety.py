@@ -216,6 +216,8 @@ TEXT_EXCLUDE: dict[str, list[str]] = {
 }
 CHRONIC = re.compile(r"(months?|years?|mahin|saal|महीन|साल)")
 EXERTION = re.compile(r"(stairs|walk|exercise|exertion|climb|seedh?i|chadhne|chalne|chalte|daudne|सीढ़ी|चढ़ने|चलने)", re.I)
+EXERTION_ONLY = re.compile(r"\b(chalne|seedh?i(yan)?\s+chadhne|kaam\s+karne|daudne)\s+(par|pe|se)\b|\b(on|when|while|after)\s+(walking|climbing|exertion|exercise)\b|"
+                           r"(चलने|सीढ़ी चढ़ने)\s*(पर|से)", re.I)
 
 # --- combo flags: need a trigger AND a qualifier somewhere in the (whole) text --------------------
 FEVER = r"(fever|temperature|bukh?aa?r|bukar|बुखार|ताप)"
@@ -343,9 +345,12 @@ def _scan_text(text: str, found: dict[str, str]) -> None:
                 continue
             if any(x.search(cl) for x in _EXCL_C.get(flag, [])) or any(x.search(text) for x in _TEXCL_C.get(flag, [])):
                 continue
-            # long-standing breathlessness only on exertion -> specialist, not emergency (unless severe at rest)
-            if (flag == "severe_breathing_difficulty" and CHRONIC.search(text) and EXERTION.search(cl)
-                    and not re.search(r"\b(rest|sitting|lying|baithe|lete)\b|severe|bahut|बहुत", cl, re.I)):
+            # breathlessness only on exertion (long-standing, or explicitly "chalne par" / "on walking") is not an
+            # emergency by itself: the breathing / fever / cough pathways ask one confirmation question about rest,
+            # speech and lip colour. Never when the clause also says rest, severe or "bahut".
+            if (flag == "severe_breathing_difficulty" and EXERTION.search(cl)
+                    and (CHRONIC.search(text) or EXERTION_ONLY.search(cl))
+                    and not re.search(r"\b(rest|sitting|lying|baithe|lete|aaram)\b|severe|bahut|bohot|बहुत|आराम|बैठे", cl, re.I)):
                 continue
             for p in pats:
                 if any(x.search(cl) for x in _PEXCL_C.get(p.pattern, [])):

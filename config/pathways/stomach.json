@@ -55,10 +55,27 @@
      "text": {"en": "With the stomach problem, is any of these happening?", "hi": "पेट की तकलीफ के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Pet ki takleef ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(blood_vomit) and known(severe_pain) and known(reduced_urine)",
      "chips": [
-       {"id": "blood", "label": {"en": "Blood in vomit or stool / black stool", "hi": "उल्टी या पॉटी में खून / काली पॉटी", "hinglish": "Ulti ya potty mein khoon / kaali potty"}, "facts": {"blood_vomit": true}},
-       {"id": "pain", "label": {"en": "Very bad stomach pain", "hi": "पेट में बहुत तेज़ दर्द", "hinglish": "Pet mein bahut tez dard"}, "facts": {"severe_pain": true}},
-       {"id": "drowsy", "label": {"en": "Very weak / dizzy", "hi": "बहुत सुस्त / चक्कर", "hinglish": "Bahut sust / chakkar"}, "facts": {"dizziness_standing": true}},
-       {"id": "urine", "label": {"en": "Very little or no urine", "hi": "पेशाब बहुत कम या बंद", "hinglish": "Peshab bahut kam ya band"}, "facts": {"reduced_urine": true}}
+       {"id": "blood_vomit", "severity": "definite_S3", "label": {"en": "Vomiting blood", "hi": "खून की उल्टी", "hinglish": "Khoon ki ulti"}, "facts": {"blood_vomit": true}},
+       {"id": "black", "severity": "needs_confirmation", "label": {"en": "Black, sticky stool", "hi": "काली चिपचिपी पॉटी", "hinglish": "Kaali chipchipi potty"}, "facts": {"black_stool": true}},
+       {"id": "stool_blood", "label": {"en": "Blood in stool", "hi": "पॉटी में खून", "hinglish": "Potty mein khoon"}, "facts": {"blood_in_stool": true}},
+       {"id": "pain", "severity": "needs_confirmation", "label": {"en": "Very bad stomach pain", "hi": "पेट में बहुत तेज़ दर्द", "hinglish": "Pet mein bahut tez dard"}, "facts": {"severe_pain": true}},
+       {"id": "drowsy", "severity": "definite_S3", "label": {"en": "Very drowsy, hard to wake", "hi": "बहुत सुस्त, जगाना मुश्किल", "hinglish": "Bahut sust, jagana mushkil"}, "facts": {"very_drowsy": true}},
+       {"id": "dizzy", "label": {"en": "Dizzy on standing", "hi": "खड़े होने पर चक्कर", "hinglish": "Khade hone par chakkar"}, "facts": {"dizziness_standing": true}},
+       {"id": "urine_low", "label": {"en": "Very little urine", "hi": "पेशाब बहुत कम", "hinglish": "Peshab bahut kam"}, "facts": {"reduced_urine": true}},
+       {"id": "urine_none", "severity": "definite_S3", "label": {"en": "No urine for 12 hours", "hi": "12 घंटे से पेशाब नहीं", "hinglish": "12 ghante se peshab nahi"}, "facts": {"urine_absent_hours": 12}}
+     ]},
+    {"id": "stomach.confirm_black", "kind": "confirm", "only_if": "black_stool and not iron_tablets and not no(iron_tablets)",
+     "text": {"en": "Are iron tablets being taken?", "hi": "क्या आयरन की गोली ले रहे हैं?", "hinglish": "Kya iron ki goli le rahe hain?"},
+     "chips": [
+       {"id": "iron", "label": {"en": "Yes, iron tablets", "hi": "हाँ, आयरन की गोली", "hinglish": "Haan, iron ki goli"}, "facts": {"iron_tablets": true}}
+     ], "none_label": {"en": "No iron tablets", "hi": "आयरन की गोली नहीं", "hinglish": "Iron ki goli nahi"}},
+    {"id": "stomach.confirm_pain", "kind": "confirm", "only_if": "severe_pain and not right_lower_pain and not rigid_belly",
+     "text": {"en": "About the stomach pain, is any of these true?", "hi": "पेट दर्द के बारे में क्या इनमें से कुछ सही है?", "hinglish": "Pet dard ke baare mein inme se kuch sahi hai?"},
+     "chips": [
+       {"id": "rlq", "severity": "definite_S3", "label": {"en": "Pain in the lower right side", "hi": "दर्द दाएँ नीचे की तरफ", "hinglish": "Dard daayein neeche ki taraf"}, "facts": {"right_lower_pain": true}},
+       {"id": "hard", "severity": "definite_S3", "label": {"en": "Belly hard like a board", "hi": "पेट पत्थर जैसा सख्त", "hinglish": "Pet patthar jaisa sakht"}, "facts": {"rigid_belly": true}},
+       {"id": "swollen", "severity": "definite_S3", "label": {"en": "Belly swollen, no stool or gas passing", "hi": "पेट फूला, पॉटी या गैस नहीं निकल रही", "hinglish": "Pet phoola, potty ya gas nahi nikal rahi"}, "facts": {"no_stool_gas_swelling": true}},
+       {"id": "worse", "label": {"en": "Pain worse on walking or coughing", "hi": "चलने या खांसने पर दर्द बढ़ता है", "hinglish": "Chalne ya khaansne par dard badhta hai"}, "facts": {"pain_worse_walking": true}}
      ]},
     {"id": "stomach.amount", "kind": "duration",
      "text": {"en": "Since when, and how many times a day?", "hi": "कब से और दिन में कितनी बार?", "hinglish": "Kab se aur din mein kitni baar?"},

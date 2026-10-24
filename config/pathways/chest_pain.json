@@ -28,7 +28,7 @@
     "longer_5min": {"patterns": ["\\d+ min\\w* se (zyada|jyada)", "(more|longer) than (5|five|10|ten) min", "continuous", "lagatar", "abhi (bhi )?ho raha", "still (going on|there)", "लगातार"], "label": {"en": "pain lasting more than 5 minutes", "hi": "5 मिनट से ज़्यादा दर्द", "hinglish": "5 minute se zyada dard"}}
   },
   "rules": [
-    {"id": "ch_red_flags", "stage": "S3", "when": "(chest_pain_any or chest_burning or pressure) and (pressure or radiation or sweating or breathless or dizziness_standing or longer_5min)", "pattern": "heart_like"},
+    {"id": "ch_red_flags", "stage": "S3", "when": "(chest_pain_any or chest_burning or pressure) and (pressure or radiation or sweating or breathless or dizziness_standing or longer_5min or chest_nausea)", "pattern": "heart_like"},
     {"id": "ch_sharp_breathless", "stage": "S3", "when": "sharp_breathing and breathless", "pattern": "breathing_related"},
     {"id": "ch_risk_group", "stage": "S3", "when": "(chest_pain_any or pressure or chest_burning) and (age40 or diabetes or hypertension or heart) and not chest_wall and not not_current", "pattern": "heart_like"},
     {"id": "ch_not_explained", "stage": "S3", "when": "chest_pain_any and not chest_wall and not chest_burning and not not_current", "pattern": "heart_like"},
@@ -43,10 +43,11 @@
      "text": {"en": "With the chest pain, is any of these happening?", "hi": "सीने के दर्द के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Seene ke dard ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(radiation) and known(sweating) and known(breathless)",
      "chips": [
-       {"id": "rad", "label": {"en": "Pain to left arm / jaw / back", "hi": "दर्द बाएँ हाथ / जबड़े / पीठ तक", "hinglish": "Dard baayen haath / jabde / peeth tak"}, "facts": {"radiation": true}},
-       {"id": "sweat", "label": {"en": "Sweating", "hi": "पसीना", "hinglish": "Paseena"}, "facts": {"sweating": true}},
-       {"id": "breath", "label": {"en": "Breathlessness", "hi": "साँस फूलना", "hinglish": "Saans phoolna"}, "facts": {"breathless": true}},
-       {"id": "faint", "label": {"en": "Dizzy / fainting", "hi": "चक्कर / बेहोशी", "hinglish": "Chakkar / behoshi"}, "facts": {"dizziness_standing": true}}
+       {"id": "rad", "severity": "definite_S3", "label": {"en": "Pain spreading to arm, jaw or back", "hi": "दर्द हाथ, जबड़े या पीठ तक जाता है", "hinglish": "Dard haath, jabde ya peeth tak jaata hai"}, "facts": {"radiation": true}},
+       {"id": "sweat", "severity": "definite_S3", "label": {"en": "Sweating", "hi": "पसीना आ रहा है", "hinglish": "Paseena aa raha hai"}, "facts": {"sweating": true}},
+       {"id": "breath", "severity": "definite_S3", "label": {"en": "Breathless", "hi": "साँस फूल रही है", "hinglish": "Saans phool rahi hai"}, "facts": {"breathless": true}},
+       {"id": "faint", "severity": "definite_S3", "label": {"en": "Feeling faint", "hi": "बेहोशी जैसा लग रहा", "hinglish": "Behoshi jaisa lag raha"}, "facts": {"dizziness_standing": true}},
+       {"id": "nausea", "severity": "definite_S3", "label": {"en": "Nausea or vomiting", "hi": "जी मिचलाना या उल्टी", "hinglish": "Ji michlana ya ulti"}, "facts": {"chest_nausea": true}}
      ]},
     {"id": "chest.character", "kind": "character",
      "text": {"en": "What does the pain feel like?", "hi": "दर्द कैसा है?", "hinglish": "Dard kaisa hai?"},

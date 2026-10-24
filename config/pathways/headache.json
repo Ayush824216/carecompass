@@ -1,7 +1,7 @@
 {
   "id": "headache",
-  "label": {"en": "Headache", "hi": "सिर दर्द", "hinglish": "Sir dard"},
-  "trigger": "headache or sudden_worst or head_injury",
+  "label": {"en": "Headache or dizziness", "hi": "सिर दर्द या चक्कर", "hinglish": "Sir dard ya chakkar"},
+  "trigger": "headache or sudden_worst or head_injury or fainted or vertigo or (dizziness_standing and not vomiting and not diarrhoea and not chest_pain_any)",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
     "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
@@ -21,6 +21,12 @@
     "progressive": {"patterns": ["roz (\\S+ ){0,3}badh", "din ba din badh", "hafton se badh", "badhta (ja )?raha", "getting worse (every day|day by day|over weeks)", "progressively worse", "रोज़.{0,16}बढ़", "बढ़ता जा रहा"], "label": {"en": "getting worse over weeks", "hi": "हफ्तों से बढ़ता सिर दर्द", "hinglish": "hafton se badhta sir dard"}},
     "wakes_sleep": {"patterns": ["neend se uth", "neend (mein )?(se )?jaga", "wakes (me |him |her |them )?(up|from sleep)", "नींद से उठ"], "label": {"en": "wakes from sleep", "hi": "नींद से जगा देता है", "hinglish": "neend se uthata hai"}},
     "known_migraine": {"patterns": ["migraine", "purana (\\S+ )?(sir )?dard", "pehle bhi (aisa|hota|wahi)", "usual headache", "same as (always|before)", "wahi dard", "पुराना दर्द", "माइग्रेन"], "label": {"en": "the usual known headache", "hi": "पहले जैसा जाना-पहचाना सिर दर्द", "hinglish": "pehle jaisa jaana-pehchaana sir dard"}},
+    "fainted": {"patterns": ["behosh (ho )?(gaye|gayi|gaya|hue|hui|hua)", "\\bfainted\\b", "passed out", "blacked out", "gir (gaye|gayi|pade) (aur )?behosh", "बेहोश (हो )?(गए|गई|गया|हुए|हुई)"],
+                "label": {"en": "fainted", "hi": "बेहोश हो गए", "hinglish": "behosh ho gaye"}},
+    "faint_postural": {"patterns": ["khade hone (par|pe|se) (chakk?ar|andhera)", "(on|when) standing( up)?", "उठने पर चक्कर", "खड़े होने पर"],
+                       "label": {"en": "dizzy on standing up", "hi": "खड़े होने पर चक्कर", "hinglish": "khade hone par chakkar"}},
+    "vertigo": {"patterns": ["(sab|kamra|room) (\\S+ )?ghoom", "spinning", "ghoomta hua", "vertigo", "सब घूम"],
+                "label": {"en": "room spinning", "hi": "सब घूमता हुआ लगना", "hinglish": "sab ghoomta hua lagna"}},
     "light_sensitivity": {"patterns": ["roshni (se )?(\\S+ )?(takleef|chubh|dikkat)", "light (hurts|sensitiv)", "रोशनी से"], "label": {"en": "light hurts the eyes", "hi": "रोशनी से तकलीफ", "hinglish": "roshni se takleef"}}
   },
   "rules": [
@@ -31,6 +37,11 @@
     {"id": "h_bp_180", "stage": "S3", "when": "bp_sys is not None and (bp_sys >= 180 or bp_dia >= 120)", "pattern": "high_bp"},
     {"id": "h_pregnancy", "stage": "S3", "when": "pregnant and (pregnancy_weeks is None or pregnancy_weeks > 20) and (vision_change or swelling_face_hands)", "pattern": "pregnancy_related"},
     {"id": "h_seizure", "stage": "S3", "when": "seizure"},
+    {"id": "h_faint_cardiac", "stage": "S3", "when": "faint_cardiac or (fainted and (chest_pain_any or breathless))", "pattern": "heart_like"},
+
+    {"id": "h_fainted", "stage": "S2", "when": "fainted and not faint_postural", "care_type": "gp_teleconsult"},
+    {"id": "h_dizzy_vulnerable", "stage": "S2", "when": "(dizziness_standing or vertigo or faint_postural) and (elderly or pregnant or diabetes or heart)", "care_type": "gp_teleconsult"},
+    {"id": "h_stiff_neck_no_fever", "stage": "S2", "when": "stiff_neck and not fever", "care_type": "gp_teleconsult"},
 
     {"id": "h_new_after_50", "stage": "S2", "when": "age_years is not None and age_years >= 50 and (new_pattern or progressive)"},
     {"id": "h_progressive", "stage": "S2", "when": "progressive"},
@@ -41,19 +52,45 @@
     {"id": "h_fever", "stage": "S1", "when": "fever"},
     {"id": "h_new", "stage": "S1", "when": "new_pattern"},
 
+    {"id": "h_postural", "stage": "S1", "when": "faint_postural or dizziness_standing or vertigo"},
+
     {"id": "h_known_pattern", "stage": "S0", "when": "known_migraine and not new_pattern", "pattern": "tension_migraine"}
   ],
   "sufficient": "known_migraine or n_signs >= 2 or known(duration_days)",
   "questions": [
     {"id": "headache.danger", "kind": "danger",
      "text": {"en": "With the headache, is any of these happening?", "hi": "सिर दर्द के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Sir dard ke saath inme se kuch ho raha hai?"},
-     "skip_if": "known(sudden_worst) and known(weakness_one_side) and known(stiff_neck)",
+     "skip_if": "known(sudden_worst) and known(weakness_one_side) and known(stiff_neck) and known(face_droop) and known(slurred_speech)",
      "chips": [
-       {"id": "sudden", "label": {"en": "Sudden, worst-ever pain", "hi": "अचानक, ज़िंदगी का सबसे तेज़ दर्द", "hinglish": "Achanak, zindagi ka sabse tez dard"}, "facts": {"sudden_worst": true}},
-       {"id": "stroke", "label": {"en": "One-sided weakness / face droop / slurred speech", "hi": "एक तरफ कमज़ोरी / मुँह टेढ़ा / बोलने में दिक्कत", "hinglish": "Ek taraf kamzori / muh tedha / bolne mein dikkat"}, "facts": {"weakness_one_side": true}},
-       {"id": "neck", "label": {"en": "Stiff neck + fever", "hi": "गर्दन अकड़ना + बुखार", "hinglish": "Gardan akadna + bukhar"}, "facts": {"stiff_neck": true, "fever": true}},
-       {"id": "injury", "label": {"en": "Head injury", "hi": "सिर पर चोट", "hinglish": "Sir par chot"}, "facts": {"head_injury": true}}
+       {"id": "sudden", "severity": "definite_S3", "label": {"en": "Sudden, worst-ever pain", "hi": "अचानक, ज़िंदगी का सबसे तेज़ दर्द", "hinglish": "Achanak, zindagi ka sabse tez dard"}, "facts": {"sudden_worst": true}},
+       {"id": "weak", "severity": "definite_S3", "label": {"en": "Weakness on one side of the body", "hi": "शरीर के एक तरफ कमज़ोरी", "hinglish": "Sharir ke ek taraf kamzori"}, "facts": {"weakness_one_side": true}},
+       {"id": "face", "severity": "definite_S3", "label": {"en": "Face drooping", "hi": "मुँह टेढ़ा हो गया", "hinglish": "Muh tedha ho gaya"}, "facts": {"face_droop": true}},
+       {"id": "speech", "severity": "definite_S3", "label": {"en": "Difficulty speaking", "hi": "बोलने में दिक्कत", "hinglish": "Bolne mein dikkat"}, "facts": {"slurred_speech": true}},
+       {"id": "neck", "severity": "needs_confirmation", "label": {"en": "Stiff neck", "hi": "गर्दन में अकड़न", "hinglish": "Gardan mein akadan"}, "facts": {"stiff_neck": true}},
+       {"id": "injury", "severity": "needs_confirmation", "label": {"en": "Head injury", "hi": "सिर पर चोट", "hinglish": "Sir par chot"}, "facts": {"head_injury": true}},
+       {"id": "faint", "severity": "needs_confirmation", "label": {"en": "Fainted or nearly fainted", "hi": "बेहोश हुए या होने वाले थे", "hinglish": "Behosh hue ya hone wale the"}, "facts": {"fainted": true}}
      ]},
+    {"id": "headache.confirm_neck", "kind": "confirm", "only_if": "stiff_neck and not fever and not no(fever)",
+     "text": {"en": "With the stiff neck, is there fever too?", "hi": "गर्दन की अकड़न के साथ बुखार भी है?", "hinglish": "Gardan ki akadan ke saath bukhar bhi hai?"},
+     "chips": [
+       {"id": "fever", "severity": "definite_S3", "label": {"en": "Yes, fever too", "hi": "हाँ, बुखार भी है", "hinglish": "Haan, bukhar bhi hai"}, "facts": {"fever": true}}
+     ], "none_label": {"en": "No fever", "hi": "बुखार नहीं है", "hinglish": "Bukhar nahi hai"}},
+    {"id": "headache.confirm_injury", "kind": "confirm", "only_if": "head_injury",
+     "text": {"en": "After the head injury, did any of these happen?", "hi": "सिर की चोट के बाद क्या इनमें से कुछ हुआ?", "hinglish": "Sir ki chot ke baad inme se kuch hua?"},
+     "chips": [
+       {"id": "vomit", "severity": "definite_S3", "label": {"en": "Vomited", "hi": "उल्टी हुई", "hinglish": "Ulti hui"}, "facts": {"vomiting": true}},
+       {"id": "out", "severity": "definite_S3", "label": {"en": "Lost consciousness", "hi": "बेहोश हुए थे", "hinglish": "Behosh hue the"}, "facts": {"unconscious": true}},
+       {"id": "drowsy", "severity": "definite_S3", "label": {"en": "Very sleepy since", "hi": "तब से बहुत नींद", "hinglish": "Tab se bahut neend"}, "facts": {"very_drowsy": true}},
+       {"id": "thin", "severity": "definite_S3", "label": {"en": "Takes blood thinners", "hi": "खून पतला करने की दवा लेते हैं", "hinglish": "Khoon patla karne ki dawai lete hain"}, "facts": {"blood_thinners": true}}
+     ]},
+    {"id": "headache.confirm_faint", "kind": "confirm", "only_if": "fainted and not unconscious",
+     "text": {"en": "About the fainting, which of these is true?", "hi": "बेहोशी के बारे में क्या सही है?", "hinglish": "Behoshi ke baare mein kya sahi hai?"},
+     "chips": [
+       {"id": "chest", "severity": "definite_S3", "label": {"en": "Chest pain or racing heart before it", "hi": "उससे पहले सीने में दर्द या तेज़ धड़कन", "hinglish": "Usse pehle seene mein dard ya tez dhadkan"}, "facts": {"faint_cardiac": true}},
+       {"id": "exert", "severity": "definite_S3", "label": {"en": "Happened during exercise or effort", "hi": "मेहनत करते समय हुआ", "hinglish": "Mehnat karte samay hua"}, "facts": {"faint_cardiac": true}},
+       {"id": "still", "severity": "definite_S3", "label": {"en": "Still not fully awake", "hi": "अब भी पूरी तरह होश में नहीं", "hinglish": "Ab bhi poori tarah hosh mein nahi"}, "facts": {"unconscious": true}},
+       {"id": "stand", "label": {"en": "Only on standing up quickly", "hi": "सिर्फ़ जल्दी खड़े होने पर", "hinglish": "Sirf jaldi khade hone par"}, "facts": {"faint_postural": true}}
+     ], "no_none_chip": true},
     {"id": "headache.pattern", "kind": "pattern",
      "text": {"en": "Is this headache usual for them?", "hi": "क्या ऐसा सिर दर्द पहले भी होता है?", "hinglish": "Kya aisa sir dard pehle bhi hota hai?"},
      "skip_if": "known_migraine or new_pattern or progressive or wakes_sleep",

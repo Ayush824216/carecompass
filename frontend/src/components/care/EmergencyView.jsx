@@ -10,7 +10,7 @@ function steps(reasoning) {
   return (reasoning || "").split(/(?<=[.।!?])\s+/).map((s) => s.trim()).filter(Boolean);
 }
 
-export default function EmergencyView({ response, debug, onBack }) {
+export default function EmergencyView({ response, debug, onBack, onUndo }) {
   const { t, location, voice } = useApp();
   const headingRef = useRef(null);
   const list = steps(response.reasoning);
@@ -41,6 +41,12 @@ export default function EmergencyView({ response, debug, onBack }) {
           <div>
             <h1 id="em-title" ref={headingRef} tabIndex={-1} className="text-3xl font-semibold outline-none focus-visible:outline-none sm:text-5xl">{t("emergency.title")}</h1>
             <p className="mt-1 text-lg text-white/90 sm:text-xl">{t("emergency.subtitle")}</p>
+            {onUndo && (
+              <button type="button" onClick={onUndo}
+                className="mt-2 min-h-[44px] text-left text-sm font-semibold text-white/90 underline underline-offset-4 hover:text-white">
+                {t("emergency.undo")}
+              </button>
+            )}
           </div>
         </div>
 

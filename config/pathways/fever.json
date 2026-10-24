@@ -40,6 +40,10 @@
                     "label": {"en": "fever rising day by day", "hi": "बुखार रोज़ बढ़ रहा है", "hinglish": "bukhar roz badh raha hai"}},
     "fever_down": {"patterns": ["bukh?aa?r (\\S+ )?(utar|kam ho|chala|chal) (gaya|gya|gaya hai)", "fever (went|has gone|came|is) down", "fever (has )?(settled|gone)", "बुखार उतर गया"],
                    "label": {"en": "fever went down", "hi": "बुखार उतर गया", "hinglish": "bukhar utar gaya"}},
+    "severe_headache": {"patterns": ["(bahut|bohot|bht|boht|itna|bahot) (zyada |jyada )?tez (sir|sar) ?(mein |me )?dard", "(sir|sar) (mein |me )?(bahut|bohot|bht|itna) (tez|zyada|jyada) dard", "(severe|very bad|terrible|bad) headache", "बहुत तेज़ सिर ?दर्द", "सिर में बहुत तेज़ दर्द"],
+                        "label": {"en": "very bad headache", "hi": "बहुत तेज़ सिर दर्द", "hinglish": "bahut tez sir dard"}},
+    "breathless_exertion": {"patterns": ["(chalne|seedhi chadhne|kaam karne) (par|pe|se) saa?ns (phool|ful|phul)", "breathless (on|when|while) (walking|climbing|exertion)", "चलने पर साँस"],
+                            "label": {"en": "breathless on walking", "hi": "चलने पर साँस फूलना", "hinglish": "chalne par saans phoolna"}},
     "weakness_severe": {"patterns": ["bahut (zyada )?kamz?j?ori", "very weak", "extremely weak", "(bistar|bed) se uth nahi", "can'?t get out of bed", "बिस्तर से उठ नहीं", "bechain", "restless", "बहुत कमज़ोरी", "बहुत कमजोरी", "बेचैन"],
                         "label": {"en": "severe weakness or restlessness", "hi": "बहुत कमज़ोरी या बेचैनी", "hinglish": "bahut kamzori ya bechaini"}}
   },
@@ -70,6 +74,9 @@
     {"id": "f_pneumonia_warning", "stage": "S2", "when": "fever and cough and (fast_breathing or chest_pain_breathing or breathless)", "pattern": "pneumonia_like"},
     {"id": "f_vomiting_persistent", "stage": "S2", "when": "fever and (persistent_vomiting or vomit_count >= 4)"},
     {"id": "f_severe_abdominal_pain", "stage": "S2", "when": "fever and severe_pain", "pattern": "typhoid_like"},
+    {"id": "f_breathless", "stage": "S2", "when": "fever and (breathless or breathless_exertion)", "pattern": "pneumonia_like"},
+    {"id": "f_severe_headache", "stage": "S2", "when": "fever and severe_headache", "pattern": "meningitis_like"},
+    {"id": "f_bleeding", "stage": "S2", "when": "fever and bleeding_any", "pattern": "dengue_like", "note": "home_blood_test"},
 
     {"id": "f_two_days", "stage": "S1", "when": "fever and duration_days is not None and duration_days >= 2"},
     {"id": "f_temp_103", "stage": "S1", "when": "temp_f is not None and temp_f >= 103"},
@@ -88,13 +95,43 @@
     {"id": "fever.danger", "kind": "danger",
      "text": {"en": "With the fever, is any of these happening?", "hi": "बुखार के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Bukhar ke saath inme se kuch ho raha hai?"},
      "skip_if": "known(very_drowsy) and known(breathless) and known(bleeding_any) and known(stiff_neck) and known(seizure)",
+     "_chips": "one sign per chip. definite_S3 -> emergency at once; needs_confirmation -> one targeted confirmation question",
      "chips": [
-       {"id": "drowsy", "label": {"en": "Very drowsy / almost fainting", "hi": "बहुत सुस्त / बेहोशी जैसा", "hinglish": "Bahut sust / behoshi jaisa"}, "facts": {"very_drowsy": true}},
-       {"id": "breath", "label": {"en": "Breathlessness", "hi": "साँस फूलना", "hinglish": "Saans phoolna"}, "facts": {"breathless": true}},
-       {"id": "bleed", "label": {"en": "Bleeding from anywhere", "hi": "कहीं से खून आना", "hinglish": "Kahin se khoon aana"}, "facts": {"bleeding_any": true}},
-       {"id": "neck", "label": {"en": "Stiff neck / very bad headache", "hi": "गर्दन अकड़ना / बहुत तेज़ सिर दर्द", "hinglish": "Gardan akadna / bahut tez sir dard"}, "facts": {"stiff_neck": true}},
-       {"id": "fit", "label": {"en": "Seizure / fit", "hi": "दौरा", "hinglish": "Daura"}, "facts": {"seizure": true}}
+       {"id": "drowsy", "severity": "definite_S3", "label": {"en": "Very drowsy, hard to wake", "hi": "बहुत सुस्त, जगाना मुश्किल", "hinglish": "Bahut sust, jagana mushkil"}, "facts": {"very_drowsy": true}},
+       {"id": "confused", "severity": "definite_S3", "label": {"en": "Talking confused", "hi": "उल्टा-सीधा बोल रहे हैं", "hinglish": "Ulta-seedha bol rahe"}, "facts": {"confusion": true}},
+       {"id": "breath_rest", "severity": "definite_S3", "label": {"en": "Breathless even at rest", "hi": "आराम में भी साँस फूल रही है", "hinglish": "Aaram mein bhi saans phool rahi"}, "facts": {"breathless_rest": true}},
+       {"id": "breath_walk", "severity": "needs_confirmation", "label": {"en": "Breathless on walking", "hi": "चलने पर साँस फूलती है", "hinglish": "Chalne par saans phoolti hai"}, "facts": {"breathless": true}},
+       {"id": "neck", "severity": "definite_S3", "label": {"en": "Stiff neck", "hi": "गर्दन अकड़ गई है", "hinglish": "Gardan akad gayi"}, "facts": {"stiff_neck": true}},
+       {"id": "headache", "severity": "needs_confirmation", "label": {"en": "Very bad headache", "hi": "बहुत तेज़ सिर दर्द", "hinglish": "Bahut tez sir dard"}, "facts": {"severe_headache": true}},
+       {"id": "bleed", "severity": "needs_confirmation", "label": {"en": "Bleeding from anywhere", "hi": "कहीं से खून आना", "hinglish": "Kahin se khoon aana"}, "facts": {"bleeding_any": true}},
+       {"id": "fit", "severity": "definite_S3", "label": {"en": "Had a fit (seizure)", "hi": "दौरा पड़ा", "hinglish": "Daura pada"}, "facts": {"seizure": true}}
      ]},
+    {"id": "fever.confirm_breath", "kind": "confirm", "only_if": "breathless and not breathless_rest and not blue_lips",
+     "text": {"en": "About the breathing, which of these is true?", "hi": "साँस के बारे में, इनमें से क्या सही है?", "hinglish": "Saans ke baare mein, inme se kya sahi hai?"},
+     "chips": [
+       {"id": "sitting", "severity": "definite_S3", "label": {"en": "Breathless even sitting still", "hi": "बैठे-बैठे भी साँस फूलती है", "hinglish": "Baithe-baithe bhi saans phoolti hai"}, "facts": {"breathless_rest": true}},
+       {"id": "speak", "severity": "definite_S3", "label": {"en": "Cannot finish a sentence", "hi": "पूरी बात एक साँस में नहीं बोल पाते", "hinglish": "Poori baat ek saans mein nahi bol paate"}, "facts": {"breathless_rest": true}},
+       {"id": "blue", "severity": "definite_S3", "label": {"en": "Blue lips or nails", "hi": "होंठ या नाखून नीले", "hinglish": "Hont ya naakhun neele"}, "facts": {"blue_lips": true}},
+       {"id": "walk", "label": {"en": "Only on walking or climbing stairs", "hi": "सिर्फ़ चलने या सीढ़ी चढ़ने पर", "hinglish": "Sirf chalne ya seedhi chadhne par"}, "facts": {"breathless_exertion": true}}
+     ], "no_none_chip": true},
+    {"id": "fever.confirm_headache", "kind": "confirm", "only_if": "severe_headache and not stiff_neck and not confusion",
+     "text": {"en": "With the bad headache, is any of these there?", "hi": "तेज़ सिर दर्द के साथ क्या इनमें से कुछ है?", "hinglish": "Tez sir dard ke saath inme se kuch hai?"},
+     "chips": [
+       {"id": "neck", "severity": "definite_S3", "label": {"en": "Neck will not bend forward", "hi": "गर्दन आगे नहीं झुकती", "hinglish": "Gardan aage nahi jhukti"}, "facts": {"stiff_neck": true}},
+       {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or talking strangely", "hi": "भ्रम या अजीब बातें", "hinglish": "Bhram ya ajeeb baatein"}, "facts": {"confusion": true}},
+       {"id": "drowsy", "severity": "definite_S3", "label": {"en": "Hard to wake", "hi": "जगाना मुश्किल", "hinglish": "Jagana mushkil"}, "facts": {"very_drowsy": true}},
+       {"id": "rash", "severity": "definite_S3", "label": {"en": "Purple spots that do not fade on pressing", "hi": "बैंगनी दाने जो दबाने पर नहीं जाते", "hinglish": "Baingani daane jo dabane par nahi jaate"}, "facts": {"non_fading_rash": true}},
+       {"id": "vomit", "label": {"en": "Vomiting again and again", "hi": "बार-बार उल्टी हो रही", "hinglish": "Baar-baar ulti ho rahi"}, "facts": {"persistent_vomiting": true}},
+       {"id": "light", "label": {"en": "Light hurts the eyes", "hi": "रोशनी से आँखों में तकलीफ", "hinglish": "Roshni se aankhon mein takleef"}, "facts": {"light_sensitivity": true}}
+     ]},
+    {"id": "fever.confirm_bleed", "kind": "confirm", "only_if": "bleeding_any and not blood_large and not blood_vomit and not black_stool",
+     "text": {"en": "About the bleeding, which is true?", "hi": "खून के बारे में क्या सही है?", "hinglish": "Khoon ke baare mein kya sahi hai?"},
+     "chips": [
+       {"id": "little", "label": {"en": "A little from gums or nose", "hi": "मसूड़ों या नाक से थोड़ा सा", "hinglish": "Masoodon ya naak se thoda sa"}, "facts": {"blood_small": true}},
+       {"id": "vomit", "severity": "definite_S3", "label": {"en": "Vomiting blood", "hi": "खून की उल्टी", "hinglish": "Khoon ki ulti"}, "facts": {"blood_vomit": true}},
+       {"id": "black", "severity": "definite_S3", "label": {"en": "Black or bloody stool", "hi": "काली या खून वाली पॉटी", "hinglish": "Potty kaali ya khoon wali"}, "facts": {"black_stool": true}},
+       {"id": "lots", "severity": "definite_S3", "label": {"en": "A lot of blood, not stopping", "hi": "बहुत खून, रुक नहीं रहा", "hinglish": "Bahut khoon, ruk nahi raha"}, "facts": {"blood_large": true}}
+     ], "no_none_chip": true},
     {"id": "fever.duration_height", "kind": "duration",
      "text": {"en": "Since when is the fever, and how high?", "hi": "बुखार कब से है और कितना?", "hinglish": "Bukhar kab se hai aur kitna?"},
      "skip_if": "known(duration_days) and (known(temp_f) or high_fever_reported or mild_fever)",
@@ -113,9 +150,11 @@
      "skip_if": "n_signs >= 3",
      "chips": [
        {"id": "chills", "label": {"en": "Chills and shivering", "hi": "ठंड लगकर कंपकंपी", "hinglish": "Thand lagkar kapkapi"}, "facts": {"chills": true}},
-       {"id": "ache", "label": {"en": "Severe body / joint pain", "hi": "बदन / जोड़ों में बहुत दर्द", "hinglish": "Badan / jodon mein bahut dard"}, "facts": {"body_ache": true, "severe_joint_pain": true}},
+       {"id": "ache", "label": {"en": "Severe body ache", "hi": "बदन में बहुत दर्द", "hinglish": "Badan mein bahut dard"}, "facts": {"body_ache": true}},
+       {"id": "joints", "label": {"en": "Severe joint pain", "hi": "जोड़ों में बहुत दर्द", "hinglish": "Jodon mein bahut dard"}, "facts": {"severe_joint_pain": true}},
        {"id": "rash", "label": {"en": "Red rash", "hi": "लाल दाने", "hinglish": "Laal daane"}, "facts": {"rash": true}},
-       {"id": "yellow", "label": {"en": "Yellow eyes / urine", "hi": "आँखें / पेशाब पीला", "hinglish": "Aankhen / peshab peela"}, "facts": {"yellow_eyes": true}},
+       {"id": "yellow", "label": {"en": "Yellow eyes", "hi": "आँखें पीली", "hinglish": "Aankhen peeli"}, "facts": {"yellow_eyes": true}},
+       {"id": "darkurine", "label": {"en": "Dark yellow urine", "hi": "गहरा पीला पेशाब", "hinglish": "Gehra peela peshab"}, "facts": {"dark_urine": true}},
        {"id": "vomit", "label": {"en": "Repeated vomiting", "hi": "बार-बार उल्टी", "hinglish": "Baar-baar ulti"}, "facts": {"persistent_vomiting": true}},
        {"id": "belly", "label": {"en": "Stomach pain", "hi": "पेट दर्द", "hinglish": "Pet dard"}, "facts": {"abdominal_pain": true}},
        {"id": "urine", "label": {"en": "Burning urine", "hi": "पेशाब में जलन", "hinglish": "Peshab mein jalan"}, "facts": {"burning_urine": true}},

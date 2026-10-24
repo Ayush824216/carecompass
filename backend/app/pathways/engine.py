@@ -131,10 +131,13 @@ def _none_label(q: dict) -> dict:
 
 
 def chip_options(q: dict, lang: str) -> list[dict]:
-    opts = [{"id": c["id"], "label": c["label"].get(lang) or c["label"]["en"]} for c in q["chips"]]
+    """Chips for the client. `severity`: definite_S3 (emergency at once) | needs_confirmation (one targeted
+    follow-up) | None. `single`: pick one chip (e.g. a temperature band) instead of multi-select."""
+    opts = [{"id": c["id"], "label": c["label"].get(lang) or c["label"]["en"], "severity": c.get("severity")}
+            for c in q["chips"]]
     if not q.get("no_none_chip"):
         nl = _none_label(q)
-        opts.append({"id": "none", "label": nl.get(lang) or nl["en"], "exclusive": True})
+        opts.append({"id": "none", "label": nl.get(lang) or nl["en"], "exclusive": True, "severity": None})
     return opts
 
 
@@ -143,6 +146,13 @@ class Answers:
     facts: dict[str, Any] = field(default_factory=dict)
     negated: set[str] = field(default_factory=set)
     asked: list[str] = field(default_factory=list)
+    confirm_asked: list[str] = field(default_factory=list)  # danger-confirmation questions (not counted in the 4)
+    definite: list[str] = field(default_factory=list)  # chip ids answered that are definite_S3
+    chips: dict[str, list[str]] = field(default_factory=dict)  # question id -> chip ids chosen ("none" included)
+
+    @property
+    def n_clinical(self) -> int:
+        return len([q for q in self.asked if q not in self.confirm_asked])
 
 
 def parse_answers(history: list[dict], user_input: str) -> Answers:
@@ -158,23 +168,52 @@ def parse_answers(history: list[dict], user_input: str) -> Answers:
             pending = hit[1] if hit else None
             if pending:
                 ans.asked.append(pending["id"])
+                if pending.get("kind") == "confirm":
+                    ans.confirm_asked.append(pending["id"])
             continue
         if role != "user" or pending is None:
             continue
-        low = _norm(content)
-        chosen = [c for c in pending["chips"] if any(_norm(c["label"][l]) in low for l in LANGS)]
-        for c in chosen:
-            for k, v in c["facts"].items():
-                if isinstance(v, bool):
-                    ans.facts[k] = ans.facts.get(k, False) or v
-                else:
-                    ans.facts[k] = max(ans.facts.get(k) or v, v)
-        nl = _none_label(pending)
-        if not pending.get("no_none_chip") and any(_norm(nl[l]) in low for l in LANGS) and not chosen:
-            for c in pending["chips"]:
-                ans.negated |= {k for k, v in c["facts"].items() if v is True}
+        apply_chip_answer(ans, pending, _chosen_chips(pending, content), _is_none(pending, content))
         pending = None
     return ans
+
+
+def _chosen_chips(q: dict, content: str) -> list[dict]:
+    low = _norm(content)
+    # longest labels first, so "Aaram mein bhi saans phool rahi" is not also read as a shorter overlapping label
+    found, rest = [], low
+    for c in sorted(q["chips"], key=lambda c: -max(len(c["label"][l]) for l in LANGS)):
+        for l in LANGS:
+            lab = _norm(c["label"][l])
+            if lab and lab in rest:
+                found.append(c)
+                rest = rest.replace(lab, " ")
+                break
+    return found
+
+
+def _is_none(q: dict, content: str) -> bool:
+    if q.get("no_none_chip"):
+        return False
+    nl = _none_label(q)
+    return any(_norm(nl[l]) in _norm(content) for l in LANGS)
+
+
+def apply_chip_answer(ans: Answers, q: dict, chosen: list[dict], none: bool) -> None:
+    """Merge one answer into the facts. Positive answers only ever add; "None" negates the chips' signs."""
+    for c in chosen:
+        for k, v in c["facts"].items():
+            if isinstance(v, bool):
+                ans.facts[k] = ans.facts.get(k, False) or v
+            else:
+                ans.facts[k] = max(ans.facts.get(k) or v, v)
+        if c.get("severity") == "definite_S3":
+            ans.facts["definite_s3_answer"] = True
+            ans.definite.append(c["id"])
+    if none and not chosen:
+        for c in q["chips"]:
+            ans.negated |= {k for k, v in c["facts"].items() if v is True}
+    ans.chips[q["id"]] = [c["id"] for c in chosen] + (["none"] if none and not chosen else [])
 
 
 # ---------------------------------------------------------------- facts
@@ -356,9 +395,10 @@ def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input:
 # ---------------------------------------------------------------- senior-doctor questioning
 def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) -> Optional[dict]:
     """Next question of the primary pathway's tree, or None to decide now.
-    Danger screen first, skip what is known, stop immediately on S3, never more than max_q clinical questions."""
+    Stop immediately on S3. A triggered danger confirmation comes first (one per conversation, outside the cap of
+    max_q clinical questions). Then danger screen first, skipping what is known."""
     prim = out.primary
-    if prim is None or prim.stage == "S3" or n_clinical_asked >= max_q:
+    if prim is None or prim.stage == "S3":
         return None
     _, pathways, _ = load()
     p = pathways[prim.pathway]
@@ -366,10 +406,18 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
     n_signs = sum(1 for k, v in out.facts.items() if v is True and k in _compiled_signs() and k not in trigger_names)
     facts = dict(out.facts, n_signs=n_signs)
     fn = _funcs(facts, out.neg, out.known)
+    if not out.answers.confirm_asked:
+        for res in [prim] + [r for r in out.results if r is not prim]:
+            for q in pathways[res.pathway].cfg["questions"]:
+                if q.get("kind") == "confirm" and expr.evaluate(q.get("only_if", "False"), facts, fn) \
+                        and not expr.evaluate(q.get("skip_if", "False"), facts, fn):
+                    return q
+    if n_clinical_asked >= max_q:
+        return None
     if expr.evaluate(p.cfg.get("sufficient", "False"), facts, fn):
         return None
     for q in p.cfg["questions"]:
-        if q["id"] in out.answers.asked:
+        if q["id"] in out.answers.asked or q.get("kind") == "confirm":
             continue
         if not expr.evaluate(q.get("only_if", "True"), facts, fn):
             continue

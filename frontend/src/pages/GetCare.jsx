@@ -36,6 +36,7 @@ export default function GetCare() {
   const [bank, setBank] = useState(null);
   const [emOpen, setEmOpen] = useState(false);
   const lastInput = useRef(null);
+  const snapshot = useRef(null); // state before the last send, for "selected by mistake? go back"
 
   useEffect(() => { api.questions().then(setBank).catch(() => {}); }, []);
   // keep the welcome bubble in the current UI language until the user starts
@@ -45,6 +46,7 @@ export default function GetCare() {
   const send = useCallback(async (text, hist = history) => {
     if (!hasLocation) { setError(t("location.required")); return; }
     lastInput.current = { text, hist };
+    snapshot.current = { messages, history: hist, response, debug, phase };
     setError("");
     setMessages((m) => [...m, { id: nextId(), role: "user", content: text, ts: Date.now() }]);
     setPhase("loading");
@@ -71,7 +73,17 @@ export default function GetCare() {
       setError(t("common.serverDown"));
       setMessages((m) => m.slice(0, -1));
     }
-  }, [history, location, hasLocation, voice, t, response]);
+  }, [history, location, hasLocation, voice, t, response, messages, debug, phase]);
+
+  // only when the emergency came from answering one of our questions (a chip tapped by mistake)
+  const canUndo = Boolean(snapshot.current?.response?.follow_up_question);
+  const undo = () => {
+    const s = snapshot.current;
+    if (!s) return;
+    stopSpeaking();
+    setMessages(s.messages); setHistory(s.history); setResponse(s.response); setDebug(s.debug); setPhase(s.phase);
+    setEmOpen(false); snapshot.current = null;
+  };
 
   const reset = () => {
     stopSpeaking();
@@ -86,8 +98,8 @@ export default function GetCare() {
   const emergency = response?.care_type === "emergency_referral";
   const started = history.length > 0;
   // pathway questions come with multi-select chips (debug.followup.options; "none" is exclusive)
-  const choices = phase === "done" && response?.follow_up_question && debug?.followup?.multi && debug.followup.options?.length
-    ? { id: debug.followup.question_id, options: debug.followup.options } : null;
+  const choices = phase === "done" && response?.follow_up_question && debug?.followup?.options?.length
+    ? { id: debug.followup.question_id, options: debug.followup.options, single: debug.followup.multi === false } : null;
   const quick = redirect || !started ? t("guard.chips")
     : response?.follow_up_question && phase === "done" && !choices ? quickRepliesFor(response.follow_up_question, bank) : [];
 
@@ -118,7 +130,7 @@ export default function GetCare() {
         </button>
       )}
       {final && !emergency && <ResultSection response={response} debug={debug} />}
-      {final && emergency && emOpen && <EmergencyView response={response} debug={debug} onBack={() => setEmOpen(false)} />}
+      {final && emergency && emOpen && <EmergencyView response={response} debug={debug} onBack={() => setEmOpen(false)} onUndo={canUndo ? undo : undefined} />}
     </div>
   );
 }

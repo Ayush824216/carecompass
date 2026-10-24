@@ -29,7 +29,7 @@
   "rules": [
     {"id": "c_breathless_rest", "stage": "S3", "when": "breathless_rest"},
     {"id": "c_blue_lips", "stage": "S3", "when": "blue_lips"},
-    {"id": "c_large_blood", "stage": "S3", "when": "blood_in_cough and (blood_large or breathless)"},
+    {"id": "c_large_blood", "stage": "S3", "when": "blood_in_cough and (blood_large or breathless or breathless_rest or blood_with_pain or dizziness_standing or fainted)"},
     {"id": "c_child_stridor", "stage": "S3", "when": "child and (stridor or (barking and breathless))"},
     {"id": "c_choking", "stage": "S3", "when": "choking"},
     {"id": "c_chest_pain_breathless", "stage": "S3", "when": "chest_pain_breathing and breathless"},
@@ -51,12 +51,14 @@
   "questions": [
     {"id": "cough.danger", "kind": "danger",
      "text": {"en": "With the cough, is any of these happening?", "hi": "खांसी के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Khansi ke saath inme se kuch ho raha hai?"},
-     "skip_if": "known(breathless) and known(blood_in_cough) and known(blue_lips)",
+     "skip_if": "known(breathless) and known(breathless_rest) and known(blood_in_cough) and known(blue_lips)",
      "chips": [
-       {"id": "breath", "label": {"en": "Breathless / hard to speak", "hi": "साँस फूल रही / बोलने में दिक्कत", "hinglish": "Saans phool rahi / bolne mein dikkat"}, "facts": {"breathless": true}},
-       {"id": "blood", "label": {"en": "Blood in cough", "hi": "खांसी में खून", "hinglish": "Khansi mein khoon"}, "facts": {"blood_in_cough": true}},
-       {"id": "blue", "label": {"en": "Blue lips / nails", "hi": "होंठ / नाखून नीले", "hinglish": "Hoth / naakhun neele"}, "facts": {"blue_lips": true}},
-       {"id": "chest", "label": {"en": "Chest pain", "hi": "सीने में दर्द", "hinglish": "Seene mein dard"}, "facts": {"chest_pain_breathing": true}}
+       {"id": "breath_rest", "severity": "definite_S3", "label": {"en": "Breathless even at rest", "hi": "आराम में भी साँस फूल रही है", "hinglish": "Aaram mein bhi saans phool rahi"}, "facts": {"breathless_rest": true}},
+       {"id": "speak", "severity": "definite_S3", "label": {"en": "Cannot speak in full sentences", "hi": "पूरा वाक्य नहीं बोल पा रहे", "hinglish": "Poora vakya nahi bol pa rahe"}, "facts": {"breathless_rest": true}},
+       {"id": "breath_walk", "severity": "needs_confirmation", "label": {"en": "Breathless on walking", "hi": "चलने पर साँस फूलती है", "hinglish": "Chalne par saans phoolti hai"}, "facts": {"breathless": true}},
+       {"id": "blood", "severity": "needs_confirmation", "label": {"en": "Blood in cough", "hi": "खांसी में खून", "hinglish": "Khansi mein khoon"}, "facts": {"blood_in_cough": true}},
+       {"id": "blue", "severity": "definite_S3", "label": {"en": "Blue lips or nails", "hi": "होंठ या नाखून नीले", "hinglish": "Hoth ya naakhun neele"}, "facts": {"blue_lips": true}},
+       {"id": "chest", "label": {"en": "Chest pain on breathing", "hi": "साँस लेने पर सीने में दर्द", "hinglish": "Saans lene par seene mein dard"}, "facts": {"chest_pain_breathing": true}}
      ]},
     {"id": "cough.type_duration", "kind": "duration",
      "text": {"en": "What kind of cough, and since when?", "hi": "खांसी कैसी है और कब से?", "hinglish": "Khansi kaisi hai aur kab se?"},
@@ -80,12 +82,21 @@
        {"id": "smoke", "label": {"en": "Smoking", "hi": "धूम्रपान", "hinglish": "Smoking"}, "facts": {"smoker": true}},
        {"id": "asthma", "label": {"en": "Asthma / COPD", "hi": "दमा / सीओपीडी", "hinglish": "Asthma / COPD"}, "facts": {"asthma_copd": true}}
      ]},
-    {"id": "cough.blood_amount", "kind": "blood", "only_if": "blood_in_cough",
+    {"id": "cough.blood_amount", "kind": "confirm", "only_if": "blood_in_cough and not blood_large and not blood_small",
      "text": {"en": "How much blood?", "hi": "कितना खून?", "hinglish": "Kitna khoon?"},
-     "skip_if": "blood_large or blood_small",
      "chips": [
        {"id": "streaks", "label": {"en": "Thread-like streaks in phlegm", "hi": "बलगम में धागे जैसा", "hinglish": "Balgam mein dhaage jaisa"}, "facts": {"blood_small": true}},
-       {"id": "spoon", "label": {"en": "A spoonful or more / again and again", "hi": "चम्मच भर या ज़्यादा / बार-बार", "hinglish": "Chammach bhar ya zyada / baar-baar"}, "facts": {"blood_large": true}}
+       {"id": "spoon", "severity": "definite_S3", "label": {"en": "A spoonful or more", "hi": "चम्मच भर या ज़्यादा", "hinglish": "Chammach bhar ya zyada"}, "facts": {"blood_large": true}},
+       {"id": "again", "severity": "definite_S3", "label": {"en": "Blood again and again", "hi": "बार-बार खून", "hinglish": "Baar-baar khoon"}, "facts": {"blood_large": true}},
+       {"id": "pain", "severity": "definite_S3", "label": {"en": "With chest or upper-back pain", "hi": "साथ में सीने या पीठ के ऊपर दर्द", "hinglish": "Saath mein seene ya upar peeth mein dard"}, "facts": {"blood_with_pain": true}}
+     ], "no_none_chip": true},
+    {"id": "cough.confirm_breath", "kind": "confirm", "only_if": "breathless and not breathless_rest and not blue_lips",
+     "text": {"en": "With the cough, how is the breathing?", "hi": "खांसी के साथ साँस कैसी है?", "hinglish": "Khansi ke saath saans kaisi hai?"},
+     "chips": [
+       {"id": "sitting", "severity": "definite_S3", "label": {"en": "Breathless even sitting still", "hi": "बैठे-बैठे भी साँस फूलती है", "hinglish": "Baithe-baithe bhi saans phoolti hai"}, "facts": {"breathless_rest": true}},
+       {"id": "blue", "severity": "definite_S3", "label": {"en": "Lips or nails turning blue", "hi": "होंठ या नाखून नीले पड़ रहे", "hinglish": "Hont ya naakhun neele pad rahe"}, "facts": {"blue_lips": true}},
+       {"id": "wheeze", "label": {"en": "Whistling sound when breathing", "hi": "साँस में सीटी जैसी आवाज़", "hinglish": "Saans mein seeti jaisi awaaz"}, "facts": {"wheeze": true}},
+       {"id": "walk", "label": {"en": "Only on walking or climbing stairs", "hi": "सिर्फ़ चलने या सीढ़ी चढ़ने पर", "hinglish": "Sirf chalne ya seedhi chadhne par"}, "facts": {"breathless_exertion": true}}
      ], "no_none_chip": true}
   ]
 }

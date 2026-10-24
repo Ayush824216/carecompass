@@ -161,9 +161,12 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
                                  "probs": {k: {c: round(p, 3) for c, p in v.items()} for k, v in local.probs.items()}}
 
         if prim is not None:  # pathway complaint: the pathway's question tree replaces the generic follow-ups
-            pq = pathways.next_question(pout, state.n_assistant_questions, get_settings().max_followups)
+            n_clinical = max(0, state.n_assistant_questions - len(pout.answers.confirm_asked))
+            tr["followup"]["asked_so_far"] = n_clinical
+            pq = pathways.next_question(pout, n_clinical, get_settings().max_followups)
             if pq:
-                tr["followup"].update({"question_id": pq["id"], "pathway": prim.pathway, "multi": True,
+                tr["followup"].update({"question_id": pq["id"], "pathway": prim.pathway, "multi": not pq.get("single"),
+                                       "kind": pq.get("kind"), "confirmation": pq.get("kind") == "confirm",
                                        "options": pathways.chip_options(pq, lang)})
                 tr["model_used"] = f"pathway:{prim.pathway}"
                 return TriageResponse(follow_up_question=pathways.question_text(pq, lang), care_type=None,

@@ -45,16 +45,16 @@ function Typing({ t }) {
 }
 
 /** Multi-select answer chips for a pathway question. "None" is exclusive and sends straight away. */
-function MultiChoice({ options, onSend, t }) {
+function MultiChoice({ options, onSend, t, single }) {
   const [picked, setPicked] = useState([]);
   const toggle = (o) => {
-    if (o.exclusive) { onSend(o.label); return; }
+    if (o.exclusive || single) { onSend(o.label); return; }
     setPicked((p) => (p.includes(o.id) ? p.filter((x) => x !== o.id) : [...p, o.id]));
   };
   const send = () => onSend(options.filter((o) => picked.includes(o.id)).map((o) => o.label).join(", "));
   return (
     <div role="group" aria-label={t("care.chooseAll")}>
-      <p className="mb-2 text-sm font-semibold text-muted">{t("care.chooseAll")}</p>
+      <p className="mb-2 text-sm font-semibold text-muted">{single ? t("care.chooseOne") : t("care.chooseAll")}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => {
           const on = picked.includes(o.id);
@@ -63,7 +63,7 @@ function MultiChoice({ options, onSend, t }) {
               className={`inline-flex min-h-[52px] items-center gap-2 rounded-xl border-2 px-4 text-lg font-bold transition-colors ${o.exclusive
                 ? "border-line bg-sunken text-ink hover:border-primary"
                 : on ? "border-primary bg-primary text-primary-ink" : "border-primary bg-surface text-primary-deep hover:bg-primary-soft"}`}>
-              {!o.exclusive && <span className={`flex h-5 w-5 items-center justify-center rounded border-2 ${on ? "border-white bg-white/20" : "border-primary"}`} aria-hidden="true">
+              {!o.exclusive && !single && <span className={`flex h-5 w-5 items-center justify-center rounded border-2 ${on ? "border-white bg-white/20" : "border-primary"}`} aria-hidden="true">
                 {on && <Check className="h-4 w-4" />}
               </span>}
               {o.label}
@@ -153,7 +153,7 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, cho
         <AnimatePresence>
           {choices && !loading && (
             <motion.div key={choices.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <MultiChoice key={choices.id} options={choices.options} onSend={(v) => submit(v)} t={t} />
+              <MultiChoice key={choices.id} options={choices.options} single={choices.single} onSend={(v) => submit(v)} t={t} />
             </motion.div>
           )}
           {quickReplies?.length > 0 && !loading && (
