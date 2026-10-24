@@ -55,6 +55,14 @@ def triage(req: TriageRequest, debug: bool = Query(False, description="Add a `de
     return JSONResponse({**jsonable_encoder(resp), "debug": jsonable_encoder(trace)})
 
 
+@app.get("/api/v1/localities")
+def localities() -> list[dict]:
+    """Delhi NCR localities with coordinates (for location pickers)."""
+    import json
+    p = get_settings().config_dir / "localities.json"
+    return json.loads(p.read_text(encoding="utf-8"))["localities"]
+
+
 @app.get("/api/v1/caregivers", response_model=list[Caregiver])
 def list_caregivers() -> list[Caregiver]:
     """All caregivers in the network (for directory views)."""

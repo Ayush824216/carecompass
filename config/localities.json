@@ -1,0 +1,29 @@
+{
+  "_note": "Delhi NCR localities (approximate centre coordinates). Used by the dev caregiver generator and served to the frontend location picker via GET /api/v1/localities.",
+  "localities": [
+    {"id": "saket", "name": "Saket", "city": "South Delhi", "lat": 28.5245, "lng": 77.2066},
+    {"id": "lajpat_nagar", "name": "Lajpat Nagar", "city": "South Delhi", "lat": 28.5677, "lng": 77.2433},
+    {"id": "hauz_khas", "name": "Hauz Khas", "city": "South Delhi", "lat": 28.5494, "lng": 77.2001},
+    {"id": "greater_kailash", "name": "Greater Kailash", "city": "South Delhi", "lat": 28.5482, "lng": 77.2380},
+    {"id": "kalkaji", "name": "Kalkaji", "city": "South Delhi", "lat": 28.5403, "lng": 77.2588},
+    {"id": "connaught_place", "name": "Connaught Place", "city": "Central Delhi", "lat": 28.6315, "lng": 77.2167},
+    {"id": "karol_bagh", "name": "Karol Bagh", "city": "Central Delhi", "lat": 28.6519, "lng": 77.1909},
+    {"id": "rohini", "name": "Rohini", "city": "North Delhi", "lat": 28.7495, "lng": 77.0565},
+    {"id": "pitampura", "name": "Pitampura", "city": "North Delhi", "lat": 28.7033, "lng": 77.1310},
+    {"id": "model_town", "name": "Model Town", "city": "North Delhi", "lat": 28.7158, "lng": 77.1910},
+    {"id": "laxmi_nagar", "name": "Laxmi Nagar", "city": "East Delhi", "lat": 28.6304, "lng": 77.2777},
+    {"id": "mayur_vihar", "name": "Mayur Vihar", "city": "East Delhi", "lat": 28.6091, "lng": 77.2950},
+    {"id": "dwarka", "name": "Dwarka", "city": "West Delhi", "lat": 28.5921, "lng": 77.0460},
+    {"id": "janakpuri", "name": "Janakpuri", "city": "West Delhi", "lat": 28.6219, "lng": 77.0878},
+    {"id": "rajouri_garden", "name": "Rajouri Garden", "city": "West Delhi", "lat": 28.6492, "lng": 77.1222},
+    {"id": "noida_18", "name": "Noida Sector 18", "city": "Noida", "lat": 28.5708, "lng": 77.3260},
+    {"id": "noida_62", "name": "Noida Sector 62", "city": "Noida", "lat": 28.6270, "lng": 77.3649},
+    {"id": "noida_50", "name": "Noida Sector 50", "city": "Noida", "lat": 28.5713, "lng": 77.3640},
+    {"id": "gurugram_cyber_city", "name": "Gurugram Cyber City", "city": "Gurugram", "lat": 28.4950, "lng": 77.0890},
+    {"id": "gurugram_56", "name": "Gurugram Sector 56", "city": "Gurugram", "lat": 28.4229, "lng": 77.1012},
+    {"id": "indirapuram", "name": "Indirapuram", "city": "Ghaziabad", "lat": 28.6460, "lng": 77.3695},
+    {"id": "vaishali", "name": "Vaishali", "city": "Ghaziabad", "lat": 28.6450, "lng": 77.3390},
+    {"id": "faridabad_15", "name": "Faridabad Sector 15", "city": "Faridabad", "lat": 28.3955, "lng": 77.3188},
+    {"id": "faridabad_nit", "name": "Faridabad NIT", "city": "Faridabad", "lat": 28.3802, "lng": 77.3009}
+  ]
+}

@@ -598,45 +598,91 @@ FIRST = ["Aarti", "Rohit", "Sunita", "Vikas", "Neha", "Amit", "Pooja", "Rahul", 
 LAST = ["Sharma", "Verma", "Gupta", "Singh", "Yadav", "Khan", "Kumar", "Mehta", "Joshi", "Chauhan", "Malik",
         "Bansal", "Das", "Nair", "Thomas", "Ansari", "Kaur", "Rawat", "Mishra", "Saxena"]
 ROLES = {
-    "paramedic": (15, ["vitals_check", "fever_assessment", "wound_dressing", "first_aid", "sample_collection",
+    "paramedic": (14, ["vitals_check", "fever_assessment", "wound_dressing", "first_aid", "sample_collection",
                        "elderly_care", "fall_assessment", "dehydration_care"]),
-    "nurse": (15, ["injection", "iv_drip", "wound_care", "catheter_care", "post_op_care", "elderly_care",
+    "nurse": (14, ["injection", "iv_drip", "wound_care", "catheter_care", "post_op_care", "elderly_care",
                    "newborn_care", "bedsore_care", "feeding_tube_care", "diabetic_foot_care"]),
-    "gp": (15, ["general_medicine", "pediatrics_basic", "teleconsult", "report_review", "elderly_care"]),
-    "specialist": (15, ["cardiology", "orthopedics", "dermatology", "pediatrics", "gynecology", "ent",
-                        "ophthalmology", "endocrinology", "psychiatry", "neurology", "oncology"]),
+    "gp": (14, ["general_medicine", "pediatrics_basic", "teleconsult", "report_review", "elderly_care"]),
 }
+# 8 core specialties x2 + 4 others x2 = 24 specialists
+SPECIALTIES = ["dermatology", "orthopedics", "cardiology", "pediatrics", "ent", "gynecology", "neurology",
+               "pulmonology", "ophthalmology", "endocrinology", "psychiatry", "oncology"]
+SPECIALTY_QUAL = {
+    "dermatology": "MBBS, MD (Dermatology)", "orthopedics": "MBBS, MS (Orthopaedics)",
+    "cardiology": "MBBS, MD, DM (Cardiology)", "pediatrics": "MBBS, MD (Paediatrics)", "ent": "MBBS, MS (ENT)",
+    "gynecology": "MBBS, MS (Obstetrics & Gynaecology)", "neurology": "MBBS, MD, DM (Neurology)",
+    "pulmonology": "MBBS, MD (Pulmonary Medicine)", "ophthalmology": "MBBS, MS (Ophthalmology)",
+    "endocrinology": "MBBS, MD, DM (Endocrinology)", "psychiatry": "MBBS, MD (Psychiatry)",
+    "oncology": "MBBS, MD, DM (Medical Oncology)",
+}
+SPECIALTY_SKILLS = {
+    "dermatology": ["skin_conditions", "rash_assessment"], "orthopedics": ["joint_pain", "back_pain", "fracture_follow_up"],
+    "cardiology": ["heart_checkup", "bp_management"], "pediatrics": ["child_health", "growth_development"],
+    "ent": ["ear_nose_throat", "hearing_assessment"], "gynecology": ["pregnancy_care", "womens_health"],
+    "neurology": ["headache_clinic", "nerve_conditions"], "pulmonology": ["breathing_conditions", "chronic_cough"],
+    "ophthalmology": ["eye_checkup", "vision_care"], "endocrinology": ["diabetes_care", "thyroid_care"],
+    "psychiatry": ["mental_health", "sleep_problems"], "oncology": ["lump_assessment", "cancer_screening"],
+}
+QUAL = {"paramedic": ["EMT-Basic", "EMT-Advanced", "Diploma in Paramedical Science"],
+        "nurse": ["GNM", "BSc Nursing", "Post Basic BSc Nursing"],
+        "gp": ["MBBS", "MBBS, MD (General Medicine)", "MBBS, DNB (Family Medicine)"]}
 EXTRA_LANGS = ["pa", "ur", "bn", "ta", "ml"]
 
 
+def _localities() -> list[dict]:
+    return json.loads((ROOT / "config" / "localities.json").read_text(encoding="utf-8"))["localities"]
+
+
+def _slots(rng: random.Random, base: date) -> list[str]:
+    """Slots over today + 2 days; today always has some late-day slots so same-day demos work."""
+    out = []
+    for d in range(3):
+        day = base + timedelta(days=d)
+        hours = set(rng.sample(range(8, 21), k=rng.randint(2, 5)))
+        if d == 0:
+            hours |= set(rng.sample(range(15, 22), k=2))
+        for h in sorted(hours):
+            out.append(datetime(day.year, day.month, day.day, h, rng.choice([0, 30])).isoformat() + "+05:30")
+    return out
+
+
 def make_caregivers(rng: random.Random, base: date) -> list[dict]:
-    out, i = [], 1
-    for role, (count, skills) in ROLES.items():
-        for _ in range(count):
-            if role == "specialist":
-                sk = [skills[(i - 1) % len(skills)]]
-            else:
-                sk = rng.sample(skills, k=rng.randint(3, min(5, len(skills))))
-            langs = rng.choice([["hi", "en"], ["hi", "en"], ["hi"], ["en"], ["hi", "en"]])
-            if rng.random() < 0.25:
-                langs = langs + [rng.choice(EXTRA_LANGS)]
-            slots = []
-            for d in range(3):
-                day = base + timedelta(days=d)
-                for h in sorted(rng.sample(range(8, 21), k=rng.randint(1, 5))):
-                    slots.append(datetime(day.year, day.month, day.day, h, 0).isoformat() + "+05:30")
-            out.append({
-                "caregiver_id": f"CG_{i:03d}",
-                "name": f"{rng.choice(FIRST)} {rng.choice(LAST)}",
-                "role": role,
-                "skills": sk,
-                "lat": round(rng.uniform(28.4, 28.8), 5),
-                "lng": round(rng.uniform(76.9, 77.4), 5),
-                "availability_slots": slots,
-                "languages": langs,
-                "rating": round(rng.uniform(3.6, 5.0), 1),
-            })
-            i += 1
+    locs = _localities()
+    plan = [(r, None) for r, (n, _) in ROLES.items() for _ in range(n)] + [("specialist", s) for s in SPECIALTIES for _ in range(2)]
+    out = []
+    for i, (role, spec) in enumerate(plan, start=1):
+        loc = locs[(i * 7) % len(locs)]  # spread every role across all localities
+        if role == "specialist":
+            sk = [spec] + SPECIALTY_SKILLS[spec]
+            qual = SPECIALTY_QUAL[spec]
+            modes = rng.choice([["clinic", "teleconsult"], ["clinic"], ["teleconsult", "clinic"]])
+            years = rng.randint(6, 28)
+        else:
+            skills = ROLES[role][1]
+            sk = rng.sample(skills, k=rng.randint(3, min(5, len(skills))))
+            qual = rng.choice(QUAL[role])
+            modes = ["teleconsult"] if role == "gp" and rng.random() < 0.7 else (["teleconsult", "clinic"] if role == "gp" else ["home_visit"])
+            years = rng.randint(2, 22)
+        langs = rng.choice([["hi", "en"], ["hi", "en"], ["hi"], ["en"], ["hi", "en"]])
+        if rng.random() < 0.25:
+            langs = langs + [rng.choice(EXTRA_LANGS)]
+        prefix = "Dr. " if role in ("gp", "specialist") else ""
+        out.append({
+            "caregiver_id": f"CG_{i:03d}",
+            "name": f"{prefix}{rng.choice(FIRST)} {rng.choice(LAST)}",
+            "role": role,
+            "specialty": spec,
+            "skills": sk,
+            "qualification": qual,
+            "years_experience": years,
+            "lat": round(loc["lat"] + rng.uniform(-0.012, 0.012), 5),
+            "lng": round(loc["lng"] + rng.uniform(-0.012, 0.012), 5),
+            "locality": f"{loc['name']}, {loc['city']}",
+            "consultation_modes": modes,
+            "availability_slots": _slots(rng, base),
+            "languages": langs,
+            "rating": round(rng.uniform(3.6, 5.0), 1),
+        })
     return out
 
 

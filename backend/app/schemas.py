@@ -108,7 +108,12 @@ class Caregiver(BaseModel):
     caregiver_id: str
     name: str
     role: str
+    specialty: Optional[str] = None
     skills: list[str] = Field(default_factory=list)
+    qualification: Optional[str] = None
+    years_experience: Optional[int] = None
+    locality: Optional[str] = None
+    consultation_modes: list[str] = Field(default_factory=list)
     lat: float
     lng: float
     availability_slots: list[str] = Field(default_factory=list)

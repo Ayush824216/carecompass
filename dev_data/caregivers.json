@@ -1,227 +1,308 @@
 [
   {
     "caregiver_id": "CG_001",
-    "name": "Amit Verma",
+    "name": "Manoj Saxena",
     "role": "paramedic",
+    "specialty": null,
     "skills": [
       "sample_collection",
       "elderly_care",
       "fever_assessment"
     ],
-    "lat": 28.74035,
-    "lng": 77.31011,
+    "qualification": "EMT-Advanced",
+    "years_experience": 13,
+    "lat": 28.73796,
+    "lng": 77.05488,
+    "locality": "Rohini, North Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
+      "2026-10-24T14:00:00+05:30",
       "2026-10-24T15:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
       "2026-10-25T16:00:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T19:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.3
+  },
+  {
+    "caregiver_id": "CG_002",
+    "name": "Gurpreet Thomas",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "vitals_check",
+      "dehydration_care",
+      "sample_collection"
+    ],
+    "qualification": "EMT-Advanced",
+    "years_experience": 22,
+    "lat": 28.6412,
+    "lng": 77.13056,
+    "locality": "Rajouri Garden, West Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi"
+    ],
+    "rating": 4.6
+  },
+  {
+    "caregiver_id": "CG_003",
+    "name": "Tarun Malik",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "dehydration_care",
+      "sample_collection",
+      "vitals_check",
+      "fever_assessment"
+    ],
+    "qualification": "EMT-Basic",
+    "years_experience": 5,
+    "lat": 28.63584,
+    "lng": 77.33978,
+    "locality": "Vaishali, Ghaziabad",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
       "2026-10-25T17:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T19:30:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "pa"
+    ],
+    "rating": 4.1
+  },
+  {
+    "caregiver_id": "CG_004",
+    "name": "Vikas Sharma",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "fall_assessment",
+      "dehydration_care",
+      "first_aid"
+    ],
+    "qualification": "EMT-Basic",
+    "years_experience": 3,
+    "lat": 28.52887,
+    "lng": 77.26746,
+    "locality": "Kalkaji, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 3.8
+  },
+  {
+    "caregiver_id": "CG_005",
+    "name": "Sunita Joshi",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "sample_collection",
+      "dehydration_care",
+      "fever_assessment",
+      "fall_assessment"
+    ],
+    "qualification": "Diploma in Paramedical Science",
+    "years_experience": 6,
+    "lat": 28.60859,
+    "lng": 77.30546,
+    "locality": "Mayur Vihar, East Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
       "2026-10-26T14:00:00+05:30",
       "2026-10-26T16:00:00+05:30",
       "2026-10-26T17:00:00+05:30",
       "2026-10-26T19:00:00+05:30"
     ],
     "languages": [
-      "en"
+      "hi",
+      "en",
+      "pa"
     ],
-    "rating": 4.1
+    "rating": 4.9
   },
   {
-    "caregiver_id": "CG_002",
-    "name": "Kavita Gupta",
+    "caregiver_id": "CG_006",
+    "name": "Deepak Chauhan",
     "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "wound_dressing",
+      "first_aid",
+      "fever_assessment",
+      "fall_assessment",
       "sample_collection",
-      "first_aid"
+      "vitals_check"
     ],
-    "lat": 28.6089,
-    "lng": 76.95152,
+    "qualification": "EMT-Advanced",
+    "years_experience": 7,
+    "lat": 28.48454,
+    "lng": 77.088,
+    "locality": "Gurugram Cyber City, Gurugram",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
+      "2026-10-24T09:30:00+05:30",
       "2026-10-24T10:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
       "2026-10-26T12:00:00+05:30",
-      "2026-10-26T19:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T17:30:00+05:30"
     ],
     "languages": [
-      "hi",
       "en"
     ],
     "rating": 4.8
   },
   {
-    "caregiver_id": "CG_003",
-    "name": "Gurpreet Saxena",
-    "role": "paramedic",
-    "skills": [
-      "vitals_check",
-      "dehydration_care",
-      "sample_collection",
-      "first_aid",
-      "wound_dressing"
-    ],
-    "lat": 28.42814,
-    "lng": 77.39667,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi"
-    ],
-    "rating": 4.5
-  },
-  {
-    "caregiver_id": "CG_004",
-    "name": "Suresh Nair",
-    "role": "paramedic",
-    "skills": [
-      "dehydration_care",
-      "fall_assessment",
-      "elderly_care",
-      "wound_dressing"
-    ],
-    "lat": 28.57723,
-    "lng": 76.91899,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "en",
-      "ta"
-    ],
-    "rating": 3.6
-  },
-  {
-    "caregiver_id": "CG_005",
-    "name": "Pooja Mishra",
-    "role": "paramedic",
-    "skills": [
-      "wound_dressing",
-      "elderly_care",
-      "vitals_check"
-    ],
-    "lat": 28.56138,
-    "lng": 77.19713,
-    "availability_slots": [
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T14:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "ml"
-    ],
-    "rating": 4.2
-  },
-  {
-    "caregiver_id": "CG_006",
-    "name": "Joseph Das",
-    "role": "paramedic",
-    "skills": [
-      "fall_assessment",
-      "wound_dressing",
-      "vitals_check",
-      "fever_assessment"
-    ],
-    "lat": 28.48995,
-    "lng": 77.12916,
-    "availability_slots": [
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T14:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en",
-      "ur"
-    ],
-    "rating": 3.7
-  },
-  {
     "caregiver_id": "CG_007",
-    "name": "Harpreet Mehta",
+    "name": "Harpreet Kumar",
     "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "vitals_check",
-      "sample_collection",
+      "first_aid",
+      "fever_assessment",
       "fall_assessment"
     ],
-    "lat": 28.44981,
-    "lng": 77.21122,
+    "qualification": "Diploma in Paramedical Science",
+    "years_experience": 22,
+    "lat": 28.56196,
+    "lng": 77.2433,
+    "locality": "Lajpat Nagar, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
       "2026-10-24T09:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T11:00:00+05:30"
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
     ],
     "languages": [
       "hi",
       "en"
     ],
-    "rating": 3.9
+    "rating": 4.7
   },
   {
     "caregiver_id": "CG_008",
-    "name": "Kavita Ansari",
+    "name": "Neha Khan",
     "role": "paramedic",
+    "specialty": null,
     "skills": [
       "fever_assessment",
-      "vitals_check",
-      "dehydration_care",
-      "first_aid"
+      "elderly_care",
+      "fall_assessment",
+      "dehydration_care"
     ],
-    "lat": 28.67974,
-    "lng": 77.03664,
+    "qualification": "EMT-Advanced",
+    "years_experience": 4,
+    "lat": 28.69991,
+    "lng": 77.12098,
+    "locality": "Pitampura, North Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
       "2026-10-25T11:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
       "2026-10-25T18:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T09:00:00+05:30"
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T19:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
       "hi",
@@ -231,275 +312,37 @@
   },
   {
     "caregiver_id": "CG_009",
-    "name": "Gurpreet Thomas",
+    "name": "Anjali Bansal",
     "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "dehydration_care",
       "elderly_care",
-      "wound_dressing"
-    ],
-    "lat": 28.51961,
-    "lng": 77.14047,
-    "availability_slots": [
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
-      "2026-10-26T17:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.2
-  },
-  {
-    "caregiver_id": "CG_010",
-    "name": "Abdul Mehta",
-    "role": "paramedic",
-    "skills": [
-      "dehydration_care",
-      "fall_assessment",
-      "sample_collection",
-      "elderly_care",
-      "first_aid"
-    ],
-    "lat": 28.47519,
-    "lng": 76.99872,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
-    ],
-    "languages": [
-      "en"
-    ],
-    "rating": 4.7
-  },
-  {
-    "caregiver_id": "CG_011",
-    "name": "Harpreet Thomas",
-    "role": "paramedic",
-    "skills": [
-      "vitals_check",
-      "wound_dressing",
-      "fever_assessment",
       "first_aid",
       "sample_collection"
     ],
-    "lat": 28.53061,
-    "lng": 77.31807,
-    "availability_slots": [
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T14:00:00+05:30"
+    "qualification": "EMT-Advanced",
+    "years_experience": 22,
+    "lat": 28.57298,
+    "lng": 77.3189,
+    "locality": "Noida Sector 18, Noida",
+    "consultation_modes": [
+      "home_visit"
     ],
-    "languages": [
-      "en"
-    ],
-    "rating": 3.9
-  },
-  {
-    "caregiver_id": "CG_012",
-    "name": "Amit Mishra",
-    "role": "paramedic",
-    "skills": [
-      "wound_dressing",
-      "dehydration_care",
-      "fall_assessment",
-      "first_aid"
-    ],
-    "lat": 28.60302,
-    "lng": 77.25586,
     "availability_slots": [
       "2026-10-24T08:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T11:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.9
-  },
-  {
-    "caregiver_id": "CG_013",
-    "name": "Farah Thomas",
-    "role": "paramedic",
-    "skills": [
-      "fall_assessment",
-      "sample_collection",
-      "fever_assessment",
-      "wound_dressing"
-    ],
-    "lat": 28.62475,
-    "lng": 77.17136,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
       "2026-10-24T10:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-25T08:30:00+05:30",
       "2026-10-25T09:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
       "2026-10-25T16:00:00+05:30",
       "2026-10-25T20:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T13:00:00+05:30",
       "2026-10-26T14:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T17:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.9
-  },
-  {
-    "caregiver_id": "CG_014",
-    "name": "Kavita Malik",
-    "role": "paramedic",
-    "skills": [
-      "dehydration_care",
-      "first_aid",
-      "vitals_check"
-    ],
-    "lat": 28.76868,
-    "lng": 76.94429,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T09:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "ur"
-    ],
-    "rating": 4.4
-  },
-  {
-    "caregiver_id": "CG_015",
-    "name": "Imran Kumar",
-    "role": "paramedic",
-    "skills": [
-      "wound_dressing",
-      "vitals_check",
-      "elderly_care",
-      "dehydration_care"
-    ],
-    "lat": 28.49784,
-    "lng": 77.28732,
-    "availability_slots": [
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T11:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.7
-  },
-  {
-    "caregiver_id": "CG_016",
-    "name": "Meena Ansari",
-    "role": "nurse",
-    "skills": [
-      "iv_drip",
-      "post_op_care",
-      "injection"
-    ],
-    "lat": 28.71989,
-    "lng": 77.10519,
-    "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
       "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.5
-  },
-  {
-    "caregiver_id": "CG_017",
-    "name": "Sunita Thomas",
-    "role": "nurse",
-    "skills": [
-      "elderly_care",
-      "bedsore_care",
-      "diabetic_foot_care",
-      "post_op_care"
-    ],
-    "lat": 28.43098,
-    "lng": 76.95246,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.6
-  },
-  {
-    "caregiver_id": "CG_018",
-    "name": "Aarti Kaur",
-    "role": "nurse",
-    "skills": [
-      "feeding_tube_care",
-      "diabetic_foot_care",
-      "newborn_care",
-      "iv_drip"
-    ],
-    "lat": 28.63968,
-    "lng": 77.22783,
-    "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-26T10:00:00+05:30"
     ],
     "languages": [
       "en"
@@ -507,204 +350,40 @@
     "rating": 4.8
   },
   {
-    "caregiver_id": "CG_019",
-    "name": "Sneha Gupta",
-    "role": "nurse",
+    "caregiver_id": "CG_010",
+    "name": "Deepak Kaur",
+    "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "iv_drip",
-      "catheter_care",
-      "diabetic_foot_care"
+      "fever_assessment",
+      "dehydration_care",
+      "elderly_care"
     ],
-    "lat": 28.41148,
-    "lng": 76.90519,
+    "qualification": "Diploma in Paramedical Science",
+    "years_experience": 5,
+    "lat": 28.4073,
+    "lng": 77.31537,
+    "locality": "Faridabad Sector 15, Faridabad",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T12:30:00+05:30",
       "2026-10-24T13:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T15:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.6
-  },
-  {
-    "caregiver_id": "CG_020",
-    "name": "Suresh Singh",
-    "role": "nurse",
-    "skills": [
-      "post_op_care",
-      "feeding_tube_care",
-      "diabetic_foot_care",
-      "injection"
-    ],
-    "lat": 28.56655,
-    "lng": 77.08004,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi"
-    ],
-    "rating": 4.2
-  },
-  {
-    "caregiver_id": "CG_021",
-    "name": "Vikas Saxena",
-    "role": "nurse",
-    "skills": [
-      "bedsore_care",
-      "elderly_care",
-      "wound_care"
-    ],
-    "lat": 28.60342,
-    "lng": 77.25314,
-    "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T14:00:00+05:30",
       "2026-10-24T15:00:00+05:30",
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-25T20:00:00+05:30",
       "2026-10-26T09:00:00+05:30",
       "2026-10-26T12:00:00+05:30",
       "2026-10-26T13:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.7
-  },
-  {
-    "caregiver_id": "CG_022",
-    "name": "Ritu Thomas",
-    "role": "nurse",
-    "skills": [
-      "post_op_care",
-      "newborn_care",
-      "feeding_tube_care",
-      "bedsore_care"
-    ],
-    "lat": 28.76804,
-    "lng": 77.18967,
-    "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T17:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en",
-      "pa"
-    ],
-    "rating": 4.0
-  },
-  {
-    "caregiver_id": "CG_023",
-    "name": "Lakshmi Gupta",
-    "role": "nurse",
-    "skills": [
-      "catheter_care",
-      "feeding_tube_care",
-      "elderly_care",
-      "wound_care",
-      "post_op_care"
-    ],
-    "lat": 28.50647,
-    "lng": 76.9861,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.2
-  },
-  {
-    "caregiver_id": "CG_024",
-    "name": "Nisha Gupta",
-    "role": "nurse",
-    "skills": [
-      "injection",
-      "wound_care",
-      "iv_drip",
-      "catheter_care",
-      "feeding_tube_care"
-    ],
-    "lat": 28.70273,
-    "lng": 76.97701,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.3
-  },
-  {
-    "caregiver_id": "CG_025",
-    "name": "Joseph Mehta",
-    "role": "nurse",
-    "skills": [
-      "elderly_care",
-      "post_op_care",
-      "injection",
-      "catheter_care"
-    ],
-    "lat": 28.759,
-    "lng": 77.34813,
-    "availability_slots": [
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T10:00:00+05:30"
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
       "hi",
@@ -713,300 +392,1015 @@
     "rating": 4.1
   },
   {
-    "caregiver_id": "CG_026",
-    "name": "Manoj Gupta",
-    "role": "nurse",
+    "caregiver_id": "CG_011",
+    "name": "Deepak Ansari",
+    "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "feeding_tube_care",
-      "bedsore_care",
-      "injection",
-      "catheter_care",
-      "wound_care"
+      "sample_collection",
+      "vitals_check",
+      "first_aid",
+      "wound_dressing"
     ],
-    "lat": 28.51493,
-    "lng": 77.36777,
+    "qualification": "Diploma in Paramedical Science",
+    "years_experience": 7,
+    "lat": 28.62366,
+    "lng": 77.22081,
+    "locality": "Connaught Place, Central Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
       "2026-10-25T14:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T13:00:00+05:30"
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
     ],
     "languages": [
-      "hi"
+      "hi",
+      "en"
     ],
-    "rating": 4.8
+    "rating": 4.4
   },
   {
-    "caregiver_id": "CG_027",
-    "name": "Manoj Das",
-    "role": "nurse",
+    "caregiver_id": "CG_012",
+    "name": "Mary Khan",
+    "role": "paramedic",
+    "specialty": null,
     "skills": [
-      "elderly_care",
-      "iv_drip",
-      "newborn_care",
-      "injection",
-      "bedsore_care"
+      "first_aid",
+      "sample_collection",
+      "wound_dressing",
+      "elderly_care"
     ],
-    "lat": 28.73409,
-    "lng": 77.01898,
+    "qualification": "Diploma in Paramedical Science",
+    "years_experience": 2,
+    "lat": 28.58155,
+    "lng": 77.05107,
+    "locality": "Dwarka, West Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:00:00+05:30",
       "2026-10-25T17:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T08:00:00+05:30"
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T12:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
     ],
     "languages": [
-      "hi"
+      "hi",
+      "en"
+    ],
+    "rating": 4.7
+  },
+  {
+    "caregiver_id": "CG_013",
+    "name": "Kavita Verma",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "dehydration_care",
+      "sample_collection",
+      "vitals_check",
+      "elderly_care",
+      "fever_assessment"
+    ],
+    "qualification": "EMT-Basic",
+    "years_experience": 17,
+    "lat": 28.42037,
+    "lng": 77.10422,
+    "locality": "Gurugram Sector 56, Gurugram",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T13:30:00+05:30",
+      "2026-10-26T16:00:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.5
+  },
+  {
+    "caregiver_id": "CG_014",
+    "name": "Vikas Das",
+    "role": "paramedic",
+    "specialty": null,
+    "skills": [
+      "first_aid",
+      "dehydration_care",
+      "vitals_check",
+      "wound_dressing"
+    ],
+    "qualification": "EMT-Advanced",
+    "years_experience": 5,
+    "lat": 28.53838,
+    "lng": 77.19505,
+    "locality": "Hauz Khas, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T12:00:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.1
+  },
+  {
+    "caregiver_id": "CG_015",
+    "name": "Imran Nair",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "bedsore_care",
+      "newborn_care",
+      "elderly_care",
+      "diabetic_foot_care",
+      "wound_care"
+    ],
+    "qualification": "GNM",
+    "years_experience": 15,
+    "lat": 28.71506,
+    "lng": 77.20013,
+    "locality": "Model Town, North Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-25T13:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "bn"
     ],
     "rating": 3.8
   },
   {
-    "caregiver_id": "CG_028",
-    "name": "Rahul Malik",
+    "caregiver_id": "CG_016",
+    "name": "Gurpreet Chauhan",
     "role": "nurse",
+    "specialty": null,
     "skills": [
-      "diabetic_foot_care",
+      "injection",
+      "iv_drip",
+      "bedsore_care",
       "newborn_care",
       "elderly_care"
     ],
-    "lat": 28.68736,
-    "lng": 77.29341,
+    "qualification": "GNM",
+    "years_experience": 15,
+    "lat": 28.62843,
+    "lng": 77.36818,
+    "locality": "Noida Sector 62, Noida",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T17:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.6
+  },
+  {
+    "caregiver_id": "CG_017",
+    "name": "Anjali Kaur",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "injection",
+      "newborn_care",
+      "catheter_care",
+      "bedsore_care",
+      "feeding_tube_care"
+    ],
+    "qualification": "Post Basic BSc Nursing",
+    "years_experience": 6,
+    "lat": 28.37341,
+    "lng": 77.29312,
+    "locality": "Faridabad NIT, Faridabad",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T13:00:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_018",
+    "name": "Pooja Kaur",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "injection",
+      "iv_drip",
+      "catheter_care"
+    ],
+    "qualification": "BSc Nursing",
+    "years_experience": 21,
+    "lat": 28.64623,
+    "lng": 77.18696,
+    "locality": "Karol Bagh, Central Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.9
+  },
+  {
+    "caregiver_id": "CG_019",
+    "name": "Abdul Yadav",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "catheter_care",
+      "iv_drip",
+      "feeding_tube_care"
+    ],
+    "qualification": "BSc Nursing",
+    "years_experience": 3,
+    "lat": 28.62757,
+    "lng": 77.08133,
+    "locality": "Janakpuri, West Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T13:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "bn"
+    ],
+    "rating": 4.0
+  },
+  {
+    "caregiver_id": "CG_020",
+    "name": "Harpreet Ansari",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "wound_care",
+      "feeding_tube_care",
+      "injection",
+      "post_op_care",
+      "diabetic_foot_care"
+    ],
+    "qualification": "Post Basic BSc Nursing",
+    "years_experience": 18,
+    "lat": 28.64126,
+    "lng": 77.38107,
+    "locality": "Indirapuram, Ghaziabad",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T10:00:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T19:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.7
+  },
+  {
+    "caregiver_id": "CG_021",
+    "name": "Abdul Bansal",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "post_op_care",
+      "bedsore_care",
+      "elderly_care"
+    ],
+    "qualification": "Post Basic BSc Nursing",
+    "years_experience": 19,
+    "lat": 28.54381,
+    "lng": 77.22795,
+    "locality": "Greater Kailash, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T17:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "ml"
+    ],
+    "rating": 5.0
+  },
+  {
+    "caregiver_id": "CG_022",
+    "name": "Aarti Sharma",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "injection",
+      "elderly_care",
+      "post_op_care",
+      "bedsore_care"
+    ],
+    "qualification": "GNM",
+    "years_experience": 21,
+    "lat": 28.63227,
+    "lng": 77.28484,
+    "locality": "Laxmi Nagar, East Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
     "availability_slots": [
       "2026-10-24T09:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T10:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.1
+  },
+  {
+    "caregiver_id": "CG_023",
+    "name": "Shabnam Joshi",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "post_op_care",
+      "bedsore_care",
+      "catheter_care",
+      "feeding_tube_care"
+    ],
+    "qualification": "BSc Nursing",
+    "years_experience": 22,
+    "lat": 28.56645,
+    "lng": 77.3546,
+    "locality": "Noida Sector 50, Noida",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T11:00:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.3
+  },
+  {
+    "caregiver_id": "CG_024",
+    "name": "Abdul Khan",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "injection",
+      "newborn_care",
+      "iv_drip",
+      "bedsore_care",
+      "diabetic_foot_care"
+    ],
+    "qualification": "GNM",
+    "years_experience": 21,
+    "lat": 28.52316,
+    "lng": 77.20622,
+    "locality": "Saket, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "ml"
+    ],
+    "rating": 3.7
+  },
+  {
+    "caregiver_id": "CG_025",
+    "name": "Rahul Rawat",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "diabetic_foot_care",
+      "post_op_care",
+      "wound_care",
+      "bedsore_care",
+      "elderly_care"
+    ],
+    "qualification": "Post Basic BSc Nursing",
+    "years_experience": 10,
+    "lat": 28.75399,
+    "lng": 77.04798,
+    "locality": "Rohini, North Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
       "2026-10-25T15:00:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T19:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "ur"
+    ],
+    "rating": 4.1
+  },
+  {
+    "caregiver_id": "CG_026",
+    "name": "Imran Kaur",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "wound_care",
+      "elderly_care",
+      "catheter_care",
+      "feeding_tube_care"
+    ],
+    "qualification": "GNM",
+    "years_experience": 16,
+    "lat": 28.64972,
+    "lng": 77.12208,
+    "locality": "Rajouri Garden, West Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T11:00:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T12:00:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_027",
+    "name": "Abdul Bansal",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "bedsore_care",
+      "diabetic_foot_care",
+      "injection",
+      "feeding_tube_care"
+    ],
+    "qualification": "BSc Nursing",
+    "years_experience": 20,
+    "lat": 28.65589,
+    "lng": 77.33388,
+    "locality": "Vaishali, Ghaziabad",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T13:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.5
+  },
+  {
+    "caregiver_id": "CG_028",
+    "name": "Sneha Nair",
+    "role": "nurse",
+    "specialty": null,
+    "skills": [
+      "feeding_tube_care",
+      "catheter_care",
+      "wound_care",
+      "elderly_care",
+      "post_op_care"
+    ],
+    "qualification": "GNM",
+    "years_experience": 22,
+    "lat": 28.53621,
+    "lng": 77.24802,
+    "locality": "Kalkaji, South Delhi",
+    "consultation_modes": [
+      "home_visit"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_029",
+    "name": "Dr. Lakshmi Thomas",
+    "role": "gp",
+    "specialty": null,
+    "skills": [
+      "elderly_care",
+      "report_review",
+      "pediatrics_basic",
+      "teleconsult",
+      "general_medicine"
+    ],
+    "qualification": "MBBS, MD (General Medicine)",
+    "years_experience": 2,
+    "lat": 28.59813,
+    "lng": 77.30067,
+    "locality": "Mayur Vihar, East Delhi",
+    "consultation_modes": [
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T14:30:00+05:30",
       "2026-10-26T20:00:00+05:30"
     ],
     "languages": [
       "hi",
       "en"
     ],
-    "rating": 4.3
-  },
-  {
-    "caregiver_id": "CG_029",
-    "name": "Sanjay Kumar",
-    "role": "nurse",
-    "skills": [
-      "feeding_tube_care",
-      "elderly_care",
-      "diabetic_foot_care",
-      "injection"
-    ],
-    "lat": 28.57191,
-    "lng": 77.30074,
-    "availability_slots": [
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T14:00:00+05:30"
-    ],
-    "languages": [
-      "en"
-    ],
-    "rating": 4.7
+    "rating": 3.9
   },
   {
     "caregiver_id": "CG_030",
-    "name": "Rohit Singh",
-    "role": "nurse",
+    "name": "Dr. Joseph Malik",
+    "role": "gp",
+    "specialty": null,
     "skills": [
-      "diabetic_foot_care",
-      "feeding_tube_care",
-      "iv_drip",
-      "wound_care",
-      "elderly_care"
+      "pediatrics_basic",
+      "report_review",
+      "general_medicine"
     ],
-    "lat": 28.58202,
-    "lng": 77.2223,
+    "qualification": "MBBS",
+    "years_experience": 4,
+    "lat": 28.4909,
+    "lng": 77.08353,
+    "locality": "Gurugram Cyber City, Gurugram",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T18:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_031",
+    "name": "Dr. Nisha Rawat",
+    "role": "gp",
+    "specialty": null,
+    "skills": [
+      "teleconsult",
+      "elderly_care",
+      "general_medicine",
+      "pediatrics_basic",
+      "report_review"
+    ],
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 15,
+    "lat": 28.55751,
+    "lng": 77.24725,
+    "locality": "Lajpat Nagar, South Delhi",
+    "consultation_modes": [
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
       "2026-10-25T14:00:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-25T18:30:00+05:30",
       "2026-10-26T10:00:00+05:30",
-      "2026-10-26T14:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T16:00:00+05:30"
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T19:00:00+05:30"
     ],
     "languages": [
       "hi",
       "en",
-      "ur"
+      "bn"
     ],
-    "rating": 3.7
-  },
-  {
-    "caregiver_id": "CG_031",
-    "name": "Abdul Chauhan",
-    "role": "gp",
-    "skills": [
-      "teleconsult",
-      "report_review",
-      "pediatrics_basic"
-    ],
-    "lat": 28.77596,
-    "lng": 77.0796,
-    "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T13:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.8
+    "rating": 4.2
   },
   {
     "caregiver_id": "CG_032",
-    "name": "Abdul Kumar",
+    "name": "Dr. Meena Kaur",
     "role": "gp",
+    "specialty": null,
     "skills": [
-      "report_review",
-      "elderly_care",
       "teleconsult",
-      "general_medicine",
-      "pediatrics_basic"
+      "report_review",
+      "elderly_care"
     ],
-    "lat": 28.55876,
-    "lng": 77.15011,
+    "qualification": "MBBS",
+    "years_experience": 9,
+    "lat": 28.70322,
+    "lng": 77.13836,
+    "locality": "Pitampura, North Delhi",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
       "2026-10-25T16:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T14:00:00+05:30"
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T17:00:00+05:30"
     ],
     "languages": [
       "hi",
       "en"
     ],
-    "rating": 3.8
+    "rating": 4.4
   },
   {
     "caregiver_id": "CG_033",
-    "name": "Arjun Verma",
+    "name": "Dr. Rahul Khan",
     "role": "gp",
+    "specialty": null,
     "skills": [
-      "report_review",
       "pediatrics_basic",
-      "general_medicine",
+      "elderly_care",
       "teleconsult",
-      "elderly_care"
+      "general_medicine"
     ],
-    "lat": 28.54027,
-    "lng": 77.31252,
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 18,
+    "lat": 28.5632,
+    "lng": 77.31938,
+    "locality": "Noida Sector 18, Noida",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
       "2026-10-24T09:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T19:00:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T11:00:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
       "2026-10-26T08:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
       "2026-10-26T15:00:00+05:30",
-      "2026-10-26T16:00:00+05:30"
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T17:00:00+05:30"
     ],
     "languages": [
       "hi",
       "en"
     ],
-    "rating": 3.6
+    "rating": 4.1
   },
   {
     "caregiver_id": "CG_034",
-    "name": "Rohit Joshi",
+    "name": "Dr. Shabnam Nair",
     "role": "gp",
+    "specialty": null,
     "skills": [
-      "general_medicine",
-      "pediatrics_basic",
+      "elderly_care",
       "report_review",
-      "elderly_care"
+      "pediatrics_basic",
+      "general_medicine"
     ],
-    "lat": 28.43192,
-    "lng": 77.25121,
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 18,
+    "lat": 28.40736,
+    "lng": 77.32003,
+    "locality": "Faridabad Sector 15, Faridabad",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T16:00:00+05:30"
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T18:00:00+05:30"
     ],
     "languages": [
-      "hi"
+      "en"
     ],
-    "rating": 3.9
+    "rating": 4.3
   },
   {
     "caregiver_id": "CG_035",
-    "name": "Deepak Malik",
+    "name": "Dr. Harpreet Joshi",
     "role": "gp",
+    "specialty": null,
     "skills": [
       "elderly_care",
       "pediatrics_basic",
       "report_review",
       "teleconsult"
     ],
-    "lat": 28.47824,
-    "lng": 77.31326,
+    "qualification": "MBBS",
+    "years_experience": 13,
+    "lat": 28.62852,
+    "lng": 77.2119,
+    "locality": "Connaught Place, Central Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T10:00:00+05:30",
       "2026-10-24T12:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T15:00:00+05:30"
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
     ],
     "languages": [
+      "hi",
       "en"
     ],
     "rating": 4.2
   },
   {
     "caregiver_id": "CG_036",
-    "name": "Priya Verma",
+    "name": "Dr. Kavita Das",
     "role": "gp",
+    "specialty": null,
     "skills": [
       "elderly_care",
+      "report_review",
       "pediatrics_basic",
+      "general_medicine"
+    ],
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 15,
+    "lat": 28.58395,
+    "lng": 77.03751,
+    "locality": "Dwarka, West Delhi",
+    "consultation_modes": [
       "teleconsult"
     ],
-    "lat": 28.63719,
-    "lng": 77.12861,
     "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
       "2026-10-24T14:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-26T09:00:00+05:30"
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T13:00:00+05:30"
     ],
     "languages": [
       "hi",
@@ -1016,336 +1410,161 @@
   },
   {
     "caregiver_id": "CG_037",
-    "name": "Kavita Ansari",
+    "name": "Dr. Tarun Singh",
     "role": "gp",
+    "specialty": null,
     "skills": [
       "pediatrics_basic",
-      "elderly_care",
       "report_review",
-      "general_medicine"
+      "general_medicine",
+      "teleconsult"
     ],
-    "lat": 28.44615,
-    "lng": 77.06592,
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 17,
+    "lat": 28.41305,
+    "lng": 77.1052,
+    "locality": "Gurugram Sector 56, Gurugram",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T08:00:00+05:30"
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T20:00:00+05:30"
     ],
     "languages": [
       "en",
-      "bn"
+      "pa"
+    ],
+    "rating": 4.2
+  },
+  {
+    "caregiver_id": "CG_038",
+    "name": "Dr. Rohit Yadav",
+    "role": "gp",
+    "specialty": null,
+    "skills": [
+      "elderly_care",
+      "teleconsult",
+      "report_review",
+      "pediatrics_basic",
+      "general_medicine"
+    ],
+    "qualification": "MBBS",
+    "years_experience": 13,
+    "lat": 28.54566,
+    "lng": 77.20078,
+    "locality": "Hauz Khas, South Delhi",
+    "consultation_modes": [
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "en"
     ],
     "rating": 4.4
   },
   {
-    "caregiver_id": "CG_038",
-    "name": "Sanjay Yadav",
+    "caregiver_id": "CG_039",
+    "name": "Dr. Suresh Kumar",
     "role": "gp",
+    "specialty": null,
     "skills": [
+      "general_medicine",
+      "pediatrics_basic",
+      "elderly_care",
       "report_review",
-      "teleconsult",
-      "elderly_care"
+      "teleconsult"
     ],
-    "lat": 28.79533,
-    "lng": 77.34431,
+    "qualification": "MBBS, DNB (Family Medicine)",
+    "years_experience": 16,
+    "lat": 28.71906,
+    "lng": 77.18244,
+    "locality": "Model Town, North Delhi",
+    "consultation_modes": [
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
       "2026-10-24T12:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T13:00:00+05:30",
+      "2026-10-25T14:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
       "2026-10-26T19:00:00+05:30"
     ],
     "languages": [
       "hi",
-      "en",
-      "pa"
-    ],
-    "rating": 4.1
-  },
-  {
-    "caregiver_id": "CG_039",
-    "name": "Manoj Sharma",
-    "role": "gp",
-    "skills": [
-      "general_medicine",
-      "elderly_care",
-      "teleconsult",
-      "pediatrics_basic"
-    ],
-    "lat": 28.6331,
-    "lng": 77.10932,
-    "availability_slots": [
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T16:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.7
-  },
-  {
-    "caregiver_id": "CG_040",
-    "name": "Imran Gupta",
-    "role": "gp",
-    "skills": [
-      "general_medicine",
-      "elderly_care",
-      "report_review",
-      "teleconsult",
-      "pediatrics_basic"
-    ],
-    "lat": 28.68425,
-    "lng": 77.34878,
-    "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
-    ],
-    "languages": [
       "en"
     ],
     "rating": 4.3
   },
   {
-    "caregiver_id": "CG_041",
-    "name": "Deepak Mishra",
+    "caregiver_id": "CG_040",
+    "name": "Dr. Neha Yadav",
     "role": "gp",
+    "specialty": null,
     "skills": [
       "pediatrics_basic",
       "elderly_care",
       "teleconsult",
+      "general_medicine",
       "report_review"
     ],
-    "lat": 28.47846,
-    "lng": 77.31366,
-    "availability_slots": [
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en",
-      "pa"
-    ],
-    "rating": 3.7
-  },
-  {
-    "caregiver_id": "CG_042",
-    "name": "Rohit Thomas",
-    "role": "gp",
-    "skills": [
-      "teleconsult",
-      "general_medicine",
-      "elderly_care",
-      "pediatrics_basic",
-      "report_review"
-    ],
-    "lat": 28.74446,
-    "lng": 77.21031,
-    "availability_slots": [
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T16:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en",
-      "ml"
-    ],
-    "rating": 4.7
-  },
-  {
-    "caregiver_id": "CG_043",
-    "name": "Rahul Das",
-    "role": "gp",
-    "skills": [
-      "general_medicine",
-      "elderly_care",
+    "qualification": "MBBS",
+    "years_experience": 9,
+    "lat": 28.63577,
+    "lng": 77.37655,
+    "locality": "Noida Sector 62, Noida",
+    "consultation_modes": [
       "teleconsult"
     ],
-    "lat": 28.55074,
-    "lng": 77.39823,
     "availability_slots": [
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "en",
-      "bn"
-    ],
-    "rating": 4.1
-  },
-  {
-    "caregiver_id": "CG_044",
-    "name": "Anjali Chauhan",
-    "role": "gp",
-    "skills": [
-      "elderly_care",
-      "pediatrics_basic",
-      "report_review",
-      "teleconsult"
-    ],
-    "lat": 28.79049,
-    "lng": 77.33658,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-26T09:00:00+05:30"
-    ],
-    "languages": [
-      "en"
-    ],
-    "rating": 4.2
-  },
-  {
-    "caregiver_id": "CG_045",
-    "name": "Arjun Chauhan",
-    "role": "gp",
-    "skills": [
-      "general_medicine",
-      "report_review",
-      "pediatrics_basic",
-      "elderly_care",
-      "teleconsult"
-    ],
-    "lat": 28.78746,
-    "lng": 76.91472,
-    "availability_slots": [
+      "2026-10-24T11:00:00+05:30",
       "2026-10-24T14:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.9
-  },
-  {
-    "caregiver_id": "CG_046",
-    "name": "Aarti Ansari",
-    "role": "specialist",
-    "skills": [
-      "orthopedics"
-    ],
-    "lat": 28.56794,
-    "lng": 77.36817,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T11:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en",
-      "ta"
-    ],
-    "rating": 3.6
-  },
-  {
-    "caregiver_id": "CG_047",
-    "name": "Gurpreet Gupta",
-    "role": "specialist",
-    "skills": [
-      "dermatology"
-    ],
-    "lat": 28.51738,
-    "lng": 77.11543,
-    "availability_slots": [
-      "2026-10-24T09:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T08:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T15:30:00+05:30",
       "2026-10-26T16:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.8
-  },
-  {
-    "caregiver_id": "CG_048",
-    "name": "Imran Mishra",
-    "role": "specialist",
-    "skills": [
-      "pediatrics"
-    ],
-    "lat": 28.50704,
-    "lng": 77.06586,
-    "availability_slots": [
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
     ],
     "languages": [
       "hi"
@@ -1353,130 +1572,40 @@
     "rating": 4.6
   },
   {
-    "caregiver_id": "CG_049",
-    "name": "Vikas Singh",
-    "role": "specialist",
+    "caregiver_id": "CG_041",
+    "name": "Dr. Aarti Mehta",
+    "role": "gp",
+    "specialty": null,
     "skills": [
-      "gynecology"
+      "report_review",
+      "pediatrics_basic",
+      "teleconsult"
     ],
-    "lat": 28.52081,
-    "lng": 77.37447,
-    "availability_slots": [
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T14:00:00+05:30"
+    "qualification": "MBBS",
+    "years_experience": 9,
+    "lat": 28.37826,
+    "lng": 77.29927,
+    "locality": "Faridabad NIT, Faridabad",
+    "consultation_modes": [
+      "teleconsult"
     ],
-    "languages": [
-      "hi",
-      "ur"
-    ],
-    "rating": 4.3
-  },
-  {
-    "caregiver_id": "CG_050",
-    "name": "Lakshmi Mehta",
-    "role": "specialist",
-    "skills": [
-      "ent"
-    ],
-    "lat": 28.6654,
-    "lng": 77.11973,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T13:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T14:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 4.4
-  },
-  {
-    "caregiver_id": "CG_051",
-    "name": "Meena Singh",
-    "role": "specialist",
-    "skills": [
-      "ophthalmology"
-    ],
-    "lat": 28.49226,
-    "lng": 77.16998,
-    "availability_slots": [
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
-      "2026-10-24T15:00:00+05:30",
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T17:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi",
-      "en"
-    ],
-    "rating": 3.7
-  },
-  {
-    "caregiver_id": "CG_052",
-    "name": "Joseph Verma",
-    "role": "specialist",
-    "skills": [
-      "endocrinology"
-    ],
-    "lat": 28.43224,
-    "lng": 77.2387,
     "availability_slots": [
       "2026-10-24T09:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
       "2026-10-24T19:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T15:00:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T10:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
       "2026-10-26T13:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
+      "2026-10-26T16:30:00+05:30",
       "2026-10-26T19:00:00+05:30"
-    ],
-    "languages": [
-      "hi"
-    ],
-    "rating": 4.7
-  },
-  {
-    "caregiver_id": "CG_053",
-    "name": "Suresh Sharma",
-    "role": "specialist",
-    "skills": [
-      "psychiatry"
-    ],
-    "lat": 28.77145,
-    "lng": 77.13218,
-    "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-26T10:00:00+05:30"
     ],
     "languages": [
       "hi",
@@ -1485,190 +1614,975 @@
     "rating": 4.5
   },
   {
-    "caregiver_id": "CG_054",
-    "name": "Sanjay Chauhan",
-    "role": "specialist",
+    "caregiver_id": "CG_042",
+    "name": "Dr. Shabnam Malik",
+    "role": "gp",
+    "specialty": null,
     "skills": [
-      "neurology"
+      "general_medicine",
+      "teleconsult",
+      "report_review",
+      "elderly_care"
     ],
-    "lat": 28.73981,
-    "lng": 77.27941,
+    "qualification": "MBBS",
+    "years_experience": 20,
+    "lat": 28.64365,
+    "lng": 77.18818,
+    "locality": "Karol Bagh, Central Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T14:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.6
+  },
+  {
+    "caregiver_id": "CG_043",
+    "name": "Dr. Sanjay Saxena",
+    "role": "specialist",
+    "specialty": "dermatology",
+    "skills": [
+      "dermatology",
+      "skin_conditions",
+      "rash_assessment"
+    ],
+    "qualification": "MBBS, MD (Dermatology)",
+    "years_experience": 24,
+    "lat": 28.61172,
+    "lng": 77.08142,
+    "locality": "Janakpuri, West Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T11:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi"
+    ],
+    "rating": 4.4
+  },
+  {
+    "caregiver_id": "CG_044",
+    "name": "Dr. Mary Sharma",
+    "role": "specialist",
+    "specialty": "dermatology",
+    "skills": [
+      "dermatology",
+      "skin_conditions",
+      "rash_assessment"
+    ],
+    "qualification": "MBBS, MD (Dermatology)",
+    "years_experience": 14,
+    "lat": 28.65635,
+    "lng": 77.3711,
+    "locality": "Indirapuram, Ghaziabad",
+    "consultation_modes": [
+      "clinic"
+    ],
     "availability_slots": [
       "2026-10-24T15:00:00+05:30",
-      "2026-10-25T19:00:00+05:30",
-      "2026-10-26T10:00:00+05:30",
-      "2026-10-26T12:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-26T19:30:00+05:30",
       "2026-10-26T20:00:00+05:30"
     ],
     "languages": [
-      "en",
+      "hi",
       "ml"
     ],
-    "rating": 4.0
+    "rating": 3.9
   },
   {
-    "caregiver_id": "CG_055",
-    "name": "Vikas Thomas",
+    "caregiver_id": "CG_045",
+    "name": "Dr. Nisha Thomas",
     "role": "specialist",
+    "specialty": "orthopedics",
     "skills": [
-      "oncology"
+      "orthopedics",
+      "joint_pain",
+      "back_pain",
+      "fracture_follow_up"
     ],
-    "lat": 28.79207,
-    "lng": 77.30077,
+    "qualification": "MBBS, MS (Orthopaedics)",
+    "years_experience": 20,
+    "lat": 28.54188,
+    "lng": 77.24373,
+    "locality": "Greater Kailash, South Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
-      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
       "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T10:00:00+05:30",
       "2026-10-25T13:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T18:00:00+05:30",
-      "2026-10-26T19:00:00+05:30"
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T13:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.4
+  },
+  {
+    "caregiver_id": "CG_046",
+    "name": "Dr. Suresh Yadav",
+    "role": "specialist",
+    "specialty": "orthopedics",
+    "skills": [
+      "orthopedics",
+      "joint_pain",
+      "back_pain",
+      "fracture_follow_up"
+    ],
+    "qualification": "MBBS, MS (Orthopaedics)",
+    "years_experience": 15,
+    "lat": 28.63871,
+    "lng": 77.28295,
+    "locality": "Laxmi Nagar, East Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
       "en"
     ],
     "rating": 3.9
   },
   {
-    "caregiver_id": "CG_056",
-    "name": "Harpreet Khan",
+    "caregiver_id": "CG_047",
+    "name": "Dr. Shabnam Mishra",
     "role": "specialist",
+    "specialty": "cardiology",
     "skills": [
-      "cardiology"
+      "cardiology",
+      "heart_checkup",
+      "bp_management"
     ],
-    "lat": 28.52752,
-    "lng": 77.13804,
+    "qualification": "MBBS, MD, DM (Cardiology)",
+    "years_experience": 21,
+    "lat": 28.58231,
+    "lng": 77.35924,
+    "locality": "Noida Sector 50, Noida",
+    "consultation_modes": [
+      "clinic"
+    ],
     "availability_slots": [
-      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:00:00+05:30",
       "2026-10-24T15:00:00+05:30",
       "2026-10-24T17:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T17:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
       "2026-10-26T16:00:00+05:30",
-      "2026-10-26T17:00:00+05:30",
-      "2026-10-26T18:00:00+05:30"
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "bn"
+    ],
+    "rating": 4.3
+  },
+  {
+    "caregiver_id": "CG_048",
+    "name": "Dr. Deepak Singh",
+    "role": "specialist",
+    "specialty": "cardiology",
+    "skills": [
+      "cardiology",
+      "heart_checkup",
+      "bp_management"
+    ],
+    "qualification": "MBBS, MD, DM (Cardiology)",
+    "years_experience": 21,
+    "lat": 28.5133,
+    "lng": 77.20434,
+    "locality": "Saket, South Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T10:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.0
+  },
+  {
+    "caregiver_id": "CG_049",
+    "name": "Dr. Shabnam Thomas",
+    "role": "specialist",
+    "specialty": "pediatrics",
+    "skills": [
+      "pediatrics",
+      "child_health",
+      "growth_development"
+    ],
+    "qualification": "MBBS, MD (Paediatrics)",
+    "years_experience": 19,
+    "lat": 28.75215,
+    "lng": 77.05476,
+    "locality": "Rohini, North Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T19:00:00+05:30",
+      "2026-10-26T09:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T12:00:00+05:30",
+      "2026-10-26T18:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.7
+  },
+  {
+    "caregiver_id": "CG_050",
+    "name": "Dr. Ritu Das",
+    "role": "specialist",
+    "specialty": "pediatrics",
+    "skills": [
+      "pediatrics",
+      "child_health",
+      "growth_development"
+    ],
+    "qualification": "MBBS, MD (Paediatrics)",
+    "years_experience": 25,
+    "lat": 28.65496,
+    "lng": 77.13236,
+    "locality": "Rajouri Garden, West Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_051",
+    "name": "Dr. Kavita Sharma",
+    "role": "specialist",
+    "specialty": "ent",
+    "skills": [
+      "ent",
+      "ear_nose_throat",
+      "hearing_assessment"
+    ],
+    "qualification": "MBBS, MS (ENT)",
+    "years_experience": 13,
+    "lat": 28.6487,
+    "lng": 77.34842,
+    "locality": "Vaishali, Ghaziabad",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T19:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
       "hi",
       "en",
       "ur"
     ],
-    "rating": 4.6
+    "rating": 4.3
   },
   {
-    "caregiver_id": "CG_057",
-    "name": "Sneha Singh",
+    "caregiver_id": "CG_052",
+    "name": "Dr. Vikas Kaur",
     "role": "specialist",
+    "specialty": "ent",
     "skills": [
-      "orthopedics"
+      "ent",
+      "ear_nose_throat",
+      "hearing_assessment"
     ],
-    "lat": 28.57811,
-    "lng": 77.29192,
+    "qualification": "MBBS, MS (ENT)",
+    "years_experience": 18,
+    "lat": 28.54763,
+    "lng": 77.25075,
+    "locality": "Kalkaji, South Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
     "availability_slots": [
-      "2026-10-24T16:00:00+05:30",
-      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
       "2026-10-24T19:00:00+05:30",
-      "2026-10-24T20:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-25T20:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
       "2026-10-26T08:00:00+05:30",
-      "2026-10-26T13:00:00+05:30",
-      "2026-10-26T14:00:00+05:30"
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T18:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
       "hi",
-      "en",
+      "en"
+    ],
+    "rating": 3.7
+  },
+  {
+    "caregiver_id": "CG_053",
+    "name": "Dr. Harpreet Mishra",
+    "role": "specialist",
+    "specialty": "gynecology",
+    "skills": [
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
+    ],
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "years_experience": 20,
+    "lat": 28.60016,
+    "lng": 77.28528,
+    "locality": "Mayur Vihar, East Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-25T17:00:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
       "ta"
     ],
     "rating": 4.2
   },
   {
-    "caregiver_id": "CG_058",
-    "name": "Sanjay Mishra",
+    "caregiver_id": "CG_054",
+    "name": "Dr. Meena Das",
     "role": "specialist",
+    "specialty": "gynecology",
     "skills": [
-      "dermatology"
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
     ],
-    "lat": 28.73452,
-    "lng": 77.12482,
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "years_experience": 19,
+    "lat": 28.49436,
+    "lng": 77.08842,
+    "locality": "Gurugram Cyber City, Gurugram",
+    "consultation_modes": [
+      "clinic"
+    ],
     "availability_slots": [
       "2026-10-24T08:00:00+05:30",
-      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T19:00:00+05:30",
       "2026-10-24T20:00:00+05:30",
       "2026-10-25T10:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T18:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
       "2026-10-25T19:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T18:00:00+05:30",
+      "2026-10-26T19:30:00+05:30"
     ],
     "languages": [
-      "en"
+      "hi",
+      "en",
+      "bn"
     ],
-    "rating": 4.6
+    "rating": 4.8
   },
   {
-    "caregiver_id": "CG_059",
-    "name": "Farah Sharma",
+    "caregiver_id": "CG_055",
+    "name": "Dr. Rohit Kumar",
     "role": "specialist",
+    "specialty": "neurology",
     "skills": [
-      "pediatrics"
+      "neurology",
+      "headache_clinic",
+      "nerve_conditions"
     ],
-    "lat": 28.7325,
-    "lng": 77.32175,
+    "qualification": "MBBS, MD, DM (Neurology)",
+    "years_experience": 26,
+    "lat": 28.5793,
+    "lng": 77.23735,
+    "locality": "Lajpat Nagar, South Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
     "availability_slots": [
-      "2026-10-24T08:00:00+05:30",
-      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T15:30:00+05:30",
       "2026-10-24T17:00:00+05:30",
-      "2026-10-24T19:00:00+05:30",
-      "2026-10-25T09:00:00+05:30",
-      "2026-10-25T10:00:00+05:30",
-      "2026-10-26T08:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T11:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T08:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "ml"
+    ],
+    "rating": 4.2
+  },
+  {
+    "caregiver_id": "CG_056",
+    "name": "Dr. Farah Rawat",
+    "role": "specialist",
+    "specialty": "neurology",
+    "skills": [
+      "neurology",
+      "headache_clinic",
+      "nerve_conditions"
+    ],
+    "qualification": "MBBS, MD, DM (Neurology)",
+    "years_experience": 23,
+    "lat": 28.70942,
+    "lng": 77.12663,
+    "locality": "Pitampura, North Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:30:00+05:30",
+      "2026-10-24T10:00:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T18:00:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T11:30:00+05:30",
       "2026-10-26T19:00:00+05:30"
     ],
     "languages": [
       "hi",
       "en"
     ],
-    "rating": 4.1
+    "rating": 4.2
   },
   {
-    "caregiver_id": "CG_060",
-    "name": "Gurpreet Malik",
+    "caregiver_id": "CG_057",
+    "name": "Dr. Farah Das",
     "role": "specialist",
+    "specialty": "pulmonology",
     "skills": [
-      "gynecology"
+      "pulmonology",
+      "breathing_conditions",
+      "chronic_cough"
     ],
-    "lat": 28.6925,
-    "lng": 77.15498,
+    "qualification": "MBBS, MD (Pulmonary Medicine)",
+    "years_experience": 26,
+    "lat": 28.57215,
+    "lng": 77.32132,
+    "locality": "Noida Sector 18, Noida",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
     "availability_slots": [
-      "2026-10-24T10:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T16:00:00+05:30",
       "2026-10-24T17:00:00+05:30",
-      "2026-10-25T12:00:00+05:30",
-      "2026-10-25T13:00:00+05:30",
-      "2026-10-25T14:00:00+05:30",
-      "2026-10-25T16:00:00+05:30",
-      "2026-10-26T09:00:00+05:30",
-      "2026-10-26T15:00:00+05:30",
-      "2026-10-26T16:00:00+05:30",
-      "2026-10-26T17:00:00+05:30",
-      "2026-10-26T20:00:00+05:30"
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T20:30:00+05:30"
     ],
     "languages": [
       "hi"
     ],
-    "rating": 4.1
+    "rating": 4.7
+  },
+  {
+    "caregiver_id": "CG_058",
+    "name": "Dr. Rohit Verma",
+    "role": "specialist",
+    "specialty": "pulmonology",
+    "skills": [
+      "pulmonology",
+      "breathing_conditions",
+      "chronic_cough"
+    ],
+    "qualification": "MBBS, MD (Pulmonary Medicine)",
+    "years_experience": 17,
+    "lat": 28.40239,
+    "lng": 77.32499,
+    "locality": "Faridabad Sector 15, Faridabad",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T11:30:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T13:30:00+05:30",
+      "2026-10-26T19:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi"
+    ],
+    "rating": 4.8
+  },
+  {
+    "caregiver_id": "CG_059",
+    "name": "Dr. Mary Das",
+    "role": "specialist",
+    "specialty": "ophthalmology",
+    "skills": [
+      "ophthalmology",
+      "eye_checkup",
+      "vision_care"
+    ],
+    "qualification": "MBBS, MS (Ophthalmology)",
+    "years_experience": 14,
+    "lat": 28.6263,
+    "lng": 77.2213,
+    "locality": "Connaught Place, Central Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T09:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T18:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T19:00:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.2
+  },
+  {
+    "caregiver_id": "CG_060",
+    "name": "Dr. Ritu Mishra",
+    "role": "specialist",
+    "specialty": "ophthalmology",
+    "skills": [
+      "ophthalmology",
+      "eye_checkup",
+      "vision_care"
+    ],
+    "qualification": "MBBS, MS (Ophthalmology)",
+    "years_experience": 22,
+    "lat": 28.59118,
+    "lng": 77.05276,
+    "locality": "Dwarka, West Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T10:30:00+05:30",
+      "2026-10-24T13:00:00+05:30",
+      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-24T21:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T14:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T11:00:00+05:30",
+      "2026-10-26T15:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.6
+  },
+  {
+    "caregiver_id": "CG_061",
+    "name": "Dr. Sanjay Mehta",
+    "role": "specialist",
+    "specialty": "endocrinology",
+    "skills": [
+      "endocrinology",
+      "diabetes_care",
+      "thyroid_care"
+    ],
+    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "years_experience": 10,
+    "lat": 28.42731,
+    "lng": 77.11259,
+    "locality": "Gurugram Sector 56, Gurugram",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T10:00:00+05:30",
+      "2026-10-24T14:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T10:30:00+05:30",
+      "2026-10-26T12:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T17:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "bn"
+    ],
+    "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_062",
+    "name": "Dr. Shabnam Yadav",
+    "role": "specialist",
+    "specialty": "endocrinology",
+    "skills": [
+      "endocrinology",
+      "diabetes_care",
+      "thyroid_care"
+    ],
+    "qualification": "MBBS, MD, DM (Endocrinology)",
+    "years_experience": 16,
+    "lat": 28.55879,
+    "lng": 77.19999,
+    "locality": "Hauz Khas, South Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T21:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-25T19:30:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T16:30:00+05:30",
+      "2026-10-26T18:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "ml"
+    ],
+    "rating": 5.0
+  },
+  {
+    "caregiver_id": "CG_063",
+    "name": "Dr. Lakshmi Nair",
+    "role": "specialist",
+    "specialty": "psychiatry",
+    "skills": [
+      "psychiatry",
+      "mental_health",
+      "sleep_problems"
+    ],
+    "qualification": "MBBS, MD (Psychiatry)",
+    "years_experience": 15,
+    "lat": 28.72611,
+    "lng": 77.18104,
+    "locality": "Model Town, North Delhi",
+    "consultation_modes": [
+      "clinic",
+      "teleconsult"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:00:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:00:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T10:00:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-26T08:00:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T16:00:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "en",
+      "ur"
+    ],
+    "rating": 4.4
+  },
+  {
+    "caregiver_id": "CG_064",
+    "name": "Dr. Lakshmi Khan",
+    "role": "specialist",
+    "specialty": "psychiatry",
+    "skills": [
+      "psychiatry",
+      "mental_health",
+      "sleep_problems"
+    ],
+    "qualification": "MBBS, MD (Psychiatry)",
+    "years_experience": 8,
+    "lat": 28.63262,
+    "lng": 77.3713,
+    "locality": "Noida Sector 62, Noida",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T12:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:30:00+05:30",
+      "2026-10-25T08:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T13:00:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-26T10:00:00+05:30",
+      "2026-10-26T11:30:00+05:30",
+      "2026-10-26T13:00:00+05:30",
+      "2026-10-26T17:00:00+05:30",
+      "2026-10-26T19:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "pa"
+    ],
+    "rating": 5.0
+  },
+  {
+    "caregiver_id": "CG_065",
+    "name": "Dr. Farah Kumar",
+    "role": "specialist",
+    "specialty": "oncology",
+    "skills": [
+      "oncology",
+      "lump_assessment",
+      "cancer_screening"
+    ],
+    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "years_experience": 25,
+    "lat": 28.38422,
+    "lng": 77.30835,
+    "locality": "Faridabad NIT, Faridabad",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T10:30:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T12:30:00+05:30",
+      "2026-10-25T15:00:00+05:30",
+      "2026-10-26T12:00:00+05:30",
+      "2026-10-26T14:00:00+05:30",
+      "2026-10-26T20:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en",
+      "ta"
+    ],
+    "rating": 4.6
+  },
+  {
+    "caregiver_id": "CG_066",
+    "name": "Dr. Rohit Malik",
+    "role": "specialist",
+    "specialty": "oncology",
+    "skills": [
+      "oncology",
+      "lump_assessment",
+      "cancer_screening"
+    ],
+    "qualification": "MBBS, MD, DM (Medical Oncology)",
+    "years_experience": 12,
+    "lat": 28.65577,
+    "lng": 77.18262,
+    "locality": "Karol Bagh, Central Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-25T14:00:00+05:30",
+      "2026-10-25T17:30:00+05:30",
+      "2026-10-26T08:30:00+05:30",
+      "2026-10-26T09:00:00+05:30",
+      "2026-10-26T17:30:00+05:30"
+    ],
+    "languages": [
+      "en"
+    ],
+    "rating": 4.5
   }
 ]
