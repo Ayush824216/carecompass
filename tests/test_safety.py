@@ -1,0 +1,174 @@
+"""Safety rule-engine tests. Written by the team, not taken from any dataset.
+
+Every commit touching backend/app/safety.py must keep these green.
+"""
+import pytest
+
+from app import safety
+from app.lang import detect_language, normalise
+
+# (text, expected flag) — positive cases across English, Hinglish and Hindi
+POSITIVE = [
+    # chest pain
+    ("My father has severe chest pain and is sweating", "chest_pain"),
+    ("there is a heavy pressure in my chest since 20 minutes", "chest_pain"),
+    ("Papa ke seene mein tez dard ho raha hai", "chest_pain"),
+    ("mummy ko chhati mein bahut dard hai", "chest_pain"),
+    ("sine me dard ho rha h", "chest_pain"),
+    ("दादाजी के सीने में तेज़ दर्द हो रहा है", "chest_pain"),
+    ("no fever but chest pain since morning", "chest_pain"),
+    # breathing
+    ("My mother cannot breathe properly", "severe_breathing_difficulty"),
+    ("he is struggling to breathe and gasping", "severe_breathing_difficulty"),
+    ("shortness of breath while sitting", "severe_breathing_difficulty"),
+    ("Dadi ko saans nahi aa rahi", "severe_breathing_difficulty"),
+    ("papa ki saans bahut phool rahi hai, bol nahi pa rahe", "severe_breathing_difficulty"),
+    ("bachche ko saans lene mein dikkat ho rahi hai", "severe_breathing_difficulty"),
+    ("मम्मी को साँस लेने में बहुत तकलीफ हो रही है", "severe_breathing_difficulty"),
+    ("नानी की सांस फूल रही है", "severe_breathing_difficulty"),
+    # blue lips
+    ("his lips are turning blue", "blue_lips"),
+    ("baby ke hont neele pad gaye", "blue_lips"),
+    ("बच्चे के होंठ नीले हो गए हैं", "blue_lips"),
+    # unconscious
+    ("Grandfather fainted and is not responding", "unconscious"),
+    ("She collapsed in the kitchen", "unconscious"),
+    ("Papa behosh ho gaye hain", "unconscious"),
+    ("dadi hosh mein nahi hain, jawab nahi de rahi", "unconscious"),
+    ("पापा बेहोश हो गए हैं", "unconscious"),
+    # seizure
+    ("my son is having a seizure", "seizure"),
+    ("She had a fit and her body was jerking", "seizure"),
+    ("bete ko daura pad raha hai", "seizure"),
+    ("भाई को मिर्गी का दौरा पड़ा है", "seizure"),
+    # stroke
+    ("his speech is slurred and face is drooping", "stroke_signs"),
+    ("suddenly her left side is weak", "stroke_signs"),
+    ("nana ji ki awaaz ladkhada rahi hai", "stroke_signs"),
+    ("papa ka chehra ek taraf tedha ho gaya hai", "stroke_signs"),
+    ("दादी का चेहरा एक तरफ टेढ़ा हो गया और बोली लड़खड़ा रही है", "stroke_signs"),
+    # bleeding
+    ("He cut his leg and it is bleeding heavily", "heavy_bleeding"),
+    ("accident ke baad bahut khoon beh raha hai", "heavy_bleeding"),
+    ("khoon ruk nahi raha", "heavy_bleeding"),
+    ("पापा को खून की उल्टी हुई", "heavy_bleeding"),
+    # allergy
+    ("after eating peanuts her face is swelling up", "severe_allergic_reaction"),
+    ("uska chehra aur hont sooj gaye hain", "severe_allergic_reaction"),
+    ("दवा के बाद चेहरा सूज गया है", "severe_allergic_reaction"),
+    # suicidal
+    ("I don't want to live anymore", "suicidal_intent"),
+    ("my brother is talking about suicide", "suicidal_intent"),
+    ("mujhe ab jeena nahi hai", "suicidal_intent"),
+    ("wo khud ko khatam karna chahta hai", "suicidal_intent"),
+    ("मैं आत्महत्या करना चाहता हूँ", "suicidal_intent"),
+    # poisoning
+    ("my child swallowed some bleach", "poisoning_overdose"),
+    ("she took too many sleeping pills", "poisoning_overdose"),
+    ("chachi ne zeher kha liya", "poisoning_overdose"),
+    ("बच्चे ने चूहे मारने की दवा खा ली", "poisoning_overdose"),
+    ("papa ko saanp ne kaat liya", "poisoning_overdose"),
+    # burns
+    ("he got badly burned with boiling water on his chest", "severe_burns"),
+    ("rasoi mein aag lag gayi, mummy jal gayi", "severe_burns"),
+    ("बच्चा गरम तेल से जल गया", "severe_burns"),
+    # trauma
+    ("bike accident, his leg looks broken", "major_trauma"),
+    ("dada ji chhat se gir gaye", "major_trauma"),
+    # mental state
+    ("grandma is suddenly confused and not recognising us", "altered_mental_state"),
+    ("nani behki behki baatein kar rahi hain", "altered_mental_state"),
+    # combos
+    ("high fever with a stiff neck", "fever_stiff_neck_confusion"),
+    ("bete ko tez bukhar hai aur gardan akad gayi hai", "fever_stiff_neck_confusion"),
+    ("My 2 month old baby has high fever", "infant_danger_signs"),
+    ("3 mahine ka baby doodh nahi pee raha", "infant_danger_signs"),
+    ("मेरे दो महीने के बच्चे को तेज़ बुखार है", "infant_danger_signs"),
+    ("my wife is pregnant and bleeding", "pregnancy_emergency"),
+    ("wife 7 mahine pregnant hai aur bahut tez dard ho raha hai", "pregnancy_emergency"),
+    ("मेरी पत्नी गर्भवती है और खून आ रहा है", "pregnancy_emergency"),
+    ("he fell and hit his head and now he is vomiting", "severe_head_injury"),
+    ("sar par chot lagi aur ulti ho rahi hai", "severe_head_injury"),
+]
+
+# benign / negated — must NOT fire any flag
+BENIGN = [
+    "Papa ko do din se bukhar hai aur khansi bhi",
+    "fever and cough for 2 days, no breathing difficulty",
+    "saans lene mein dikkat nahi hai, bas khansi hai",
+    "saans ki dikkat nahi hai",
+    "no chest pain, just acidity after meals",
+    "seene mein dard nahi hai, gas ki problem hai",
+    "सीने में दर्द नहीं है, बस खांसी है",
+    "साँस की दिक्कत नहीं है",
+    "mild headache since yesterday",
+    "My mother needs a BP and sugar check at home",
+    "small cut on finger, thoda khoon nikla tha, dressing chahiye",
+    "papa bilkul fit hain, bas checkup karwana hai",
+    "my wife is 5 months pregnant and needs a routine checkup",
+    "pregnant hai, blood test karwana hai",
+    "knee pain for 6 months, worse on stairs",
+    "zukaam aur cheenk aa rahi hai",
+    "mujhe 3 din se dast ho rahe hain par paani pee raha hoon",
+    "dadi ko ghutno mein dard hai",
+    "He is not unconscious, he is talking normally",
+    "behosh nahi hue, bas chakkar aaya",
+    "bachche ko halka bukhar hai, khel raha hai",
+    "need wound dressing after surgery",
+    "Doctor ne injection bataye hain, roz lagwane hain",
+    "khane ke baad seene mein jalan hoti hai",
+    "मम्मी को घुटनों में दर्द है",
+]
+
+
+@pytest.mark.parametrize("text,flag", POSITIVE)
+def test_positive(text, flag):
+    res = safety.check([text])
+    assert flag in res.red_flags, (text, res.red_flags)
+
+
+@pytest.mark.parametrize("text", BENIGN)
+def test_benign(text):
+    res = safety.check([text])
+    assert res.red_flags == [], (text, res.evidence)
+
+
+def test_counts():
+    assert len(POSITIVE) >= 40 and len(BENIGN) >= 15
+
+
+def test_history_union():
+    # red flag mentioned in an earlier user turn is still caught
+    res = safety.check(["papa ko bukhar hai", "haan", "aur abhi behosh ho gaye"])
+    assert "unconscious" in res.red_flags
+
+
+def test_combo_across_turns():
+    res = safety.check(["bete ko tez bukhar hai", "gardan bhi akad gayi hai"])
+    assert "fever_stiff_neck_confusion" in res.red_flags
+
+
+def test_extra_flags_union():
+    res = safety.check(["fever and cough"], extra_flags=["severe_breathing_difficulty"])
+    assert res.is_emergency
+
+
+def test_emergency_reasoning_languages():
+    for lang, needle in (("en", "112"), ("hi", "112"), ("hinglish", "108")):
+        msg = safety.emergency_reasoning(["chest_pain"], lang)
+        assert needle in msg
+    assert "14416" in safety.emergency_reasoning(["suicidal_intent"], "en")
+
+
+@pytest.mark.parametrize("text,lang", [
+    ("Papa ko do din se bukhar hai", "hinglish"), ("मुझे बुखार है", "hi"),
+    ("My father has fever", "en"), ("sir dard ho raha hai", "hinglish"), ("headache since morning", "en"),
+])
+def test_detect_language(text, lang):
+    assert detect_language(text) == lang
+
+
+def test_normalise():
+    n = normalise("Papa ko do din se bukhar hai aur khansi bhi")
+    assert "fever" in n and "cough" in n and "father" in n
+    assert "fever" in normalise("दो दिन से बुखार है")

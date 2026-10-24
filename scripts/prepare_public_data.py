@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -55,6 +56,9 @@ def ktas_rows(pub: Path) -> list[dict]:
     rows = []
     for _, r in df.iterrows():
         cc = str(r["Chief_complain"]).strip()
+        m = re.match(r"^([A-Za-z .]+),\s*([A-Za-z .]+)$", cc)  # "pain, chest" -> "chest pain"
+        if m:
+            cc = f"{m.group(2).strip()} {m.group(1).strip()}"
         if not cc or cc.lower() == "nan":
             continue
         parts = [cc, age_words(int(r["Age"]))]
