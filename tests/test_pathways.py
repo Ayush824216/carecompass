@@ -295,10 +295,18 @@ def test_api_max_four_questions_then_decide():
 
 
 @pytest.mark.parametrize("text", ["mujhe lagta hai dengue hai", "Dengue test positive, platelets 80 hazaar, pet mein dard",
-                                  "pichle saal malaria hua tha aur ab 3 din se bukhar", "typhoid jaisa lag raha hai, 8 din se bukhar"])
+                                  "pichle saal malaria hua tha aur ab 3 din se bukhar", "typhoid jaisa lag raha hai, 8 din se bukhar",
+                                  "platelets 15000 reh gaye", "BP 200/120 hai aur sir dard", "bukhar aur gardan akad gayi",
+                                  "dard naabhi se daayein neeche aa gaya, bukhar bhi", "khansi, bukhar aur saans bahut phool rahi hai"])
 def test_api_never_names_a_disease(text):
     r = _post(text, debug=False)
-    assert not DISEASE.search((r["reasoning"] or "") + (r["follow_up_question"] or "")), r
+    assert not DISEASE.search((r["reasoning"] or "") + (r["follow_up_question"] or "") + " ".join(r["red_flags"])), r
+
+
+def test_reading_only_emergency_uses_neutral_flag_with_label():
+    r = _post("platelets 15000 reh gaye")
+    assert r["care_type"] == "emergency_referral" and r["red_flags"] == ["low_platelets"]
+    assert r["debug"]["pathways"]["flag_labels"]["low_platelets"]
 
 
 def test_api_debug_has_stage_and_internal_patterns():

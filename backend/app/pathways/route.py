@@ -128,6 +128,41 @@ def reasoning(out: PathwayOutcome, care_type: str, urgency: str, lang: str) -> s
     return " ".join([f"{head}{end}", tail] + notes)
 
 
+# neutral red-flag ids for decisions made from readings alone (rule ids stay internal)
+SLOT_FLAGS = {"platelets": "low_platelets", "temp_f": "very_high_temperature", "bp_sys": "very_high_bp",
+              "bp_dia": "very_high_bp", "urine_absent_hours": "no_urine", "vomit_count": "repeated_vomiting",
+              "stool_count": "many_loose_motions", "duration_days": "long_duration", "age_years": "age_risk",
+              "pregnancy_weeks": "pregnancy"}
+SLOT_FLAG_LABELS = {
+    "low_platelets": ("low platelet count", "प्लेटलेट्स कम", "platelets kam"),
+    "very_high_temperature": ("very high temperature", "बहुत तेज़ बुखार", "bahut tez bukhar"),
+    "very_high_bp": ("very high BP", "बहुत ज़्यादा बीपी", "BP bahut zyada"),
+    "no_urine": ("no urine for many hours", "कई घंटों से पेशाब नहीं", "kai ghanton se peshab nahi"),
+    "repeated_vomiting": ("repeated vomiting", "बार-बार उल्टी", "baar baar ulti"),
+    "many_loose_motions": ("many loose motions", "बहुत दस्त", "bahut dast"),
+    "long_duration": ("going on for long", "काफ़ी दिनों से", "kaafi dinon se"),
+    "age_risk": ("age-related risk", "उम्र के कारण जोखिम", "umar ki wajah se jokhim"),
+    "pregnancy": ("pregnancy", "गर्भावस्था", "pregnancy"),
+    "pathway_danger_sign": ("a danger sign", "खतरे का संकेत", "khatre ka sanket"),
+}
+
+
+def flag_labels(flags: list[str], lang: str) -> dict[str, str]:
+    """Plain-language labels for pathway red-flag ids (signs, modifiers, reading-based ids), for the UI."""
+    common, _, signs = engine.load()
+    mods = {m["id"]: m["label"] for m in common["modifiers"]}
+    i = IDX.get(lang, 0)
+    out = {}
+    for f in flags:
+        if f in SLOT_FLAG_LABELS:
+            out[f] = SLOT_FLAG_LABELS[f][i]
+        elif f in mods:
+            out[f] = mods[f].get(lang) or mods[f]["en"]
+        elif f in signs:
+            out[f] = engine.sign_label(f, lang)
+    return out
+
+
 def trace(out: PathwayOutcome, lang: str) -> dict:
     """Debug block only. Concern patterns are internal routing labels, not diagnoses."""
     prim = out.primary
@@ -144,4 +179,5 @@ def trace(out: PathwayOutcome, lang: str) -> dict:
                                                 "vomit_count", "stool_count", "urine_absent_hours", "pregnancy_weeks")},
         "risk": {k: out.facts.get(k) for k in ("infant", "child", "elderly", "pregnant", "comorbid", "bedridden")},
         "answered_questions": out.answers.asked,
+        "flag_labels": flag_labels([x for r in out.results for x in r.signs + r.modifiers] + list(SLOT_FLAG_LABELS), lang),
     }

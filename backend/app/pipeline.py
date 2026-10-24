@@ -74,8 +74,11 @@ def emergency_response(flags: list[str], lang: str, prefix: str = "") -> TriageR
 
 
 def pathway_flags(pout) -> list[str]:
+    """Red-flag ids for a pathway decision: its signs and modifiers, else neutral reading-based ids
+    (rule ids are internal and may carry concern-pattern words, so they never reach red_flags)."""
     prim = pout.primary
-    return list(dict.fromkeys(prim.signs + prim.modifiers)) or prim.rule_ids
+    flags = prim.signs + prim.modifiers + [proute.SLOT_FLAGS[s] for s in prim.slot_refs if s in proute.SLOT_FLAGS]
+    return list(dict.fromkeys(flags)) or ["pathway_danger_sign"]
 
 
 def pathway_emergency(pout, lang: str, safety_flags: list[str]) -> TriageResponse:
