@@ -97,11 +97,10 @@ class Slots:
     correction: bool = False
 
     @property
-    def effective_temp_f(self) -> Optional[float]:
-        """Measured value, else 102°F when the user says 'tez bukhar' without a number (spec edge case 4)."""
-        if self.temp_f is not None:
-            return self.temp_f
-        return 102.0 if self.high_fever_reported else None
+    def temperature_measured(self) -> bool:
+        """Only a number the user gave counts. 'Tez bukhar' sets high_fever_reported, never a temperature
+        (spec edge case 4): no value is ever inferred."""
+        return self.temp_f is not None
 
 
 # ---------------------------------------------------------------- individual parsers

@@ -18,6 +18,7 @@ from .engine import PathwayOutcome
 
 URG = {"routine": 0, "same_day": 1, "immediate": 2}
 IDX = {"en": 0, "hi": 1, "hinglish": 2}
+NOT_MEASURED = ("temperature not measured", "तापमान नहीं नापा गया", "temperature naapa nahi gaya")
 
 
 def merge(dec: Optional[Decision], out: PathwayOutcome) -> Optional[Decision]:
@@ -48,6 +49,10 @@ def slot_phrases(out: PathwayOutcome, refs: list[str], lang: str) -> list[str]:
             continue
         if r == "temp_f" and out.slots.temp_f is not None:
             ph.append((f"temperature {v:g}°F", f"तापमान {v:g}°F", f"temperature {v:g}°F")[i])
+        elif r == "temp_f" and f.get("temp_band"):  # the thermometer band the user picked, never a made-up number
+            b = f["temp_band"].replace("-", "–")
+            b = b if b[0] in "<" or b.endswith("+") else f"{b}"
+            ph.append((f"thermometer {b}°F", f"थर्मामीटर {b}°F", f"thermometer {b}°F")[i])
         elif r == "duration_days":
             if v < 1:
                 ph.append(("since today", "आज से", "aaj se")[i])
@@ -113,6 +118,8 @@ def reasoning(out: PathwayOutcome, care_type: str, urgency: str, lang: str) -> s
     signs = [engine.sign_label(s, lang) for s in prim.signs]
     signs = [s for s in dict.fromkeys(signs) if s.lower() != complaint.lower()]
     readings = slot_phrases(out, prim.slot_refs, lang)
+    if out.facts.get("fever") and not out.facts.get("temp_measured"):
+        readings.append(NOT_MEASURED[i])
     mods = [m["label"].get(lang) or m["label"]["en"] for m in common["modifiers"] if m["id"] in prim.modifiers]
     items = readings + signs[:4] + mods  # "Bukhar: 4 din se, aankhon ke peeche dard, badan dard."
     head = f"{complaint}: {', '.join(items)}" if items else complaint

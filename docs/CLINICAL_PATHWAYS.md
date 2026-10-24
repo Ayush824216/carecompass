@@ -307,7 +307,7 @@ progressive_over_weeks, wakes_from_sleep, known_migraine, one_sided_with_light_s
 | 1 | Negation | "bukhar hai par saans ki dikkat nahi" | No breathlessness flag |
 | 2 | Double negation / correction | "khoon nahi... nahi ruko, thoda sa aaya tha" | Treat as blood present (latest statement wins, safer) |
 | 3 | Celsius vs Fahrenheit | "39.5" vs "103" | Both → high fever |
-| 4 | No number | "bahut tez bukhar" | Treat as >= 102°F until asked |
+| 4 | No number | "bahut tez bukhar" | Record fever_reported_high = true and temperature = not measured; never infer a number. Ask "Thermometer se naapa? Kitna aaya?" [<100] [100–102] [102–104] [104+] [Naapa nahi]. Until a reading is given, stage is at least S1 (same-day) for safety, and the summary says "temperature not measured". The same applies to BP, sugar and platelets: only values the user gives are used. |
 | 5 | Relative time | "parso se", "kal raat se" | Duration in days |
 | 6 | Platelet formats | "40k", "40 hazaar", "0.4 lakh" | 40,000 |
 | 7 | Someone else's illness | "padosi ko dengue hua tha" | Not a symptom of the patient |

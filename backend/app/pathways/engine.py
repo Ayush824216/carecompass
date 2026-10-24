@@ -223,7 +223,8 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
     neg = {sid for sid, v in signs.items() if v is False}
     age = slots.age_years
     f.update({
-        "temp_f": slots.effective_temp_f, "measured_temp": slots.temp_f, "duration_days": slots.duration_days,
+        "temp_f": slots.temp_f, "measured_temp": slots.temp_f, "duration_days": slots.duration_days,
+        "fever_reported_high": slots.high_fever_reported,
         "age_years": age, "platelets": slots.platelets, "bp_sys": slots.bp_sys, "bp_dia": slots.bp_dia,
         "vomit_count": slots.vomit_count, "stool_count": slots.stool_count, "urine_absent_hours": slots.urine_absent_hours,
         "pregnancy_weeks": slots.pregnancy_weeks, "high_fever_reported": slots.high_fever_reported,
@@ -258,6 +259,12 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
         f["elderly"] = f["elderly"] or f["age_years"] >= 65
     if f.get("temp_f") is not None and f["temp_f"] >= 100.4:
         f["fever"] = True
+    if f.get("fever_reported_high"):
+        f["fever"] = True
+    # a temperature is "measured" only from a number or a thermometer band the user gave
+    f["temp_measured"] = f.get("temp_f") is not None
+    if f.get("temp_not_measured"):
+        known.add("temp_f")
     return f, neg, known
 
 

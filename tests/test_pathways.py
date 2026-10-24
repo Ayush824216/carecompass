@@ -4,6 +4,7 @@ import pytest
 
 from app import pathways as pw
 from app import safety
+from app.pathways import route
 from app.pathways.slots import parse
 
 EM = ("emergency_referral", "immediate")
@@ -115,8 +116,35 @@ def test_e03_celsius_and_fahrenheit():
     assert parse(["bukhar 39.5 hai"]).temp_f >= 102 and parse(["bukhar 103 hai"]).temp_f >= 102
 
 
-def test_e04_no_number_means_high():
-    assert parse(["bahut tez bukhar"]).effective_temp_f >= 102
+def test_e04_no_number_is_reported_high_not_measured():
+    s = parse(["bahut tez bukhar"])
+    assert s.high_fever_reported and s.temp_f is None and not s.temperature_measured
+    o = pw.run(["bahut tez bukhar hai kal se"])
+    assert o.facts["temp_f"] is None and o.facts["fever_reported_high"] and not o.facts["temp_measured"]
+    assert o.primary.stage == "S1" and o.primary.urgency == "same_day"  # same-day for safety until measured
+    q = pw.next_question(o, 0)
+    assert q["id"] in ("fever.danger", "fever.temperature")
+
+
+def test_e04_thermometer_band_chips():
+    q = next(q for q in pw.load()[1]["fever"].cfg["questions"] if q["id"] == "fever.temperature")
+    labels = [o["label"] for o in pw.chip_options(q, "hinglish")]
+    assert labels == ["100°F se kam", "100–102°F", "102–104°F", "104°F ya zyada", "Naapa nahi"] and q["single"]
+    hist = [{"role": "user", "content": "bahut tez bukhar hai kal se"},
+            {"role": "assistant", "content": "Thermometer se naapa? Kitna aaya?"}]
+    o = pw.run(["bahut tez bukhar hai kal se", "104°F ya zyada"], history=hist, user_input="104°F ya zyada")
+    assert o.facts["temp_band"] == "104+" and o.primary.stage == "S2"
+    o = pw.run(["bahut tez bukhar hai kal se", "Naapa nahi"], history=hist, user_input="Naapa nahi")
+    assert o.facts["temp_f"] is None and "temp_f" in o.known and o.primary.stage == "S1"
+
+
+def test_e04_summary_says_not_measured():
+    r = client.post("/api/v1/triage", json={"user_input": "bahut tez bukhar hai 3 din se, badan dard", "debug": True}).json()
+    assert r["follow_up_question"] or "naapa nahi" in r["reasoning"].lower()
+    for t in ("bahut tez bukhar hai 3 din se, badan dard", "very high fever since 3 days, body ache", "3 दिन से बहुत तेज़ बुखार, बदन दर्द"):
+        o = pw.run([t])
+        txt = route.reasoning(o, o.primary.care_type, o.primary.urgency, "en")
+        assert "not measured" in txt and "102" not in txt and "°F" not in txt
 
 
 def test_e05_relative_time():

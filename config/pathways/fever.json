@@ -81,7 +81,8 @@
     {"id": "f_two_days", "stage": "S1", "when": "fever and duration_days is not None and duration_days >= 2"},
     {"id": "f_temp_103", "stage": "S1", "when": "temp_f is not None and temp_f >= 103"},
     {"id": "f_malaria_like", "stage": "S1", "when": "fever and chills and (cyclic or sweating)", "pattern": "malaria_like"},
-    {"id": "f_dengue_like", "stage": "S1", "when": "fever and (retro_orbital or (body_ache and temp_f is not None and temp_f >= 102))", "pattern": "dengue_like"},
+    {"id": "f_dengue_like", "stage": "S1", "when": "fever and (retro_orbital or (body_ache and ((temp_f is not None and temp_f >= 102) or fever_reported_high)))", "pattern": "dengue_like"},
+    {"id": "f_high_reported", "stage": "S1", "when": "fever_reported_high and temp_f is None", "_note": "'tez bukhar' with no thermometer reading: same-day for safety; the summary says temperature not measured"},
     {"id": "f_chikungunya_like", "stage": "S1", "when": "fever and severe_joint_pain", "pattern": "chikungunya_like"},
     {"id": "f_jaundice_like", "stage": "S1", "when": "yellow_eyes or (fever and dark_urine)", "pattern": "jaundice_like"},
     {"id": "f_uti_like", "stage": "S1", "when": "fever and burning_urine", "care_type": "gp_teleconsult", "pattern": "uti_like"},
@@ -90,7 +91,7 @@
 
     {"id": "f_mild", "stage": "S0", "when": "fever and ((temp_f is not None and temp_f < 101) or mild_fever) and (duration_days is None or duration_days < 2) and not high_fever_reported"}
   ],
-  "sufficient": "(known(duration_days) and (known(temp_f) or high_fever_reported or mild_fever or n_signs >= 1)) or platelets is not None",
+  "sufficient": "(known(duration_days) and (known(temp_f) or mild_fever or n_signs >= 1) and not (fever_reported_high and not known(temp_f))) or platelets is not None",
   "questions": [
     {"id": "fever.danger", "kind": "danger",
      "text": {"en": "With the fever, is any of these happening?", "hi": "बुखार के साथ क्या इनमें से कुछ हो रहा है?", "hinglish": "Bukhar ke saath inme se kuch ho raha hai?"},
@@ -132,18 +133,35 @@
        {"id": "black", "severity": "definite_S3", "label": {"en": "Black or bloody stool", "hi": "काली या खून वाली पॉटी", "hinglish": "Potty kaali ya khoon wali"}, "facts": {"black_stool": true}},
        {"id": "lots", "severity": "definite_S3", "label": {"en": "A lot of blood, not stopping", "hi": "बहुत खून, रुक नहीं रहा", "hinglish": "Bahut khoon, ruk nahi raha"}, "facts": {"blood_large": true}}
      ], "no_none_chip": true},
-    {"id": "fever.duration_height", "kind": "duration",
-     "text": {"en": "Since when is the fever, and how high?", "hi": "बुखार कब से है और कितना?", "hinglish": "Bukhar kab se hai aur kitna?"},
-     "skip_if": "known(duration_days) and (known(temp_f) or high_fever_reported or mild_fever)",
+    {"id": "fever.duration_height", "kind": "duration", "only_if": "not known(duration_days) and not known(temp_f)",
+     "text": {"en": "Since when is the fever? Measured with a thermometer? How much?", "hi": "बुखार कब से है? थर्मामीटर से नापा? कितना आया?", "hinglish": "Bukhar kab se hai? Thermometer se naapa? Kitna aaya?"},
      "chips": [
        {"id": "d1", "label": {"en": "1 day", "hi": "1 दिन", "hinglish": "1 din"}, "facts": {"duration_days": 1}},
        {"id": "d3", "label": {"en": "2–3 days", "hi": "2–3 दिन", "hinglish": "2–3 din"}, "facts": {"duration_days": 3}},
        {"id": "d7", "label": {"en": "4–7 days", "hi": "4–7 दिन", "hinglish": "4–7 din"}, "facts": {"duration_days": 6}},
        {"id": "d8", "label": {"en": "More than a week", "hi": "1 हफ्ते से ज़्यादा", "hinglish": "1 hafte se zyada"}, "facts": {"duration_days": 10}},
-       {"id": "t1", "label": {"en": "Below 101", "hi": "101 से कम", "hinglish": "101 se kam"}, "facts": {"temp_f": 100}},
-       {"id": "t2", "label": {"en": "101–103", "hi": "101–103", "hinglish": "101–103"}, "facts": {"temp_f": 102}},
-       {"id": "t3", "label": {"en": "Above 103", "hi": "103 से ज़्यादा", "hinglish": "103 se zyada"}, "facts": {"temp_f": 103.5}},
-       {"id": "tn", "label": {"en": "Not measured", "hi": "नापा नहीं", "hinglish": "Naapa nahi"}, "facts": {}}
+       {"id": "t99", "label": {"en": "Below 100°F", "hi": "100°F से कम", "hinglish": "100°F se kam"}, "facts": {"temp_f": 99.5, "temp_band": "<100"}},
+       {"id": "t101", "label": {"en": "100–102°F", "hi": "100–102°F", "hinglish": "100–102°F"}, "facts": {"temp_f": 101, "temp_band": "100-102"}},
+       {"id": "t103", "label": {"en": "102–104°F", "hi": "102–104°F", "hinglish": "102–104°F"}, "facts": {"temp_f": 103, "temp_band": "102-104"}},
+       {"id": "t104", "label": {"en": "104°F or more", "hi": "104°F या ज़्यादा", "hinglish": "104°F ya zyada"}, "facts": {"temp_f": 104, "temp_band": "104+"}},
+       {"id": "tn", "label": {"en": "Not measured", "hi": "नापा नहीं", "hinglish": "Naapa nahi"}, "facts": {"temp_not_measured": true}}
+     ], "no_none_chip": true},
+    {"id": "fever.temperature", "kind": "temperature", "single": true, "only_if": "known(duration_days) and not known(temp_f)",
+     "text": {"en": "Measured with a thermometer? How much?", "hi": "थर्मामीटर से नापा? कितना आया?", "hinglish": "Thermometer se naapa? Kitna aaya?"},
+     "chips": [
+       {"id": "t99", "label": {"en": "Below 100°F", "hi": "100°F से कम", "hinglish": "100°F se kam"}, "facts": {"temp_f": 99.5, "temp_band": "<100"}},
+       {"id": "t101", "label": {"en": "100–102°F", "hi": "100–102°F", "hinglish": "100–102°F"}, "facts": {"temp_f": 101, "temp_band": "100-102"}},
+       {"id": "t103", "label": {"en": "102–104°F", "hi": "102–104°F", "hinglish": "102–104°F"}, "facts": {"temp_f": 103, "temp_band": "102-104"}},
+       {"id": "t104", "label": {"en": "104°F or more", "hi": "104°F या ज़्यादा", "hinglish": "104°F ya zyada"}, "facts": {"temp_f": 104, "temp_band": "104+"}},
+       {"id": "tn", "label": {"en": "Not measured", "hi": "नापा नहीं", "hinglish": "Naapa nahi"}, "facts": {"temp_not_measured": true}}
+     ], "no_none_chip": true},
+    {"id": "fever.duration", "kind": "duration", "single": true, "only_if": "not known(duration_days) and known(temp_f)",
+     "text": {"en": "Since when is the fever?", "hi": "बुखार कब से है?", "hinglish": "Bukhar kab se hai?"},
+     "chips": [
+       {"id": "d1", "label": {"en": "1 day", "hi": "1 दिन", "hinglish": "1 din"}, "facts": {"duration_days": 1}},
+       {"id": "d3", "label": {"en": "2–3 days", "hi": "2–3 दिन", "hinglish": "2–3 din"}, "facts": {"duration_days": 3}},
+       {"id": "d7", "label": {"en": "4–7 days", "hi": "4–7 दिन", "hinglish": "4–7 din"}, "facts": {"duration_days": 6}},
+       {"id": "d8", "label": {"en": "More than a week", "hi": "1 हफ्ते से ज़्यादा", "hinglish": "1 hafte se zyada"}, "facts": {"duration_days": 10}}
      ], "no_none_chip": true},
     {"id": "fever.associated", "kind": "associated",
      "text": {"en": "What else is there with the fever?", "hi": "बुखार के साथ और क्या-क्या है?", "hinglish": "Bukhar ke saath kya-kya hai?"},
