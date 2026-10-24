@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Contrast, Github, Menu, Minus, Phone, Plus, Volume2, VolumeX, X, XCircle } from "lucide-react";
+import { CheckCircle2, Contrast, Github, Menu, Minus, Phone, Plus, SlidersHorizontal, Volume2, VolumeX, X, XCircle } from "lucide-react";
 import { useApp } from "../context/AppContext.jsx";
 import { API_BASE } from "../lib/api.js";
 
@@ -78,6 +78,46 @@ export function VoiceToggle({ withLabel = false }) {
   );
 }
 
+/** Text size, contrast and voice in one popover so the desktop navbar stays on one line. */
+function DisplayMenu() {
+  const { t } = useApp();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [open]);
+  return (
+    <div className="relative" ref={ref}>
+      <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-haspopup="true" aria-label={t("nav.settings")}
+        className="btn-ghost px-3">
+        <SlidersHorizontal className="h-5 w-5" aria-hidden="true" />
+        <span className="hidden 2xl:inline">{t("nav.settings")}</span>
+      </button>
+      {open && (
+        <div className="card absolute right-0 top-[calc(100%+8px)] z-50 w-72 space-y-4 p-4 shadow-lift" role="group" aria-label={t("nav.settings")}>
+          <div>
+            <p className="eyebrow mb-2">{t("nav.textSize")}</p>
+            <TextSizeControl />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="font-semibold">{t("nav.contrast")}</span>
+            <ContrastToggle />
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span className="font-semibold">{t("nav.voiceAria")}</span>
+            <VoiceToggle />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const LINKS = [
   ["/care", "nav.getCare"], ["/caregivers", "nav.caregivers"], ["/how-it-works", "nav.how"],
   ["/developers", "nav.developers"], ["/bookings", "nav.bookings"],
@@ -87,10 +127,10 @@ function Navbar() {
   const { t, bookings } = useApp();
   const [open, setOpen] = useState(false);
   const loc = useLocation();
-  useEffect(() => setOpen(false), [loc.pathname]);
+  useEffect(() => { setOpen(false); }, [loc.pathname]);
 
   const linkCls = ({ isActive }) =>
-    `relative rounded-lg px-3 py-2 font-semibold transition-colors ${isActive ? "text-primary-deep bg-primary-soft" : "text-ink/80 hover:text-ink hover:bg-sunken"}`;
+    `relative whitespace-nowrap rounded-lg px-2.5 py-2 font-semibold transition-colors ${isActive ? "text-primary-deep bg-primary-soft" : "text-ink/80 hover:text-ink hover:bg-sunken"}`;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-bg/95 backdrop-blur">
@@ -111,9 +151,7 @@ function Navbar() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <div className="hidden lg:flex items-center gap-2">
-            <TextSizeControl />
-            <ContrastToggle />
-            <VoiceToggle />
+            <DisplayMenu />
             <LanguageToggle />
           </div>
           <EmergencyButton compact />
@@ -207,7 +245,7 @@ function Toasts() {
 export default function Layout() {
   const { t } = useApp();
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 btn-primary">{t("nav.skip")}</a>

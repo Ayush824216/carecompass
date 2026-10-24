@@ -1,12 +1,30 @@
 {
-  "meta": { "lang": "en", "otherLang": "हिंदी", "otherLangLabel": "Switch to Hindi" },
+  "meta": {
+    "lang": "en",
+    "otherLang": "हिंदी",
+    "otherLangLabel": "Switch to Hindi"
+  },
   "nav": {
-    "home": "Home", "getCare": "Get Care", "caregivers": "Caregivers", "how": "How it works", "developers": "For Developers",
-    "bookings": "My Bookings", "emergency": "Emergency 112", "emergencyAria": "Call emergency number 112",
-    "menu": "Open menu", "closeMenu": "Close menu", "skip": "Skip to main content",
-    "textSmaller": "Decrease text size", "textLarger": "Increase text size", "textSize": "Text size",
-    "contrast": "High contrast", "contrastOn": "High contrast on", "voiceOn": "Voice on", "voiceOff": "Voice off",
-    "voiceAria": "Read answers aloud", "settings": "Display"
+    "home": "Home",
+    "getCare": "Get Care",
+    "caregivers": "Caregivers",
+    "how": "How it works",
+    "developers": "For Developers",
+    "bookings": "My Bookings",
+    "emergency": "Emergency 112",
+    "emergencyAria": "Call emergency number 112",
+    "menu": "Open menu",
+    "closeMenu": "Close menu",
+    "skip": "Skip to main content",
+    "textSmaller": "Decrease text size",
+    "textLarger": "Increase text size",
+    "textSize": "Text size",
+    "contrast": "High contrast",
+    "contrastOn": "High contrast on",
+    "voiceOn": "Voice on",
+    "voiceOff": "Voice off",
+    "voiceAria": "Read answers aloud",
+    "settings": "Display"
   },
   "footer": {
     "tagline": "Care routing for every Indian home: what care, how urgent, and who should go.",
@@ -14,160 +32,468 @@
     "event": "HackIIITD 2026 · CAI, IIIT-Delhi · AI for Healthcare Access",
     "disclaimer": "CareCompass helps route care. It does not diagnose, prescribe or replace a doctor. In an emergency, call 112.",
     "dpdp": "Privacy: requests are processed only to route care. Nothing is sold or used for advertising, in line with the Digital Personal Data Protection Act, 2023. This demo uses synthetic data only.",
-    "explore": "Explore", "resources": "Resources", "apiDocs": "API docs (Swagger)", "github": "Source code"
+    "explore": "Explore",
+    "resources": "Resources",
+    "apiDocs": "API docs (Swagger)",
+    "github": "Source code"
   },
   "common": {
-    "loading": "Loading…", "retry": "Try again", "back": "Back", "close": "Close", "cancel": "Cancel",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "back": "Back",
+    "close": "Close",
+    "cancel": "Cancel",
     "serverDown": "Server not reachable. Check that the backend is running on port 8000.",
-    "send": "Send", "copy": "Copy", "copied": "Copied", "startOver": "Start over", "km": "km", "away": "away",
-    "today": "Today", "tomorrow": "Tomorrow", "list": "List", "map": "Map", "all": "All", "score": "Match",
-    "rating": "Rating", "languages": "Languages", "skills": "Skills", "nextFree": "Next free", "none": "None",
-    "you": "You", "assistant": "CareCompass", "yourLocation": "Your location", "rank": "Rank"
+    "send": "Send",
+    "copy": "Copy",
+    "copied": "Copied",
+    "startOver": "Start over",
+    "km": "km",
+    "away": "away",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "list": "List",
+    "map": "Map",
+    "all": "All",
+    "score": "Match",
+    "rating": "Rating",
+    "languages": "Languages",
+    "skills": "Skills",
+    "nextFree": "Next free",
+    "none": "None",
+    "you": "You",
+    "assistant": "CareCompass",
+    "yourLocation": "Your location",
+    "rank": "Rank"
   },
-  "langNames": { "en": "English", "hi": "Hindi", "hinglish": "Hinglish", "pa": "Punjabi", "ur": "Urdu", "bn": "Bengali", "ta": "Tamil", "ml": "Malayalam" },
-  "roles": { "paramedic": "Paramedic", "nurse": "Nurse", "gp": "General doctor", "specialist": "Specialist" },
+  "langNames": {
+    "en": "English",
+    "hi": "Hindi",
+    "hinglish": "Hinglish",
+    "pa": "Punjabi",
+    "ur": "Urdu",
+    "bn": "Bengali",
+    "ta": "Tamil",
+    "ml": "Malayalam"
+  },
+  "roles": {
+    "paramedic": "Paramedic",
+    "nurse": "Nurse",
+    "gp": "General doctor",
+    "specialist": "Specialist"
+  },
   "careTypes": {
-    "paramedic_home_visit": { "name": "Paramedic home visit", "short": "A paramedic comes to your home", "meaning": "A trained paramedic visits to check vital signs, dress minor wounds and assess common illness.", "when": "Fever or cough in an elderly person, minor falls or sprains, BP or sugar checks for someone who cannot travel." },
-    "nurse_home_visit": { "name": "Nurse home visit", "short": "A nurse comes to your home", "meaning": "A nurse provides ongoing care at home: injections, drips, wound or catheter care.", "when": "Injections or drips the doctor advised, dressing after surgery, bedridden patients, newborn care." },
-    "gp_teleconsult": { "name": "Doctor on phone / video", "short": "Talk to a general doctor", "meaning": "A general doctor talks to you on a phone or video call.", "when": "Mild, common problems like a cold, mild fever in an adult, acidity, a rash, or questions about a report." },
-    "specialist_referral": { "name": "Specialist appointment", "short": "See a specialist doctor", "meaning": "An appointment with a doctor who focuses on one area, such as bones, skin, eyes or the heart.", "when": "Problems lasting weeks or months, or that need a specific expert: joint pain, vision, sugar control, pregnancy check-ups." },
-    "emergency_referral": { "name": "Emergency help", "short": "Call for help now", "meaning": "This needs an ambulance or emergency care immediately.", "when": "Chest pain, severe breathing trouble, unconsciousness, seizures, stroke signs, heavy bleeding and other danger signs." }
+    "paramedic_home_visit": {
+      "name": "Paramedic home visit",
+      "short": "A paramedic comes to your home",
+      "meaning": "A trained paramedic visits to check vital signs, dress minor wounds and assess common illness.",
+      "when": "Fever or cough in an elderly person, minor falls or sprains, BP or sugar checks for someone who cannot travel."
+    },
+    "nurse_home_visit": {
+      "name": "Nurse home visit",
+      "short": "A nurse comes to your home",
+      "meaning": "A nurse provides ongoing care at home: injections, drips, wound or catheter care.",
+      "when": "Injections or drips the doctor advised, dressing after surgery, bedridden patients, newborn care."
+    },
+    "gp_teleconsult": {
+      "name": "Doctor on phone / video",
+      "short": "Talk to a general doctor",
+      "meaning": "A general doctor talks to you on a phone or video call.",
+      "when": "Mild, common problems like a cold, mild fever in an adult, acidity, a rash, or questions about a report."
+    },
+    "specialist_referral": {
+      "name": "Specialist appointment",
+      "short": "See a specialist doctor",
+      "meaning": "An appointment with a doctor who focuses on one area, such as bones, skin, eyes or the heart.",
+      "when": "Problems lasting weeks or months, or that need a specific expert: joint pain, vision, sugar control, pregnancy check-ups."
+    },
+    "emergency_referral": {
+      "name": "Emergency help",
+      "short": "Call for help now",
+      "meaning": "This needs an ambulance or emergency care immediately.",
+      "when": "Chest pain, severe breathing trouble, unconsciousness, seizures, stroke signs, heavy bleeding and other danger signs."
+    }
   },
   "urgency": {
-    "routine": { "label": "Routine", "desc": "Within a few days" },
-    "same_day": { "label": "Same day", "desc": "Should be seen today" },
-    "immediate": { "label": "Immediate", "desc": "Needs help right now" }
+    "routine": {
+      "label": "Routine",
+      "desc": "Within a few days"
+    },
+    "same_day": {
+      "label": "Same day",
+      "desc": "Should be seen today"
+    },
+    "immediate": {
+      "label": "Immediate",
+      "desc": "Needs help right now"
+    }
   },
   "home": {
     "eyebrow": "For families caring for loved ones",
     "title": "Describe the problem in your words. We find the right care.",
     "subtitle": "Speak or type in English, Hindi or Hinglish. CareCompass tells you what kind of care fits, how urgent it is, and which caregiver nearby should go, and why.",
-    "cta": "Get care now", "secondary": "See how it works",
-    "trust1": "Works in 3 languages", "trust2": "Emergency check on every message", "trust3": "Never diagnoses",
+    "cta": "Get care now",
+    "secondary": "See how it works",
+    "trust1": "Works in 3 languages",
+    "trust2": "Emergency check on every message",
+    "trust3": "Never diagnoses",
     "demoLabel": "Live example",
     "demoUser": "Papa ko do din se bukhar hai aur khansi bhi",
     "demoReason": "Fever with cough for 2 days, no breathing difficulty reported.",
     "demoMatch": "Hindi-speaking paramedic, 3 km away, free at 4 pm",
     "threeTitle": "Three questions, answered in seconds",
     "threeSub": "Every request is turned into a clear decision you can act on, with the reason shown.",
-    "q1": "What care?", "q1d": "Paramedic, nurse, doctor on call, specialist, or emergency, matched to what you describe.",
-    "q2": "How urgent?", "q2d": "Routine, same day, or immediate. When in doubt, we choose the safer, more urgent option.",
-    "q3": "Who should go?", "q3d": "The best caregiver near you by skill, distance, free time, language and rating.",
-    "careTitle": "Five kinds of care, explained simply", "careSub": "You do not need to know medical terms. Here is what each option means.",
+    "q1": "What care?",
+    "q1d": "Paramedic, nurse, doctor on call, specialist, or emergency, matched to what you describe.",
+    "q2": "How urgent?",
+    "q2d": "Routine, same day, or immediate. When in doubt, we choose the safer, more urgent option.",
+    "q3": "Who should go?",
+    "q3d": "The best caregiver near you by skill, distance, free time, language and rating.",
+    "careTitle": "Five kinds of care, explained simply",
+    "careSub": "You do not need to know medical terms. Here is what each option means.",
     "whenUsed": "Typically used for",
-    "safetyEyebrow": "Safety first", "safetyTitle": "A safety gate that works even if the AI fails",
+    "safetyEyebrow": "Safety first",
+    "safetyTitle": "A safety gate that works even if the AI fails",
     "safetySub": "Before any model runs, and again after, a rule-based check looks for danger signs in all three languages. If one is found, we skip everything else and show you how to call for help.",
-    "safety1": "Red-flag rules", "safety1d": "Chest pain, breathing trouble, unconsciousness, stroke signs, seizures, heavy bleeding, poisoning and more, in English, Hindi and Hinglish.",
-    "safety2": "Understands \"no\"", "safety2d": "\"Saans ki dikkat nahi hai\" means no breathing problem. Negations are handled so that you are not sent to an emergency by mistake.",
-    "safety3": "Never diagnoses or prescribes", "safety3d": "We only route you to the right care. No disease names, no medicines. A doctor decides treatment.",
-    "safety4": "Fails safe", "safety4d": "If anything goes wrong, or the AI is slow, a local model and the rules still give a careful answer.",
+    "safety1": "Red-flag rules",
+    "safety1d": "Chest pain, breathing trouble, unconsciousness, stroke signs, seizures, heavy bleeding, poisoning and more, in English, Hindi and Hinglish.",
+    "safety2": "Understands \"no\"",
+    "safety2d": "\"Saans ki dikkat nahi hai\" means no breathing problem. Negations are handled so that you are not sent to an emergency by mistake.",
+    "safety3": "Never diagnoses or prescribes",
+    "safety3d": "We only route you to the right care. No disease names, no medicines. A doctor decides treatment.",
+    "safety4": "Fails safe",
+    "safety4d": "If anything goes wrong, or the AI is slow, a local model and the rules still give a careful answer.",
     "builtTitle": "Built for everyone in the family",
-    "built1": "Speak instead of typing", "built1d": "Tap the mic and talk. Answers are read aloud.",
-    "built2": "Hindi, Hinglish, English", "built2d": "Write the way you speak, with any spelling.",
-    "built3": "Large, clear text", "built3d": "Bigger text and high-contrast mode in one tap.",
-    "built4": "One-tap answers", "built4d": "Follow-up questions come with simple buttons like Haan / Nahi.",
-    "ctaTitle": "Need care for someone today?", "ctaSub": "It takes less than a minute."
+    "built1": "Speak instead of typing",
+    "built1d": "Tap the mic and talk. Answers are read aloud.",
+    "built2": "Hindi, Hinglish, English",
+    "built2d": "Write the way you speak, with any spelling.",
+    "built3": "Large, clear text",
+    "built3d": "Bigger text and high-contrast mode in one tap.",
+    "built4": "One-tap answers",
+    "built4d": "Follow-up questions come with simple buttons like Haan / Nahi.",
+    "ctaTitle": "Need care for someone today?",
+    "ctaSub": "It takes less than a minute."
   },
   "care": {
-    "title": "Get care", "subtitle": "Tell us what is happening. You can speak or type.",
+    "title": "Get care",
+    "subtitle": "Tell us what is happening. You can speak or type.",
     "welcome": "Namaste! Tell me what the problem is, who it is for, and since when. For example: \"Papa ko do din se bukhar hai\".",
-    "micIdle": "Tap and speak", "micListening": "Listening… tap to stop", "micUnsupported": "Voice input is not supported in this browser. Please type instead.",
-    "micAria": "Start voice input", "micStopAria": "Stop voice input",
-    "placeholder": "Type your message…", "examples": "Try an example", "typing": "CareCompass is thinking",
-    "questionOf": "Question {n} of max {max}", "answerHint": "Tap an answer or type your own",
-    "exampleLabels": { "hinglish": "Hinglish: fever", "hindi": "Hindi: knee pain", "english": "English: cold", "nurse": "Nurse: injections", "emergency": "Emergency: chest pain" }
+    "micIdle": "Tap and speak",
+    "micListening": "Listening… tap to stop",
+    "micUnsupported": "Voice input is not supported in this browser. Please type instead.",
+    "micAria": "Start voice input",
+    "micStopAria": "Stop voice input",
+    "placeholder": "Type your message…",
+    "examples": "Try an example",
+    "typing": "CareCompass is thinking",
+    "questionOf": "Question {n} of max {max}",
+    "answerHint": "Tap an answer or type your own",
+    "exampleLabels": {
+      "hinglish": "Hinglish: fever",
+      "hindi": "Hindi: knee pain",
+      "english": "English: cold",
+      "nurse": "Nurse: injections",
+      "emergency": "Emergency: chest pain"
+    }
   },
   "panel": {
-    "title": "How we decided", "subtitle": "Each step updates live as your answer is analysed.",
-    "idle": "Waiting for your message", "running": "Working…",
-    "stage": { "language": "Language detected", "symptoms": "Symptoms understood", "safety": "Safety check", "followup": "Follow-up needed?", "triage": "Triage decision", "matching": "Caregiver matching" },
-    "noRedFlags": "No danger signs found", "redFlags": "Danger signs found: {flags}",
-    "followupYes": "Yes, asking one question", "followupNo": "No, enough information", "followupSkipped": "Skipped (emergency)",
-    "matched": "{n} caregivers ranked", "matchSkipped": "Skipped: emergency path", "noSymptoms": "Nothing specific yet",
-    "symptomChips": "Words we understood", "meter": "Urgency", "why": "Why this decision",
-    "tech": "Technical details", "model": "Model that answered", "latency": "Time per step", "rules": "Danger-sign categories checked",
-    "normalised": "Normalised text", "slots": "Extracted details", "total": "Total",
-    "models": { "rules": "Safety rules (deterministic)", "tfidf_lr": "Local model A (TF-IDF + logistic regression)", "transformer": "Local model C (MuRIL)", "llm": "Hosted LLM + local model", "default": "Conservative fallback" },
-    "slotNames": { "duration": "Duration", "age_group": "Patient", "severity": "Severity", "breathing": "Breathing", "can_travel": "Can travel" },
-    "values": { "infant": "Baby", "child": "Child", "adult": "Adult", "elderly": "Elderly", "mild": "Mild", "severe": "Severe", "moderate": "Moderate", "ok": "Fine", "difficult": "Difficult", "hours": "Since today", "acute": "1–3 days", "week": "About a week", "chronic": "Months or longer", "true": "Yes", "false": "No" }
+    "title": "How we decided",
+    "subtitle": "Each step updates live as your answer is analysed.",
+    "idle": "Waiting for your message",
+    "running": "Working…",
+    "stage": {
+      "language": "Language detected",
+      "symptoms": "Symptoms understood",
+      "safety": "Safety check",
+      "followup": "Follow-up needed?",
+      "triage": "Triage decision",
+      "matching": "Caregiver matching"
+    },
+    "noRedFlags": "No danger signs found",
+    "redFlags": "Danger signs found: {flags}",
+    "followupYes": "Yes, asking one question",
+    "followupNo": "No, enough information",
+    "followupSkipped": "Skipped (emergency)",
+    "matched": "{n} caregivers ranked",
+    "matchSkipped": "Skipped: emergency path",
+    "noSymptoms": "Nothing specific yet",
+    "symptomChips": "Words we understood",
+    "meter": "Urgency",
+    "why": "Why this decision",
+    "tech": "Technical details",
+    "model": "Model that answered",
+    "latency": "Time per step",
+    "rules": "Danger-sign categories checked",
+    "normalised": "Normalised text",
+    "slots": "Extracted details",
+    "total": "Total",
+    "models": {
+      "rules": "Safety rules (deterministic)",
+      "tfidf_lr": "Local model A (TF-IDF + logistic regression)",
+      "transformer": "Local model C (MuRIL)",
+      "llm": "Hosted LLM + local model",
+      "default": "Conservative fallback"
+    },
+    "slotNames": {
+      "duration": "Duration",
+      "age_group": "Patient",
+      "severity": "Severity",
+      "breathing": "Breathing",
+      "can_travel": "Can travel"
+    },
+    "values": {
+      "infant": "Baby",
+      "child": "Child",
+      "adult": "Adult",
+      "elderly": "Elderly",
+      "mild": "Mild",
+      "severe": "Severe",
+      "moderate": "Moderate",
+      "ok": "Fine",
+      "difficult": "Difficult",
+      "hours": "Since today",
+      "acute": "1–3 days",
+      "week": "About a week",
+      "chronic": "Months or longer",
+      "true": "Yes",
+      "false": "No"
+    },
+    "whyFollowup": "We need one more detail before deciding, because the answer could change the care type or urgency: “{q}”",
+    "whyIdle": "The reason for the decision will appear here, in plain words."
   },
   "result": {
-    "title": "Recommended care", "meaning": "What this means", "todo": "What to do now",
-    "tips": ["Keep the patient comfortable and resting.", "Write down the symptoms and when they started, to tell the caregiver.", "Keep any recent reports and the list of current medicines ready.", "If things get worse, such as trouble breathing, chest pain or fainting, call 112 immediately."],
-    "caregivers": "Best caregivers for this", "caregiversSub": "Ranked by skill, distance, free time, language and rating.",
-    "why": "Why this match", "book": "Book", "noCaregivers": "No caregiver is free for this right now. Try again later or call your nearest clinic.",
-    "matchScore": "Match score", "teleconsult": "Video / phone"
+    "title": "Recommended care",
+    "meaning": "What this means",
+    "todo": "What to do now",
+    "tips": [
+      "Keep the patient comfortable and resting.",
+      "Write down the symptoms and when they started, to tell the caregiver.",
+      "Keep any recent reports and the list of current medicines ready.",
+      "If things get worse, such as trouble breathing, chest pain or fainting, call 112 immediately."
+    ],
+    "caregivers": "Best caregivers for this",
+    "caregiversSub": "Ranked by skill, distance, free time, language and rating.",
+    "why": "Why this match",
+    "book": "Book",
+    "noCaregivers": "No caregiver is free for this right now. Try again later or call your nearest clinic.",
+    "matchScore": "Match score",
+    "teleconsult": "Video / phone"
   },
   "booking": {
-    "title": "Book {name}", "slot": "Choose a time", "noSlots": "No free slots listed. The caregiver will call you to fix a time.",
-    "patientName": "Patient name (optional)", "contact": "Contact number", "contactNote": "Demo only: not stored on the server.",
-    "notes": "Notes for the caregiver (optional)", "notesPlaceholder": "e.g. Second floor, ring the bell twice",
-    "confirm": "Confirm booking", "confirming": "Booking…", "successTitle": "Booking confirmed",
-    "bookingId": "Booking ID", "caregiver": "Caregiver", "time": "Time", "track": "Visit status",
-    "status": { "booked": "Booked", "assigned": "Caregiver assigned", "onTheWay": "On the way", "arrived": "Arrived" },
-    "viewBookings": "View my bookings", "done": "Done", "toast": "Booking confirmed with {name}", "failed": "Booking failed. Please try again.",
+    "title": "Book {name}",
+    "slot": "Choose a time",
+    "noSlots": "No free slots listed. The caregiver will call you to fix a time.",
+    "patientName": "Patient name (optional)",
+    "contact": "Contact number",
+    "contactNote": "Demo only: not stored on the server.",
+    "notes": "Notes for the caregiver (optional)",
+    "notesPlaceholder": "e.g. Second floor, ring the bell twice",
+    "confirm": "Confirm booking",
+    "confirming": "Booking…",
+    "successTitle": "Booking confirmed",
+    "bookingId": "Booking ID",
+    "caregiver": "Caregiver",
+    "time": "Time",
+    "track": "Visit status",
+    "status": {
+      "booked": "Booked",
+      "assigned": "Caregiver assigned",
+      "onTheWay": "On the way",
+      "arrived": "Arrived"
+    },
+    "viewBookings": "View my bookings",
+    "done": "Done",
+    "toast": "Booking confirmed with {name}",
+    "failed": "Booking failed. Please try again.",
     "invalidPhone": "Please enter a 10-digit mobile number"
   },
   "emergency": {
-    "title": "This may be an emergency", "subtitle": "Get help now. Do not wait.",
-    "call112": "Call 112", "call112d": "National emergency number", "call108": "Ambulance 108", "call108d": "Free ambulance service",
-    "steps": "What to do right now", "flags": "Danger signs we noticed", "location": "Your location for the operator",
-    "locationHint": "Read these numbers to the operator if asked.", "locationUnknown": "Location not available. Tell the operator your address and a nearby landmark.",
-    "back": "Back to chat", "noBooking": "Booking is turned off in emergencies. Please call first.", "readAloud": "Read instructions aloud"
+    "title": "This may be an emergency",
+    "subtitle": "Get help now. Do not wait.",
+    "call112": "Call 112",
+    "call112d": "National emergency number",
+    "call108": "Ambulance 108",
+    "call108d": "Free ambulance service",
+    "steps": "What to do right now",
+    "flags": "Danger signs we noticed",
+    "location": "Your location for the operator",
+    "locationHint": "Read these numbers to the operator if asked.",
+    "locationUnknown": "Location not available. Tell the operator your address and a nearby landmark.",
+    "back": "Back to chat",
+    "noBooking": "Booking is turned off in emergencies. Please call first.",
+    "readAloud": "Read instructions aloud"
   },
   "directory": {
-    "title": "Caregivers", "subtitle": "All verified caregivers in the network. Filter to find the right person.",
-    "search": "Search by name or skill", "role": "Role", "language": "Language", "today": "Available today", "distance": "Within", "rating": "Minimum rating",
-    "anyDistance": "Any distance", "anyRating": "Any rating", "results": "{n} caregivers", "empty": "No caregivers match these filters.", "reset": "Clear filters",
-    "filters": "Filters", "freeToday": "Free today"
+    "title": "Caregivers",
+    "subtitle": "All verified caregivers in the network. Filter to find the right person.",
+    "search": "Search by name or skill",
+    "role": "Role",
+    "language": "Language",
+    "today": "Available today",
+    "distance": "Within",
+    "rating": "Minimum rating",
+    "anyDistance": "Any distance",
+    "anyRating": "Any rating",
+    "results": "{n} caregivers",
+    "empty": "No caregivers match these filters.",
+    "reset": "Clear filters",
+    "filters": "Filters",
+    "freeToday": "Free today"
   },
   "how": {
-    "title": "How CareCompass works", "subtitle": "From a voice note in Hinglish to a booked caregiver, with a safety gate at both ends.",
+    "title": "How CareCompass works",
+    "subtitle": "From a voice note in Hinglish to a booked caregiver, with a safety gate at both ends.",
     "flowTitle": "The decision flow",
     "flow": {
-      "input": "You speak or type", "inputD": "English, Hindi or Hinglish",
-      "lang": "Language + normalise", "langD": "bukhar → fever, saans phoolna → breathlessness",
-      "safety": "Red-flag check", "safetyD": "Rules in 3 languages, negation-aware",
-      "intake": "Smart follow-ups", "intakeD": "Only if it changes the decision, max 4",
-      "triage": "Triage ensemble", "triageD": "LLM + local model, the more urgent wins",
-      "recheck": "Safety re-check", "recheckD": "Rules ∪ LLM danger signs",
-      "match": "Caregiver matching", "matchD": "Skill, distance, time, language, rating",
-      "book": "One-tap booking", "bookD": "Pick a slot, confirm",
-      "emergency": "Emergency path", "emergencyD": "Call 112 / 108, no booking", "yes": "Danger sign", "no": "Clear"
+      "input": "You speak or type",
+      "inputD": "English, Hindi or Hinglish",
+      "lang": "Language + normalise",
+      "langD": "bukhar → fever, saans phoolna → breathlessness",
+      "safety": "Red-flag check",
+      "safetyD": "Rules in 3 languages, negation-aware",
+      "intake": "Smart follow-ups",
+      "intakeD": "Only if it changes the decision, max 4",
+      "triage": "Triage ensemble",
+      "triageD": "LLM + local model, the more urgent wins",
+      "recheck": "Safety re-check",
+      "recheckD": "Rules ∪ LLM danger signs",
+      "match": "Caregiver matching",
+      "matchD": "Skill, distance, time, language, rating",
+      "book": "One-tap booking",
+      "bookD": "Pick a slot, confirm",
+      "emergency": "Emergency path",
+      "emergencyD": "Call 112 / 108, no booking",
+      "yes": "Danger sign",
+      "no": "Clear"
     },
     "layersTitle": "Five layers",
     "layers": [
-      { "name": "Interface", "desc": "Responsive web app with voice input, read-aloud, Hindi/English UI, large text and high contrast." },
-      { "name": "API", "desc": "Stateless FastAPI service: POST /api/v1/triage with the full conversation each turn, plus booking and caregiver endpoints." },
-      { "name": "Safety", "desc": "Deterministic red-flag engine with negation handling, run before and after every model." },
-      { "name": "Understanding", "desc": "Language detection, Hinglish normalisation, slot extraction and a follow-up policy that asks only when it matters." },
-      { "name": "Decision", "desc": "TF-IDF model, fine-tuned MuRIL and a hosted LLM with retrieved examples, combined with asymmetric safety; then caregiver ranking." }
+      {
+        "name": "Interface",
+        "desc": "Responsive web app with voice input, read-aloud, Hindi/English UI, large text and high contrast."
+      },
+      {
+        "name": "API",
+        "desc": "Stateless FastAPI service: POST /api/v1/triage with the full conversation each turn, plus booking and caregiver endpoints."
+      },
+      {
+        "name": "Safety",
+        "desc": "Deterministic red-flag engine with negation handling, run before and after every model."
+      },
+      {
+        "name": "Understanding",
+        "desc": "Language detection, Hinglish normalisation, slot extraction and a follow-up policy that asks only when it matters."
+      },
+      {
+        "name": "Decision",
+        "desc": "TF-IDF model, fine-tuned MuRIL and a hosted LLM with retrieved examples, combined with asymmetric safety; then caregiver ranking."
+      }
     ],
-    "dataTitle": "Data we use", "dataSub": "Only synthetic data and cited public datasets. Never real patient data.",
+    "dataTitle": "Data we use",
+    "dataSub": "Only synthetic data and cited public datasets. Never real patient data.",
     "data": [
-      { "name": "CareCompass dev data", "desc": "600 synthetic requests and 60 mock caregivers, generated by our own script.", "link": "" },
-      { "name": "KTAS emergency triage (Kaggle)", "desc": "Expert triage levels, used as extra signal for urgency.", "link": "https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application" },
-      { "name": "Disease Symptom Description (Kaggle)", "desc": "Symptom severity weights for the danger-sign lexicon.", "link": "https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset" },
-      { "name": "Symptoms to Diseases (Kaggle)", "desc": "Symptom lists used internally as extra training text. Disease names are never shown.", "link": "https://www.kaggle.com/datasets/abhishekgodara/symptoms-to-diseases" }
+      {
+        "name": "CareCompass dev data",
+        "desc": "600 synthetic requests and 60 mock caregivers, generated by our own script.",
+        "link": ""
+      },
+      {
+        "name": "KTAS emergency triage (Kaggle)",
+        "desc": "Expert triage levels, used as extra signal for urgency.",
+        "link": "https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application"
+      },
+      {
+        "name": "Disease Symptom Description (Kaggle)",
+        "desc": "Symptom severity weights for the danger-sign lexicon.",
+        "link": "https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset"
+      },
+      {
+        "name": "Symptoms to Diseases (Kaggle)",
+        "desc": "Symptom lists used internally as extra training text. Disease names are never shown.",
+        "link": "https://www.kaggle.com/datasets/abhishekgodara/symptoms-to-diseases"
+      }
     ],
-    "choicesTitle": "Design choices", "choices": [
-      { "name": "Under-triage is the worst error", "desc": "Low emergency threshold, rules that override models, and the more urgent label wins on disagreement." },
-      { "name": "Fewer questions", "desc": "A follow-up is asked only when a missing detail could change the decision. Most requests need none." },
-      { "name": "Every decision explained", "desc": "Plain-language reasoning tied to the user's own words, and a reason for every caregiver match." },
-      { "name": "Fast and robust", "desc": "Around 10 ms without the LLM; every LLM call has a 6-second timeout and a local fallback." }
+    "choicesTitle": "Design choices",
+    "choices": [
+      {
+        "name": "Under-triage is the worst error",
+        "desc": "Low emergency threshold, rules that override models, and the more urgent label wins on disagreement."
+      },
+      {
+        "name": "Fewer questions",
+        "desc": "A follow-up is asked only when a missing detail could change the decision. Most requests need none."
+      },
+      {
+        "name": "Every decision explained",
+        "desc": "Plain-language reasoning tied to the user's own words, and a reason for every caregiver match."
+      },
+      {
+        "name": "Fast and robust",
+        "desc": "Around 10 ms without the LLM; every LLM call has a 6-second timeout and a local fallback."
+      }
     ]
   },
   "dev": {
-    "title": "For developers", "subtitle": "Try the live API. The default response follows the official schema exactly; tick debug to see the decision trace.",
-    "input": "user_input", "language": "language", "lat": "lat", "lng": "lng", "debug": "Include debug trace",
-    "send": "Send request", "presets": "Preset test cases", "request": "Request", "response": "Response", "time": "Response time",
-    "swagger": "Open Swagger docs", "curl": "curl examples", "noResponse": "Send a request to see the response here.",
-    "presetNames": { "hinglish": "Hinglish normal", "hindi": "Hindi", "english": "English routine", "nurse": "Nurse case", "specialist": "Specialist case", "emergency": "Emergency", "negation": "Negation" }
+    "title": "For developers",
+    "subtitle": "Try the live API. The default response follows the official schema exactly; tick debug to see the decision trace.",
+    "input": "user_input",
+    "language": "language",
+    "lat": "lat",
+    "lng": "lng",
+    "debug": "Include debug trace",
+    "send": "Send request",
+    "presets": "Preset test cases",
+    "request": "Request",
+    "response": "Response",
+    "time": "Response time",
+    "swagger": "Open Swagger docs",
+    "curl": "curl examples",
+    "noResponse": "Send a request to see the response here.",
+    "presetNames": {
+      "hinglish": "Hinglish normal",
+      "hindi": "Hindi",
+      "english": "English routine",
+      "nurse": "Nurse case",
+      "specialist": "Specialist case",
+      "emergency": "Emergency",
+      "negation": "Negation"
+    }
   },
   "bookingsPage": {
-    "title": "My bookings", "subtitle": "Bookings made on this device. Kept only in this browser.",
-    "empty": "No bookings yet.", "emptyHint": "Describe a problem on the Get Care page and book a caregiver in one tap.", "emptyCta": "Get care now",
-    "advance": "Simulate next status", "remove": "Remove", "bookedAt": "Booked at"
+    "title": "My bookings",
+    "subtitle": "Bookings made on this device. Kept only in this browser.",
+    "empty": "No bookings yet.",
+    "emptyHint": "Describe a problem on the Get Care page and book a caregiver in one tap.",
+    "emptyCta": "Get care now",
+    "advance": "Simulate next status",
+    "remove": "Remove",
+    "bookedAt": "Booked at"
   },
-  "notFound": { "title": "Page not found", "cta": "Go home" }
+  "notFound": {
+    "title": "Page not found",
+    "cta": "Go home"
+  },
+  "flags": {
+    "chest_pain": "Chest pain or pressure",
+    "severe_breathing_difficulty": "Severe difficulty breathing",
+    "blue_lips": "Blue lips or face",
+    "unconscious": "Unconscious or not responding",
+    "seizure": "Seizure / fit",
+    "sudden_vision_loss": "Sudden loss of vision",
+    "stroke_signs": "Stroke signs (face drooping, slurred speech, one-sided weakness)",
+    "heavy_bleeding": "Heavy bleeding",
+    "severe_allergic_reaction": "Swelling of face, lips or throat",
+    "suicidal_intent": "Thoughts of suicide or self-harm",
+    "poisoning_overdose": "Poisoning or overdose",
+    "severe_burns": "Severe burns",
+    "major_trauma": "Serious injury or fall",
+    "altered_mental_state": "Confusion or unusual behaviour",
+    "low_blood_sugar": "Very low blood sugar",
+    "urinary_retention": "Unable to pass urine",
+    "fever_stiff_neck_confusion": "High fever with stiff neck or confusion",
+    "infant_danger_signs": "Danger signs in a young baby",
+    "pregnancy_emergency": "Bleeding, severe pain or no movement in pregnancy",
+    "severe_head_injury": "Serious head injury"
+  }
 }
