@@ -1,0 +1,124 @@
+{
+  "_note": "Synthetic, self-generated dev taxonomy. Replace with the official taxonomy when released.",
+  "care_types": [
+    {
+      "id": "paramedic_home_visit",
+      "definition_en": "A trained paramedic visits your home to check vital signs, dress minor wounds and assess common illness.",
+      "definition_hi": "प्रशिक्षित पैरामेडिक घर आकर जाँच करेंगे, छोटी चोट की पट्टी करेंगे और सामान्य बीमारी देखेंगे।"
+    },
+    {
+      "id": "nurse_home_visit",
+      "definition_en": "A nurse visits your home for ongoing care: injections, drips, wound or catheter care, bedridden patients.",
+      "definition_hi": "नर्स घर आकर लगातार देखभाल करेंगी: इंजेक्शन, ड्रिप, घाव या कैथेटर की देखभाल, बिस्तर पर रहने वाले मरीज़।"
+    },
+    {
+      "id": "gp_teleconsult",
+      "definition_en": "A general doctor talks to you on a phone or video call for mild, common problems.",
+      "definition_hi": "सामान्य डॉक्टर फ़ोन या वीडियो कॉल पर हल्की, आम समस्याओं के लिए बात करेंगे।"
+    },
+    {
+      "id": "specialist_referral",
+      "definition_en": "An appointment with a specialist doctor for long-standing or specific problems.",
+      "definition_hi": "लंबे समय से चल रही या खास समस्या के लिए विशेषज्ञ डॉक्टर से मिलना।"
+    },
+    {
+      "id": "emergency_referral",
+      "definition_en": "Needs emergency help now. Call 112 or ambulance 108.",
+      "definition_hi": "अभी आपातकालीन मदद चाहिए। 112 या एम्बुलेंस 108 पर कॉल करें।"
+    }
+  ],
+  "urgency_levels": [
+    {
+      "id": "routine",
+      "definition_en": "Can wait a few days.",
+      "definition_hi": "कुछ दिन रुक सकते हैं।"
+    },
+    {
+      "id": "same_day",
+      "definition_en": "Should be seen today.",
+      "definition_hi": "आज ही दिखाना चाहिए।"
+    },
+    {
+      "id": "immediate",
+      "definition_en": "Needs help right now.",
+      "definition_hi": "अभी तुरंत मदद चाहिए।"
+    }
+  ],
+  "red_flags": [
+    {
+      "id": "chest_pain",
+      "label_en": "Chest pain or pressure",
+      "label_hi": "सीने में दर्द या दबाव"
+    },
+    {
+      "id": "severe_breathing_difficulty",
+      "label_en": "Severe difficulty breathing",
+      "label_hi": "साँस लेने में गंभीर तकलीफ"
+    },
+    {
+      "id": "blue_lips",
+      "label_en": "Blue lips or face",
+      "label_hi": "होंठ या चेहरा नीला पड़ना"
+    },
+    {
+      "id": "unconscious",
+      "label_en": "Unconscious or not responding",
+      "label_hi": "बेहोश या जवाब नहीं दे रहे"
+    },
+    {
+      "id": "seizure",
+      "label_en": "Seizure / fit",
+      "label_hi": "दौरा पड़ना"
+    },
+    {
+      "id": "stroke_signs",
+      "label_en": "Face drooping, slurred speech or one-sided weakness",
+      "label_hi": "चेहरा टेढ़ा, बोली लड़खड़ाना या एक तरफ कमज़ोरी"
+    },
+    {
+      "id": "heavy_bleeding",
+      "label_en": "Heavy bleeding",
+      "label_hi": "बहुत ज़्यादा खून बहना"
+    },
+    {
+      "id": "severe_allergic_reaction",
+      "label_en": "Swelling of face or throat / severe allergy",
+      "label_hi": "चेहरे या गले में सूजन / गंभीर एलर्जी"
+    },
+    {
+      "id": "suicidal_intent",
+      "label_en": "Thoughts of suicide or self-harm",
+      "label_hi": "आत्महत्या या खुद को नुकसान पहुँचाने के विचार"
+    },
+    {
+      "id": "poisoning_overdose",
+      "label_en": "Poisoning or overdose",
+      "label_hi": "ज़हर या दवा की ज़्यादा खुराक"
+    },
+    {
+      "id": "severe_head_injury",
+      "label_en": "Serious head injury",
+      "label_hi": "सिर में गंभीर चोट"
+    },
+    {
+      "id": "fever_stiff_neck_confusion",
+      "label_en": "High fever with stiff neck or confusion",
+      "label_hi": "तेज़ बुखार के साथ गर्दन में अकड़न या भ्रम"
+    },
+    {
+      "id": "infant_danger_signs",
+      "label_en": "Infant with very high fever or not feeding",
+      "label_hi": "शिशु को बहुत तेज़ बुखार या दूध न पीना"
+    },
+    {
+      "id": "pregnancy_emergency",
+      "label_en": "Pregnancy with bleeding or severe pain",
+      "label_hi": "गर्भावस्था में खून आना या तेज़ दर्द"
+    },
+    {
+      "id": "severe_burns",
+      "label_en": "Severe burns",
+      "label_hi": "गंभीर रूप से जलना"
+    }
+  ]
+}
