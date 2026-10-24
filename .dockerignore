@@ -1,0 +1,11 @@
+.git
+.venv
+**/node_modules
+**/__pycache__
+data
+models
+outputs
+frontend/dist
+.env
+*.pt
+*.safetensors
