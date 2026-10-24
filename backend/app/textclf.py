@@ -131,12 +131,34 @@ def load_model_c():
         return None
 
 
+class EnsembleModel:
+    """Average of Model A and Model C probabilities."""
+
+    def __init__(self, a: LocalModel, c, wa: float = 0.5):
+        self.a, self.c, self.wa = a, c, wa
+        self.name = f"ensemble({a.name}+{c.name})"
+
+    def _avg(self, pa: dict, pc: dict) -> dict:
+        return {t: {k: self.wa * pa[t].get(k, 0.0) + (1 - self.wa) * pc[t].get(k, 0.0) for k in set(pa[t]) | set(pc[t])}
+                for t in pa}
+
+    def predict_proba(self, text: str) -> dict:
+        return self._avg(self.a.predict_proba(text), self.c.predict_proba(text))
+
+    def predict_proba_batch(self, texts: list[str]) -> list[dict]:
+        return [self._avg(x, y) for x, y in zip(self.a.predict_proba_batch(texts), self.c.predict_proba_batch(texts))]
+
+
 @lru_cache
-def best_local_model() -> Optional[LocalModel]:
-    """Model C if it exists and was better on validation (meta.json 'use_in_production'), else Model A."""
+def best_local_model():
+    """Model C or the A+C ensemble if it won on validation (models/model_c/meta.json 'production'), else Model A."""
+    a = load_model_a()
     c = load_model_c()
     if c is not None:
         meta = json.loads((get_settings().models_dir / "model_c" / "meta.json").read_text(encoding="utf-8"))
-        if meta.get("use_in_production", False):
+        choice = meta.get("production", "model_a")
+        if choice == "ensemble" and a is not None:
+            return EnsembleModel(a, c)
+        if choice == "model_c":
             return c
-    return load_model_a()
+    return a
