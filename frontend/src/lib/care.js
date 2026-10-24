@@ -22,3 +22,12 @@ export const URGENCY_STYLE = {
 export const ROLE_FOR_CARE = {
   paramedic_home_visit: "paramedic", nurse_home_visit: "nurse", gp_teleconsult: "gp", specialist_referral: "specialist",
 };
+
+export const SEVERITY_STAGES = ["S0", "S1", "S2", "S3"];
+
+/** Red-flag label: the app's own dictionary first, then the pathway labels sent in the debug block. */
+export function flagLabel(f, t, debug) {
+  const v = t(`flags.${f}`);
+  if (v !== `flags.${f}`) return v;
+  return debug?.pathways?.flag_labels?.[f] || f.replace(/_/g, " ");
+}

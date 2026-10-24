@@ -1,9 +1,13 @@
-import { ArrowDown, ArrowRight, CalendarCheck, Cpu, ExternalLink, Languages, MessageCircleQuestion, Mic, ShieldAlert, ShieldCheck, Siren, UsersRound } from "lucide-react";
+import {
+  ArrowDown, ArrowRight, Brain, CalendarCheck, Cpu, ExternalLink, Gauge, HeartPulse, Languages, MessageCircleQuestion, Mic,
+  ShieldAlert, ShieldCheck, Siren, Thermometer, UsersRound, Utensils, Wind,
+} from "lucide-react";
 import PageHeader from "../components/PageHeader.jsx";
 import { useApp } from "../context/AppContext.jsx";
+import { SEVERITY_STAGES, URGENCY_STYLE } from "../lib/care.js";
 
 const FLOW = [
-  ["input", Mic], ["lang", Languages], ["safety", ShieldCheck, true], ["intake", MessageCircleQuestion],
+  ["input", Mic], ["lang", Languages], ["safety", ShieldCheck, true], ["pathways", Gauge], ["intake", MessageCircleQuestion],
   ["triage", Cpu], ["recheck", ShieldCheck, true], ["match", UsersRound], ["book", CalendarCheck],
 ];
 
@@ -59,6 +63,52 @@ function Flowchart({ t }) {
   );
 }
 
+const PATHWAY_ICON = { fever: Thermometer, cough: Wind, stomach: Utensils, chest_pain: HeartPulse, headache: Brain };
+const STAGE_URGENCY = { S0: "routine", S1: "same_day", S2: "same_day", S3: "immediate" };
+
+function Pathways({ t }) {
+  const list = t("how.pathwayList");
+  return (
+    <section aria-labelledby="pathways-h">
+      <h2 id="pathways-h" className="text-3xl font-semibold">{t("how.pathwaysTitle")}</h2>
+      <p className="mt-2 max-w-3xl text-muted">{t("how.pathwaysSub")}</p>
+
+      <h3 className="mt-8 font-sans text-xl font-bold">{t("how.ladderTitle")}</h3>
+      <ol className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        {SEVERITY_STAGES.map((st) => {
+          const style = URGENCY_STYLE[STAGE_URGENCY[st]];
+          const Icon = style.icon;
+          return (
+            <li key={st} className={`rounded-xl2 border-2 p-4 ${style.chip}`}>
+              <p className="flex items-center gap-2 font-mono text-lg font-bold"><Icon className="h-5 w-5" aria-hidden="true" />{st}</p>
+              <p className="mt-1 font-bold">{t(`severity.${st}.name`)}</p>
+              <p className="text-sm">{t(`severity.${st}.route`)}</p>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-3 max-w-3xl text-sm text-muted">{t("how.ladderNote")}</p>
+
+      <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {list.map((pw) => {
+          const Icon = PATHWAY_ICON[pw.id] || Gauge;
+          return (
+            <li key={pw.id} className="card p-5">
+              <p className="flex items-center gap-3 text-lg font-bold">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-soft text-primary-deep"><Icon className="h-5 w-5" aria-hidden="true" /></span>
+                {pw.name}
+              </p>
+              <p className="mt-3 text-sm text-muted">{pw.asks}</p>
+              <p className="mt-3 rounded-lg bg-sunken px-3 py-2 text-sm font-semibold">{pw.example}</p>
+            </li>
+          );
+        })}
+      </ul>
+      <p className="mt-4 flex items-center gap-2 font-semibold"><ShieldCheck className="h-5 w-5 text-primary" aria-hidden="true" />{t("how.notDiagnosis")}</p>
+    </section>
+  );
+}
+
 export default function HowItWorks() {
   const { t } = useApp();
   const layers = t("how.layers");
@@ -72,6 +122,8 @@ export default function HowItWorks() {
           <h2 id="flow-h" className="mb-8 text-3xl font-semibold">{t("how.flowTitle")}</h2>
           <Flowchart t={t} />
         </section>
+
+        <Pathways t={t} />
 
         <section aria-labelledby="layers-h" className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>

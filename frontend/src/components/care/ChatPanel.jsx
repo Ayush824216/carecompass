@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MapPin, Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
+import { Check, MapPin, Mic, MicOff, RotateCcw, SendHorizontal } from "lucide-react";
 import { useApp } from "../../context/AppContext.jsx";
 import { canListen, listen, stopSpeaking } from "../../lib/speech.js";
 import { CARE_EXAMPLES } from "../../lib/examples.js";
@@ -44,7 +44,43 @@ function Typing({ t }) {
   );
 }
 
-export default function ChatPanel({ messages, loading, onSend, quickReplies, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine, locationText }) {
+/** Multi-select answer chips for a pathway question. "None" is exclusive and sends straight away. */
+function MultiChoice({ options, onSend, t }) {
+  const [picked, setPicked] = useState([]);
+  const toggle = (o) => {
+    if (o.exclusive) { onSend(o.label); return; }
+    setPicked((p) => (p.includes(o.id) ? p.filter((x) => x !== o.id) : [...p, o.id]));
+  };
+  const send = () => onSend(options.filter((o) => picked.includes(o.id)).map((o) => o.label).join(", "));
+  return (
+    <div role="group" aria-label={t("care.chooseAll")}>
+      <p className="mb-2 text-sm font-semibold text-muted">{t("care.chooseAll")}</p>
+      <div className="flex flex-wrap gap-2">
+        {options.map((o) => {
+          const on = picked.includes(o.id);
+          return (
+            <button key={o.id} type="button" onClick={() => toggle(o)} aria-pressed={o.exclusive ? undefined : on}
+              className={`inline-flex min-h-[52px] items-center gap-2 rounded-xl border-2 px-4 text-lg font-bold transition-colors ${o.exclusive
+                ? "border-line bg-sunken text-ink hover:border-primary"
+                : on ? "border-primary bg-primary text-primary-ink" : "border-primary bg-surface text-primary-deep hover:bg-primary-soft"}`}>
+              {!o.exclusive && <span className={`flex h-5 w-5 items-center justify-center rounded border-2 ${on ? "border-white bg-white/20" : "border-primary"}`} aria-hidden="true">
+                {on && <Check className="h-4 w-4" />}
+              </span>}
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+      {picked.length > 0 && (
+        <button type="button" onClick={send} className="btn-primary mt-3 min-h-[52px] px-6 text-lg">
+          <SendHorizontal className="h-5 w-5" aria-hidden="true" />{t("care.sendSelected", { n: picked.length })}
+        </button>
+      )}
+    </div>
+  );
+}
+
+export default function ChatPanel({ messages, loading, onSend, quickReplies, choices, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine, locationText }) {
   const { t, lang } = useApp();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
@@ -115,8 +151,13 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, que
 
       <div className="space-y-4 border-t border-line bg-surface px-4 py-4 sm:px-5">
         <AnimatePresence>
+          {choices && !loading && (
+            <motion.div key={choices.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+              <MultiChoice key={choices.id} options={choices.options} onSend={(v) => submit(v)} t={t} />
+            </motion.div>
+          )}
           {quickReplies?.length > 0 && !loading && (
-            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
+            <motion.div key="quick" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
               <p className="mb-2 text-sm font-semibold text-muted">{quickTitle || t("care.answerHint")}</p>
               <div className="flex flex-wrap gap-2">
                 {quickReplies.map((c) => (

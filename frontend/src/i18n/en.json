@@ -198,7 +198,9 @@
       "nurse": "Nurse: injections",
       "emergency": "Emergency: chest pain"
     },
-    "emptyLine": "Describe the problem, who it is for, and since when."
+    "emptyLine": "Describe the problem, who it is for, and since when.",
+    "chooseAll": "Tap all that apply, then send. Or type or speak your answer.",
+    "sendSelected": "Send ({n} selected)"
   },
   "panel": {
     "title": "How we decided",
@@ -211,7 +213,8 @@
       "safety": "Safety check",
       "followup": "Follow-up needed?",
       "triage": "Triage decision",
-      "matching": "Caregiver matching"
+      "matching": "Caregiver matching",
+      "severity": "Severity stage"
     },
     "noRedFlags": "No danger signs found",
     "redFlags": "Danger signs found: {flags}",
@@ -267,7 +270,13 @@
     "locationLine": "Location",
     "matchedWithin": "{n} found within {km} km · best: {name}, {dist} km",
     "matchedAll": "{n} found across Delhi NCR · best: {name}, {dist} km",
-    "matchedTele": "{n} doctors on video call · best: {name}"
+    "matchedTele": "{n} doctors on video call · best: {name}",
+    "severityNone": "No clinical pathway: general routing",
+    "severityLine": "{pathway} pathway · {stage}",
+    "severityLadder": "Severity ladder",
+    "internalPattern": "Internal routing pattern (not a diagnosis)",
+    "internalPatternNote": "Used only to pick the care type and urgency. Never shown to the patient.",
+    "severityAssessing": "{pathway} pathway · being assessed"
   },
   "result": {
     "title": "Recommended care",
@@ -382,7 +391,9 @@
       "emergency": "Emergency path",
       "emergencyD": "Call 112 / 108, no booking",
       "yes": "Danger sign",
-      "no": "Clear"
+      "no": "Clear",
+      "pathways": "Clinical pathways",
+      "pathwaysD": "Fever, cough, stomach, chest pain and headache are graded S0–S3 from danger signs, readings and who the patient is. S3 goes straight to emergency."
     },
     "layersTitle": "Five layers",
     "layers": [
@@ -450,7 +461,44 @@
         "desc": "Around 10 ms without the LLM; every LLM call has a 6-second timeout and a local fallback."
       }
     ],
-    "layersSub": "From what you see on screen down to the decision engine. Safety sits in the middle and wraps every model."
+    "layersSub": "From what you see on screen down to the decision engine. Safety sits in the middle and wraps every model.",
+    "pathwaysTitle": "Clinical pathways",
+    "pathwaysSub": "The five most common complaints are graded the way a senior doctor would: danger signs first, then how long and how high, what else is happening, and who the patient is. Thresholds were set by our clinical mentor from WHO, NICE and Indian national programme guidance.",
+    "ladderTitle": "The severity ladder",
+    "ladderNote": "Every pathway runs, and the most severe one leads. Babies under 3 months, young children with a danger sign, people 65+, pregnancy and long-term conditions move a case up. Missing information never moves it down.",
+    "pathwayList": [
+      {
+        "id": "fever",
+        "name": "Fever",
+        "asks": "Danger signs, how many days and how high, platelets, rash, who the patient is",
+        "example": "Platelets 80,000 + stomach pain → S2, same-day doctor and a home blood test"
+      },
+      {
+        "id": "cough",
+        "name": "Cough",
+        "asks": "Breathlessness at rest, blood, how long, fever, wheeze",
+        "example": "Cough for 3 weeks with night sweats → S2, chest specialist"
+      },
+      {
+        "id": "stomach",
+        "name": "Stomach upset",
+        "asks": "Can they keep fluids down, urine, blood or black stool, where the pain is",
+        "example": "Vomited 10 times, can't keep water down → S2, nurse home visit"
+      },
+      {
+        "id": "chest_pain",
+        "name": "Chest pain",
+        "asks": "Pressure, spread to arm or jaw, sweating, age and risk factors",
+        "example": "Low threshold: current chest pain at 40+ or with sugar / BP → S3"
+      },
+      {
+        "id": "headache",
+        "name": "Headache",
+        "asks": "Sudden worst-ever pain, one-sided weakness, stiff neck, BP reading",
+        "example": "BP 190/120 with headache → S3"
+      }
+    ],
+    "notDiagnosis": "Pathways choose care and urgency only. CareCompass never names a disease."
   },
   "dev": {
     "title": "For developers",
@@ -678,5 +726,30 @@
     ],
     "ctaTitle": "Is someone unwell at home today?",
     "ctaSub": "Describe it in your own words. It takes less than a minute."
+  },
+  "pathways": {
+    "fever": "Fever",
+    "cough": "Cough",
+    "stomach": "Stomach upset",
+    "chest_pain": "Chest pain",
+    "headache": "Headache"
+  },
+  "severity": {
+    "S0": {
+      "name": "Mild",
+      "route": "Routine teleconsult"
+    },
+    "S1": {
+      "name": "Needs assessment",
+      "route": "Paramedic or GP, same day"
+    },
+    "S2": {
+      "name": "Warning signs",
+      "route": "Right professional, same day"
+    },
+    "S3": {
+      "name": "Emergency",
+      "route": "Emergency referral, immediately"
+    }
   }
 }

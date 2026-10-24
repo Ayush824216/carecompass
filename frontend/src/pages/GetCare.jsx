@@ -85,8 +85,11 @@ export default function GetCare() {
   const final = phase === "done" && response && !response.follow_up_question;
   const emergency = response?.care_type === "emergency_referral";
   const started = history.length > 0;
+  // pathway questions come with multi-select chips (debug.followup.options; "none" is exclusive)
+  const choices = phase === "done" && response?.follow_up_question && debug?.followup?.multi && debug.followup.options?.length
+    ? { id: debug.followup.question_id, options: debug.followup.options } : null;
   const quick = redirect || !started ? t("guard.chips")
-    : response?.follow_up_question && phase === "done" ? quickRepliesFor(response.follow_up_question, bank) : [];
+    : response?.follow_up_question && phase === "done" && !choices ? quickRepliesFor(response.follow_up_question, bank) : [];
 
   return (
     <div className="container-page py-8 md:py-10">
@@ -101,7 +104,7 @@ export default function GetCare() {
       )}
       <LocationBar />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-        <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick}
+        <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick} choices={choices}
           questionNo={questionNo} maxQuestions={MAX_Q} onReset={reset}
           quickTitle={redirect || !started ? t("guard.chipsTitle") : t("care.answerHint")} emptyLine={!started ? t("care.emptyLine") : ""}
           locationText={hasLocation ? locationLabel(location, t) : ""} />
@@ -115,7 +118,7 @@ export default function GetCare() {
         </button>
       )}
       {final && !emergency && <ResultSection response={response} debug={debug} />}
-      {final && emergency && emOpen && <EmergencyView response={response} onBack={() => setEmOpen(false)} />}
+      {final && emergency && emOpen && <EmergencyView response={response} debug={debug} onBack={() => setEmOpen(false)} />}
     </div>
   );
 }

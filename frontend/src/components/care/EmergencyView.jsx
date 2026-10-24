@@ -4,12 +4,13 @@ import { Ambulance, ArrowLeft, Ban, MapPin, Phone, ShieldAlert, Volume2 } from "
 import { useApp } from "../../context/AppContext.jsx";
 import { speak } from "../../lib/speech.js";
 import { locationLabel } from "../../lib/locations.js";
+import { flagLabel } from "../../lib/care.js";
 
 function steps(reasoning) {
   return (reasoning || "").split(/(?<=[.।!?])\s+/).map((s) => s.trim()).filter(Boolean);
 }
 
-export default function EmergencyView({ response, onBack }) {
+export default function EmergencyView({ response, debug, onBack }) {
   const { t, location, voice } = useApp();
   const headingRef = useRef(null);
   const list = steps(response.reasoning);
@@ -92,7 +93,7 @@ export default function EmergencyView({ response, onBack }) {
                 <ul className="mt-3 space-y-2">
                   {response.red_flags.map((f) => (
                     <li key={f} className="flex items-start gap-2 font-semibold">
-                      <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />{t(`flags.${f}`)}
+                      <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />{flagLabel(f, t, debug)}
                     </li>
                   ))}
                 </ul>

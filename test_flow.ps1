@@ -49,6 +49,13 @@ Check "at least 3 caregivers at each location" ($saket.matched_caregivers.Count 
 Check "ranking changes with location" ($saket.matched_caregivers[0].caregiver_id -ne $noida.matched_caregivers[0].caregiver_id)
 
 $derm = Post "/api/v1/triage?debug=true" @{ user_input = "skin pe rash hai 2 hafte se"; location = @{ lat = 28.5245; lng = 77.2066 }; conversation_history = @() }
+# answer follow-up questions like a user would, until the API decides
+$dh = @(@{ role = "user"; content = "skin pe rash hai 2 hafte se" })
+for ($i = 0; $i -lt 4 -and $derm.follow_up_question; $i++) {
+  $dh += @{ role = "assistant"; content = $derm.follow_up_question }
+  $derm = Post "/api/v1/triage?debug=true" @{ user_input = "bas yahi, adult hai, halka hai"; location = @{ lat = 28.5245; lng = 77.2066 }; conversation_history = $dh }
+  $dh += @{ role = "user"; content = "bas yahi, adult hai, halka hai" }
+}
 Check "persistent rash -> specialist" ($derm.care_type -eq "specialist_referral")
 Check "dermatologists matched" (($derm.debug.matching | Where-Object { $_.specialty -eq "dermatology" }).Count -ge 3)
 
