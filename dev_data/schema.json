@@ -60,7 +60,7 @@
     ],
     "properties": {
       "user_input": {
-        "maxLength": 4000,
+        "default": "",
         "title": "User Input",
         "type": "string"
       },
@@ -94,9 +94,6 @@
         "type": "array"
       }
     },
-    "required": [
-      "user_input"
-    ],
     "title": "TriageRequest",
     "type": "object"
   },

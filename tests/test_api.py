@@ -53,3 +53,19 @@ def test_book():
     assert r.status_code == 200 and r.json()["status"] == "confirmed"
     r = client.post("/api/v1/book", json={"caregiver_id": "CG_001", "care_type": "emergency_referral"})
     assert r.json()["status"] == "rejected"
+
+
+def test_lenient_request_shapes():
+    r = client.post("/api/v1/triage", json={
+        "user_input": "haan", "language": "Hindi", "location": {"latitude": 28.5, "longitude": 77.2},
+        "conversation_history": ["mujhe khansi hai", {"speaker": "bot", "text": "Kya saans lene mein takleef ho rahi hai?"}]})
+    assert r.status_code == 200
+    body = r.json()
+    _check_contract(body)
+    assert body["care_type"] == "emergency_referral"  # "haan" to the breathing screen
+
+
+def test_unknown_language_and_long_input():
+    r = client.post("/api/v1/triage", json={"user_input": "fever " * 2000, "language": "fr"})
+    assert r.status_code == 200
+    _check_contract(r.json())

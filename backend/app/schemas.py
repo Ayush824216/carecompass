@@ -1,9 +1,9 @@
 """Pydantic request/response models. Indicative contract; align with the official schema when released."""
 from __future__ import annotations
 
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 CareType = Literal["paramedic_home_visit", "nurse_home_visit", "gp_teleconsult",
                    "specialist_referral", "emergency_referral"]
@@ -22,16 +22,57 @@ class Location(BaseModel):
     lng: float = Field(..., ge=-180, le=180)
 
 
+ROLE_ALIASES = {"user": "user", "human": "user", "patient": "user", "client": "user",
+                "assistant": "assistant", "bot": "assistant", "ai": "assistant", "model": "assistant", "system": "system"}
+LANG_ALIASES = {"auto": "auto", "en": "en", "english": "en", "hi": "hi", "hindi": "hi", "hinglish": "hinglish",
+                "hi-latn": "hinglish", "hien": "hinglish", "en-in": "en", "hi-in": "hi"}
+MAX_INPUT = 4000
+
+
 class Turn(BaseModel):
     role: Literal["user", "assistant", "system"] = "user"
     content: str = ""
 
+    @model_validator(mode="before")
+    @classmethod
+    def _coerce(cls, v: Any) -> Any:
+        """Accept {role, content} plus common variants ({speaker, text}, {sender, message}) and plain strings."""
+        if isinstance(v, str):
+            return {"role": "user", "content": v}
+        if isinstance(v, dict):
+            role = str(v.get("role") or v.get("speaker") or v.get("sender") or v.get("from") or "user").lower()
+            content = v.get("content", v.get("text", v.get("message", v.get("utterance", ""))))
+            return {"role": ROLE_ALIASES.get(role, "user"), "content": "" if content is None else str(content)[:MAX_INPUT]}
+        return v
+
 
 class TriageRequest(BaseModel):
-    user_input: str = Field(..., max_length=4000)
+    user_input: str = ""
     language: LanguageIn = "auto"
     location: Optional[Location] = None
     conversation_history: list[Turn] = Field(default_factory=list)
+
+    @field_validator("user_input", mode="before")
+    @classmethod
+    def _input(cls, v: Any) -> str:
+        return "" if v is None else str(v)[:MAX_INPUT]
+
+    @field_validator("language", mode="before")
+    @classmethod
+    def _lang(cls, v: Any) -> str:
+        return LANG_ALIASES.get(str(v or "auto").strip().lower(), "auto")
+
+    @field_validator("conversation_history", mode="before")
+    @classmethod
+    def _hist(cls, v: Any) -> Any:
+        return [] if v is None else v
+
+    @field_validator("location", mode="before")
+    @classmethod
+    def _loc(cls, v: Any) -> Any:
+        if isinstance(v, dict) and "lat" not in v and ("latitude" in v or "lon" in v or "longitude" in v):
+            return {"lat": v.get("latitude", v.get("lat")), "lng": v.get("longitude", v.get("lon", v.get("lng")))}
+        return v
 
     model_config = {"json_schema_extra": {"examples": [{
         "user_input": "papa ko do din se bukhar hai aur khansi bhi",
