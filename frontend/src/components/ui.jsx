@@ -2,17 +2,19 @@ import { AlertCircle, Inbox, RefreshCw, Star } from "lucide-react";
 import { useApp } from "../context/AppContext.jsx";
 import { CARE_ICON, URGENCY_STYLE } from "../lib/care.js";
 
-export function UrgencyBadge({ urgency, size = "md" }) {
+export function UrgencyBadge({ urgency, size = "md", compact = false }) {
   const { t } = useApp();
   const s = URGENCY_STYLE[urgency];
   if (!s) return null;
   const Icon = s.icon;
   const pad = size === "lg" ? "px-4 py-2 text-base" : "px-3 py-1 text-sm";
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border font-bold ${s.chip} ${pad}`}>
-      <Icon className={size === "lg" ? "h-5 w-5" : "h-4 w-4"} aria-hidden="true" />
-      {t(`urgency.${urgency}.label`)}
-      <span className="font-semibold opacity-80">· {t(`urgency.${urgency}.desc`)}</span>
+    <span className={`inline-flex flex-wrap items-center gap-x-1.5 rounded-full border font-bold ${s.chip} ${pad}`}>
+      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+        <Icon className={size === "lg" ? "h-5 w-5" : "h-4 w-4"} aria-hidden="true" />
+        {t(`urgency.${urgency}.label`)}
+      </span>
+      {!compact && <span className="whitespace-nowrap font-semibold opacity-80">· {t(`urgency.${urgency}.desc`)}</span>}
     </span>
   );
 }
