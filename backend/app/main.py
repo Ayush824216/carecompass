@@ -2,20 +2,30 @@
 from __future__ import annotations
 
 import logging
-import time
 import uuid
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from . import data_adapter
+from . import data_adapter, intake, pipeline
 from .config import get_settings
 from .schemas import BookingRequest, BookingResponse, Caregiver, TriageRequest, TriageResponse
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 log = logging.getLogger("carecompass")
 
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    from .textclf import best_local_model
+    m = best_local_model()  # warm up so the first request is fast
+    data_adapter.load_caregivers()
+    log.info("startup: local model=%s %s", getattr(m, "name", None), get_settings())
+    yield
+
+
 app = FastAPI(
+    lifespan=lifespan,
     title="CareCompass API",
     version="0.1.0",
     description="Care routing support (care type, urgency, caregiver match). Does not diagnose or prescribe.",
@@ -31,11 +41,16 @@ def health() -> dict:
 
 @app.post("/api/v1/triage", response_model=TriageResponse, response_model_exclude_none=False)
 def triage(req: TriageRequest) -> TriageResponse:
-    t0 = time.perf_counter()
-    resp = TriageResponse(follow_up_question=None, care_type="gp_teleconsult", urgency="routine",
-                          red_flags=[], reasoning="Stub response.", matched_caregivers=[])
-    log.info("triage total_ms=%.1f", (time.perf_counter() - t0) * 1000)
-    return resp
+    """Stateless: send the full conversation_history each turn. Returns a follow-up question OR a decision."""
+    return pipeline.run(req)
+
+
+@app.get("/api/v1/questions")
+def questions() -> dict:
+    """Follow-up question bank with quick-reply options (lets clients render one-tap chips)."""
+    return {qid: {"en": q["en"], "hi": q["hi"], "hinglish": q["hinglish"],
+                  "options": [{"value": v, "en": e, "hi": h, "hinglish": g} for v, e, h, g in q["options"]]}
+            for qid, q in intake.QUESTIONS.items()}
 
 
 @app.get("/api/v1/caregivers/{caregiver_id}", response_model=Caregiver)

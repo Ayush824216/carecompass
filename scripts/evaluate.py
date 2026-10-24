@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 sys.path.insert(0, str(ROOT / "scripts"))
 
+import logging  # noqa: E402
+
 from sklearn.metrics import classification_report, confusion_matrix, f1_score  # noqa: E402
 
 from app import data_adapter, safety  # noqa: E402
@@ -87,6 +89,8 @@ def main() -> None:
     ap.add_argument("--no-write", action="store_true")
     ap.add_argument("--sweep", action="store_true", help="sweep decision thresholds on the dev split")
     a = ap.parse_args()
+    logging.getLogger("carecompass").setLevel(logging.WARNING)
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     cfg = dict(triage_cfg())
 
     vig_all = data_adapter.load_vignettes()
