@@ -24,7 +24,7 @@ export default function StatusTimeline({ current = 0, compact = false }) {
             </span>
             <span className={`text-sm font-semibold ${done ? "text-ink" : "text-muted"}`}>
               {t(`booking.status.${k}`)}
-              <span className="sr-only">{done ? " ✓" : ""}</span>
+              <span className="sr-only">{done ? ` (${t("booking.stepDone")})` : ""}</span>
             </span>
           </li>
         );

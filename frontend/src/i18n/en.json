@@ -306,7 +306,8 @@
     "done": "Done",
     "toast": "Booking confirmed with {name}",
     "failed": "Booking failed. Please try again.",
-    "invalidPhone": "Please enter a 10-digit mobile number"
+    "invalidPhone": "Please enter a 10-digit mobile number",
+    "stepDone": "done"
   },
   "emergency": {
     "title": "This may be an emergency",
