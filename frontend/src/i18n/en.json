@@ -288,7 +288,9 @@
     "internalPattern": "Internal routing pattern (not a diagnosis)",
     "internalPatternNote": "Used only to pick the care type and urgency. Never shown to the patient.",
     "severityAssessing": "{pathway} pathway · being assessed",
-    "age": "Age"
+    "age": "Age",
+    "intentCheck": "Intent check",
+    "intentRules": "local rules"
   },
   "result": {
     "title": "Recommended care",

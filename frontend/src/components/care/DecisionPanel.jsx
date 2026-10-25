@@ -284,6 +284,12 @@ export default function DecisionPanel({ phase, response, debug, ms, locationText
           </div>
         </details>
       )}
+      {debug?.intent_check && phase === "done" && (
+        <p className="text-sm text-muted" data-intent-source={debug.intent_check.source}>
+          {t("panel.intentCheck")}: <span className="font-semibold text-ink">{debug.intent_check.source === "gemini" ? "Gemini" : t("panel.intentRules")}</span>
+          {debug.intent_check.label ? ` · ${debug.intent_check.label.replace(/_/g, " ")}` : ""}
+        </p>
+      )}
     </aside>
   );
 }

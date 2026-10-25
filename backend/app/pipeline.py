@@ -154,6 +154,18 @@ def _strip_phrases(req: TriageRequest, phrases: list[str]) -> TriageRequest:
     return req.model_copy(update={"user_input": strip(req.user_input) or req.user_input, "conversation_history": hist})
 
 
+def non_health_reply(gemini_reply, template: str, user_text: str, lang: str, tr: dict) -> TriageResponse:
+    """A non-health turn: Gemini's validated reply or our template; a red-flag word adds the fixed 112 line and buttons.
+    No question, not counted."""
+    text = gemini_reply or template
+    tr["reply_source"] = "gemini" if gemini_reply else "template"
+    if domain_guard.RED_TERM.search(user_text or ""):
+        text = f"{text} {domain_guard.CALL_LINE.get(lang, domain_guard.CALL_LINE['en'])}"
+        tr["call_strip"] = True
+    return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[], reasoning=text,
+                          matched_caregivers=[])
+
+
 def _last_assistant(req: TriageRequest) -> str:
     return next((t.content or "" for t in reversed(req.conversation_history) if t.role == "assistant"), "")
 
@@ -248,11 +260,16 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
 
         # the patient is an animal: a vet, before any safety keyword ("kutte ke dil mein heart attack" is not ours)
         pending_q = _pending_clinical_question(req) is not None
-        if domain_guard.is_animal_patient(req.user_input):
+        site_yes, site_no, site_now, site_prior = _site_answers(req)
+        # Gemini intent label (closed list) + for non-health turns only, a short validated reply it may write
+        g = None if (pending_q or site_now) else intent_llm.classify(req.user_input, _last_assistant(req))
+        tr["intent_check"] = {"source": "gemini", "label": g["label"]} if g else {"source": "rules", "label": None}
+        if domain_guard.is_animal_patient(req.user_input) or (
+                g and g["label"] == "animal_patient" and not domain_guard.has_health_signal(req.user_input)):
             tr["domain_class"] = domain_guard.ANIMAL_CLASS
             tr["model_used"] = "domain_guard"
-            return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
-                                  reasoning=domain_guard.vet_text(lang), matched_caregivers=[])
+            return non_health_reply((g or {}).get("reply") if g and g["label"] == "animal_patient" else None,
+                                    domain_guard.vet_text(lang), req.user_input, lang, tr)
         req = _drop_animal_turns(req)
         turns = _user_turns(req)
 
@@ -266,11 +283,18 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         t = time.perf_counter()
         sres = safety.check(_safety_texts(turns, state), extra_flags=_extra_flags(state))
         # anatomically impossible red flag ("kidney mein heart attack"): one confirmation, 112 / 108 stay on screen
-        site_yes, site_no, site_now, site_prior = _site_answers(req)
         if site_yes:
             tr["domain_class"] = domain_guard.HEALTH
             tr["model_used"] = "rules:site_check"
             return emergency_response(sorted(site_yes | set(sres.red_flags)), lang)
+        # Gemini says this is not a health turn (joke, song line, impossible anatomy, off topic, gibberish): its short
+        # validated reply (or our template), plus the fixed 112 line and buttons when a red-flag word appears.
+        # Clear red flags (sres.red_flags) still go straight to emergency; Gemini never dismisses real health evidence.
+        if g and g["label"] in intent_llm.REPLY_LABELS and not sres.red_flags and not (
+                domain_guard.has_health_signal(req.user_input) and not sres.unsure and not domain_guard.local_intent(req.user_input)):
+            tr["domain_class"] = f"gemini:{g['label']}"
+            tr["model_used"] = "gemini_intent"
+            return non_health_reply(g.get("reply"), domain_guard.intent_text(domain_guard.POLITE, lang), req.user_input, lang, tr)
         # joke / song line / heartbreak idiom / deceased or non-living "patient": decided locally (no LLM).
         # A red-flag word is never dismissed: it becomes the one confirmation question (112 / 108 on screen).
         intent = None if (pending_q or site_now) else domain_guard.local_intent(req.user_input)
@@ -295,14 +319,13 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
                                   reasoning=domain_guard.intent_text(intent, lang), matched_caregivers=[])
         # Gemini intent guardrail: one closed label per turn. It can only add a confirmation or a polite reply; it
         # never lowers urgency, never dismisses a red flag, and without it (no key / Incognito / timeout) rules decide.
-        g = None if (pending_q or site_now) else intent_llm.classify(req.user_input, _last_assistant(req))
         if g:
             tr["gemini_intent"] = g
             lab, flags_now = g["label"], sres.red_flags or list(sres.unsure)
             # Gemini alone never dismisses a message in which the local checks see health evidence
             real = domain_guard.has_health_signal(req.user_input) or domain_guard.has_lexicon_signal(req.user_input)
-            if lab in ("joke_or_song_lyric", "absurd_or_impossible", "non_medical_off_topic", "gibberish", "hypothetical",
-                       "deceased_patient", "animal_patient") and flags_now:
+            # a clear red flag with a "joke" label still goes to emergency below; deceased / hypothetical: one confirmation
+            if lab in ("hypothetical", "deceased_patient") and flags_now:
                 tr["domain_class"] = domain_guard.HEALTH
                 tr["safety_checks"] = {"red_flags": [], "unconfirmed": sres.red_flags, "unsure": sres.unsure, "stage": "gemini"}
                 return site_confirmation(flags_now[0], lang, tr)

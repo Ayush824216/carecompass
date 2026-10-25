@@ -191,6 +191,12 @@ INTENT_TEXT = {
                "hinglish": "Lagta hai yeh kisi aise vyakti ki baat hai jo ab nahi rahe. Agar abhi kisi ki tabiyat kharab hai to batayein."},
 }
 INTENT_TEXT[ABSURD] = INTENT_TEXT[JOKE]
+# a red-flag word in a non-health turn: our fixed line after the reply, with the 112 / 108 buttons (no question)
+RED_TERM = re.compile(r"dil\s+(\S+\s+){0,3}dard|heart\s*at+a?c?k|hart\s*atak|\bsaa?ns|\bsaas\b|breath|behos\w*|unconscious|seen[ae]|chest|chhati|lakwa|stroke|"
+                      r"\bdaura|seizure|khoon|bleed|blood|साँस|सांस|बेहोश|सीने|छाती|लकवा|दौरा|खून", re.I)
+CALL_LINE = {"en": "If someone really has chest pain or trouble breathing, call 112 right away.",
+             "hi": "अगर किसी को सच में सीने में दर्द या साँस की दिक्कत है, तो तुरंत 112 पर कॉल करें।",
+             "hinglish": "Agar kisi ko sach mein seene mein dard ya saans ki dikkat hai, turant 112 par call karein."}
 POLITE = "polite_redirect"
 HYPOTHETICAL = "hypothetical_info"
 INTENT_TEXT[POLITE] = {"en": "I can only help with health. What is the problem, who has it, and since when?",

@@ -144,7 +144,7 @@ export default function GetCare() {
         </div>
       )}
       {/* "is there really ... right now?" (a red flag in an impossible body site): 112 / 108 stay on screen */}
-      {phase === "done" && debug?.followup?.kind === "site_confirm" && <div className="mb-5"><CallStrip text={t("care.siteConfirm")} /></div>}
+      {phase === "done" && (debug?.followup?.kind === "site_confirm" || debug?.call_strip) && <div className="mb-5"><CallStrip text={t("care.siteConfirm")} /></div>}
       <LocationBar />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick} choices={choices}

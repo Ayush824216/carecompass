@@ -38,7 +38,7 @@ def _final(start):
 def test_animal_patient_gets_vet_reply(text, lang):
     r = _post(text)
     assert r["follow_up_question"] is None and r["care_type"] is None and r["urgency"] is None and not r["red_flags"]
-    assert r["reasoning"] == domain_guard.VET_TEXT[lang]
+    assert r["reasoning"].startswith(domain_guard.VET_TEXT[lang])  # + the fixed 112 line when "heart attack" is said
     assert r["debug"]["domain_class"] == "animal_patient"
 
 
