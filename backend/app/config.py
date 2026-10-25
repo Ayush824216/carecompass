@@ -13,6 +13,10 @@ except ImportError:  # pragma: no cover
 ROOT = Path(__file__).resolve().parents[2]
 if load_dotenv:
     load_dotenv(ROOT / ".env")
+# "LLM_PROVIDER=     # e.g. groq" is read by python-dotenv as the value "# e.g. groq": an empty value with a comment
+for _k, _v in list(os.environ.items()):
+    if _v.lstrip().startswith("#"):
+        os.environ[_k] = ""
 
 
 def _p(name: str, default: str) -> Path:
