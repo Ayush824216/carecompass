@@ -60,6 +60,7 @@ pip install -r requirements.txt
 python scripts/make_dev_data.py         # synthetic dev data (already committed)
 python scripts/prepare_public_data.py   # optional: needs data/public/* (see below)
 python scripts/train.py                 # Model A -> models/model_a.joblib (~10 s)
+python scripts/train_input_type.py      # input-type classifier -> models/input_type.joblib (~10 s; rules work without it)
 uvicorn app.main:app --app-dir backend --port 8000
 ```
 Frontend:
@@ -75,8 +76,9 @@ API docs: http://localhost:8000/docs
 ```bash
 cp .env.example .env     # optional: LLM settings
 docker compose up --build
+LOCAL_ONLY=true docker compose up --build   # no GPU, no LLM key, no external API
 ```
-Backend on `:8000`, frontend on `:5173`. `data/` and `models/` are mounted as volumes, not baked into images. On first start the backend prepares the public data (if present) and trains Model A automatically. The Docker image is CPU-only and uses Model A plus the optional hosted LLM.
+Backend on `:8000`, frontend on `:5173`. `data/` and `models/` are mounted as volumes, not baked into images. On first start the backend prepares the public data (if present) and trains Model A and the input-type classifier automatically. The Docker image is CPU-only and uses Model A plus the optional hosted LLM.
 
 ### Optional: GPU (Model C)
 ```bash
