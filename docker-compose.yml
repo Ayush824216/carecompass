@@ -8,6 +8,7 @@ services:
         required: false
     environment:
       USE_TRANSFORMER: "false"   # CPU image: Model A (+ optional hosted LLM)
+      LOCAL_ONLY: ${LOCAL_ONLY:-false}   # true: no external API at all (no LLM key needed)
     ports:
       - "8000:8000"
     volumes:

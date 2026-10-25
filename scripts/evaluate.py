@@ -115,6 +115,9 @@ def cm_md(y, p, labels) -> str:
     return "\n".join(lines)
 
 
+HAND_MARK = "<!-- hand-written sections below: kept by scripts/evaluate.py -->"
+
+
 def input_type_md() -> list[str]:
     """Input-type classifier section, from models/input_type_report.json (scripts/train_input_type.py)."""
     import json as _json
@@ -381,7 +384,11 @@ def main() -> None:
                       f"p50 **{statistics.median(api_lat):.1f} ms**, p95 **{q[18]:.1f} ms**")
     report.append("\n> Dev data is template-generated, so these validation scores are optimistic. "
                   "Treat them as a regression check, not as the expected hidden-test score.\n")
-    (ROOT / "docs" / "EVAL.md").write_text("\n".join(report), encoding="utf-8")
+    out = ROOT / "docs" / "EVAL.md"
+    # hand-written sections (headline summary, abstention, consistency, ...) after the marker are kept as they are
+    old = out.read_text(encoding="utf-8") if out.exists() else ""
+    keep = old[old.index(HAND_MARK):] if HAND_MARK in old else ""
+    out.write_text("\n".join(report) + ("\n" + keep if keep else ""), encoding="utf-8")
     print("wrote docs/EVAL.md")
 
 

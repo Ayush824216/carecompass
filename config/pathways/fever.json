@@ -10,7 +10,7 @@
     "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
   },
   "signs": {
-    "fever": {"patterns": ["fever", "bukh?aa?r", "bukar", "bhukar", "temperature", "\\btemp\\b", "taap", "बुखार", "तापमान"],
+    "fever": {"patterns": ["(sar|sir|badan|body|sharir|shareer|maatha|matha)\\s+(\\S+\\s+)?(garam|tap)\\b", "fever", "bukh?aa?r", "bukar", "bhukar", "temperature", "\\btemp\\b", "taap", "बुखार", "तापमान"],
               "label": {"en": "fever", "hi": "बुखार", "hinglish": "bukhar"}},
     "body_ache": {"patterns": ["body ?(ache|pain)", "badan (\\S+ )?(dard|toot)", "sharir (mein )?dard", "बदन (दर्द|टूट)"],
                   "label": {"en": "body ache", "hi": "बदन दर्द", "hinglish": "badan dard"}},

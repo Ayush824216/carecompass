@@ -82,7 +82,7 @@
      "label": {"en": "pregnancy with pain, bleeding or headache with vision changes", "hi": "गर्भावस्था में दर्द, खून या सिरदर्द के साथ धुंधला दिखना", "hinglish": "pregnancy mein dard, khoon ya sir dard ke saath dhundhla dikhna"}},
     {"id": "pregnancy_fever", "when": "pregnant and fever", "effect": "min_stage", "stage": "S1", "pathways": ["fever"],
      "label": {"en": "fever in pregnancy", "hi": "गर्भावस्था में बुखार", "hinglish": "pregnancy mein bukhar"}},
-    {"id": "elderly_raise", "when": "elderly", "effect": "raise", "pathways": ["fever", "cough", "breathing", "abdominal", "vomiting", "urinary"],
+    {"id": "elderly_raise", "when": "elderly", "effect": "raise", "max_stage": "S2", "pathways": ["fever", "cough", "breathing", "abdominal", "vomiting", "urinary"], "_note": "age alone never makes an emergency (S3 needs a danger sign)",
      "label": {"en": "age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}},
     {"id": "comorbid_raise", "when": "comorbid", "effect": "raise", "pathways": ["fever", "cough", "breathing", "headache", "abdominal", "vomiting", "urinary"], "_note": "chest pain rules already use diabetes / heart / BP directly",
      "label": {"en": "a long-term condition (sugar, heart, kidney, liver, cancer, steroids or HIV)", "hi": "पुरानी बीमारी (शुगर, दिल, किडनी, लीवर, कैंसर, स्टेरॉयड या HIV)", "hinglish": "purani bimari (sugar, dil, kidney, liver, cancer, steroid ya HIV)"}},

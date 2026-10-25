@@ -13,7 +13,7 @@
   "signs": {
     "mood_entry": {"patterns": ["^\\s*mann\\s*/\\s*mood\\s*$", "^\\s*मन\\s*/\\s*मूड\\s*$"],
                    "label": {"en": "mood", "hi": "मन / मूड", "hinglish": "mann / mood"}},
-    "crying": {"patterns": ["\\bro(ti|te|ta)\\s+(rehti|rehte|rehta|hoon|hun|hu|hai|hain)", "rona\\s+(aata|aa\\s+raha|aa\\s+jaata)", "\\bcrying\\b", "\\bcry\\s+a\\s+lot", "रोना\\s*आ", "रोती\\s*(रहती|हूँ|हूं)"], "label": {"en": "crying", "hi": "रोना आना", "hinglish": "rona aana"}},
+    "crying": {"patterns": ["\\bro(ti|te|ta)\\s+(rehti|rehte|rehta|hoon|hun|hu|hai|hain)", "rona\\s+(bhi\\s+|bahut\\s+)?(aata|aa\\s+raha|aa\\s+jaata)", "\\bcrying\\b", "\\bcry\\s+a\\s+lot", "रोना\\s*आ", "रोती\\s*(रहती|हूँ|हूं)"], "label": {"en": "crying", "hi": "रोना आना", "hinglish": "rona aana"}},
     "low_mood": {"patterns": ["udaa?s", "\\bdukhi\\b", "\\bsad\\b", "feel(ing|s)? (very |so )?(low|down|empty)", "low mood", "depress", "mann (nahi|nhi) lagta", "kisi cheez mein mann nahi", "hopeless", "nira(a)?sh", "उदास", "दुखी", "मन नहीं लगता", "निराश"],
                  "label": {"en": "low mood", "hi": "उदासी", "hinglish": "udaasi"}},
     "anxiety": {"patterns": ["ghabra", "anxi", "bechain", "\\bpanic", "dar lagta", "\\btension\\b", "nervous", "घबराह", "बेचैन", "डर लगता"],

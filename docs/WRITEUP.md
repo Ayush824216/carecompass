@@ -21,26 +21,28 @@ The design principle is *deterministic safety, clinical pathways, learned routin
 - **Fail-safe** (`pipeline.py`). An internal error gives a conservative same-day consult, or the emergency path if the rules see risk. LLM calls time out at 6 s and fall back locally. p95 latency without the LLM is about **10 ms**.
 
 ## 3. Data
-No real patient data is used. (1) **Dev data**, synthetic and self-generated: 1,027 vignettes (34% English, 29% Hindi, 37% Hinglish, 26% emergencies). 565 come from 80 generic templates. 462 are **pathway vignettes** from 78 templates labelled from the mentor's stage tables, covering pathway × S0–S3 × risk modifier × language. They replace generic rows inside a pathway, so the two label sources never disagree. Every row has a `template_id`, and train and validation never share a template. Model A is not fitted on pathway S3 rows, which the engine routes deterministically: training on them taught spurious emergency cues, and false emergencies on the challenge sets rose from 6% to 16%. Dev data also has 74 mock Delhi-NCR caregivers. (2) **KTAS** (Kaggle): `KTAS_expert` 1–2 → immediate, 3 → same-day, 4–5 → routine, from triage-time fields only. (3) **Disease-Symptom Description** and **Symptoms-to-Diseases** (Kaggle): symptom lists as English sentences, with diseases mapped *internally* to care types. Public rows carry lower weights (0.35–0.6). Organiser data drops into `data/official/` behind one adapter (`config/label_map.json`).
+No real patient data is used. (1) **Dev data**, synthetic and self-generated: 1,027 vignettes (34% English, 29% Hindi, 37% Hinglish, 26% emergencies). 565 come from 80 generic templates. 462 are **pathway vignettes** from 78 templates labelled from the mentor's stage tables, covering pathway × S0–S3 × risk modifier × language. They replace generic rows inside a pathway, so the two label sources never disagree. Every row has a `template_id`, and train and validation never share a template. Model A is not fitted on pathway S3 rows, which the engine routes deterministically: training on them taught spurious emergency cues, and false emergencies on the challenge sets rose from 6% to 16%. Dev data also has 77 mock Delhi-NCR caregivers. (2) **KTAS** (Kaggle): `KTAS_expert` 1–2 → immediate, 3 → same-day, 4–5 → routine, from triage-time fields only. (3) **Disease-Symptom Description** and **Symptoms-to-Diseases** (Kaggle): symptom lists as English sentences, with diseases mapped *internally* to care types. Public rows carry lower weights (0.35–0.6). Organiser data drops into `data/official/` behind one adapter (`config/label_map.json`).
 
-## 4. Results (summary; full tables in `EVAL.md`)
-| Set | care macro-F1 | urgency macro-F1 | emergency recall | under-triage |
-|---|---|---|---|---|
-| Dev validation, unseen templates, full pipeline (n=233) | 0.918 | 0.936 | **1.000** | 0.000 |
-| Hand-written challenge v1–v3 (n=130), full pipeline | 0.72–0.81 | 0.56–0.81 | **1.000** | ≤ 0.033 |
-| Blind first look, challenge v2 / v3 | 0.61 / 0.73 | 0.67 / 0.60 | 0.44 / 0.78 | – |
-| KTAS validation (urgency only, n=255) | – | 0.50 | KTAS 1–2: 0.86 | 0.067 |
+## 4. Results (dev/synthetic validation; full tables in `EVAL.md`)
+| Set (dev/synthetic validation) | care macro-F1 | urgency macro-F1 | emergency (S3) recall | false-emergency rate | under-triage |
+|---|---|---|---|---|---|
+| Dev validation, unseen templates, full pipeline (n=233) | **0.861** | **0.929** | **1.000** | 0.000 | 0.000 |
+| Hand-written challenge v1–v3 (n=130), full pipeline | 0.59–0.77 | 0.71–0.84 | **1.000** | 0.000 | ≤ 0.067 |
+| Blind first look, challenge v2 / v3 | 0.61 / 0.73 | 0.67 / 0.60 | 0.44 / 0.78 | – | – |
+| KTAS validation (urgency only, n=255) | – | 0.50 | KTAS 1–2: 0.86 | – | 0.067 |
+
+Input-type classifier macro-F1 **0.923** (unseen templates); consistency **100%** (25 inputs × 20 runs); **958** automated tests.
 
 **Clinical pathways.** On 93 vignettes from unseen templates, the engine stage is correct for all of them and **S3 recall is 1.000 in every pathway**, with zero under-triage. The full pipeline matches the authored care type and urgency on 96–100%. All 62 worked examples and the 20 edge cases from the spec pass at stage level (`tests/test_pathways.py`). End to end, 7 S0 examples come out same-day rather than routine, because the spec's "more urgent of pathway and model" rule lets the model raise them.
 
 **Model C** (MuRIL, 5 min fine-tune on an RTX 3050) scored 0.57–0.61 care-F1 on the challenge sets, against 0.71–0.80 for Model A. It overfits template style, so Model A serves. Model C is re-evaluated automatically on official data.
 
-We report **blind first-look** numbers on purpose. Each new phrasing set exposed gaps ("frothing at the mouth", "sugar 45"). Each gap was closed with general patterns and regression tests, and there are 370 tests today. The LLM's red flags, the asymmetric urgency combination and the low emergency threshold are the backstops for phrasings we did not anticipate.
+We report **blind first-look** numbers on purpose. Each new phrasing set exposed gaps ("frothing at the mouth", "sugar 45"). Each gap was closed with general patterns and regression tests, and there are 958 tests today. The LLM's red flags, the asymmetric urgency combination and the low emergency threshold are the backstops for phrasings we did not anticipate.
 
 ## 5. Known limitations
 - **Synthetic data.** Template-generated vignettes make dev validation optimistic. Pathway sign patterns were tuned while the pathway vignettes were written, so the hand-written challenge sets are the fairer estimate.
 - **Rules have finite recall.** Unusual phrasing, Devanagari typos or other Indian languages can slip through.
-- **Over-triage trade-off.** The 0.40 emergency threshold and the "more urgent wins" rule favour recall. On the challenge sets, 2–19% of non-emergencies were escalated.
+- **Over-triage trade-off.** Emergencies come only from the safety rules and pathway S3 rules; the model alone needs ≥ 0.75 confidence and can never escalate a pathway that decided below S3. This took false emergencies on the challenge sets from 2–19% to 0% with S3 recall still 1.000, but new phrasings may still over- or under-triage.
 - **Labels are our own** (e.g. the boundary between paramedic and GP). They must be re-aligned to the doctor-labelled official set. KTAS is Korean ED data triaged on vital signs, so it is auxiliary signal only.
 - **Mock services.** Caregivers, slots and booking are mock data. Voice depends on the browser's Web Speech API.
 

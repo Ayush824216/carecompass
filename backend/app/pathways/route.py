@@ -20,6 +20,9 @@ from .engine import PathwayOutcome
 URG = {"routine": 0, "same_day": 1, "immediate": 2}
 IDX = {"en": 0, "hi": 1, "hinglish": 2}
 S0_RAISE_CONF = 0.75
+# the model alone may make an emergency only when it is very sure; otherwise (no red flag, no S3 rule) it means
+# "do not wait": same day. Emergencies come from the safety rules and the pathway S3 rules (S3 recall stays 100%).
+MODEL_EMERGENCY_CONF = 0.75
 NOT_MEASURED = ("temperature not measured", "तापमान नहीं नापा गया", "temperature naapa nahi gaya")
 
 
@@ -40,9 +43,37 @@ def merge(dec: Optional[Decision], out: PathwayOutcome) -> Optional[Decision]:
     care = prim.care_type if prim.explicit else dec.care_type
     merged = Decision(care, urgency, f"pathway:{prim.pathway}+{dec.source}" if prim.explicit else dec.source,
                       dec.confidence, dec.probs, dec.red_flags, dec.llm_reasoning)
+    if prim.stage != "S3" and not dec.red_flags and (merged.care_type == "emergency_referral" or merged.urgency == "immediate"):
+        # a pathway decided below S3 and no red flag: the model cannot turn it into an emergency
+        merged.urgency = "same_day"
+        if merged.care_type == "emergency_referral":
+            merged.care_type = prim.care_type if prim.care_type != "emergency_referral" else second_care(dec)
+        merged.source += "+capped"
+        return merged
     if merged.care_type == "emergency_referral" or merged.urgency == "immediate":
         merged.care_type, merged.urgency = "emergency_referral", "immediate"
     return merged
+
+
+def second_care(dec: Decision) -> str:
+    """The model's most likely non-emergency care type (GP teleconsult when unknown)."""
+    probs = (dec.probs or {}).get("care_type") or {}
+    rest = {k: v for k, v in probs.items() if k != "emergency_referral"}
+    return max(rest, key=rest.get) if rest else "gp_teleconsult"
+
+
+def cap_model_emergency(dec: Optional[Decision], out: Optional[PathwayOutcome]) -> Optional[Decision]:
+    """No pathway, no red flag: a model-only emergency below MODEL_EMERGENCY_CONF becomes same day."""
+    if dec is None or dec.red_flags or (out is not None and out.primary is not None):
+        return dec
+    if dec.care_type != "emergency_referral" and dec.urgency != "immediate":
+        return dec
+    p = (dec.probs or {})
+    conf = max(p.get("care_type", {}).get("emergency_referral", 0.0), p.get("urgency", {}).get("immediate", 0.0))
+    if not p or conf >= MODEL_EMERGENCY_CONF:
+        return dec
+    return Decision(second_care(dec) if dec.care_type == "emergency_referral" else dec.care_type, "same_day",
+                    f"{dec.source}+capped", dec.confidence, dec.probs, dec.red_flags, dec.llm_reasoning)
 
 
 def temperature_said(temp_f: float, span: Optional[dict]) -> str:
@@ -221,6 +252,7 @@ def reasoning(out: PathwayOutcome, care_type: str, urgency: str, lang: str) -> s
     if out.facts.get("fever") and not out.facts.get("temp_measured"):
         readings.append(NOT_MEASURED[i])
     mods = [modifier_label(m, out, lang) for m in common["modifiers"] if m["id"] in prim.modifiers]
+    mods = [x for x in mods if not any(o != x and o.startswith(x) for o in mods)]  # "65+ umar" inside "65+ umar (ghar par ...)"
     items = readings + signs[:4] + mods  # "Bukhar: 4 din se, aankhon ke peeche dard, badan dard."
     head = f"{complaint}: {', '.join(items)}" if items else complaint
     care = explain.CARE[care_type][i]

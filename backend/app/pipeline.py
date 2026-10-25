@@ -266,7 +266,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         dec = combine(local, llm)
         if dec is None and prim is None:  # no model at all: conservative default
             dec = Decision("gp_teleconsult", "same_day", "default")
-        dec = proute.merge(dec, pout)  # most urgent of (pathway, ML); pathway care type when rules decided
+        dec = proute.cap_model_emergency(proute.merge(dec, pout), pout)  # most urgent of (pathway, ML); see route.merge
         tr["model_used"] = dec.source
 
         # safety re-check: rules over everything, union with any LLM red flags
@@ -379,7 +379,7 @@ def final_decision(text: str, model=None, cfg: Optional[dict] = None, use_llm: b
     dec = combine(local, llm)
     if dec is None and prim is None:
         dec = Decision("gp_teleconsult", "same_day", "default")
-    dec = proute.merge(dec, pout)
+    dec = proute.cap_model_emergency(proute.merge(dec, pout), pout)
     extra = {"stage": prim.stage, "pathway": prim.pathway} if prim else {}
     if dec.red_flags:
         return {"care_type": EMERGENCY_CARE_TYPE, "urgency": MOST_URGENT, "red_flags": dec.red_flags,

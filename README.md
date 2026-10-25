@@ -150,9 +150,22 @@ When more information is needed, `follow_up_question` is set and the decision fi
 python scripts/train.py                      # Model A (serving: all labelled data)
 python scripts/evaluate.py [--sweep]         # held-out metrics -> docs/EVAL.md
 python scripts/predict.py <test_file> [--use-llm] [--columns id,care_type,urgency]   # -> outputs/predictions.csv
-pytest -q                                    # 130+ tests, including safety
+pytest -q                                    # 958 tests, including safety
 ```
 Latest metrics: [docs/EVAL.md](docs/EVAL.md).
+
+### Results (dev/synthetic validation)
+| Metric | Value |
+|---|---|
+| Care-type macro-F1 (full pipeline, dev val n=233) | 0.861 |
+| Urgency macro-F1 (full pipeline, dev val n=233) | 0.929 |
+| S3 / emergency recall (dev val + challenge v1–v3) | 1.000 |
+| False-emergency rate (dev val / challenge v1 / v2 / v3) | 0.000 / 0.000 / 0.000 / 0.000 |
+| Input-type classifier macro-F1 | 0.923 |
+| Consistency (25 inputs × 20 runs) | 100% |
+| Automated tests | 958 |
+
+Dev data is template-generated and the challenge sets are our own, so these are regression checks, not a hidden-test estimate.
 
 ## Safety design
 - **Rules first and last.** The red-flag engine runs before any model and again after the model and LLM have decided. The LLM's red flags are unioned in. Any flag means `emergency_referral` + `immediate`, no follow-ups and no caregiver matching.

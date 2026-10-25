@@ -6,6 +6,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY backend ./backend
 COPY config ./config
+COPY kb ./kb
 COPY dev_data ./dev_data
 COPY scripts ./scripts
 COPY docker/entrypoint.sh /entrypoint.sh

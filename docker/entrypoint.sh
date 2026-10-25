@@ -8,4 +8,7 @@ fi
 if [ ! -f models/model_a.joblib ]; then
   echo "[entrypoint] training Model A"; python scripts/train.py
 fi
+if [ ! -f models/input_type.joblib ]; then
+  echo "[entrypoint] training the input-type classifier"; python scripts/train_input_type.py || echo "[entrypoint] input-type training skipped (rules still work)"
+fi
 exec uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8000 --workers ${WORKERS:-2}
