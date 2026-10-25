@@ -31,13 +31,13 @@ No real patient data is used. (1) **Dev data**, synthetic and self-generated: 1,
 | Blind first look, challenge v2 / v3 | 0.61 / 0.73 | 0.67 / 0.60 | 0.44 / 0.78 | – | – |
 | KTAS validation (urgency only, n=255) | – | 0.50 | KTAS 1–2: 0.86 | – | 0.067 |
 
-Input-type classifier macro-F1 **0.923** (unseen templates); consistency **100%** (25 inputs × 20 runs); **958** automated tests.
+Input-type + intent classifier macro-F1 **0.720** (11 classes, unseen frames); consistency **100%** (25 inputs × 20 runs); **1067** automated tests.
 
 **Clinical pathways.** On 93 vignettes from unseen templates, the engine stage is correct for all of them and **S3 recall is 1.000 in every pathway**, with zero under-triage. The full pipeline matches the authored care type and urgency on 96–100%. All 62 worked examples and the 20 edge cases from the spec pass at stage level (`tests/test_pathways.py`). End to end, 7 S0 examples come out same-day rather than routine, because the spec's "more urgent of pathway and model" rule lets the model raise them.
 
 **Model C** (MuRIL, 5 min fine-tune on an RTX 3050) scored 0.57–0.61 care-F1 on the challenge sets, against 0.71–0.80 for Model A. It overfits template style, so Model A serves. Model C is re-evaluated automatically on official data.
 
-We report **blind first-look** numbers on purpose. Each new phrasing set exposed gaps ("frothing at the mouth", "sugar 45"). Each gap was closed with general patterns and regression tests, and there are 958 tests today. The LLM's red flags, the asymmetric urgency combination and the low emergency threshold are the backstops for phrasings we did not anticipate.
+We report **blind first-look** numbers on purpose. Each new phrasing set exposed gaps ("frothing at the mouth", "sugar 45"). Each gap was closed with general patterns and regression tests, and there are 1067 tests today. The LLM's red flags, the asymmetric urgency combination and the low emergency threshold are the backstops for phrasings we did not anticipate.
 
 ## 5. Known limitations
 - **Synthetic data.** Template-generated vignettes make dev validation optimistic. Pathway sign patterns were tuned while the pathway vignettes were written, so the hand-written challenge sets are the fairer estimate.

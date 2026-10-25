@@ -8,7 +8,8 @@ from dataclasses import asdict
 from functools import lru_cache
 from typing import Optional
 
-from . import assessment, domain_guard, evidence, explain, intake, lexicon, llm_triage, matching, memory, pathways, safety
+from . import (assessment, domain_guard, evidence, explain, intake, intent_llm, lexicon, llm_triage, matching, memory,
+               pathways, safety)
 from .pathways.engine import TREATMENT_LINE
 from .config import get_settings
 from .pathways import route as proute
@@ -119,17 +120,17 @@ def _pending_clinical_question(req: TriageRequest):
 
 
 _SITE_Q = {re.sub(r"\s+", " ", clean(t).lower()).strip(): flag
-           for flag, texts in safety.SITE_CONFIRM.items() for t in texts.values()}
+           for flag in safety.FLAG_LABELS for t in (safety.confirm_text(flag, l) for l in ("en", "hi", "hinglish"))}
 _NO = re.compile(r"^\W*(nahi|nahin|nhi|nai|no|nope|नहीं|ना)\b", re.I)
 
 
-def _site_answers(req: TriageRequest) -> tuple[set[str], set[str], bool]:
-    """Answers to the "is there really ... right now?" confirmation: (yes flags, no flags, answered in this turn).
-    Anything but a clear "no" counts as yes."""
+def _site_answers(req: TriageRequest) -> tuple[set[str], set[str], bool, str]:
+    """Answers to the "is there really ... right now?" confirmation: (yes flags, no flags, answered in this turn,
+    the message that led to it). Anything but a clear "no" counts as yes."""
     turns = [(t.role, t.content or "") for t in req.conversation_history]
     if not turns or turns[-1] != ("user", req.user_input):
         turns.append(("user", req.user_input))
-    yes, no, pending, last = set(), set(), None, False
+    yes, no, pending, last, prior = set(), set(), None, False, ""
     for i, (role, content) in enumerate(turns):
         if role == "assistant":
             pending = _SITE_Q.get(re.sub(r"\s+", " ", clean(content).lower()).strip())
@@ -138,7 +139,9 @@ def _site_answers(req: TriageRequest) -> tuple[set[str], set[str], bool]:
             (no if _NO.match(content) else yes).add(pending)
             last = i == len(turns) - 1
             pending = None
-    return yes, no, last
+        else:
+            prior = content
+    return yes, no, last, prior
 
 
 def _strip_phrases(req: TriageRequest, phrases: list[str]) -> TriageRequest:
@@ -151,8 +154,12 @@ def _strip_phrases(req: TriageRequest, phrases: list[str]) -> TriageRequest:
     return req.model_copy(update={"user_input": strip(req.user_input) or req.user_input, "conversation_history": hist})
 
 
+def _last_assistant(req: TriageRequest) -> str:
+    return next((t.content or "" for t in reversed(req.conversation_history) if t.role == "assistant"), "")
+
+
 def site_confirmation(flag: str, lang: str, tr: dict) -> TriageResponse:
-    q = safety.SITE_CONFIRM[flag].get(lang) or safety.SITE_CONFIRM[flag]["en"]
+    q = safety.confirm_text(flag, lang)
     tr["followup"].update({"question_id": f"confirm.site:{flag}", "kind": "site_confirm", "multi": False, "confirmation": True,
                            "options": [{"id": k, "label": v.get(lang) or v["en"], "severity": "definite_S3" if k == "yes" else None}
                                        for k, v in safety.SITE_CHIPS.items()]})
@@ -240,6 +247,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         tr["term_matches"] = term_matches(" . ".join(turns))
 
         # the patient is an animal: a vet, before any safety keyword ("kutte ke dil mein heart attack" is not ours)
+        pending_q = _pending_clinical_question(req) is not None
         if domain_guard.is_animal_patient(req.user_input):
             tr["domain_class"] = domain_guard.ANIMAL_CLASS
             tr["model_used"] = "domain_guard"
@@ -258,11 +266,59 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         t = time.perf_counter()
         sres = safety.check(_safety_texts(turns, state), extra_flags=_extra_flags(state))
         # anatomically impossible red flag ("kidney mein heart attack"): one confirmation, 112 / 108 stay on screen
-        site_yes, site_no, site_now = _site_answers(req)
+        site_yes, site_no, site_now, site_prior = _site_answers(req)
         if site_yes:
             tr["domain_class"] = domain_guard.HEALTH
             tr["model_used"] = "rules:site_check"
             return emergency_response(sorted(site_yes | set(sres.red_flags)), lang)
+        # joke / song line / heartbreak idiom / deceased or non-living "patient": decided locally (no LLM).
+        # A red-flag word is never dismissed: it becomes the one confirmation question (112 / 108 on screen).
+        intent = None if (pending_q or site_now) else domain_guard.local_intent(req.user_input)
+        if "suicidal_intent" in sres.red_flags:  # self-harm: the crisis screen at once, never a confirmation
+            tr["domain_class"] = domain_guard.HEALTH
+            return emergency_response(sres.red_flags, lang)
+        if site_no and not site_yes and site_now:  # "Nahi": a polite reply (the joke / heartbreak / deceased one if known)
+            prior_intent = domain_guard.local_intent(site_prior) or domain_guard.POLITE
+            tr["domain_class"] = prior_intent
+            tr["model_used"] = "domain_guard:intent"
+            return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                  reasoning=domain_guard.intent_text(prior_intent, lang), matched_caregivers=[])
+        if intent:
+            tr["intent"] = intent
+            if sres.red_flags or sres.unsure:
+                tr["domain_class"] = domain_guard.HEALTH
+                tr["safety_checks"] = {"red_flags": [], "unconfirmed": sres.red_flags, "unsure": sres.unsure, "stage": "pre_model"}
+                return site_confirmation((sres.red_flags or list(sres.unsure))[0], lang, tr)
+            tr["domain_class"] = intent
+            tr["model_used"] = "domain_guard:intent"
+            return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                  reasoning=domain_guard.intent_text(intent, lang), matched_caregivers=[])
+        # Gemini intent guardrail: one closed label per turn. It can only add a confirmation or a polite reply; it
+        # never lowers urgency, never dismisses a red flag, and without it (no key / Incognito / timeout) rules decide.
+        g = None if (pending_q or site_now) else intent_llm.classify(req.user_input, _last_assistant(req))
+        if g:
+            tr["gemini_intent"] = g
+            lab, flags_now = g["label"], sres.red_flags or list(sres.unsure)
+            # Gemini alone never dismisses a message in which the local checks see health evidence
+            real = domain_guard.has_health_signal(req.user_input) or domain_guard.has_lexicon_signal(req.user_input)
+            if lab in ("joke_or_song_lyric", "absurd_or_impossible", "non_medical_off_topic", "gibberish", "hypothetical",
+                       "deceased_patient", "animal_patient") and flags_now:
+                tr["domain_class"] = domain_guard.HEALTH
+                tr["safety_checks"] = {"red_flags": [], "unconfirmed": sres.red_flags, "unsure": sres.unsure, "stage": "gemini"}
+                return site_confirmation(flags_now[0], lang, tr)
+            reply = {"joke_or_song_lyric": domain_guard.POLITE, "absurd_or_impossible": domain_guard.POLITE,
+                     "non_medical_off_topic": domain_guard.POLITE, "gibberish": domain_guard.POLITE,
+                     "hypothetical": domain_guard.HYPOTHETICAL}.get(lab)
+            if lab == "animal_patient" and not real:
+                tr["domain_class"] = domain_guard.ANIMAL_CLASS
+                return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                      reasoning=domain_guard.vet_text(lang), matched_caregivers=[])
+            if reply and not real:
+                tr["domain_class"] = f"gemini:{lab}"
+                tr["model_used"] = "gemini_intent"
+                return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                      reasoning=domain_guard.intent_text(reply, lang), matched_caregivers=[])
+            # genuine_health, prompt_injection (ignored), past_event, deceased without a red flag: normal pipeline
         open_site = [f for f in sres.unsure if f not in site_no]
         if open_site and not sres.is_emergency:
             tr["domain_class"] = domain_guard.HEALTH

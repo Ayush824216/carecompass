@@ -17,7 +17,10 @@ from .lang import clean
 
 log = logging.getLogger("carecompass.input_type")
 
-CLASSES = ("health", "greeting_smalltalk", "off_topic", "gibberish", "math_or_code")
+CLASSES = ("health", "greeting_smalltalk", "off_topic", "gibberish", "math_or_code",
+           # intent / plausibility classes (local, no LLM): what kind of message this is, not a diagnosis
+           "joke_or_lyric", "hypothetical", "absurd_or_impossible", "animal_patient", "deceased_patient", "past_event")
+INTENTS = CLASSES[5:]
 MIN_CONF = 0.6
 WORD = re.compile(r"[a-zऀ-ॿ]+", re.I)
 
@@ -60,12 +63,22 @@ TO_GUARD = {"greeting_smalltalk": "greeting_smalltalk", "off_topic": "off_topic"
 
 
 def predict(text: str, min_conf: float = MIN_CONF) -> Optional[str]:
-    """Guard class name when the classifier is confident, else None."""
+    """Guard class name when the classifier is confident, else None (intent classes: see `intent`)."""
     p = proba(text)
     if not p:
         return None
     best = max(sorted(p), key=lambda c: p[c])  # sorted first: a tie always resolves the same way
-    return TO_GUARD[best] if p[best] >= min_conf else None
+    return TO_GUARD.get(best) if p[best] >= min_conf else None
+
+
+def intent(text: str, min_conf: float = 0.9) -> Optional[str]:
+    """An intent class (joke_or_lyric, absurd_or_impossible, ...) only when the classifier is very sure, else None.
+    It backs up the rules in app.domain_guard; a red-flag word is never dismissed on this alone (see pipeline)."""
+    p = proba(text)
+    if not p:
+        return None
+    best = max(sorted(p), key=lambda c: p[c])
+    return best if best in INTENTS and p[best] >= min_conf else None
 
 
 # ---------------------------------------------------------------- simple gibberish features (no model needed)

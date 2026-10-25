@@ -21,7 +21,7 @@ W = r"(?:\S+\s+)"  # one word + trailing space, for "up to N words between" gaps
 SIMPLE: dict[str, list[str]] = {
     "chest_pain": [
         r"chest\s*(pain|pressure|tightness|heaviness|discomfort)", r"(pain|pressure|tightness|heaviness)\s+in\s+(the\s+|my\s+|his\s+|her\s+)?chest",
-        r"heart\s*attack", r"(crushing|squeezing)\s+(pain\s+)?(in\s+)?(the\s+)?chest",
+        r"heart\s*attack", r"\b(heart|hart|haert)\s*(at+a?c?k\w*|atta\w*|atak\w*)", r"(crushing|squeezing)\s+(pain\s+)?(in\s+)?(the\s+)?chest",
         rf"\b(seene|sine|seena|sina|chhati|chati|chest)\s+{W}{{0,3}}(dard|dardh|pain|dabav|dabaav|bhaari|bhari|bharipan|jakdan)",
         r"dil\s+(ka\s+daura|mein\s+dard|me\s+dard)",
         r"(सीने|छाती|सीना)[^।,.!?]{0,20}(दर्द|दबाव|भारीपन|भारी|जकड़न)", r"दिल का दौरा", r"दिल में दर्द",
@@ -32,7 +32,7 @@ SIMPLE: dict[str, list[str]] = {
         r"short(ness)?\s+of\s+breath", r"breathless", r"gasping", r"choking", r"not\s+breathing", r"stopped\s+breathing",
         r"breathing\s+(very\s+)?(fast|rapid|heavily|hard)", r"cannot breathe", r"dyspn", r"respiratory\s+distress",
         r"breathing\s+is\s+(very\s+)?(hard|difficult|laboured|labored)",
-        rf"\b(saa?ns|sans|saas|swas|shwas|swaas)\s+{W}{{0,3}}(nahi\s+aa|nhi\s+aa|nahin\s+aa|ruk|phool|phul|ful\b|fool|dikk?at|takleef|taklif|problem|tang|band|nahi\s+le|nhi\s+le|atak|ukhad)",
+        rf"\b(saa?ns|sans|saas|swas|shwas|swaas)\s+{W}{{0,3}}(nahi\s+aa|nhi\s+aa|nahin\s+aa|nahi\s+ja|nhi\s+ja|ruk|phool|phul|ful\b|fool|dikk?at|takleef|taklif|problem|tang|band|nahi\s+le|nhi\s+le|atak|ukhad)",
         r"dam\s+gh[ou]t",
         r"(साँस|सांस|सास|श्वास)[^।,.!?]{0,25}(नहीं आ|फूल|रुक|दिक्कत|तकलीफ|परेशानी|नहीं ले|बंद|अटक|उखड़)", r"दम घुट",
     ],
@@ -463,8 +463,8 @@ SITE_BEFORE = re.compile(rf"(?:^|[^\wऀ-ॿ])(?:{_LOC})\s*(?:ke\s+andar|के\
 SITE_AFTER = re.compile(rf"\b(?:in|inside|of)\s+(?:my|the|his|her|a|an)?\s*(?:{_LOC})\b", re.I)
 JOIN = re.compile(r"\b(aur|and|bhi|also|plus|lekin|but|tatha)\b|और|तथा|लेकिन|,", re.I)
 SITE_CONFIRM = {
-    "chest_pain": {"en": "Is there really chest pain or pressure right now?", "hi": "क्या अभी सच में सीने में दर्द या दबाव है?",
-                   "hinglish": "Kya abhi sach mein seene mein dard ya dabav hai?"},
+    "chest_pain": {"en": "Do you really have chest pain right now?", "hi": "क्या आपको सच में अभी सीने में दर्द है?",
+                   "hinglish": "Kya aapko sach mein abhi seene mein dard hai?"},
     "severe_breathing_difficulty": {"en": "Is there really trouble breathing right now?", "hi": "क्या अभी सच में साँस लेने में दिक्कत है?",
                                     "hinglish": "Kya abhi sach mein saans lene mein dikkat hai?"},
     "stroke_signs": {"en": "Right now, is the face drooping, speech slurred, or one side of the body weak?",
@@ -473,6 +473,16 @@ SITE_CONFIRM = {
 }
 SITE_CHIPS = {"yes": {"en": "Yes, right now", "hi": "हाँ, अभी", "hinglish": "Haan, abhi"},
               "no": {"en": "No", "hi": "नहीं", "hinglish": "Nahi"}}
+
+
+def confirm_text(flag: str, lang: str) -> str:
+    """The one "is this really happening now?" question for a red flag said in an unlikely context."""
+    lang = lang if lang in ("en", "hi", "hinglish") else "en"
+    if flag in SITE_CONFIRM:
+        return SITE_CONFIRM[flag][lang]
+    label = flag_label(flag, lang)
+    return {"en": f"Is this really happening right now: {label}?", "hi": f"क्या अभी सच में यह हो रहा है: {label}?",
+            "hinglish": f"Kya abhi sach mein yeh ho raha hai: {label}?"}[lang]
 
 
 def _flag_span(flag: str, clause: str) -> tuple[int, int] | None:

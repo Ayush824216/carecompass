@@ -152,7 +152,7 @@ When more information is needed, `follow_up_question` is set and the decision fi
 python scripts/train.py                      # Model A (serving: all labelled data)
 python scripts/evaluate.py [--sweep]         # held-out metrics -> docs/EVAL.md
 python scripts/predict.py <test_file> [--use-llm] [--columns id,care_type,urgency]   # -> outputs/predictions.csv
-pytest -q                                    # 958 tests, including safety
+pytest -q                                    # 1067 tests, including safety
 ```
 Latest metrics: [docs/EVAL.md](docs/EVAL.md).
 
@@ -163,9 +163,9 @@ Latest metrics: [docs/EVAL.md](docs/EVAL.md).
 | Urgency macro-F1 (full pipeline, dev val n=233) | 0.929 |
 | S3 / emergency recall (dev val + challenge v1–v3) | 1.000 |
 | False-emergency rate (dev val / challenge v1 / v2 / v3) | 0.000 / 0.000 / 0.000 / 0.000 |
-| Input-type classifier macro-F1 | 0.923 |
+| Input-type + intent classifier macro-F1 (11 classes) | 0.720 |
 | Consistency (25 inputs × 20 runs) | 100% |
-| Automated tests | 958 |
+| Automated tests | 1067 |
 
 Dev data is template-generated and the challenge sets are our own, so these are regression checks, not a hidden-test estimate.
 

@@ -160,6 +160,78 @@ def vet_text(lang: str) -> str:
     return VET_TEXT.get(lang) or VET_TEXT["en"]
 
 
+# --- local intent / plausibility (no LLM): joke or song line, heartbreak idiom, a deceased or non-living "patient" ------
+JOKE = "joke_or_lyric"
+ABSURD = "absurd_or_impossible"
+DECEASED = "deceased_patient"
+HEARTBREAK = "heartbreak_idiom"
+JOKE_MARK = re.compile(r"\b(disco|lol+|haha+|hehe+|lmao|rofl|lyrics?|antakshari|jokes?|mazaa?k|just\s+kidding|kidding|filmy|"
+                       r"gaane\s+ki\s+line|song\s+ki\s+line|wala\s+gaana|gaana\s+(bajao|sunao|baj\s+raha)|sanam|ishq|mohabbat|jaaneman|jaanu)\b|😂|🤣|😜|😆|😅|🎵|🎶|💃|🕺|मज़ाक|गाने\s*की\s*लाइन", re.I)
+HEARTBREAK_RX = re.compile(r"\bdil\s+(toot|tut|tuut)\w*|\bdil\s+tod\w*|dil\s+ke\s+tukde|heart\s*break\w*|heart\s+(is\s+)?broken|"
+                           r"broke\s+my\s+heart|broken\s+heart|\bbreak\s*-?\s*up\b|\b(uski|unki|teri|tumhari|her|his)\s+yaad|yaad\s+mein|"
+                           r"दिल\s*टूट|उसकी\s*याद|याद\s*में", re.I)
+DEAD_PATIENT = re.compile(
+    r"(mar[aie]\s+hu[aie]|mar\s+chuk[aie]|guzr[aie]\s+hu[aie]|marhoom|swargiya|swargvasi|\blate|\bdead|\bdeceased|\bdeparted|"
+    r"मर[ाीे]\s*हु[एईआ]|गुज़र[ेी]\s*हु[एई]|स्वर्गीय)\s+(\S+\s+){0,2}\S+\s+(ko|ke|ki|ka|has|is|को|के|की)\b"
+    r"|\b(jo\s+(mar|guzar)\s+(chuke|gaye|gayi)|jo\s+ab\s+nahi\s+rahe)\b", re.I)
+OBJECT_PATIENT = re.compile(
+    r"\b(phone|mobile|laptop|computer|tv|fridge|car|gaadi|bike|scooter|ac|cooler|pankh[ae]|kursi|ghadi|chand|suraj|baadal)\s+"
+    r"(ko|ke|ki|ka|has|is)\s+(\S+\s+){0,3}(bukhar|heart\s+attack|dil|dard|saans|ulti|khansi|zukaam|fever|bimaar|lakwa|cough)", re.I)
+REAL_COMPLAINT = re.compile(r"\d|\b(din|dino|hafte|mahine|ghante|saal)\s+se\b|\b(kal|subah|raat|parso)\s+se\b|\babhi\b|\baaj\b|"
+                            r"\bsince\b|\bfor\s+\d|\bright\s+now\b|\btoday\b|अभी|आज", re.I)
+INTENT_TEXT = {
+    JOKE: {"en": "Looks like a joke or a song line 🙂 If something is really wrong, please tell me.",
+           "hi": "लगता है यह मज़ाक या गाने की लाइन है 🙂 अगर सच में कोई तकलीफ है तो बताइए।",
+           "hinglish": "Lagta hai ye mazaak ya gaane ki line hai 🙂 Agar sach mein koi takleef hai to batayein."},
+    HEARTBREAK: {"en": "A broken heart can really hurt. That is not a heart problem but a feeling, and support helps. Would you like to talk about your mood?",
+                 "hi": "दिल टूटना बहुत दुख देता है। यह दिल की बीमारी नहीं, मन की तकलीफ है, और इसके लिए मदद मिलती है। क्या आप मन / मूड के बारे में बात करना चाहेंगे?",
+                 "hinglish": "Dil tootna bahut dukh deta hai. Yeh dil ki bimari nahi, mann ki takleef hai, aur iske liye madad milti hai. Kya aap mann / mood ke baare mein baat karna chahenge?"},
+    DECEASED: {"en": "It sounds like this is about someone who is no longer with us. If anyone is unwell right now, please tell me.",
+               "hi": "लगता है यह किसी ऐसे व्यक्ति की बात है जो अब नहीं रहे। अगर अभी किसी की तबीयत खराब है तो बताइए।",
+               "hinglish": "Lagta hai yeh kisi aise vyakti ki baat hai jo ab nahi rahe. Agar abhi kisi ki tabiyat kharab hai to batayein."},
+}
+INTENT_TEXT[ABSURD] = INTENT_TEXT[JOKE]
+POLITE = "polite_redirect"
+HYPOTHETICAL = "hypothetical_info"
+INTENT_TEXT[POLITE] = {"en": "I can only help with health. What is the problem, who has it, and since when?",
+                       "hi": "मैं सिर्फ़ सेहत से जुड़ी मदद करता हूँ। क्या तकलीफ है, किसे, और कब से?",
+                       "hinglish": "Main sirf sehat se judi madad karta hoon. Kya takleef hai, kisko, aur kab se?"}
+INTENT_TEXT[HYPOTHETICAL] = {
+    "en": "That is a 'what if' question. If it ever happens, call 112 or 108 right away. If someone is unwell now, tell me what is happening.",
+    "hi": "यह 'अगर' वाला सवाल है। अगर कभी ऐसा हो, तो तुरंत 112 या 108 पर कॉल करें। अगर अभी किसी की तबीयत खराब है, तो बताइए क्या हो रहा है।",
+    "hinglish": "Yeh 'agar' wala sawaal hai. Agar kabhi aisa ho, to turant 112 ya 108 par call karein. Agar abhi kisi ki tabiyat kharab hai, to batayein kya ho raha hai."}
+
+
+def local_intent(text: str) -> str | None:
+    """joke_or_lyric | absurd_or_impossible | deceased_patient | heartbreak_idiom, or None for an ordinary message.
+    Rules first (markers, idioms, a non-living or deceased "patient"); the local classifier backs them up only when it is
+    very sure and the message has no symptom evidence. Red flags are never dismissed here (see pipeline)."""
+    t = unicodedata.normalize("NFC", text or "")
+    if OBJECT_PATIENT.search(t):
+        return ABSURD
+    if DEAD_PATIENT.search(t):
+        return DECEASED
+    joke = bool(JOKE_MARK.search(t))
+    if HEARTBREAK_RX.search(t) and not joke:
+        # an idiom alone ("mera dil toot gaya"); real mood symptoms ("neend nahi aati, udaas") go to the mood pathway
+        from . import pathways
+        out = pathways.run([t])
+        return None if any(r.pathway == "mood" for r in out.results) else HEARTBREAK
+    if joke:
+        # "lol mujhe 3 din se bukhar hai" is still a health request: a symptom said like a real complaint
+        return None if (extract_slots([t]).symptoms and REAL_COMPLAINT.search(t)) else JOKE
+    from . import input_type
+    learned = input_type.intent(t)
+    if learned in (JOKE, ABSURD, DECEASED) and not extract_slots([t]).symptoms:
+        return learned
+    return None
+
+
+def intent_text(intent: str, lang: str) -> str:
+    m = INTENT_TEXT[intent]
+    return m.get(lang) or m["en"]
+
+
 def has_health_signal(text: str) -> bool:
     """At least one evidence span in the user's own words (symptom, complaint, sign or red flag)."""
     return any(sp.kind != "lexicon" for sp in evidence.find([text]))

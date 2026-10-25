@@ -11,7 +11,7 @@ Setup: backend + frontend running (`LOCAL_ONLY=true` is fine: no LLM key needed)
 | 5 | 2:00–2:20 | **Women's health + several complaints** | New chat → *"Mujhe periods mein bahut dard hota hai, mood swings aur rona bhi aata hai"*. Answer **Inmein se kuch nahi**, age, **Nahi**, **Kuch mahino se** | Routed to a gynaecologist. The reply ends with "Aapne rona aana aur mood badalna bhi bataya — kya aap is par bhi baat karna chahengi?", and the **Talk about** button opens the mood pathway. |
 | 6 | 2:20–2:35 | **Abstention** | New chat → *"abba dabba jabba"* | No clinical question: "I could not find a health problem… what, who, since when?". Then *"mujhe cnacer hai"* is recognised despite the typo, and the name is not repeated back. |
 | 7 | 2:35–2:50 | **Incognito** | Tap **Incognito** in the navbar | Toast "Incognito on: nothing will be saved". The chat gets a dashed border. Nothing is written to the device, server cache, metrics or logs, and the LLM is skipped. |
-| 8 | 2:50–3:00 | Metrics | `docs/EVAL.md`, headline table | Dev/synthetic validation: S3 recall 1.000, false emergencies 0 on the challenge sets, care-type F1 0.861, urgency F1 0.929, 958 tests. "Routing support only: no diagnosis, no prescriptions." End card: team OCTUPUS, KIET. |
+| 8 | 2:50–3:00 | Metrics | `docs/EVAL.md`, headline table | Dev/synthetic validation: S3 recall 1.000, false emergencies 0 on the challenge sets, care-type F1 0.861, urgency F1 0.929, 1067 tests. "Routing support only: no diagnosis, no prescriptions." End card: team OCTUPUS, KIET. |
 
 **Before recording**
 - Add two SOS contacts on `/sos` (demo numbers) and grant location permission, so no prompt appears mid-shot.

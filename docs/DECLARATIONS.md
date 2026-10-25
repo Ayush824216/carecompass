@@ -39,6 +39,7 @@ The clinical pathway thresholds and danger signs (`docs/CLINICAL_PATHWAYS.md`, `
 | API | Use |
 |---|---|
 | Hosted LLM API (provider TBD: OpenAI-compatible / Gemini / Anthropic) | Model B triage call, 6 s timeout, local fallback. |
+| Google Gemini API (`gemini-flash-lite-latest`, optional, `GEMINI_API_KEY`) | **Intent classification only**: one closed label per user turn (genuine_health, joke_or_song_lyric, hypothetical, absurd_or_impossible, animal_patient, deceased_patient, past_event, non_medical_off_topic, gibberish, prompt_injection). Temperature 0, strict JSON, 4 s timeout, PII redacted first, no call in Incognito or LOCAL_ONLY. It never writes user-facing text and can never lower urgency or dismiss a red flag; without it the local rules and classifier decide. |
 | Browser Web Speech API (SpeechRecognition, speechSynthesis) | Voice input (hi-IN / en-IN) and read-aloud in the frontend; runs in the user's browser. |
 | Google Maps Platform: Maps JavaScript API, Places API (Place Autocomplete, India only), Geocoding API | Maps (location picker, caregiver map, emergency screen), "Search your area" and the area name for a GPS fix or dropped pin. Called from the user's browser with `VITE_GOOGLE_MAPS_API_KEY` (frontend/.env, never committed); our server never sees the location. Optional: without a key, or if Google fails to load, the app uses Leaflet + OpenStreetMap. |
 | OpenStreetMap tile servers | Fallback map tiles when Google Maps is not configured (© OpenStreetMap contributors, ODbL; attribution shown on the map). |

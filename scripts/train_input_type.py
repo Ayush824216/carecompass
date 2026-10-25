@@ -1,4 +1,6 @@
-"""Train the input-type classifier: health | greeting_smalltalk | off_topic | gibberish | math_or_code.
+"""Train the input-type classifier: health | greeting_smalltalk | off_topic | gibberish | math_or_code, plus the
+intent classes joke_or_lyric | hypothetical | absurd_or_impossible | animal_patient | deceased_patient | past_event
+(scripts/intent_data.py: generated EN / HI / Hinglish rows, >= 300 per class, with real-health look-alikes).
 
     python scripts/train_input_type.py [--seed 7]
 
@@ -29,6 +31,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "backend"))
 
 from app.input_type import CLASSES, build_pipeline  # noqa: E402
+
+sys.path.insert(0, str(ROOT / "scripts"))
+from intent_data import intent_rows  # noqa: E402
 
 # ---------------------------------------------------------------- generators
 KEYROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm", "1234567890"]
@@ -216,23 +221,24 @@ def main() -> None:
     import joblib
     import numpy as np
     from sklearn.metrics import classification_report, confusion_matrix
-    from sklearn.model_selection import GroupShuffleSplit
+    from sklearn.model_selection import StratifiedGroupKFold
 
     rng = random.Random(a.seed)
-    rows = health_rows(rng) + generate(rng)
+    rows = health_rows(rng) + generate(rng) + intent_rows(rng)
     X = np.array([r["text"] for r in rows], dtype=object)
     y = np.array([r["label"] for r in rows])
     g = np.array([r["group"] for r in rows])
     counts = {c: int((y == c).sum()) for c in CLASSES}
     print("rows per class:", counts, file=sys.stderr)
 
-    tr, va = next(GroupShuffleSplit(n_splits=1, test_size=0.25, random_state=a.seed).split(X, y, g))
+    # every class keeps unseen groups (templates / frames) in validation
+    tr, va = next(StratifiedGroupKFold(n_splits=4, shuffle=True, random_state=a.seed).split(X, y, g))
     m = build_pipeline(a.seed).fit(X[tr], y[tr])
     pred = m.predict(X[va])
     rep = classification_report(y[va], pred, labels=list(CLASSES), output_dict=True, zero_division=0)
     cm = confusion_matrix(y[va], pred, labels=list(CLASSES)).tolist()
     report = {"classes": list(CLASSES), "rows": counts, "n_train": int(len(tr)), "n_val": int(len(va)),
-              "split": "GroupShuffleSplit by template/generator id (test_size=0.25)", "seed": a.seed,
+              "split": "StratifiedGroupKFold by template/generator id (1 of 4 folds)", "seed": a.seed,
               "per_class_f1": {c: round(rep[c]["f1-score"], 3) for c in CLASSES},
               "support": {c: int(rep[c]["support"]) for c in CLASSES},
               "macro_f1": round(rep["macro avg"]["f1-score"], 3), "confusion": cm}
