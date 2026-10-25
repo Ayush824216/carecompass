@@ -635,6 +635,8 @@ ROLES = {
 CORE_SPECIALTIES = ["dermatology", "orthopedics", "cardiology", "pediatrics", "ent", "gynecology", "neurology", "pulmonology"]
 OTHER_SPECIALTIES = ["ophthalmology", "endocrinology", "psychiatry", "oncology"]
 SPECIALTIES = CORE_SPECIALTIES + OTHER_SPECIALTIES
+# appended last (so earlier caregivers keep their data): more gynaecologists for the women's health pathway
+EXTRA_SPECIALISTS = ["gynecology", "gynecology", "gynecology"]
 SPECIALTY_QUAL = {
     "dermatology": "MBBS, MD (Dermatology)", "orthopedics": "MBBS, MS (Orthopaedics)",
     "cardiology": "MBBS, MD, DM (Cardiology)", "pediatrics": "MBBS, MD (Paediatrics)", "ent": "MBBS, MS (ENT)",
@@ -676,7 +678,7 @@ def _slots(rng: random.Random, base: date) -> list[str]:
 
 def make_caregivers(rng: random.Random, base: date) -> list[dict]:
     locs = _localities()
-    plan = [(r, None) for r, (n, _) in ROLES.items() for _ in range(n)] + [("specialist", s) for s in CORE_SPECIALTIES for _ in range(3)]         + [("specialist", s) for s in OTHER_SPECIALTIES for _ in range(2)]
+    plan = [(r, None) for r, (n, _) in ROLES.items() for _ in range(n)] + [("specialist", s) for s in CORE_SPECIALTIES for _ in range(3)]         + [("specialist", s) for s in OTHER_SPECIALTIES for _ in range(2)] + [("specialist", s) for s in EXTRA_SPECIALISTS]
     out = []
     for i, (role, spec) in enumerate(plan, start=1):
         loc = locs[(i * 7) % len(locs)]  # spread every role across all localities

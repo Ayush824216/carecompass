@@ -238,7 +238,7 @@ def test_e20_iron_tablets_black_stool():
 # ---------------------------------------------------------------- engine behaviour
 def test_missing_slots_never_lower_and_rules_validate():
     common, pathways, signs = pw.load()  # loading validates every rule expression
-    assert set(pathways) == {"fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary", "mood", "general"} and len(signs) > 50
+    assert set(pathways) == {"fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary", "women", "mood", "general"} and len(signs) > 50
 
 
 def test_questions_danger_first_and_stop_on_s3():

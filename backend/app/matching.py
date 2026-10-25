@@ -63,7 +63,8 @@ KEYWORD_SPECIALTY: list[tuple[str, str]] = [
     (r"knee|joint|ghutn|jod|back pain|kamar|spine|fracture|haddi|घुटन|जोड़|कमर|हड्डी|heel|edi|एड़ी", "orthopedics"),
     (r"heart|dil\b|dhadkan|chest|bp\b|blood pressure|धड़कन|दिल|बीपी", "cardiology"),
     (r"\bear\b|kaan|nose|naak|throat|gala|gale|hearing|sunai|कान|नाक|गला|गले|सुनाई|tonsil", "ent"),
-    (r"pregnan|period|mahwari|breast|garbh|गर्भ|पीरियड|स्तन|vaginal|white discharge", "gynecology"),
+    (r"pregnan|period|mahwari|breast|garbh|गर्भ|पीरियड|स्तन|vaginal|white discharge|safe?d\s+paa?ni|likoria|menopaus|"
+     r"delivery|postpartum|prasav|yoni|सफ़?े?द\s*पानी|माहवारी|डिलीवरी|प्रसव", "gynecology"),
     (r"migraine|headache|sar dard|sir dard|tremor|kaanp|numb|tingl|sunn|seizure history|सिर दर्द|सुन्न|कांप", "neurology"),
     (r"asthma|breath|saans|wheez|chronic cough|cough for|khansi .*(hafte|mahine)|दमा|साँस|सांस", "pulmonology"),
     (r"\beye|vision|aankh|dhundh|आँख|धुंधल", "ophthalmology"),
@@ -142,10 +143,16 @@ def needed_skills(symptoms: list[str], age_group: Optional[str], text: str) -> l
     return list(dict.fromkeys(need))
 
 
-def infer_specialties(symptoms: list[str], age_group: Optional[str], text: str) -> list[str]:
-    """Specialties that fit the request, most specific first. Children also accept pediatrics."""
-    found: list[str] = []
+def infer_specialties(symptoms: list[str], age_group: Optional[str], text: str, prefer: Optional[str] = None) -> list[str]:
+    """Specialties that fit the request, most specific first. Children also accept pediatrics.
+    `prefer`: the specialty of the pathway that decided (women's health -> gynaecology) goes first."""
+    found: list[str] = [prefer] if prefer else []
     t = text.lower()
+    from . import lexicon  # a named condition's treating specialist first ("cancer ka ilaaj" -> oncology)
+    for h in lexicon.hits(text):
+        spec = lexicon.specialty(h.canonical) if h.kind == "disease" else None
+        if spec and spec not in found:
+            found.append(spec)
     for rx, spec in KEYWORD_SPECIALTY:
         if re.search(rx, t) and spec not in found:
             found.append(spec)
@@ -153,6 +160,10 @@ def infer_specialties(symptoms: list[str], age_group: Optional[str], text: str) 
         spec = SYMPTOM_SPECIALTY.get(s)
         if spec and spec not in found:
             found.append(spec)
+    # pregnancy / after delivery: the gynaecologist first (a mood concern keeps mental-health support first)
+    if "gynecology" in found and not prefer and re.search(r"pregnan|garbh|गर्भ|postpartum|delivery|prasav|डिलीवरी|प्रसव", t) and "psychiatry" not in found:
+        found.remove("gynecology")
+        found.insert(0, "gynecology")
     if age_group in ("child", "infant") and "pediatrics" not in found:
         found.append("pediatrics")
     return found
@@ -209,7 +220,8 @@ def _availability_score(slot: Optional[datetime], in_window: bool, now: datetime
 
 def rank_with_info(care_type: str, urgency: str, lang: str, location: Optional[dict], symptoms: list[str],
                    age_group: Optional[str] = None, text: str = "", now: Optional[datetime] = None,
-                   caregivers: Optional[list[dict]] = None, top_k: Optional[int] = None) -> tuple[list[Scored], MatchInfo]:
+                   caregivers: Optional[list[dict]] = None, top_k: Optional[int] = None,
+                   prefer_specialty: Optional[str] = None) -> tuple[list[Scored], MatchInfo]:
     info = MatchInfo()
     spec_cfg = role_map().get(care_type) or {"roles": match_cfg()["roles"].get(care_type, []), "fallback_roles": []}
     roles = spec_cfg["roles"]
@@ -238,7 +250,7 @@ def rank_with_info(care_type: str, urgency: str, lang: str, location: Optional[d
 
     specs: list[str] = []
     if care_type == "specialist_referral":
-        specs = infer_specialties(symptoms, age_group, text)
+        specs = infer_specialties(symptoms, age_group, text, prefer_specialty)
         info.specialties = specs
         if specs:
             def spec_of(c):

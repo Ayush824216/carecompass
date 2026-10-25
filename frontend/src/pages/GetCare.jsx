@@ -154,6 +154,19 @@ export default function GetCare() {
           <span><span className="block text-xl font-bold">{t("emergency.title")}</span><span className="block">{t("emergency.call112")} · {t("emergency.call108")}</span></span>
         </button>
       )}
+      {final && !emergency && debug?.other_concerns?.length > 0 && (
+        <section className="card mt-6 p-5" aria-labelledby="other-concerns">
+          <h2 id="other-concerns" className="text-lg font-semibold">{t("care.otherConcerns")}</h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {debug.other_concerns.map((o) => (
+              <button key={o.pathway} type="button" className="btn-ghost min-h-[44px] px-4 text-sm"
+                onClick={() => { reset(); send(o.start, []); }}>
+                {t("care.talkAbout", { label: o.signs.join(", ") })}
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
       {final && !emergency && <ResultSection response={response} debug={debug} />}
       {final && !emergency && <SaveToMemory key={messages.length} debug={debug} />}
       {final && emergency && emOpen && <EmergencyView response={response} debug={debug} onBack={() => setEmOpen(false)} onUndo={canUndo ? undo : undefined} />}

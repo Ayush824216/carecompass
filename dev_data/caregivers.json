@@ -2891,5 +2891,125 @@
       "ml"
     ],
     "rating": 4.9
+  },
+  {
+    "caregiver_id": "CG_075",
+    "name": "Dr. Joseph Das",
+    "role": "specialist",
+    "specialty": "gynecology",
+    "skills": [
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
+    ],
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "years_experience": 16,
+    "lat": 28.64899,
+    "lng": 77.35004,
+    "locality": "Vaishali, Ghaziabad",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T09:00:00+05:30",
+      "2026-10-24T13:30:00+05:30",
+      "2026-10-24T17:00:00+05:30",
+      "2026-10-24T18:30:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T11:30:00+05:30",
+      "2026-10-25T12:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T16:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T15:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "ml"
+    ],
+    "rating": 3.6
+  },
+  {
+    "caregiver_id": "CG_076",
+    "name": "Dr. Arjun Rawat",
+    "role": "specialist",
+    "specialty": "gynecology",
+    "skills": [
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
+    ],
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "years_experience": 6,
+    "lat": 28.54158,
+    "lng": 77.26834,
+    "locality": "Kalkaji, South Delhi",
+    "consultation_modes": [
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T14:30:00+05:30",
+      "2026-10-24T15:00:00+05:30",
+      "2026-10-24T19:30:00+05:30",
+      "2026-10-24T20:00:00+05:30",
+      "2026-10-25T09:30:00+05:30",
+      "2026-10-25T13:00:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T16:30:00+05:30",
+      "2026-10-25T20:00:00+05:30",
+      "2026-10-26T14:30:00+05:30",
+      "2026-10-26T15:00:00+05:30",
+      "2026-10-26T16:00:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 3.8
+  },
+  {
+    "caregiver_id": "CG_077",
+    "name": "Dr. Tarun Mishra",
+    "role": "specialist",
+    "specialty": "gynecology",
+    "skills": [
+      "gynecology",
+      "pregnancy_care",
+      "womens_health"
+    ],
+    "qualification": "MBBS, MS (Obstetrics & Gynaecology)",
+    "years_experience": 12,
+    "lat": 28.60047,
+    "lng": 77.30043,
+    "locality": "Mayur Vihar, East Delhi",
+    "consultation_modes": [
+      "teleconsult",
+      "clinic"
+    ],
+    "availability_slots": [
+      "2026-10-24T08:30:00+05:30",
+      "2026-10-24T11:00:00+05:30",
+      "2026-10-24T12:00:00+05:30",
+      "2026-10-24T15:30:00+05:30",
+      "2026-10-24T16:30:00+05:30",
+      "2026-10-24T18:00:00+05:30",
+      "2026-10-25T13:30:00+05:30",
+      "2026-10-25T15:30:00+05:30",
+      "2026-10-25T20:30:00+05:30",
+      "2026-10-26T12:30:00+05:30",
+      "2026-10-26T17:30:00+05:30",
+      "2026-10-26T18:00:00+05:30",
+      "2026-10-26T19:30:00+05:30",
+      "2026-10-26T20:30:00+05:30"
+    ],
+    "languages": [
+      "hi",
+      "en"
+    ],
+    "rating": 4.7
   }
 ]

@@ -132,6 +132,11 @@ def has_health_signal(text: str) -> bool:
     return any(sp.kind != "lexicon" for sp in evidence.find([text]))
 
 
+def _treatment_ask(text: str) -> bool:
+    from . import lexicon
+    return bool(lexicon.TREATMENT_ASK.search(text))
+
+
 def has_lexicon_signal(text: str) -> bool:
     """A word from the broad medical lexicon (disease / symptom names, body part + descriptor), typos included."""
     from . import lexicon
@@ -160,8 +165,9 @@ def classify(text: str, answering_clinical_question: bool = False) -> str:
     if not t:
         return UNCLEAR
     # "which medicine / what disease" without any symptom: we never name medicines or diseases
-    if MEDICINE_ASK.search(t):
-        return HEALTH if extract_slots([t]).symptoms else MEDICINE
+    if MEDICINE_ASK.search(t) or _treatment_ask(t):
+        # with a symptom or a named condition: a kind line, then normal triage to the treating doctor
+        return HEALTH if (extract_slots([t]).symptoms or has_lexicon_signal(t)) else MEDICINE
     if has_health_signal(t):
         return HEALTH
     if INSULT.search(t):
@@ -208,9 +214,9 @@ REDIRECTS = {
         "hinglish": "Main is naam ko nahi pehchaanta. Apne symptoms batayein.",
     },
     MEDICINE: {
-        "en": "I cannot suggest medicines or name an illness. But I can connect you to the right doctor or nurse. Please describe the symptoms.",
-        "hi": "मैं दवा या बीमारी का नाम नहीं बता सकता। लेकिन सही डॉक्टर या नर्स तक पहुँचाने में मदद कर सकता हूँ। लक्षण बताइए।",
-        "hinglish": "Main dawai ya bimari ka naam nahi bata sakta. Lekin sahi doctor ya nurse tak pahunchane mein madad kar sakta hoon. Symptoms batayein.",
+        "en": "Only your doctor can decide the treatment or medicine. I can connect you to the right doctor or nurse. What is the problem, and since when?",
+        "hi": "इलाज या दवा सिर्फ़ आपके डॉक्टर बता सकते हैं। मैं सही डॉक्टर या नर्स तक पहुँचाने में मदद कर सकता हूँ। क्या तकलीफ है, और कब से?",
+        "hinglish": "Ilaaj ya dawai sirf aapke doctor bata sakte hain. Main sahi doctor ya nurse tak pahunchane mein madad kar sakta hoon. Kya takleef hai, aur kab se?",
     },
     UNCLEAR: {
         "en": "I could not find a health problem in this message. What is the problem, who has it, and since when?",

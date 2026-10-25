@@ -217,6 +217,26 @@ ACUTE = re.compile(r"\b(abhi|just\s+now|right\s+now|aaj|achanak|suddenly|sudden|
                    re.I)
 
 
+TREATMENT_ASK = re.compile(
+    r"\b(how\s+(to|do\s+i|can\s+i|can\s+it\s+be)\s+(cure|treat|get\s+rid)|cure\w*|treatment|ilaa?j|ilaaz|upchaa?r|"
+    r"kya\s+(dawai|dawa|dava|davai|goli|medicine)|(kaun\s*si|kon\s*si|konsi|kaunsi)\s+(dawai|dawa|dava|goli|medicine|tablet)|"
+    r"(theek|thik)\s+kaise\s+(ho|hoga|hogi|kare|karein|karu)|kaise\s+(theek|thik)\s+(ho|hoga|hogi|kare|karein)|"
+    r"(dawai|dawa|medicine)\s+(batao|bataiye|chahiye))\b|इलाज|उपचार|(कौन\s*सी|क्या)\s*दवा|कैसे\s*ठीक", re.I)
+
+
+def specialty(canonical: str) -> str | None:
+    """Treating specialist for a condition id (config/disease_aliases.json), e.g. cancer -> oncology."""
+    _, ali = _load()
+    return next((c.get("specialty") for c in ali["conditions"] if c["id"] == canonical), None)
+
+
+def names(canonical_ids: list[str]) -> list[str]:
+    """The user's own condition words are not repeated; this gives the alias display name (first alias)."""
+    _, ali = _load()
+    by = {c["id"]: c for c in ali["conditions"]}
+    return [by[c].get("display") or by[c]["aliases"][0] for c in canonical_ids if c in by]
+
+
 def facts(clauses: list[str]) -> dict:
     """Pathway facts from the patient's current clauses (negated mentions do not count)."""
     from .safety import _negated, not_current
@@ -243,4 +263,6 @@ def facts(clauses: list[str]) -> dict:
             elif h.kind in ("body", "descriptor"):
                 f["body_complaint"] = True
     f["lex_conditions"] = sorted(set(conditions))
+    f["treatment_ask"] = any(TREATMENT_ASK.search(cl) for cl in clauses)
+    f["condition_specialty"] = any(specialty(c) for c in conditions)
     return f

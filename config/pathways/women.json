@@ -1,0 +1,101 @@
+{
+  "id": "women",
+  "raise_care": "stage_default",
+  "label": {"en": "Women's health", "hi": "महिला स्वास्थ्य", "hinglish": "Mahila swasthya"},
+  "_spec": "Periods (painful, heavy, clots, irregular / missed, mood changes before periods), white discharge, pregnancy (weeks asked once), after delivery (up to 1 year), menopause. Emergency: a pad soaked every hour, bleeding with dizziness or fainting, severe one-sided lower pain with a missed period or possible pregnancy, bleeding / severe pain / headache with vision change in pregnancy, heavy bleeding after delivery. Fever with pelvic pain -> same day. Gynaecologist (specialist) or GP; pregnancy warning signs are never routine. Routing only: no disease names, no medicines.",
+  "trigger": "women_entry or period_pain or heavy_period or pad_hourly or clots or irregular_period or missed_period or pms_mood or white_discharge or discharge_symptoms or vaginal_bleeding or postpartum or menopause or pregnant",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "specialist_referral", "urgency": "routine"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "women_entry": {"patterns": ["^\\s*mahila swasthya\\s*/\\s*periods\\s*$", "^\\s*महिला स्वास्थ्य\\s*$"],
+                    "label": {"en": "women's health", "hi": "महिला स्वास्थ्य", "hinglish": "mahila swasthya"}},
+    "period_pain": {"patterns": ["(periods?|mahwari|maahwari|masik|menses|mc)\\w*\\s+(\\S+\\s+){0,3}(dard|pain|cramp)", "(dard|pain|cramps?)\\s+(\\S+\\s+){0,3}(periods?|mahwari|menses)\\b", "period cramps", "painful periods?", "(पीरियड|माहवारी|मासिक)\\S*\\s*(\\S+\\s*){0,3}दर्द"],
+                    "label": {"en": "painful periods", "hi": "पीरियड में दर्द", "hinglish": "periods mein dard"}},
+    "heavy_period": {"patterns": ["(periods?|mahwari|menses)\\w*\\s+(\\S+\\s+){0,4}(bahut|bohot|zyada|jyada|heavy|bhaari)\\s+(\\S+\\s+)?(bleed\\w*|khoon|blood|flow)", "heavy\\s+(periods?|bleeding|flow)", "(bahut|bohot|zyada|jyada)\\s+(khoon|bleeding)\\s+(\\S+\\s+){0,3}(periods?|mahwari)", "(पीरियड|माहवारी)\\S*\\s*(\\S+\\s*){0,3}(बहुत|ज़्यादा|ज्यादा)\\s*(खून|ब्लीडिंग)"],
+                     "label": {"en": "heavy period bleeding", "hi": "पीरियड में बहुत खून", "hinglish": "periods mein bahut khoon"}},
+    "pad_hourly": {"patterns": ["(pads?|napkins?|kapda)\\s+(\\S+\\s+){0,5}(har|every)\\s+(ek\\s+|1\\s+|one\\s+)?(ghant\\w*|hour)", "(every|har)\\s+(ek\\s+|1\\s+)?(hour|ghant\\w*)\\s+(\\S+\\s+){0,4}(pads?|napkins?)", "soak\\w*\\s+(\\S+\\s+){0,3}(pads?|napkins?)\\s+(\\S+\\s+){0,3}(hour|ghant)", "(पैड|कपड़ा)\\s*(\\S+\\s*){0,5}हर\\s*(एक\\s*)?घंट"],
+                   "label": {"en": "a pad soaked every hour", "hi": "हर घंटे पैड भीग जाना", "hinglish": "har ghante pad bheeg jaana"}},
+    "clots": {"patterns": ["\\bclots?\\b", "thakk[ae]", "थक्के", "थक्का"],
+              "label": {"en": "clots", "hi": "खून के थक्के", "hinglish": "khoon ke thakke"}},
+    "irregular_period": {"patterns": ["irregular\\s+periods?", "periods?\\s+(\\S+\\s+){0,2}(irregular|time\\s+par\\s+nahi|aage\\s+peeche|kabhi\\s+bhi)", "(पीरियड|माहवारी)\\S*\\s*(अनियमित|समय पर नहीं)"],
+                         "label": {"en": "irregular periods", "hi": "अनियमित पीरियड", "hinglish": "periods irregular"}},
+    "missed_period": {"patterns": ["(periods?|mahwari|mc|mahina)\\w*\\s+(\\S+\\s+){0,3}(nahi\\s+aay\\w*|nhi\\s+aay\\w*|miss\\w*|ruk\\s+gay\\w*|late)", "missed\\s+(my\\s+|a\\s+)?periods?", "periods?\\s+(is\\s+|are\\s+)?late", "(पीरियड|माहवारी|महीना)\\S*\\s*(नहीं\\s*आ|रुक)"],
+                      "label": {"en": "a missed or late period", "hi": "पीरियड नहीं आया", "hinglish": "periods nahi aaye"}},
+    "pms_mood": {"patterns": ["(periods?|mahwari)\\w*\\s+(\\S+\\s+){0,4}(mood|chidchid\\w*|irritat\\w*|rona|udaas|gussa)", "(mood|chidchid\\w*|rona|gussa)\\s+(\\S+\\s+){0,4}(periods?|mahwari)\\s+(se|ke)\\s+pehle", "\\bpms\\b|\\bpmdd\\b", "(पीरियड|माहवारी)\\S*\\s*(\\S+\\s*){0,4}(मूड|चिड़चिड़|रोना|गुस्सा)"],
+                 "label": {"en": "mood changes around periods", "hi": "पीरियड के आसपास मूड बदलना", "hinglish": "periods ke aaspaas mood badalna"}},
+    "white_discharge": {"patterns": ["white\\s+discharge", "vaginal\\s+discharge", "safe?d\\s+paa?ni", "likoria|leucorr\\w*", "सफ़?े?द\\s*पानी", "ल्यूकोरिया"],
+                        "label": {"en": "white discharge", "hi": "सफ़ेद पानी", "hinglish": "safed paani"}},
+    "discharge_symptoms": {"patterns": ["(discharge|safe?d\\s+paa?ni)\\s+(\\S+\\s+){0,4}(badboo|smell\\w*|odou?r|khujli|itch\\w*|jalan|peela|hara|green|yellow)", "(khujli|itch\\w*|jalan|burning)\\s+(\\S+\\s+){0,3}(neeche|yoni|vagina\\w*|private\\s+part)"],
+                           "label": {"en": "discharge with smell, itching or burning", "hi": "बदबू, खुजली या जलन के साथ पानी", "hinglish": "badboo, khujli ya jalan ke saath paani"}},
+    "vaginal_bleeding": {"patterns": ["(yoni|vagina\\w*|private\\s+part)\\s+(se\\s+|from\\s+)?(khoon|bleed\\w*)", "\\bspotting\\b", "bleeding\\s+(between|after)\\s+(periods|sex)", "(menopause|periods?\\s+band)\\s+(\\S+\\s+){0,4}(khoon|bleed\\w*|spotting)", "योनि\\s*से\\s*खून"],
+                         "label": {"en": "bleeding from the vagina", "hi": "योनि से खून", "hinglish": "neeche se khoon aana"}},
+    "postpartum": {"patterns": ["(delivery|prasav|c-?section|caesarean|operation\\s+se\\s+baby|baby\\s+hua|bachcha\\s+hua)\\s+(\\S+\\s+){0,4}(ke\\s+baad|baad|after|ago|pehle\\s+hua)", "post\\s*-?partum|after\\s+(giving\\s+)?birth|after\\s+(my\\s+)?delivery", "(डिलीवरी|प्रसव)\\s*के\\s*बाद", "abhi\\s+(\\S+\\s+)?(baby|bachcha)\\s+hua"],
+                   "label": {"en": "after delivery", "hi": "डिलीवरी के बाद", "hinglish": "delivery ke baad"}},
+    "menopause": {"patterns": ["menopaus\\w*", "rajonivritti", "periods?\\s+(\\S+\\s+)?band\\s+ho\\s+gay\\w*", "hot\\s+flash\\w*|hot\\s+flush\\w*", "मेनोपॉज़?|रजोनिवृत्ति"],
+                  "label": {"en": "menopause", "hi": "मेनोपॉज़", "hinglish": "menopause"}},
+    "one_sided_lower_pain": {"patterns": ["(left|right|baa?yi?n?|daa?yi?n?|ek\\s+taraf|one\\s+side)\\s+(\\S+\\s+){0,3}(pet|neeche|lower|pelvi\\w*|abdomen|belly|tummy)\\s+(\\S+\\s+){0,2}(dard|pain)", "(lower|neeche)\\s+(\\S+\\s+){0,2}(left|right|baa?yi?n?|daa?yi?n?|ek\\s+taraf)\\s+(\\S+\\s+){0,4}(dard|pain)", "(dard|pain)\\s+(\\S+\\s+){0,4}(left|right|one)\\s+side\\s+(\\S+\\s+){0,4}(lower|neeche|pet|belly|abdomen|pelvi\\w*)", "(पेट|नीचे)\\s*(\\S+\\s*){0,3}(बाएँ|बाएं|दाएँ|दाएं|एक\\s*तरफ)\\s*(\\S+\\s*){0,3}दर्द", "(बाएँ|बाएं|दाएँ|दाएं|एक\\s*तरफ)\\s*(\\S+\\s*){0,3}(पेट|नीचे)\\s*(\\S+\\s*){0,2}दर्द"],
+                             "label": {"en": "severe pain on one side, low in the belly", "hi": "पेट के नीचे एक तरफ तेज़ दर्द", "hinglish": "pet ke neeche ek taraf tez dard"}},
+    "pelvic_pain": {"patterns": ["pelvi\\w*\\s+pain", "pet\\s+ke\\s+neeche\\s+(\\S+\\s+)?dard", "neeche\\s+pet\\s+(\\S+\\s+)?(mein\\s+)?dard", "lower\\s+(abdominal|belly|tummy)\\s+pain", "पेट\\s*के\\s*नीचे\\s*(\\S+\\s*)?दर्द", "पेडू"],
+                    "label": {"en": "pain low in the belly", "hi": "पेट के नीचे दर्द", "hinglish": "pet ke neeche dard"}},
+    "dizzy_faint": {"patterns": ["chakk?ar", "dizz\\w*", "giddy", "light-?headed", "faint\\w*", "behosh", "चक्कर", "बेहोश"],
+                    "label": {"en": "dizziness or fainting", "hi": "चक्कर या बेहोशी", "hinglish": "chakkar ya behoshi"}}
+  },
+  "rules": [
+    {"id": "w_pad_hourly", "stage": "S3", "when": "pad_hourly", "pattern": "heavy_bleeding"},
+    {"id": "w_bleed_faint", "stage": "S3", "when": "(heavy_period or vaginal_bleeding or clots or bleeding_any) and (dizzy_faint or unconscious)", "pattern": "heavy_bleeding"},
+    {"id": "w_ectopic_risk", "stage": "S3", "when": "(one_sided_lower_pain or (severe_pain and (lower_belly_pain or pelvic_pain))) and (missed_period or pregnant or possible_pregnancy)", "pattern": "pregnancy_related"},
+    {"id": "w_pregnancy_warning", "stage": "S3", "when": "pregnant and (vaginal_bleeding or bleeding_any or severe_pain or one_sided_lower_pain or (headache and vision_change))", "pattern": "pregnancy_related"},
+    {"id": "w_postpartum_bleed", "stage": "S3", "when": "postpartum and (heavy_period or clots or bleed_heavy or pad_hourly)", "pattern": "heavy_bleeding"},
+    {"id": "w_fever_pelvic", "stage": "S2", "when": "fever and (pelvic_pain or lower_belly_pain or one_sided_lower_pain or discharge_symptoms)"},
+    {"id": "w_postpartum_fever", "stage": "S2", "when": "postpartum and (fever or discharge_symptoms)"},
+    {"id": "w_heavy", "stage": "S2", "when": "heavy_period or clots or vaginal_bleeding"},
+    {"id": "w_pregnancy", "stage": "S1", "when": "pregnant or possible_pregnancy"},
+    {"id": "w_routine_gynae", "stage": "S1", "when": "period_pain or irregular_period or missed_period or pms_mood or white_discharge or discharge_symptoms or menopause or postpartum"},
+    {"id": "w_any", "stage": "S0", "when": "women_entry"}
+  ],
+  "sufficient": "False",
+  "questions": [
+    {"id": "women.danger", "kind": "danger",
+     "text": {"en": "Is any of these happening now?", "hi": "क्या अभी इनमें से कुछ हो रहा है?", "hinglish": "Kya abhi inmein se kuch ho raha hai?"},
+     "none_label": {"en": "None of these", "hi": "इनमें से कुछ नहीं", "hinglish": "Inmein se kuch nahi"},
+     "chips": [
+       {"id": "pad", "severity": "definite_S3", "label": {"en": "A pad soaks through every hour", "hi": "हर घंटे पैड भीग जाता है", "hinglish": "Har ghante pad bheeg jaata hai"}, "facts": {"pad_hourly": true}},
+       {"id": "dizzy", "label": {"en": "Dizzy or feeling faint", "hi": "चक्कर आ रहे हैं", "hinglish": "Chakkar aa rahe hain"}, "facts": {"dizzy_faint": true}},
+       {"id": "oneside", "label": {"en": "Strong pain on one side, low in the belly", "hi": "पेट के नीचे एक तरफ तेज़ दर्द", "hinglish": "Pet ke neeche ek taraf tez dard"}, "facts": {"one_sided_lower_pain": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "clots", "label": {"en": "Large clots", "hi": "बड़े थक्के", "hinglish": "Bade thakke"}, "facts": {"clots": true}}
+     ]},
+    {"id": "women.status", "kind": "associated", "single": true,
+     "text": {"en": "Could you be pregnant, or did you have a baby in the last year?", "hi": "क्या आप गर्भवती हो सकती हैं, या पिछले एक साल में डिलीवरी हुई है?", "hinglish": "Kya aap pregnant ho sakti hain, ya pichhle ek saal mein delivery hui hai?"},
+     "skip_if": "pregnant or postpartum or menopause or known(possible_pregnancy)",
+     "none_label": {"en": "No", "hi": "नहीं", "hinglish": "Nahi"},
+     "chips": [
+       {"id": "pregnant", "label": {"en": "I am pregnant", "hi": "मैं गर्भवती हूँ", "hinglish": "Main pregnant hoon"}, "facts": {"pregnant": true}},
+       {"id": "maybe", "label": {"en": "Period is late, might be", "hi": "पीरियड लेट है, हो सकता है", "hinglish": "Period late hai, ho sakta hai"}, "facts": {"possible_pregnancy": true, "missed_period": true}},
+       {"id": "postpartum", "label": {"en": "Baby in the last year", "hi": "पिछले एक साल में डिलीवरी", "hinglish": "Pichhle ek saal mein delivery"}, "facts": {"postpartum": true}}
+     ]},
+    {"id": "women.main", "kind": "associated",
+     "text": {"en": "What is troubling you?", "hi": "क्या परेशानी है?", "hinglish": "Kya pareshani hai?"},
+     "skip_if": "period_pain or heavy_period or irregular_period or missed_period or white_discharge or pms_mood or menopause or vaginal_bleeding or pregnant or postpartum",
+     "chips": [
+       {"id": "pain", "label": {"en": "Painful periods", "hi": "पीरियड में दर्द", "hinglish": "Periods mein dard"}, "facts": {"period_pain": true}},
+       {"id": "heavy", "label": {"en": "Heavy periods", "hi": "पीरियड बहुत ज़्यादा", "hinglish": "Periods bahut zyada"}, "facts": {"heavy_period": true}},
+       {"id": "irregular", "label": {"en": "Irregular or missed periods", "hi": "पीरियड अनियमित या नहीं आए", "hinglish": "Periods irregular ya nahi aaye"}, "facts": {"irregular_period": true}},
+       {"id": "discharge", "label": {"en": "White discharge", "hi": "सफ़ेद पानी", "hinglish": "Safed paani"}, "facts": {"white_discharge": true}},
+       {"id": "pms", "label": {"en": "Mood changes before periods", "hi": "पीरियड से पहले मूड बदलना", "hinglish": "Periods se pehle mood badalna"}, "facts": {"pms_mood": true}},
+       {"id": "meno", "label": {"en": "Menopause changes", "hi": "मेनोपॉज़ के बदलाव", "hinglish": "Menopause ke badlav"}, "facts": {"menopause": true}}
+     ]},
+    {"id": "women.duration", "kind": "duration", "single": true, "no_none_chip": true,
+     "text": {"en": "Since when has this been going on?", "hi": "यह परेशानी कब से है?", "hinglish": "Yeh pareshani kab se hai?"},
+     "skip_if": "known(duration_days)",
+     "chips": [
+       {"id": "today", "label": {"en": "Since today", "hi": "आज से", "hinglish": "Aaj se"}, "facts": {"duration_days": 0}},
+       {"id": "days", "label": {"en": "A few days", "hi": "कुछ दिनों से", "hinglish": "Kuch dino se"}, "facts": {"duration_days": 3}},
+       {"id": "cycles", "label": {"en": "For a few cycles / months", "hi": "कुछ महीनों से", "hinglish": "Kuch mahino se"}, "facts": {"duration_days": 90}}
+     ]}
+  ]
+}

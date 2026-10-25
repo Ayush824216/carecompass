@@ -14,7 +14,7 @@ from typing import Optional
 
 from .. import explain, safety
 from ..triage import Decision
-from . import engine
+from . import engine, expr
 from .engine import PathwayOutcome
 
 URG = {"routine": 0, "same_day": 1, "immediate": 2}
@@ -98,6 +98,85 @@ def slot_phrases(out: PathwayOutcome, refs: list[str], lang: str) -> list[str]:
     return ph
 
 
+# the user speaks about themselves ("mujhe", "I have"): "aap" wording, never "mareez" / "patient"
+SELF = re.compile(r"\b(mujhe|mujhko|meri|mera|mere|main|mai|maine|mujhse|i|i'm|im|i've|ive|my|me|myself)\b|मुझे|मेरी|मेरा|मेरे|मैं", re.I)
+OTHER = re.compile(r"\b(papa|pitaji|mummy|mumma|maa|mother|father|dad|mom|beta|beti|bachch?[aeiy]|baby|son|daughter|dadi|dada|"
+                   r"nani|nana|bhai|bhaiya|behen|bahan|didi|wife|husband|patni|pati|biwi|sasur|saas|uncle|aunty|chacha|chachi|"
+                   r"grand(mother|father|ma|pa)|unhe|unko|inhe|inko|woh|wo|he|she|his|her|him)\b|पापा|मम्मी|माँ|बेटा|बेटी|बच्च|दादी|दादा|"
+                   r"नानी|नाना|भाई|बहन|पत्नी|पति|उन्हें|उनको", re.I)
+
+
+def speaks_about_self(user_texts: list[str]) -> bool:
+    text = " ".join(user_texts)
+    return bool(SELF.search(text)) and not OTHER.search(text)
+
+
+# a long-term condition named in a reason: only the one(s) the user said, never a generic list
+CONDITION_NAMES = {
+    "diabetes": ("sugar (diabetes)", "शुगर (डायबिटीज़)", "sugar"), "heart": ("heart disease", "दिल की बीमारी", "dil ki bimari"),
+    "heart_disease": ("heart disease", "दिल की बीमारी", "dil ki bimari"), "kidney": ("kidney disease", "किडनी की बीमारी", "kidney ki bimari"),
+    "kidney_failure": ("kidney failure / dialysis", "किडनी फेल / डायलिसिस", "kidney failure / dialysis"),
+    "liver": ("liver disease", "लीवर की बीमारी", "liver ki bimari"), "cancer": ("cancer", "कैंसर", "cancer"),
+    "steroids": ("long-term steroid use", "लंबे समय से स्टेरॉयड", "lambe samay se steroid"), "hiv": ("HIV", "HIV", "HIV"),
+    "transplant": ("a transplant", "ट्रांसप्लांट", "transplant"),
+}
+CONDITION_MODS = ("comorbid_raise", "serious_chronic_raise")
+
+
+def _conditions_said(out: PathwayOutcome) -> list[str]:
+    ids = list(dict.fromkeys(list(out.slots.comorbidities) + list(out.facts.get("lex_conditions") or [])))
+    if out.facts.get("diabetes") and "diabetes" not in ids:
+        ids.append("diabetes")
+    return [i for i in ids if i in CONDITION_NAMES]
+
+
+def modifier_label(m: dict, out: PathwayOutcome, lang: str) -> str:
+    if m["id"] in CONDITION_MODS:
+        i = ("en", "hi", "hinglish").index(lang) if lang in ("en", "hi", "hinglish") else 0
+        said = [CONDITION_NAMES[c][i] for c in _conditions_said(out)]
+        if said:
+            return ", ".join(said)
+    return m["label"].get(lang) or m["label"]["en"]
+
+
+ENTRY_TEXT = {"mood": "Mann / mood", "women": "Mahila swasthya / Periods", "fever": "Bukhar / Fever", "breathing": "Saans ki dikkat"}
+
+
+def other_concerns(out: PathwayOutcome, lang: str) -> list[dict]:
+    """Other complaints in the same conversation (handled after the most urgent one): pathway, signs said, a start text."""
+    prim = out.primary
+    if prim is None:
+        return []
+    _, pathways, _ = engine.load()
+    seen, res = {prim.pathway}, []
+    for r in out.results:
+        if r.pathway in seen or r.pathway == "general":
+            continue
+        seen.add(r.pathway)
+        p = pathways[r.pathway]
+        trig = [n for n in expr.names_in(p.cfg["trigger"]) if out.facts.get(n) is True and n in engine._compiled_signs()
+                and not n.endswith("_entry")]
+        labels = [engine.sign_label(n, lang) for n in dict.fromkeys(trig)]
+        if not labels:
+            continue
+        res.append({"pathway": r.pathway, "label": p.label.get(lang) or p.label["en"], "signs": labels,
+                    "start": ENTRY_TEXT.get(r.pathway) or (p.label.get("hinglish") or p.label["en"])})
+    return res
+
+
+def acknowledge_others(others: list[dict], lang: str, feminine: bool) -> str:
+    if not others:
+        return ""
+    said = [s for o in others for s in o["signs"]]
+    joined = (" aur " if lang == "hinglish" else " और " if lang == "hi" else " and ").join(
+        [", ".join(said[:-1]), said[-1]] if len(said) > 1 else said)
+    if lang == "hi":
+        return f"आपने {joined} भी बताया — क्या आप इस पर भी बात करना चाहेंगी?" if feminine else f"आपने {joined} भी बताया — क्या आप इस पर भी बात करना चाहेंगे?"
+    if lang == "hinglish":
+        return f"Aapne {joined} bhi bataya — kya aap is par bhi baat karna chahengi?" if feminine else f"Aapne {joined} bhi bataya — kya aap is par bhi baat karna chahenge?"
+    return f"You also mentioned {joined}. Would you like to talk about that too?"
+
+
 def danger_labels(out: PathwayOutcome, lang: str) -> list[str]:
     """Plain-language reasons for the primary result: triggered signs, readings and risk modifiers."""
     prim = out.primary
@@ -109,7 +188,7 @@ def danger_labels(out: PathwayOutcome, lang: str) -> list[str]:
     for mid in prim.modifiers:
         m = next((x for x in common["modifiers"] if x["id"] == mid), None)
         if m:
-            labels.append(m["label"].get(lang) or m["label"]["en"])
+            labels.append(modifier_label(m, out, lang))
     seen, outl = set(), []
     for lab in labels:
         if lab and lab not in seen:
@@ -141,7 +220,7 @@ def reasoning(out: PathwayOutcome, care_type: str, urgency: str, lang: str) -> s
     readings = slot_phrases(out, prim.slot_refs, lang)
     if out.facts.get("fever") and not out.facts.get("temp_measured"):
         readings.append(NOT_MEASURED[i])
-    mods = [m["label"].get(lang) or m["label"]["en"] for m in common["modifiers"] if m["id"] in prim.modifiers]
+    mods = [modifier_label(m, out, lang) for m in common["modifiers"] if m["id"] in prim.modifiers]
     items = readings + signs[:4] + mods  # "Bukhar: 4 din se, aankhon ke peeche dard, badan dard."
     head = f"{complaint}: {', '.join(items)}" if items else complaint
     care = explain.CARE[care_type][i]

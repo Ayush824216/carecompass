@@ -7,7 +7,8 @@ from dataclasses import asdict
 from functools import lru_cache
 from typing import Optional
 
-from . import assessment, domain_guard, evidence, explain, intake, llm_triage, matching, memory, pathways, safety
+from . import assessment, domain_guard, evidence, explain, intake, lexicon, llm_triage, matching, memory, pathways, safety
+from .pathways.engine import TREATMENT_LINE
 from .config import get_settings
 from .pathways import route as proute
 from .lang import clean, detect_language, normalise, resolve_language, term_matches
@@ -235,6 +236,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             tr["local_model"] = {"name": local.source, "care_type": local.care_type, "urgency": local.urgency,
                                  "probs": {k: {c: round(p, 3) for c, p in v.items()} for k, v in local.probs.items()}}
 
+        treat = bool(lexicon.TREATMENT_ASK.search(req.user_input or ""))
         if prim is not None:  # pathway complaint: the pathway's question tree replaces the generic follow-ups
             n_clinical = max(0, state.n_assistant_questions - len(pout.answers.confirm_asked) - len(pout.answers.meta_asked))
             tr["followup"]["asked_so_far"] = n_clinical
@@ -244,7 +246,10 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
                                        "kind": pq.get("kind"), "confirmation": pq.get("kind") == "confirm",
                                        "options": pathways.chip_options(pq, lang)})
                 tr["model_used"] = f"pathway:{prim.pathway}"
-                return TriageResponse(follow_up_question=pathways.question_text(pq, lang), care_type=None,
+                qtext = pathways.question_text(pq, lang, proute.speaks_about_self(turns))
+                if treat:  # "ilaaj / kya dawai": a kind line first, then the triage goes on
+                    qtext = f"{TREATMENT_LINE.get(lang, TREATMENT_LINE['en'])} {qtext}"
+                return TriageResponse(follow_up_question=qtext, care_type=None,
                                       urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
         else:
             q = intake.choose_followup(state, local.probs if local else None)
@@ -291,6 +296,14 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             reasoning = proute.reasoning(pout, dec.care_type, dec.urgency, lang)
         else:
             reasoning = dec.llm_reasoning or explain.reasoning(state.slots, dec.care_type, dec.urgency, lang)
+        if any(lexicon.TREATMENT_ASK.search(t) for t in turns):
+            reasoning = f"{TREATMENT_LINE.get(lang, TREATMENT_LINE['en'])} {reasoning}"
+        # more than one complaint: the most urgent was handled; the others are named and offered next
+        others = proute.other_concerns(pout, lang) if prim is not None else []
+        if others:
+            tr["other_concerns"] = others
+            feminine = bool(pout.facts.get("pregnant") or any(o["pathway"] == "women" for o in others) or prim.pathway == "women")
+            reasoning = f"{reasoning} {proute.acknowledge_others(others, lang, feminine)}"
         # what the user may save ON THEIR DEVICE (debug block only; sensitive items need an explicit tick)
         tr["memory_candidates"] = memory.candidates(turns, pout, age["group"], lang)
         cat = assessment.category_for(prim.pathway, pout.facts) if prim is not None else None
@@ -303,8 +316,9 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         t = time.perf_counter()
         loc = req.location.model_dump() if req.location else None
         syms = state.slots.symptoms + (["low mood"] if prim is not None and prim.pathway == "mood" else [])
+        prefer = {"women": "gynecology", "mood": "psychiatry"}.get(prim.pathway) if prim is not None else None
         ranked, minfo = matching.rank_with_info(dec.care_type, dec.urgency, lang, loc, syms,
-                                                age["group"], text=" ".join(turns))
+                                                age["group"], text=" ".join(turns), prefer_specialty=prefer)
         matched = [MatchedCaregiver(caregiver_id=s.cg["caregiver_id"], score=s.score,
                                     reason=matching.reason(s, dec.care_type, lang)) for s in ranked]
         timings["matching"] = time.perf_counter() - t

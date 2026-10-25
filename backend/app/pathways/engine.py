@@ -53,8 +53,9 @@ def load() -> tuple[dict, dict[str, Pathway], dict[str, dict]]:
     signs: dict[str, dict] = dict(common["signs"])
     for pid in common["priority"]:
         cfg = json.loads((d / f"{pid}.json").read_text(encoding="utf-8"))
-        if common.get("age_question"):  # the shared age chip question belongs to every pathway's tree
-            cfg["questions"] = cfg["questions"] + [common["age_question"]]
+        # shared chip questions belong to every pathway's tree: age, pregnancy weeks, bleeding (where from / how much)
+        cfg["questions"] = cfg["questions"] + [common[k] for k in ("age_question", "pregnancy_question", "bleeding_question")
+                                               if common.get(k)]
         pathways[pid] = Pathway(pid, cfg)
         signs.update(cfg.get("signs", {}))
     for p in pathways.values():
@@ -166,10 +167,13 @@ def question_index() -> dict[str, tuple[str, dict]]:
     for p in pathways.values():
         for q in p.cfg["questions"]:
             for lang in LANGS:
-                key = _norm(q["text"][lang])
-                if key in idx and idx[key][1]["id"] != q["id"]:  # answers are matched by question text
-                    raise ValueError(f"question text not unique: {q['text'][lang]!r} ({q['id']} vs {idx[key][1]['id']})")
-                idx[key] = (p.id, q)
+                for text in (q["text"], q.get("text_self") or {}):  # "aap" wording when the user speaks about themselves
+                    if lang not in text:
+                        continue
+                    key = _norm(text[lang])
+                    if key in idx and idx[key][1]["id"] != q["id"]:  # answers are matched by question text
+                        raise ValueError(f"question text not unique: {text[lang]!r} ({q['id']} vs {idx[key][1]['id']})")
+                    idx[key] = (p.id, q)
     return idx
 
 
@@ -177,8 +181,29 @@ def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", clean(s).lower()).strip()
 
 
+# a kind line said before the next question when the user asked about treatment ("ilaaj", "kya dawai")
+TREATMENT_LINE = {
+    "en": "Only your doctor can decide the treatment. I can help you reach the right doctor.",
+    "hi": "इलाज सिर्फ़ आपके डॉक्टर बता सकते हैं। मैं सही डॉक्टर तक पहुँचने में मदद कर सकता हूँ।",
+    "hinglish": "Ilaaj sirf aapke doctor bata sakte hain. Main sahi doctor tak pahunchne mein madad kar sakta hoon.",
+}
+
+
+def _lookup(content: str):
+    """Question for an assistant turn, also when a lead-in line was said before it."""
+    key = _norm(content or "")
+    hit = question_index().get(key)
+    if hit is None:
+        for lead in TREATMENT_LINE.values():
+            nl = _norm(lead)
+            if key.startswith(nl):
+                hit = question_index().get(key[len(nl):].strip())
+                break
+    return hit
+
+
 def identify_question(text: str) -> Optional[str]:
-    hit = question_index().get(_norm(text or ""))
+    hit = _lookup(text or "")
     if hit:
         return hit[1]["id"]
     from ..memory import QID, is_memory_question
@@ -220,6 +245,9 @@ class Answers:
         return len([q for q in self.asked if q not in self.confirm_asked and q not in self.meta_asked])
 
 
+META_KINDS = ("age", "memory", "pregnancy_weeks", "bleeding")  # chip questions outside the cap of 4
+
+
 def parse_answers(history: list[dict], user_input: str, extra: Optional[list[dict]] = None) -> Answers:
     """Read chip / free-text answers to pathway questions out of the (stateless) conversation history.
     `extra`: dynamic questions built for this request (the memory confirmation)."""
@@ -231,13 +259,13 @@ def parse_answers(history: list[dict], user_input: str, extra: Optional[list[dic
     pending: Optional[dict] = None
     for role, content in turns:
         if role == "assistant":
-            hit = question_index().get(_norm(content))
+            hit = _lookup(content)
             pending = hit[1] if hit else (extra_idx.get(_norm(content)) or _match_contradiction(content))
             if pending:
                 ans.asked.append(pending["id"])
                 if pending.get("kind") == "confirm":
                     ans.confirm_asked.append(pending["id"])
-                elif pending.get("kind") in ("age", "memory"):
+                elif pending.get("kind") in META_KINDS:
                     ans.meta_asked.append(pending["id"])
             continue
         if role != "user" or pending is None:
@@ -438,6 +466,10 @@ def evaluate_pathway(p: Pathway, facts: dict, neg: set[str], known: set[str]) ->
             res.explicit = True
             raised += 1
             res.modifiers.append(m["id"])
+        elif eff == "prefer_specialist" and res.stage != "S3" and res.care_type in ("gp_teleconsult", "paramedic_home_visit"):
+            res.care_type = "specialist_referral"  # pregnancy: a gynaecologist rather than a GP or home visit
+            res.explicit = True
+            res.modifiers.append(m["id"])
         elif eff == "prefer_home" and res.care_type == "gp_teleconsult":
             res.care_type = "paramedic_home_visit"
             res.modifiers.append(m["id"])
@@ -512,7 +544,16 @@ def run(user_texts: list[str], history: Optional[list[dict]] = None, user_input:
         p = pathways[pid]
         if expr.evaluate(p.cfg["trigger"], facts, fn):
             results.append(evaluate_pathway(p, facts, neg, known))
+    # pregnancy / after delivery is context: when only that triggered women's health and another pathway explains the
+    # complaint (fever, mood, ...), that pathway leads; its pregnancy rules and the gynaecologist preference still apply
+    if any(r.pathway == "women" for r in results) and any(r.pathway not in ("women", "general") for r in results):
+        women_trig = set(expr.names_in(pathways["women"].cfg["trigger"])) - WOMEN_CONTEXT
+        if not any(facts.get(n) is True for n in women_trig):
+            results = [r for r in results if r.pathway != "women"]
     return PathwayOutcome(results, facts, neg, known, slots, answers, contra, spans, memq)
+
+
+WOMEN_CONTEXT = {"pregnant", "postpartum", "possible_pregnancy"}
 
 
 # ---------------------------------------------------------------- senior-doctor questioning
@@ -541,6 +582,11 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
                     return q
     # remembered items (confirmed once), then an unknown age: chip questions early (after the first danger
     # screen), outside the cap of max_q
+    # any bleeding: where from and how much, before anything else (a lot / not stopping -> emergency)
+    bleed_q = next((q for q in p.cfg["questions"] if q.get("kind") == "bleeding"), None)
+    if bleed_q and facts.get("bleeding_any") and bleed_q["id"] not in out.answers.asked \
+            and not (facts.get("bleed_heavy") or facts.get("bleed_small") or facts.get("blood_large") or facts.get("blood_small")):
+        return bleed_q
     danger_open = any(q.get("kind") == "danger" and q["id"] not in out.answers.asked
                       and expr.evaluate(q.get("only_if", "True"), facts, fn)
                       and not expr.evaluate(q.get("skip_if", "False"), facts, fn) for q in p.cfg["questions"])
@@ -550,6 +596,11 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
     age_q = next((q for q in p.cfg["questions"] if q.get("kind") == "age"), None)
     if age_q and not facts.get("age_known") and age_q["id"] not in out.answers.asked and early:
         return age_q
+    # pregnancy mentioned in any pathway: weeks asked once (pregnancy rules depend on it)
+    preg_q = next((q for q in p.cfg["questions"] if q.get("kind") == "pregnancy_weeks"), None)
+    if preg_q and facts.get("pregnant") and facts.get("pregnancy_weeks") is None and not facts.get("pregnancy_weeks_unknown") \
+            and preg_q["id"] not in out.answers.asked and early:
+        return preg_q
     if n_clinical_asked >= max_q:
         return None
     if expr.evaluate(p.cfg.get("sufficient", "False"), facts, fn):
@@ -563,7 +614,7 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
                     return q
         return None
     for q in p.cfg["questions"]:
-        if q["id"] in out.answers.asked or q.get("kind") in ("confirm", "age"):
+        if q["id"] in out.answers.asked or q.get("kind") in ("confirm",) + META_KINDS:
             continue
         if not expr.evaluate(q.get("only_if", "True"), facts, fn):
             continue
@@ -573,5 +624,7 @@ def next_question(out: PathwayOutcome, n_clinical_asked: int, max_q: int = 4) ->
     return None
 
 
-def question_text(q: dict, lang: str) -> str:
-    return q["text"].get(lang) or q["text"]["en"]
+def question_text(q: dict, lang: str, self_ref: bool = False) -> str:
+    """The question in the user's language; "aap" wording when the user speaks about themselves ("mujhe", "I have")."""
+    t = (q.get("text_self") if self_ref else None) or q["text"]
+    return t.get(lang) or t["en"]

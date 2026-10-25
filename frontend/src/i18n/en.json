@@ -208,7 +208,9 @@
     "chooseAll": "Tap all that apply, then send. Or type or speak your answer.",
     "sendSelected": "Send ({n} selected)",
     "chooseOne": "Tap one. Or type or speak your answer.",
-    "offlineEmergency": "Server not reachable. If this is an emergency, call now:"
+    "offlineEmergency": "Server not reachable. If this is an emergency, call now:",
+    "otherConcerns": "You also mentioned",
+    "talkAbout": "Talk about: {label}"
   },
   "panel": {
     "title": "How we decided",
@@ -708,7 +710,8 @@
       "Buzurg ki dekhbhal",
       "Bacche ki tabiyat",
       "Dawai/injection ke liye nurse",
-      "Mann / mood"
+      "Mann / mood",
+      "Mahila swasthya / Periods"
     ]
   },
   "landing": {
@@ -913,7 +916,8 @@
       "vomiting": "Vomiting / loose motions",
       "urinary": "Urine problem",
       "mood": "Mood",
-      "general": "General"
+      "general": "General",
+      "women": "Women's health"
     }
   },
   "sos": {

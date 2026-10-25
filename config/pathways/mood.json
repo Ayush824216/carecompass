@@ -3,7 +3,7 @@
   "raise_care": "keep",
   "label": {"en": "Mood / mental health", "hi": "मन / मूड", "hinglish": "Mann / mood"},
   "_spec": "Mood, anxiety, stress, sleep and irritability. Routing only: never a disease label, never a medicine. The self-harm safety question is ALWAYS asked (kind danger, never skipped); thoughts or a plan of self-harm -> crisis screen (112 + Tele-MANAS 14416). Otherwise GP teleconsult or a mental-health specialist, routine or same day by severity.",
-  "trigger": "low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or self_harm_thoughts or self_harm_plan or mood_entry",
+  "trigger": "crying or low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or self_harm_thoughts or self_harm_plan or mood_entry",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
     "S1": {"care_type": "specialist_referral", "urgency": "routine"},
@@ -13,6 +13,7 @@
   "signs": {
     "mood_entry": {"patterns": ["^\\s*mann\\s*/\\s*mood\\s*$", "^\\s*मन\\s*/\\s*मूड\\s*$"],
                    "label": {"en": "mood", "hi": "मन / मूड", "hinglish": "mann / mood"}},
+    "crying": {"patterns": ["\\bro(ti|te|ta)\\s+(rehti|rehte|rehta|hoon|hun|hu|hai|hain)", "rona\\s+(aata|aa\\s+raha|aa\\s+jaata)", "\\bcrying\\b", "\\bcry\\s+a\\s+lot", "रोना\\s*आ", "रोती\\s*(रहती|हूँ|हूं)"], "label": {"en": "crying", "hi": "रोना आना", "hinglish": "rona aana"}},
     "low_mood": {"patterns": ["udaa?s", "\\bdukhi\\b", "\\bsad\\b", "feel(ing|s)? (very |so )?(low|down|empty)", "low mood", "depress", "mann (nahi|nhi) lagta", "kisi cheez mein mann nahi", "hopeless", "nira(a)?sh", "उदास", "दुखी", "मन नहीं लगता", "निराश"],
                  "label": {"en": "low mood", "hi": "उदासी", "hinglish": "udaasi"}},
     "anxiety": {"patterns": ["ghabra", "anxi", "bechain", "\\bpanic", "dar lagta", "\\btension\\b", "nervous", "घबराह", "बेचैन", "डर लगता"],
@@ -36,6 +37,9 @@
     {"id": "m_self_harm", "stage": "S3", "when": "self_harm_thoughts or self_harm_plan"},
 
     {"id": "m_severe_impact", "stage": "S2", "when": "mood_impact_severe"},
+    {"id": "m_perinatal_distress", "stage": "S2", "when": "(pregnant or postpartum) and (crying or mood_impact_severe or mood_impact_some or anxiety)", "note": "perinatal", "_note": "pregnancy or after delivery and distressing: same day, mental-health support + gynaecologist"},
+    {"id": "m_perinatal", "stage": "S1", "when": "(pregnant or postpartum) and (low_mood or mood_swings or irritability or stress or mood_sleep)", "note": "perinatal"},
+    {"id": "m_crying", "stage": "S1", "when": "crying and (low_mood or mood_swings or irritability)"},
     {"id": "m_substance", "stage": "S2", "when": "substance_use and (low_mood or anxiety or mood_swings)"},
     {"id": "m_no_sleep_eat", "stage": "S2", "when": "mood_no_sleep and mood_no_appetite"},
 
@@ -43,7 +47,7 @@
     {"id": "m_impact", "stage": "S1", "when": "mood_impact_some"},
     {"id": "m_swings", "stage": "S1", "when": "mood_swings and (irritability or mood_sleep or mood_no_sleep)"},
 
-    {"id": "m_any", "stage": "S0", "when": "low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or mood_entry"}
+    {"id": "m_any", "stage": "S0", "when": "crying or low_mood or anxiety or mood_swings or irritability or stress or mood_sleep or mood_entry"}
   ],
   "sufficient": "False",
   "questions": [

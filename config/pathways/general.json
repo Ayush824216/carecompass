@@ -3,7 +3,7 @@
   "raise_care": "stage_default",
   "label": {"en": "General health problem", "hi": "सामान्य स्वास्थ्य समस्या", "hinglish": "General health problem"},
   "_spec": "Anything outside the eight symptom categories and mood (eyes, ears, nose, teeth, skin, joints, a named condition). A disease name is never confirmed or denied and never sets urgency by itself: the generic danger screen comes first, then what is happening now; GP teleconsult by default. Yellow eyes or skin -> same day; yellow eyes or skin with confusion, drowsiness, bleeding or repeated vomiting -> emergency. An emergency condition described as happening now (lakwa, dil ka daura) -> emergency.",
-  "trigger": "lex_disease or body_complaint or yellow_eyes_skin or emergency_condition_now or serious_chronic",
+  "trigger": "lex_disease or body_complaint or yellow_eyes_skin or emergency_condition_now or serious_chronic or bleeding_any",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
     "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
@@ -21,11 +21,12 @@
   },
   "rules": [
     {"id": "g_condition_now", "stage": "S3", "when": "emergency_condition_now"},
-    {"id": "g_yellow_danger", "stage": "S3", "when": "yellow_eyes_skin and (confusion or very_drowsy or unconscious or bleeding_any or vomits_everything)"},
+    {"id": "g_yellow_danger", "stage": "S3", "when": "yellow_eyes_skin and (confusion or very_drowsy or unconscious or bleeding_any or bleeding_now or vomits_everything)"},
     {"id": "g_altered", "stage": "S3", "when": "confusion or very_drowsy or unconscious"},
     {"id": "g_yellow", "stage": "S1", "when": "yellow_eyes_skin"},
-    {"id": "g_bleeding", "stage": "S1", "when": "bleeding_any"},
+    {"id": "g_bleeding", "stage": "S1", "when": "bleeding_any or bleeding_now"},
     {"id": "g_severe_pain", "stage": "S1", "when": "general_severe_pain"},
+    {"id": "g_treating", "stage": "S0", "when": "lex_disease and treatment_ask and condition_specialty", "care_type": "specialist_referral", "_note": "a treatment question about a named condition: the treating specialist (e.g. oncologist), routine unless a symptom says otherwise"},
     {"id": "g_name_only", "stage": "S0", "when": "disease_only", "_note": "only a condition name: GP teleconsult, routine; a body complaint with no rule is left to the model for the care type (e.g. a persistent rash -> skin specialist)"}
   ],
   "sufficient": "False",
@@ -35,7 +36,7 @@
      "none_label": {"en": "None of these", "hi": "इनमें से कुछ नहीं", "hinglish": "Inmein se kuch nahi"},
      "chips": [
        {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती", "hinglish": "Confusion ya bahut susti"}, "facts": {"confusion": true}},
-       {"id": "bleeding", "label": {"en": "Bleeding", "hi": "खून आना", "hinglish": "Khoon aana"}, "facts": {"bleeding_any": true}},
+       {"id": "bleeding", "label": {"en": "Bleeding", "hi": "खून आना", "hinglish": "Khoon aana"}, "facts": {"bleeding_now": true}},
        {"id": "vomiting", "label": {"en": "Vomiting again and again", "hi": "बार-बार उल्टी", "hinglish": "Baar-baar ulti"}, "facts": {"vomits_everything": true}},
        {"id": "breathing", "severity": "definite_S3", "label": {"en": "Trouble breathing", "hi": "साँस लेने में दिक्कत", "hinglish": "Saans lene mein dikkat"}, "facts": {"breathless": true}},
        {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
