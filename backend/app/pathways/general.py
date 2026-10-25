@@ -5,7 +5,7 @@ from .engine import PathwayResult, build_facts, detect_signs, evaluate_pathway, 
 from .slots import parse
 
 PATHWAY_ID = "general"
-NOTES: dict = {}
+NOTES: dict = {"rabies": {"en": "Wash the bite or scratch with soap and running water for 15 minutes; rabies protection is needed today.", "hi": "काटे या खरोंच वाली जगह को साबुन और बहते पानी से 15 मिनट धोएँ; रेबीज़ से बचाव आज ही ज़रूरी है।", "hinglish": "Kaate ya kharonch wali jagah ko sabun aur behte paani se 15 minute dhoyein; rabies se bachav aaj hi zaroori hai."}}
 
 
 def evaluate(user_texts: list[str]) -> PathwayResult:

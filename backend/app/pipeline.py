@@ -40,6 +40,21 @@ def _user_turns(req: TriageRequest) -> list[str]:
     return turns
 
 
+def _drop_animal_turns(req: TriageRequest) -> TriageRequest:
+    """Earlier turns about an animal patient, and the vet reply after them, are not part of a human triage."""
+    hist, skip_reply = [], False
+    for h in req.conversation_history:
+        if h.role == "user" and domain_guard.is_animal_patient(h.content or ""):
+            skip_reply = True
+            continue
+        if h.role == "assistant" and skip_reply:
+            skip_reply = False
+            continue
+        skip_reply = False
+        hist.append(h)
+    return req if len(hist) == len(req.conversation_history) else req.model_copy(update={"conversation_history": hist})
+
+
 def _language(req: TriageRequest, user_turns: list[str]) -> str:
     if req.language != "auto":
         return req.language
@@ -223,6 +238,15 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         tr["detected_language"] = lang
         tr["normalised_text"] = normalise(" . ".join(turns))
         tr["term_matches"] = term_matches(" . ".join(turns))
+
+        # the patient is an animal: a vet, before any safety keyword ("kutte ke dil mein heart attack" is not ours)
+        if domain_guard.is_animal_patient(req.user_input):
+            tr["domain_class"] = domain_guard.ANIMAL_CLASS
+            tr["model_used"] = "domain_guard"
+            return TriageResponse(follow_up_question=None, care_type=None, urgency=None, red_flags=[],
+                                  reasoning=domain_guard.vet_text(lang), matched_caregivers=[])
+        req = _drop_animal_turns(req)
+        turns = _user_turns(req)
 
         t = time.perf_counter()
         state = intake.build_state(req.user_input, [h.model_dump() for h in req.conversation_history])

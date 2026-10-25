@@ -3,7 +3,7 @@
   "raise_care": "stage_default",
   "label": {"en": "General health problem", "hi": "सामान्य स्वास्थ्य समस्या", "hinglish": "General health problem"},
   "_spec": "Anything outside the eight symptom categories and mood (eyes, ears, nose, teeth, skin, joints, a named condition). A disease name is never confirmed or denied and never sets urgency by itself: the generic danger screen comes first, then what is happening now; GP teleconsult by default. Yellow eyes or skin -> same day; yellow eyes or skin with confusion, drowsiness, bleeding or repeated vomiting -> emergency. An emergency condition described as happening now (lakwa, dil ka daura) -> emergency.",
-  "trigger": "lex_disease or body_complaint or yellow_eyes_skin or emergency_condition_now or serious_chronic or bleeding_any",
+  "trigger": "lex_disease or body_complaint or yellow_eyes_skin or emergency_condition_now or serious_chronic or bleeding_any or animal_bite or insect_sting or scorpion_sting",
   "stages": {
     "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
     "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
@@ -11,6 +11,9 @@
     "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
   },
   "signs": {
+    "insect_sting": {"patterns": ["(madhu\\s*makkhi|makkhi|bees?|wasps?|tata?iy+a|hornet|keed[ae]|insects?|chinti|ants?|spider|makdi)\\s+(ne\\s+)?(\\S+\\s+){0,2}(kaa?t\\w*|kata|dank|daank|dans\\w*|sting\\w*|bit\\w*)", "(stung|bitten)\\s+(\\S+\\s+){0,2}by\\s+(a\\s+|an\\s+)?(bee|wasp|hornet|insect|spider|ant)", "(bee|wasp)\\s+sting", "(मधुमक्खी|ततैया|कीड़े|चींटी|मकड़ी)\\s*ने\\s*(\\S+\\s*){0,2}(काट|डंक)"], "label": {"en": "an insect bite or sting", "hi": "कीड़े का काटना या डंक", "hinglish": "keede ka kaatna ya dank"}},
+    "scorpion_sting": {"patterns": ["(bichh?u|scorpion)\\s+(ne\\s+)?(\\S+\\s+){0,2}(kaa?t\\w*|kata|dank|daank|dans\\w*|sting\\w*|maar\\w*)", "(stung|bitten)\\s+(\\S+\\s+){0,2}by\\s+(a\\s+)?scorpion", "scorpion\\s+sting", "बिच्छू\\s*ने\\s*(\\S+\\s*){0,2}(काट|डंक)"], "label": {"en": "a scorpion sting", "hi": "बिच्छू का डंक", "hinglish": "bichhu ka dank"}},
+    "animal_bite": {"patterns": ["(kutt\\w*|dogs?|pupp\\w*|bill[ie]\\w*|cats?|bandar|monkeys?|chuh[ae]|rats?|chamgadad|bats?|siyar|jackal)\\s+(ne\\s+)?(\\S+\\s+){0,2}(kaa?t\\w*|kata|bit\\w*|nakh(oo|u)n|panja|scratch\\w*)", "(bitten|bit|scratched)\\s+(\\S+\\s+){0,2}by\\s+(a\\s+|the\\s+|our\\s+)?(dog|cat|monkey|rat|bat|puppy|stray)", "(dog|cat|monkey|rat|animal)\\s+(bite|scratch)", "(कुत्ते|बिल्ली|बंदर|चूहे)\\s*ने\\s*(\\S+\\s*){0,2}(काट|नाखून|पंजा)"], "label": {"en": "an animal bite or scratch", "hi": "जानवर का काटना या नाखून मारना", "hinglish": "jaanwar ka kaatna ya nakhoon maarna"}},
     "yellow_eyes_skin": {"patterns": ["(aankh\\w*|ankh\\w*|eyes?|skin|twacha|tvacha|chamdi|chamri|sharir|shareer|badan|body|nakhun|nakhoon|nails?)\\s+(\\S+\\s+){0,3}(peel\\w*|pil[aie]\\b|pile\\b|yellow\\w*)",
                                        "(peel[aie]|pil[aie]|yellow\\w*)\\s+(\\S+\\s+){0,2}(aankh\\w*|ankh\\w*|eyes?|skin|twacha|chamdi|nakhun|nails?)",
                                        "jaundi\\w*|\\bpeeliya|\\bpiliya|\\bpeelia|\\bpilia|पीलिया",
@@ -24,6 +27,9 @@
     {"id": "g_yellow_danger", "stage": "S3", "when": "yellow_eyes_skin and (confusion or very_drowsy or unconscious or bleeding_any or bleeding_now or vomits_everything)"},
     {"id": "g_altered", "stage": "S3", "when": "confusion or very_drowsy or unconscious"},
     {"id": "g_yellow", "stage": "S1", "when": "yellow_eyes_skin"},
+    {"id": "g_scorpion", "stage": "S2", "when": "scorpion_sting", "_note": "scorpion stings can be serious: same day, in person"},
+    {"id": "g_sting", "stage": "S0", "when": "insect_sting"},
+    {"id": "g_animal_bite", "stage": "S1", "when": "animal_bite", "note": "rabies", "_note": "dog / cat / monkey bite or scratch: same day (rabies care)"},
     {"id": "g_bleeding", "stage": "S1", "when": "bleeding_any or bleeding_now"},
     {"id": "g_severe_pain", "stage": "S1", "when": "general_severe_pain"},
     {"id": "g_treating", "stage": "S0", "when": "lex_disease and treatment_ask and condition_specialty", "care_type": "specialist_referral", "_note": "a treatment question about a named condition: the treating specialist (e.g. oncologist), routine unless a symptom says otherwise"},

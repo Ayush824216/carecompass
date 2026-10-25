@@ -36,6 +36,7 @@ MEDICINE = "medicine_or_diagnosis_request"
 ABUSE = "abusive_or_prompt_injection"
 MATH = "math_or_code"
 UNKNOWN_TERM = "unknown_term"
+ANIMAL_CLASS = "animal_patient"  # pipeline-only: the patient is an animal -> please contact a vet (not counted)
 GIVE_UP = "abstain_give_up"  # pipeline-only: after 3 non-health turns in a row we stop asking
 CLASSES = (HEALTH, GREETING, OFF_TOPIC, UNCLEAR, MEDICINE, ABUSE, MATH, UNKNOWN_TERM)
 
@@ -125,6 +126,38 @@ def _greeting_only(t: str) -> bool:
         return False
     rest = [w for w in WORD.findall(t.lower()) if w not in GREET_FILLER]
     return len(rest) <= 1
+
+
+# --- the patient is an animal ("meri billi ko bukhar", "my dog is vomiting"): a vet, not this service ----------------
+ANIMAL = (r"kutt[aeiy]\w*|kutiya|dogs?|pupp(y|ies)|billi\w*|bill[ie]|cats?|kitten\w*|gaa?y|gai|cows?|bhains\w*|buffalo\w*|"
+          r"bakri\w*|goats?|ullu|owls?|tota|tote|parrot\w*|chidiya|birds?|ghod[aei]\w*|horses?|murgi\w*|hens?|chickens?|"
+          r"bail|ox|bandar|monkeys?|khargosh|rabbits?|hamsters?|fish|machhli|pet\s+(dog|cat|animal)|janwar|jaanwar|animal\w*|"
+          r"कुत्त\w*|बिल्ली|गाय|भैंस|बकरी|उल्लू|तोता|चिड़िया|घोड़\w*|मुर्गी|बंदर|जानवर")
+ANIMAL_PATIENT = re.compile(
+    rf"(?:^|[^\wऀ-ॿ])(?:{ANIMAL})(?![\wऀ-ॿ])\s*(?:'s\s+|\s)?(?:ko|ke|ki|ka|is|has|was|seems|keeps|को|के|की|का|bimaa?r|बीमार|\S+\s+(mein|me|में)\s)"
+    rf"|\b(my|our|mera|meri|mere|hamara|hamari)\s+(pet\s+)?(?:{ANIMAL})\b", re.I)
+# a person bitten / scratched / stung by an animal is a human health problem
+ANIMAL_INJURY = re.compile(
+    r"\b(ne|by)\b\s+(\S+\s+){0,2}(kaa?t|kata|kaata|kaati|bit|bite|bitten|nakh(oo|u)n|panja|scratch\w*|maar|mara|maara|sting|dank|daank|dans|daunch)"
+    r"|\b(bit|bitten|scratched|stung|attacked)\s+(\S+\s+){0,3}by\b|\b(dog|cat|snake|monkey|rat)\s+(bite|scratch)|"
+    r"ने\s+(\S+\s*){0,2}(काट|नाखून|पंजा|डंक)|काटा|काट\s*लिया|डंक", re.I)
+HUMAN = re.compile(r"\b(mujhe|mujhko|main|mai|i\s+(am|have|feel)|i'm|papa|mummy|maa|beta|beti|bachch?[aeiy]|baby|son|daughter|"
+                   r"dadi|dada|nani|nana|bhai|behen|wife|husband|patni|pati|father|mother|grand\w+)\b|मुझे|मैं|पापा|मम्मी|बेटा|बेटी|बच्च", re.I)
+VET_TEXT = {
+    "en": "I can only help with human health. For an animal, please contact a vet.",
+    "hi": "मैं सिर्फ़ इंसानों की सेहत में मदद करता हूँ। जानवर के लिए किसी पशु चिकित्सक (वेट) से संपर्क करें।",
+    "hinglish": "Main sirf insaanon ki sehat mein madad karta hoon. Jaanwar ke liye kisi vet (pashu chikitsak) se sampark karein.",
+}
+
+
+def is_animal_patient(text: str) -> bool:
+    """The patient is an animal; a person bitten or scratched by one ("kutte ne kaata") is not."""
+    t = unicodedata.normalize("NFC", text or "")
+    return bool(ANIMAL_PATIENT.search(t)) and not ANIMAL_INJURY.search(t) and not HUMAN.search(t)
+
+
+def vet_text(lang: str) -> str:
+    return VET_TEXT.get(lang) or VET_TEXT["en"]
 
 
 def has_health_signal(text: str) -> bool:
