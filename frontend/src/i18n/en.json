@@ -210,7 +210,8 @@
     "chooseOne": "Tap one. Or type or speak your answer.",
     "offlineEmergency": "Server not reachable. If this is an emergency, call now:",
     "otherConcerns": "You also mentioned",
-    "talkAbout": "Talk about: {label}"
+    "talkAbout": "Talk about: {label}",
+    "siteConfirm": "If this is happening right now, call immediately:"
   },
   "panel": {
     "title": "How we decided",
@@ -358,7 +359,6 @@
     "locationHint": "Read these numbers to the operator if asked.",
     "locationUnknown": "Location not available. Tell the operator your address and a nearby landmark.",
     "back": "Back to chat",
-    "noBooking": "Booking is turned off in emergencies. Please call first.",
     "readAloud": "Read instructions aloud",
     "undo": "Selected by mistake? Go back",
     "tapToCall": "Tap to call",

@@ -148,7 +148,7 @@ SIMPLE: dict[str, list[str]] = {
         r"burn(?!ing\s+(sensation|feeling|in\s+(the\s+|my\s+|his\s+|her\s+)?(chest|stomach|urine|throat)|of\s+(the\s+)?chest))\w*\s+(\S+\s+){0,5}(large|whole|entire|face|body|chest|severe|badly)",
         r"caught\s+fire", r"on\s+fire",
         r"electric\w*\s+(shock|burn)|electrocut", r"acid\s+(attack|burn)",
-        r"\bjal\s+(gaye|gayi|gaya|gae|gyi|gya|gai)", r"jhulas", r"aag\s+(lag|mein|me)", r"(current|karant|bijli)\s+(lag|ka\s+jhatka)",
+        r"\bjal\s+(gaye|gayi|gaya|gae|gyi|gya|gai)", r"jhulas", r"\baag\s+(lag|mein|me)\b",r"(current|karant|bijli)\s+(lag|ka\s+jhatka)",
         r"जल\s*(गए|गई|गया|गये)", r"झुलस", r"आग\s*(लग|में)", r"करंट",
     ],
     "major_trauma": [
@@ -340,6 +340,8 @@ POST_FILLER = {"bilkul", "to", "toh", "koi", "hi", "bhi", "ho", "raha", "rahi", 
 class SafetyResult:
     red_flags: list[str] = field(default_factory=list)
     evidence: dict[str, str] = field(default_factory=dict)
+    # red flags said with an anatomically impossible site ("kidney mein heart attack"): confirmed once, not assumed
+    unsure: dict[str, dict] = field(default_factory=dict)
 
     @property
     def is_emergency(self) -> bool:
@@ -437,6 +439,72 @@ def _scan_combos(text: str, found: dict[str, str]) -> None:
             found[flag] = f"{t} | {q}"
 
 
+# --- anatomical plausibility ----------------------------------------------------------------------
+# A red flag placed in a body site where it cannot happen ("kidney mein heart attack", "brain mein saans nahi aa rahi",
+# "pair mein heart attack") is not opened as an emergency by keyword: one quick confirmation is asked instead, with
+# 112 / 108 on screen. Without a contradicting site, the flag stays a direct emergency.
+SITES = {
+    "chest": r"seen[ae]|seena|sina|sine|chh?ati|chest|छाती|सीन[ेा]", "heart": r"dil|heart|दिल|हृदय",
+    "lungs": r"phephd\w*|phephr\w*|lungs?|फेफड़\w*", "throat": r"gala|gale|throat|गला|गले",
+    "brain": r"brain|dimaa?g|मस्तिष्क|दिमाग", "head": r"sir|sar|head|सिर",
+    "kidney": r"kidneys?|gurd[ae]|गुर्द[ेा]|किडनी", "legs": r"pair|pairon|paon|legs?|foot|feet|taang|ghutn\w*|knees?|पैर|पैरों|टांग|घुटन\w*",
+    "arm": r"haath|hath|arms?|hands?|हाथ", "stomach": r"pet|stomach|belly|abdomen|पेट",
+    "eye": r"aankh\w*|ankh\w*|eyes?|आँख\w*|आंख\w*", "ear": r"kaan|ears?|कान", "teeth": r"daant|dant|teeth|tooth|दाँत|दांत",
+    "nose": r"naak|nose|नाक", "face": r"chehr\w*|face|munh|muh|mouth|चेहर\w*|मुँह|मुंह", "skin": r"skin|twacha|chamdi|त्वचा",
+    "back": r"kamar|peeth|back|कमर|पीठ", "hair": r"baal|hair|बाल", "nails": r"nakhun|nails?|नाखून",
+}
+PLAUSIBLE = {
+    "chest_pain": {"chest", "heart", "arm", "back", "stomach", "throat", "face"},
+    "severe_breathing_difficulty": {"chest", "lungs", "throat"},
+    "stroke_signs": {"brain", "head", "face", "arm", "legs", "eye"},
+}
+_LOC = "|".join(f"(?P<{k}>{v})" for k, v in SITES.items())
+SITE_BEFORE = re.compile(rf"(?:^|[^\wऀ-ॿ])(?:{_LOC})\s*(?:ke\s+andar|के\s+अंदर|mein|mei|me|mai|men|में|par|pe|पर)(?![\wऀ-ॿ])", re.I)
+SITE_AFTER = re.compile(rf"\b(?:in|inside|of)\s+(?:my|the|his|her|a|an)?\s*(?:{_LOC})\b", re.I)
+JOIN = re.compile(r"\b(aur|and|bhi|also|plus|lekin|but|tatha)\b|और|तथा|लेकिन|,", re.I)
+SITE_CONFIRM = {
+    "chest_pain": {"en": "Is there really chest pain or pressure right now?", "hi": "क्या अभी सच में सीने में दर्द या दबाव है?",
+                   "hinglish": "Kya abhi sach mein seene mein dard ya dabav hai?"},
+    "severe_breathing_difficulty": {"en": "Is there really trouble breathing right now?", "hi": "क्या अभी सच में साँस लेने में दिक्कत है?",
+                                    "hinglish": "Kya abhi sach mein saans lene mein dikkat hai?"},
+    "stroke_signs": {"en": "Right now, is the face drooping, speech slurred, or one side of the body weak?",
+                     "hi": "क्या अभी सच में चेहरा टेढ़ा है, बोलने में दिक्कत है या शरीर का एक हिस्सा कमज़ोर है?",
+                     "hinglish": "Kya abhi sach mein chehra tedha hai, bolne mein dikkat hai ya ek taraf kamzori hai?"},
+}
+SITE_CHIPS = {"yes": {"en": "Yes, right now", "hi": "हाँ, अभी", "hinglish": "Haan, abhi"},
+              "no": {"en": "No", "hi": "नहीं", "hinglish": "Nahi"}}
+
+
+def _flag_span(flag: str, clause: str) -> tuple[int, int] | None:
+    for p in _SIMPLE_C.get(flag, []):
+        for m in p.finditer(clause):
+            if not _negated(clause, m.start(), m.end()):
+                return m.start(), m.end()
+    return None
+
+
+def implausible_site(flag: str, clause: str) -> tuple[str, str] | None:
+    """(site, flag phrase) when the flag is placed in a site where it cannot happen; None when plausible / no site."""
+    if flag not in PLAUSIBLE:
+        return None
+    span = _flag_span(flag, clause)
+    if span is None:
+        return None
+    a, b = span
+    sites: list[str] = []
+    for rx, before in ((SITE_BEFORE, True), (SITE_AFTER, False)):
+        for m in rx.finditer(clause):
+            site = next(k for k, v in m.groupdict().items() if v)
+            gap = clause[m.end():a] if before else clause[b:m.start()]
+            if (before and m.end() > a) or (not before and m.start() < b):
+                continue
+            if len(gap.split()) <= 4 and not JOIN.search(gap):
+                sites.append(site)
+    if not sites or any(s in PLAUSIBLE[flag] for s in sites):
+        return None
+    return sites[0], clause[a:b]
+
+
 def check(user_texts: list[str], extra_flags: list[str] | None = None) -> SafetyResult:
     """Run all rules over each user text (raw + normalised) and over the joined conversation."""
     found: dict[str, str] = {}
@@ -460,9 +528,24 @@ def check(user_texts: list[str], extra_flags: list[str] | None = None) -> Safety
     for alias, target in FLAG_ALIAS.items():
         if alias in found:
             found.setdefault(target, found.pop(alias))
+    unsure: dict[str, dict] = {}
+    for flag in list(found):
+        bad = implausible_site(flag, str(found[flag]))
+        if bad is None:
+            continue
+        site, phrase = bad
+        # said plausibly somewhere else too ("kidney mein heart attack ... seene mein dard")? then it stays
+        again: dict[str, str] = {}
+        for t in raws:
+            _scan_text(re.sub(re.escape(phrase), " ", t, flags=re.I), again)
+        if flag in again and implausible_site(flag, str(again[flag])) is None:
+            found[flag] = again[flag]
+            continue
+        unsure[flag] = {"site": site, "text": phrase}
+        del found[flag]
     order = list(SIMPLE) + list(COMBOS)
     flags = sorted(found, key=lambda f: order.index(f) if f in order else len(order))
-    return SafetyResult(red_flags=flags, evidence=found)
+    return SafetyResult(red_flags=flags, evidence=found, unsure=unsure)
 
 
 # --- emergency messaging -------------------------------------------------------------------------
@@ -495,12 +578,9 @@ FLAG_LABELS = {
 }
 
 STEPS = {
-    "en": ("Call 112 (emergency) or 108 (ambulance) now. Stay with the person and keep them still and comfortable. "
-           "Do not drive yourself if you feel unwell. Do not give food, drink or medicine unless the emergency operator tells you to."),
-    "hi": ("अभी 112 (आपातकाल) या 108 (एम्बुलेंस) पर कॉल करें। मरीज़ के साथ रहें और उन्हें आराम से लिटाए रखें। "
-           "अगर आपकी तबीयत ठीक नहीं है तो खुद गाड़ी न चलाएँ। जब तक आपातकालीन ऑपरेटर न कहे, खाना, पानी या दवा न दें।"),
-    "hinglish": ("Abhi 112 (emergency) ya 108 (ambulance) par call karein. Mareez ke saath rahein aur unhe aaram se litaye rakhein. "
-                 "Agar aapki tabiyat theek nahi hai to khud gaadi na chalayein. Jab tak emergency operator na kahe, khana, paani ya dawa na dein."),
+    "en": "1. Call 112 or 108 now. 2. Stay with the person and keep them still. 3. No food, water or medicine unless the operator says so.",
+    "hi": "1. अभी 112 या 108 पर कॉल करें। 2. मरीज़ के साथ रहें, उन्हें हिलने न दें। 3. ऑपरेटर के कहे बिना खाना, पानी या दवा न दें।",
+    "hinglish": "1. Abhi 112 ya 108 par call karein. 2. Mareez ke saath rahein, unhe hilne na dein. 3. Operator ke kahe bina khana, paani ya dawa na dein.",
 }
 SUICIDE_EXTRA = {
     "en": " You can also call the Tele-MANAS helpline 14416 (free, 24x7). You are not alone.",

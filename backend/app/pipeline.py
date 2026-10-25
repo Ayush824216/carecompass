@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import time
 from dataclasses import asdict
 from functools import lru_cache
@@ -102,6 +103,48 @@ def _pending_clinical_question(req: TriageRequest):
     return None
 
 
+_SITE_Q = {re.sub(r"\s+", " ", clean(t).lower()).strip(): flag
+           for flag, texts in safety.SITE_CONFIRM.items() for t in texts.values()}
+_NO = re.compile(r"^\W*(nahi|nahin|nhi|nai|no|nope|नहीं|ना)\b", re.I)
+
+
+def _site_answers(req: TriageRequest) -> tuple[set[str], set[str], bool]:
+    """Answers to the "is there really ... right now?" confirmation: (yes flags, no flags, answered in this turn).
+    Anything but a clear "no" counts as yes."""
+    turns = [(t.role, t.content or "") for t in req.conversation_history]
+    if not turns or turns[-1] != ("user", req.user_input):
+        turns.append(("user", req.user_input))
+    yes, no, pending, last = set(), set(), None, False
+    for i, (role, content) in enumerate(turns):
+        if role == "assistant":
+            pending = _SITE_Q.get(re.sub(r"\s+", " ", clean(content).lower()).strip())
+            continue
+        if pending:
+            (no if _NO.match(content) else yes).add(pending)
+            last = i == len(turns) - 1
+            pending = None
+    return yes, no, last
+
+
+def _strip_phrases(req: TriageRequest, phrases: list[str]) -> TriageRequest:
+    """The user said "no": the implausible red-flag words are dropped, the rest of the message is triaged."""
+    def strip(s: str) -> str:
+        for ph in phrases:
+            s = re.sub(re.escape(ph), " ", s or "", flags=re.I)
+        return re.sub(r"\s+", " ", s).strip()
+    hist = [h.model_copy(update={"content": strip(h.content)}) if h.role == "user" else h for h in req.conversation_history]
+    return req.model_copy(update={"user_input": strip(req.user_input) or req.user_input, "conversation_history": hist})
+
+
+def site_confirmation(flag: str, lang: str, tr: dict) -> TriageResponse:
+    q = safety.SITE_CONFIRM[flag].get(lang) or safety.SITE_CONFIRM[flag]["en"]
+    tr["followup"].update({"question_id": f"confirm.site:{flag}", "kind": "site_confirm", "multi": False, "confirmation": True,
+                           "options": [{"id": k, "label": v.get(lang) or v["en"], "severity": "definite_S3" if k == "yes" else None}
+                                       for k, v in safety.SITE_CHIPS.items()]})
+    tr["model_used"] = "rules:site_check"
+    return TriageResponse(follow_up_question=q, care_type=None, urgency=None, red_flags=[], reasoning="", matched_caregivers=[])
+
+
 def _unclear_streak(req: TriageRequest) -> int:
     """Non-health user turns in a row just before this one (answers to our clinical questions are health)."""
     streak, pending = 0, None
@@ -190,6 +233,22 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
 
         t = time.perf_counter()
         sres = safety.check(_safety_texts(turns, state), extra_flags=_extra_flags(state))
+        # anatomically impossible red flag ("kidney mein heart attack"): one confirmation, 112 / 108 stay on screen
+        site_yes, site_no, site_now = _site_answers(req)
+        if site_yes:
+            tr["domain_class"] = domain_guard.HEALTH
+            tr["model_used"] = "rules:site_check"
+            return emergency_response(sorted(site_yes | set(sres.red_flags)), lang)
+        open_site = [f for f in sres.unsure if f not in site_no]
+        if open_site and not sres.is_emergency:
+            tr["domain_class"] = domain_guard.HEALTH
+            tr["safety_checks"] = {"red_flags": [], "unsure": sres.unsure, "stage": "pre_model"}
+            return site_confirmation(open_site[0], lang, tr)
+        if site_no and sres.unsure:
+            req = _strip_phrases(req, [sres.unsure[f]["text"] for f in site_no if f in sres.unsure])
+            turns = _user_turns(req)
+            state = intake.build_state(req.user_input, [h.model_dump() for h in req.conversation_history])
+            sres = safety.check(_safety_texts(turns, state), extra_flags=_extra_flags(state))
         timings["safety"] = time.perf_counter() - t
         tr["safety_checks"] = {"red_flags": sres.red_flags, "evidence": sres.evidence,
                                "categories_checked": len(safety.FLAG_LABELS), "stage": "pre_model"}
@@ -199,7 +258,7 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
             return emergency_response(sres.red_flags, lang)
 
         # domain guard: only health requests go further (safety above always runs first)
-        answering = _pending_clinical_question(req) is not None
+        answering = _pending_clinical_question(req) is not None or site_now
         dclass = domain_guard.classify(req.user_input, answering_clinical_question=answering)
         spans = evidence.find(turns)
         tr["evidence"] = [sp.as_dict() for sp in spans]

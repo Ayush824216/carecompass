@@ -25,6 +25,17 @@ function quickRepliesFor(question, bank) {
   return [];
 }
 
+function CallStrip({ text }) {
+  return (
+    <div role="alert" className="mt-3 flex flex-wrap items-center gap-3 rounded-xl2 bg-emergency p-4 text-white">
+      <ShieldAlert className="h-6 w-6 shrink-0" aria-hidden="true" />
+      <p className="min-w-0 flex-1 font-semibold">{text}</p>
+      <a href="tel:112" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />112</a>
+      <a href="tel:108" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />108</a>
+    </div>
+  );
+}
+
 export default function GetCare() {
   const { t, lang, voice, location, hasLocation, incognito, session } = useApp();
   const welcome = useCallback(() => [{ id: nextId(), role: "assistant", content: t("care.welcome"), ts: Date.now() }], [t]);
@@ -129,16 +140,11 @@ export default function GetCare() {
       {error && (
         <div className="mb-5">
           <ErrorState message={error} onRetry={lastInput.current ? () => send(lastInput.current.text, lastInput.current.hist) : undefined} />
-          {error === t("common.serverDown") && (
-            <div role="alert" className="mt-3 flex flex-wrap items-center gap-3 rounded-xl2 bg-emergency p-4 text-white">
-              <ShieldAlert className="h-6 w-6 shrink-0" aria-hidden="true" />
-              <p className="min-w-0 flex-1 font-semibold">{t("care.offlineEmergency")}</p>
-              <a href="tel:112" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />112</a>
-              <a href="tel:108" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />108</a>
-            </div>
-          )}
+          {error === t("common.serverDown") && <CallStrip text={t("care.offlineEmergency")} />}
         </div>
       )}
+      {/* "is there really ... right now?" (a red flag in an impossible body site): 112 / 108 stay on screen */}
+      {phase === "done" && debug?.followup?.kind === "site_confirm" && <div className="mb-5"><CallStrip text={t("care.siteConfirm")} /></div>}
       <LocationBar />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
         <ChatPanel messages={messages} loading={phase === "loading"} onSend={(v) => send(v)} quickReplies={quick} choices={choices}
