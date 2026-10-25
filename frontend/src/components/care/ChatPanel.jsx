@@ -81,7 +81,7 @@ function MultiChoice({ options, onSend, t, single }) {
 }
 
 export default function ChatPanel({ messages, loading, onSend, quickReplies, choices, questionNo, maxQuestions, onReset, disabled, quickTitle, emptyLine, locationText }) {
-  const { t, lang } = useApp();
+  const { t, lang, incognito } = useApp();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
   const [micError, setMicError] = useState("");
@@ -119,7 +119,7 @@ export default function ChatPanel({ messages, loading, onSend, quickReplies, cho
   const started = messages.some((m) => m.role === "user");
 
   return (
-    <section className="card flex flex-col overflow-hidden" aria-label={t("care.title")}>
+    <section className={`card flex flex-col overflow-hidden ${incognito ? "incognito-chat" : ""}`} aria-label={t("care.title")} data-incognito={incognito || undefined}>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3">
         <div className="flex min-w-0 items-center gap-3">
           <BrandAvatar className="h-9 w-9" />

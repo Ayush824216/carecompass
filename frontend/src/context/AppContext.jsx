@@ -32,8 +32,6 @@ export function AppProvider({ children }) {
     setNoStore(inc); setIncognitoHeader(inc); setModeState(m);
   }, []);
   const endSession = useCallback(() => { setMode("memory"); setSession((n) => n + 1); }, [setMode]);
-  // one navbar switch: turning Incognito off ends the session (the conversation held in memory is wiped)
-  const toggleIncognito = useCallback(() => (mode === "incognito" ? endSession() : setMode("incognito")), [mode, endSession, setMode]);
   const giveConsent = useCallback((choice) => {
     const c = { choice, at: new Date().toISOString() };
     setConsentState(c);
@@ -56,6 +54,7 @@ export function AppProvider({ children }) {
 
   /** Ask the browser for the current position; resolves to true on success. */
   const requestGps = useCallback(() => new Promise((resolve) => {
+    if (!window.isSecureContext) { setGeoStatus("insecure"); resolve(false); return; } // browsers allow GPS only on https or localhost
     if (!navigator.geolocation) { setGeoStatus("unavailable"); resolve(false); return; }
     setGeoStatus("asking");
     navigator.geolocation.getCurrentPosition(
@@ -69,8 +68,7 @@ export function AppProvider({ children }) {
     );
   }), [setLocation]);
 
-  // first visit: try GPS once; if it fails the location picker is shown (no silent default)
-  useEffect(() => { if (load("cc.location", UNSET_LOC).source === "unset") requestGps(); }, [requestGps]);
+  // no automatic GPS request: Get Care shows "Allow location" and the browser asks only after that tap
 
   const t = useCallback((key, vars) => translate(lang, key, vars), [lang]);
 
@@ -79,6 +77,11 @@ export function AppProvider({ children }) {
     setToasts((ts) => [...ts, { id, message, tone }]);
     setTimeout(() => setToasts((ts) => ts.filter((x) => x.id !== id)), 4500);
   }, []);
+  // one navbar switch: turning Incognito off ends the session (the conversation held in memory is wiped)
+  const toggleIncognito = useCallback(() => {
+    if (mode === "incognito") { endSession(); toast(translate(lang, "privacy.incognitoOffToast"), "info"); }
+    else { setMode("incognito"); toast(translate(lang, "privacy.incognitoOnToast"), "info"); }
+  }, [mode, endSession, setMode, toast, lang]);
   const dismissToast = useCallback((id) => setToasts((ts) => ts.filter((x) => x.id !== id)), []);
 
   const addBooking = useCallback((b) => setBookings((bs) => [b, ...bs]), []);

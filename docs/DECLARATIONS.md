@@ -38,9 +38,10 @@ The clinical pathway thresholds and danger signs (`docs/CLINICAL_PATHWAYS.md`, `
 |---|---|
 | Hosted LLM API (provider TBD: OpenAI-compatible / Gemini / Anthropic) | Model B triage call, 6 s timeout, local fallback. |
 | Browser Web Speech API (SpeechRecognition, speechSynthesis) | Voice input (hi-IN / en-IN) and read-aloud in the frontend; runs in the user's browser. |
-| OpenStreetMap tile servers | Map tiles in the web app (© OpenStreetMap contributors, ODbL). |
+| Google Maps Platform: Maps JavaScript API, Places API (Place Autocomplete, India only), Geocoding API | Maps (location picker, caregiver map, emergency screen), "Search your area" and the area name for a GPS fix or dropped pin. Called from the user's browser with `VITE_GOOGLE_MAPS_API_KEY` (frontend/.env, never committed); our server never sees the location. Optional: without a key, or if Google fails to load, the app uses Leaflet + OpenStreetMap. |
+| OpenStreetMap tile servers | Fallback map tiles when Google Maps is not configured (© OpenStreetMap contributors, ODbL; attribution shown on the map). |
 | Google Fonts (Plus Jakarta Sans, Source Sans 3, Noto Sans Devanagari, JetBrains Mono; SIL OFL) | Web fonts. |
-| Browser Geolocation API | User location for caregiver distance (fallback: central Delhi). |
+| Browser Geolocation API | User location for caregiver distance, asked only after the user taps "Allow location" (https or localhost only); otherwise search, a locality list or a map pin. |
 
 ## Libraries
 | Library | Licence | Use |
@@ -58,7 +59,8 @@ The clinical pathway thresholds and danger signs (`docs/CLINICAL_PATHWAYS.md`, `
 | Tailwind CSS, PostCSS, Autoprefixer | MIT | Styling / design tokens |
 | framer-motion | MIT | Subtle animations (respects prefers-reduced-motion) |
 | lucide-react | ISC | Icons |
-| Leaflet, react-leaflet | BSD-2 / Hippocratic-2.1 | Caregiver maps |
+| @googlemaps/js-api-loader | Apache-2.0 | Loads the Google Maps JavaScript API once |
+| Leaflet, react-leaflet | BSD-2 / Hippocratic-2.1 | Fallback maps (no Google key / Google failed) |
 | Playwright (dev only) | Apache-2.0 | Screenshot-based responsive / accessibility audit |
 | Vite, @vitejs/plugin-react | MIT | Frontend build |
 | nginx (Docker image) | BSD-2 | Serving the built frontend |

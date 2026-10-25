@@ -4,7 +4,8 @@ import { CheckCircle2, LayoutList, Map as MapIcon, MapPin, UsersRound } from "lu
 import { useApp } from "../../context/AppContext.jsx";
 import { api } from "../../lib/api.js";
 import { haversineKm, kmLabel, nextSlot, slotLabel } from "../../lib/format.js";
-import { locationLabel, nearestLocality } from "../../lib/locations.js";
+import { inDelhiNcr, locationLabel, nearestLocality } from "../../lib/locations.js";
+import NcrNotice from "../NcrNotice.jsx";
 import BookingModal from "../BookingModal.jsx";
 import AssessmentCard from "./AssessmentCard.jsx";
 import CaregiverCard from "../CaregiverCard.jsx";
@@ -24,7 +25,7 @@ function heading(t, response, rows, location) {
     h = t(`result.heading.${ct}`);
   }
   const place = location.lat != null && ct !== "gp_teleconsult"
-    ? (location.source === "locality" && location.label ? location.label.split(",")[0] : nearestLocality(location.lat, location.lng)?.name)
+    ? (location.label ? location.label.split(",")[0] : inDelhiNcr(location) ? nearestLocality(location.lat, location.lng)?.name : null)
     : null;
   return place ? `${h} ${t("result.inPlace", { place })}` : h;
 }
@@ -124,6 +125,7 @@ export default function ResultSection({ response, debug }) {
             </div>
           )}
         </div>
+        {!tele && <NcrNotice className="mb-5" />}
 
         {rows.length === 0 ? (
           <EmptyState icon={UsersRound} title={t("result.noCaregivers")} />

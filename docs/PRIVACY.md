@@ -29,7 +29,9 @@ What the server holds briefly:
 - pregnancy, opt-in only;
 - short summaries of past assessments (date, category, stage, care type), never the chat.
 
-Preferred language, saved location and the emergency contact use their own keys on the same device. Next time,
+Preferred language, saved location and the SOS contacts use their own keys on the same device. The location is
+asked for only after the user taps "Allow location"; with Google Maps configured, search and the area name go from
+the browser to Google (Places / Geocoding), and the triage API receives only lat/lng, which it never logs. Next time,
 remembered items are sent in the optional `memory` request field and confirmed once in the chat ("Pichli baar
 aapne bataya tha: sugar. Kya yeh abhi bhi sahi hai?"). Only "Yes" adds them as risk factors, so memory can raise
 urgency but never lower it. "My health memory" (`/memory`) lets the user view, edit, forget one item ("Mat yaad

@@ -102,6 +102,14 @@ def test_no_user_text_in_logs(caplog):
     assert "rahul" not in logged and "9876543210" not in logged and "bukhar" not in logged and "seene" not in logged
 
 
+def test_location_never_logged(caplog):
+    caplog.set_level(logging.DEBUG)
+    client.post("/api/v1/triage", json={"user_input": "bukhar 3 din se", "conversation_history": [],
+                                        "location": {"lat": 19.07612, "lng": 72.87765}})
+    logged = " ".join(r.getMessage() for r in caplog.records)
+    assert "19.076" not in logged and "72.877" not in logged
+
+
 # ---------------------------------------------------------------- B/D. device memory hints
 def _flow(start, answers, memory=None):
     hist, text, qids, r = [], start, [], None

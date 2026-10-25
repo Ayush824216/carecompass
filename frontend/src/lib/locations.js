@@ -25,11 +25,21 @@ export function nearestLocality(lat, lng, list = cache || FALLBACK) {
   return best;
 }
 
+// demo caregivers exist only in Delhi NCR; beyond this distance from the nearest NCR locality the user is "outside"
+const NCR_KM = 40;
+
+/** true / false, or null when there is no location yet. */
+export function inDelhiNcr(loc) {
+  if (!loc || loc.lat == null) return null;
+  const n = nearestLocality(loc.lat, loc.lng);
+  return Boolean(n && n.km <= NCR_KM);
+}
+
 /** Human label for the current location, e.g. "Saket, South Delhi" or "near Saket". */
 export function locationLabel(loc, t) {
   if (!loc || loc.lat == null) return "";
-  if (loc.source === "locality" && loc.label) return loc.label;
+  if (loc.label) return loc.label; // locality pick, Places search or reverse-geocoded pin
   const n = nearestLocality(loc.lat, loc.lng);
-  if (!n) return `${loc.lat.toFixed(3)}, ${loc.lng.toFixed(3)}`;
+  if (!n || n.km > NCR_KM) return `${loc.lat.toFixed(3)}, ${loc.lng.toFixed(3)}`;
   return n.km < 2 ? `${n.name}, ${n.city}` : t("location.near", { name: `${n.name}, ${n.city}` });
 }

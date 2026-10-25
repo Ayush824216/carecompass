@@ -628,8 +628,8 @@
     "chooseHint": "We use it only to find caregivers near you and to show the emergency operator where you are.",
     "useCurrent": "Use my current location",
     "detecting": "Finding your location…",
-    "denied": "Location permission was denied. Please pick your area below.",
-    "unavailable": "Your location could not be detected. Please pick your area below.",
+    "denied": "Location permission is blocked. Allow it in your browser's site settings, or search your area / tap the map.",
+    "unavailable": "Your location could not be detected. Search your area or tap the map.",
     "pickList": "Pick your area",
     "pickMap": "Or tap on the map to drop a pin",
     "near": "near {name}",
@@ -637,7 +637,14 @@
     "gps": "Current location",
     "required": "Choose your location first so we can find caregivers near you.",
     "done": "Done",
-    "selectPlaceholder": "Select an area…"
+    "selectPlaceholder": "Select an area…",
+    "allowPrompt": "Allow location to find caregivers near you",
+    "allow": "Allow location",
+    "insecure": "Your browser shares location only on a secure (https) page or localhost. Search your area or tap the map.",
+    "search": "Search your area",
+    "searchPlaceholder": "Area, locality or landmark",
+    "outsideNcr": "Demo caregivers are available in Delhi NCR only.",
+    "outsideNcrNote": "We still show the nearest ones with their distance. Emergency numbers 112 and 108 work everywhere in India."
   },
   "modes": {
     "home_visit": "Home visit",
@@ -854,7 +861,9 @@
     "consentIncognito": "Use Incognito",
     "manage": "Manage my health memory",
     "incognitoOnHint": "Turn on Incognito: nothing will be saved",
-    "incognitoOffHint": "Turn off Incognito: ends this session and wipes the chat"
+    "incognitoOffHint": "Turn off Incognito: ends this session and wipes the chat",
+    "incognitoOnToast": "Incognito on: nothing will be saved",
+    "incognitoOffToast": "Incognito off"
   },
   "memory": {
     "title": "My health memory",

@@ -78,7 +78,8 @@ h1, h2, h3 { @apply font-display; letter-spacing: -0.02em; }
 }
 
 .leaflet-container { font-family: inherit; border-radius: 1rem; }
-
+/* Incognito: the chat looks different (dashed border, slightly darker) so nobody forgets nothing is being saved */
+.incognito-chat { border: 2px dashed rgb(var(--ink) / 0.45); background-color: rgb(var(--ink) / 0.06); }
 /* subtle film grain for hero/editorial sections (inline SVG noise, works offline) */
 .grain { position: relative; isolation: isolate; }
 .grain::before {

@@ -7,6 +7,7 @@ import { api } from "../../lib/api.js";
 import { speak } from "../../lib/speech.js";
 import { locationLabel } from "../../lib/locations.js";
 import { flagLabel } from "../../lib/care.js";
+import CaregiverMap from "../CaregiverMap.jsx";
 import { smsAllHref, smsHref, sosMessage, telHref, waHref } from "../../lib/sos.js";
 
 const BLINKIT_URL = "https://blinkit.com/"; // booking happens inside the Blinkit app; no API call is made
@@ -46,7 +47,7 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
     window.location.href = smsAllHref(sosContacts, message);
   };
 
-  const big = "flex items-center gap-4 rounded-3xl p-5 shadow-lift sm:p-6";
+  const big = "flex min-h-[148px] items-center gap-4 rounded-3xl p-5 shadow-lift sm:p-6";
   return (
     <motion.div role="alertdialog" aria-modal="true" aria-labelledby="em-title" aria-describedby="em-steps"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -83,6 +84,12 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
               <span className="mt-1 block font-bold">{t("sos.button")}</span></span>
           </button>
         </div>
+
+        <a href={BLINKIT_URL} target="_blank" rel="noreferrer" className={`${big} mt-3 border-2 border-white/70 bg-white/10 text-white hover:bg-white/20`}>
+          <Ambulance className="h-9 w-9 shrink-0" aria-hidden="true" />
+          <span className="min-w-0 flex-1"><span className="flex items-center gap-2 text-lg font-bold leading-tight sm:text-2xl">{t("emergency.blinkit")}<ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" /></span>
+            <span className="mt-1 block text-sm leading-snug text-white/90 sm:text-base">{t("emergency.blinkitNote")}</span></span>
+        </a>
 
         {crisis && (
           <a href="tel:14416" className={`${big} mt-3 bg-white text-emergency-deep`} aria-label={t("emergency.teleManas")}>
@@ -144,14 +151,11 @@ export default function EmergencyView({ response, debug, onBack, onUndo }) {
             {location.lat != null
               ? <p className="mt-1 font-semibold">{place ? `${place} · ` : ""}<span className="font-mono">{location.lat.toFixed(5)}, {location.lng.toFixed(5)}</span></p>
               : <p className="mt-1 font-semibold">{t("emergency.locationUnknown")}</p>}
+            {location.lat != null && <div className="mt-3 text-ink"><CaregiverMap items={[]} user={location} height={160} /></div>}
           </section>
         </div>
 
         <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-white/25 pt-4 text-sm">
-          <a href={BLINKIT_URL} target="_blank" rel="noreferrer" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl border border-white/50 px-3 font-semibold hover:bg-white/10">
-            <Ambulance className="h-4 w-4" aria-hidden="true" />{t("emergency.blinkit")}<ExternalLink className="h-4 w-4" aria-hidden="true" />
-          </a>
-          <span className="text-white/85">{t("emergency.blinkitNote")}</span>
           <Link to="/sos" className="ml-auto min-h-[44px] content-center font-semibold underline underline-offset-4">{t("sos.manage")}</Link>
         </div>
         {voice && <span className="sr-only" aria-live="assertive">{steps.join(" ")}</span>}

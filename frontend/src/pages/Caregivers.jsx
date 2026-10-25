@@ -4,6 +4,7 @@ import PageHeader from "../components/PageHeader.jsx";
 import CaregiverCard from "../components/CaregiverCard.jsx";
 import CaregiverMap from "../components/CaregiverMap.jsx";
 import BookingModal from "../components/BookingModal.jsx";
+import NcrNotice from "../components/NcrNotice.jsx";
 import { EmptyState, ErrorState, Skeleton } from "../components/ui.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { api } from "../lib/api.js";
@@ -115,6 +116,7 @@ export default function Caregivers() {
         </aside>
 
         <section aria-live="polite">
+          <NcrNotice className="mb-5" />
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <p className="text-lg font-semibold">{all ? t("directory.results", { n: rows.length }) : t("common.loading")}</p>
             <div className="inline-flex rounded-xl border border-line bg-surface p-1" role="tablist" aria-label={`${t("common.list")} / ${t("common.map")}`}>
