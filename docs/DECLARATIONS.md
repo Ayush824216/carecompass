@@ -9,6 +9,8 @@ All code was written during the event by team OCTUPUS. Open-source components ar
 | KTAS emergency triage (Kaggle, ilkeryildiz) | Urgency model training/validation (`KTAS_expert`), red-flag recall checks. Triage-time fields only. | https://www.kaggle.com/datasets/ilkeryildiz/emergency-service-triage-application |
 | Disease Symptom Description (Kaggle, itachi9604) | `Symptom-severity.csv` weights for the severity lexicon; `dataset.csv` symptom lists as extra English training text (disease mapped internally to care type). Precautions are **not** used. | https://www.kaggle.com/datasets/itachi9604/disease-symptom-description-dataset |
 | Symptoms to Diseases (Kaggle, abhishekgodara) | Sampled symptom lists (20 per disease) as extra English care-type training text; diseases mapped internally via `config/disease_to_care_type.json`, never shown to users. | https://www.kaggle.com/datasets/abhishekgodara/symptoms-to-diseases |
+| ICD-10-CM code descriptions, FY2026 (CMS / CDC NCHS, public domain) | 3-character category names (A00–U85; external-cause V–Y and Z codes excluded) added to the broad medical lexicon `config/medical_lexicon.json` (built by `scripts/build_lexicon.py`) so a named condition is recognised as a health request. Codes are never shown and never used as a diagnosis. Raw files in `data/public/icd10/` (gitignored). | https://www.cms.gov/medicare/coding-billing/icd-10-codes |
+| Medical lexicon and aliases (team-curated) | Symptom and disease names from the two Kaggle datasets above plus ICD-10-CM categories; Hindi / Hinglish body parts, abnormal descriptors and condition names (`config/disease_aliases.json`, tagged emergency_condition / serious_chronic / common). Names only, no records. | this repo |
 
 No real patient data is used.
 

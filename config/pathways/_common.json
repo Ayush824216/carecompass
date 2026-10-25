@@ -86,10 +86,12 @@
      "label": {"en": "age 65+", "hi": "65+ उम्र", "hinglish": "65+ umar"}},
     {"id": "comorbid_raise", "when": "comorbid", "effect": "raise", "pathways": ["fever", "cough", "breathing", "headache", "abdominal", "vomiting", "urinary"], "_note": "chest pain rules already use diabetes / heart / BP directly",
      "label": {"en": "a long-term condition (sugar, heart, kidney, liver, cancer, steroids or HIV)", "hi": "पुरानी बीमारी (शुगर, दिल, किडनी, लीवर, कैंसर, स्टेरॉयड या HIV)", "hinglish": "purani bimari (sugar, dil, kidney, liver, cancer, steroid ya HIV)"}},
+    {"id": "serious_chronic_raise", "when": "(serious_chronic or comorbid) and not disease_only", "effect": "raise", "max_stage": "S2", "pathways": ["general"], "_note": "cancer, HIV, dialysis, heart disease, transplant: one stage up when there is a current problem; the name alone never sets urgency",
+     "label": {"en": "a serious long-term condition", "hi": "गंभीर पुरानी बीमारी", "hinglish": "gambhir purani bimari"}},
     {"id": "bedridden_home", "when": "bedridden", "effect": "prefer_home", "pathways": "*",
      "label": {"en": "cannot travel", "hi": "बाहर नहीं जा सकते", "hinglish": "bahar nahi ja sakte"}}
   ],
   "max_total_raise": 1,
   "age_question": {"id": "common.age", "kind": "age", "single": true, "no_none_chip": true, "_note": "asked early when the age is unknown; one chip question that does not count toward the 4", "text": {"en": "How old is the patient?", "hi": "मरीज़ की उम्र कितनी है?", "hinglish": "Mareez ki umar kitni hai?"}, "chips": [{"id": "lt1", "label": {"en": "Under 1 year", "hi": "1 साल से छोटा", "hinglish": "1 saal se chhota"}, "facts": {"age_known": true, "infant": true, "child": true, "under5": true, "minor": true, "age_band": "lt1"}}, {"id": "1_5", "label": {"en": "1–5 years", "hi": "1–5 साल", "hinglish": "1–5 saal"}, "facts": {"age_known": true, "child": true, "under5": true, "minor": true, "age_band": "1-5"}}, {"id": "6_17", "label": {"en": "6–17 years", "hi": "6–17 साल", "hinglish": "6–17 saal"}, "facts": {"age_known": true, "child": true, "minor": true, "age_band": "6-17"}}, {"id": "18_64", "label": {"en": "18–64 years", "hi": "18–64 साल", "hinglish": "18–64 saal"}, "facts": {"age_known": true, "adult": true, "age_band": "18-64"}}, {"id": "65p", "label": {"en": "65+ years", "hi": "65+ साल", "hinglish": "65+ saal"}, "facts": {"age_known": true, "elderly": true, "age_band": "65+"}}]},
-  "priority": ["chest_pain", "breathing", "headache", "fever", "abdominal", "vomiting", "urinary", "cough", "mood"]
+  "priority": ["chest_pain", "breathing", "headache", "fever", "abdominal", "vomiting", "urinary", "cough", "mood", "general"]
 }

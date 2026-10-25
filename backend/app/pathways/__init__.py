@@ -4,4 +4,4 @@ vomiting and loose motions, urinary problems, mood / mental health."""
 from .engine import (PathwayOutcome, PathwayResult, chip_options, identify_question, load, next_question,  # noqa: F401
                      question_text, run, sign_label)
 
-PATHWAY_IDS = ("fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary", "mood")
+PATHWAY_IDS = ("fever", "cough", "breathing", "chest_pain", "headache", "abdominal", "vomiting", "urinary", "mood", "general")

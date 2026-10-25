@@ -112,13 +112,19 @@ def candidates(user_texts: list[str], pout, age_group: Optional[str], lang: str)
         "pregnancy": bool(f.get("pregnant")),
         "mental_health": bool(pout is not None and pout.primary is not None and pout.primary.pathway == "mood"),
         "substance_use": bool(f.get("substance_use")),
-        "hiv_sti": "hiv" in comorb or bool(SENSITIVE_TEXT["hiv_sti"].search(text)),
-        "sexual_health": bool(SENSITIVE_TEXT["sexual_health"].search(text)),
     }
+    # HIV / STI and sexual-health mentions are never offered for saving at all (respectful, not even opt-in)
     for sid, on in sens.items():
         if on:
             out.append({"id": sid, "kind": "sensitive", "value": True, "sensitive": True, "label": LABEL[sid][lang]})
     return out
+
+
+def never_saved(user_texts: list[str], pout) -> bool:
+    """HIV / STI or sexual-health mention: not even the assessment summary is offered for saving."""
+    text = " ".join(user_texts)
+    return bool((pout is not None and pout.facts.get("sensitive_condition"))
+                or any(rx.search(text) for rx in SENSITIVE_TEXT.values()))
 
 
 SENSITIVE_CATEGORIES = {"mood"}  # an assessment summary in these categories is itself sensitive

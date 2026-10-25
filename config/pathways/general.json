@@ -1,0 +1,62 @@
+{
+  "id": "general",
+  "raise_care": "stage_default",
+  "label": {"en": "General health problem", "hi": "सामान्य स्वास्थ्य समस्या", "hinglish": "General health problem"},
+  "_spec": "Anything outside the eight symptom categories and mood (eyes, ears, nose, teeth, skin, joints, a named condition). A disease name is never confirmed or denied and never sets urgency by itself: the generic danger screen comes first, then what is happening now; GP teleconsult by default. Yellow eyes or skin -> same day; yellow eyes or skin with confusion, drowsiness, bleeding or repeated vomiting -> emergency. An emergency condition described as happening now (lakwa, dil ka daura) -> emergency.",
+  "trigger": "lex_disease or body_complaint or yellow_eyes_skin or emergency_condition_now or serious_chronic",
+  "stages": {
+    "S0": {"care_type": "gp_teleconsult", "urgency": "routine"},
+    "S1": {"care_type": "gp_teleconsult", "urgency": "same_day"},
+    "S2": {"care_type": "specialist_referral", "urgency": "same_day"},
+    "S3": {"care_type": "emergency_referral", "urgency": "immediate"}
+  },
+  "signs": {
+    "yellow_eyes_skin": {"patterns": ["(aankh\\w*|ankh\\w*|eyes?|skin|twacha|tvacha|chamdi|chamri|sharir|shareer|badan|body|nakhun|nakhoon|nails?)\\s+(\\S+\\s+){0,3}(peel\\w*|pil[aie]\\b|pile\\b|yellow\\w*)",
+                                       "(peel[aie]|pil[aie]|yellow\\w*)\\s+(\\S+\\s+){0,2}(aankh\\w*|ankh\\w*|eyes?|skin|twacha|chamdi|nakhun|nails?)",
+                                       "jaundi\\w*|\\bpeeliya|\\bpiliya|\\bpeelia|\\bpilia|पीलिया",
+                                       "(आँख|आंख|त्वचा|चमड़ी|शरीर|नाखून)[^।,.!?]{0,20}(पीली|पीला|पीले)", "पीली\\s*(आँख|आंख|त्वचा)"],
+                         "label": {"en": "yellow eyes or skin", "hi": "आँखें या त्वचा पीली", "hinglish": "aankhein ya twacha peeli"}},
+    "general_severe_pain": {"patterns": ["(bahut|bohot|bahot|tez|tej|severe|unbearable|asahniya|bardasht\\s+se\\s+bahar)\\s+(\\S+\\s+)?(dard|pain)", "(dard|pain)\\s+(\\S+\\s+)?(bardasht\\s+nahi|unbearable|severe)", "बहुत\\s*(तेज़\\s*|तेज\\s*)?दर्द", "असहनीय\\s*दर्द"],
+                    "label": {"en": "severe pain", "hi": "बहुत तेज़ दर्द", "hinglish": "bahut tez dard"}}
+  },
+  "rules": [
+    {"id": "g_condition_now", "stage": "S3", "when": "emergency_condition_now"},
+    {"id": "g_yellow_danger", "stage": "S3", "when": "yellow_eyes_skin and (confusion or very_drowsy or unconscious or bleeding_any or vomits_everything)"},
+    {"id": "g_altered", "stage": "S3", "when": "confusion or very_drowsy or unconscious"},
+    {"id": "g_yellow", "stage": "S1", "when": "yellow_eyes_skin"},
+    {"id": "g_bleeding", "stage": "S1", "when": "bleeding_any"},
+    {"id": "g_severe_pain", "stage": "S1", "when": "general_severe_pain"},
+    {"id": "g_name_only", "stage": "S0", "when": "disease_only", "_note": "only a condition name: GP teleconsult, routine; a body complaint with no rule is left to the model for the care type (e.g. a persistent rash -> skin specialist)"}
+  ],
+  "sufficient": "False",
+  "questions": [
+    {"id": "general.danger", "kind": "danger",
+     "text": {"en": "To guide you, tell me what is happening now. Is any of these present?", "hi": "सही मदद के लिए बताइए, अभी क्या हो रहा है। क्या इनमें से कुछ है?", "hinglish": "Sahi madad ke liye batayein, abhi kya ho raha hai. Kya inmein se kuch hai?"},
+     "none_label": {"en": "None of these", "hi": "इनमें से कुछ नहीं", "hinglish": "Inmein se kuch nahi"},
+     "chips": [
+       {"id": "confused", "severity": "definite_S3", "label": {"en": "Confused or very drowsy", "hi": "भ्रम या बहुत सुस्ती", "hinglish": "Confusion ya bahut susti"}, "facts": {"confusion": true}},
+       {"id": "bleeding", "label": {"en": "Bleeding", "hi": "खून आना", "hinglish": "Khoon aana"}, "facts": {"bleeding_any": true}},
+       {"id": "vomiting", "label": {"en": "Vomiting again and again", "hi": "बार-बार उल्टी", "hinglish": "Baar-baar ulti"}, "facts": {"vomits_everything": true}},
+       {"id": "breathing", "severity": "definite_S3", "label": {"en": "Trouble breathing", "hi": "साँस लेने में दिक्कत", "hinglish": "Saans lene mein dikkat"}, "facts": {"breathless": true}},
+       {"id": "fever", "label": {"en": "Fever", "hi": "बुखार", "hinglish": "Bukhar"}, "facts": {"fever": true}},
+       {"id": "pain", "label": {"en": "Severe pain", "hi": "बहुत तेज़ दर्द", "hinglish": "Bahut tez dard"}, "facts": {"general_severe_pain": true}}
+     ]},
+    {"id": "general.now", "kind": "associated", "single": true, "no_none_chip": true,
+     "text": {"en": "What is bothering you most right now?", "hi": "अभी सबसे ज़्यादा क्या परेशान कर रहा है?", "hinglish": "Abhi sabse zyada kya pareshan kar raha hai?"},
+     "chips": [
+       {"id": "pain", "label": {"en": "Pain or swelling", "hi": "दर्द या सूजन", "hinglish": "Dard ya soojan"}, "facts": {"general_pain": true}},
+       {"id": "skin", "label": {"en": "Itching, rash or skin change", "hi": "खुजली, दाने या त्वचा में बदलाव", "hinglish": "Khujli, daane ya twacha mein badlav"}, "facts": {"general_skin": true}},
+       {"id": "senses", "label": {"en": "Eyes, ears, nose or teeth", "hi": "आँख, कान, नाक या दाँत", "hinglish": "Aankh, kaan, naak ya daant"}, "facts": {"general_senses": true}},
+       {"id": "advice", "label": {"en": "Nothing new, I want advice or a check-up", "hi": "कुछ नया नहीं, सलाह या जाँच चाहिए", "hinglish": "Kuch naya nahi, salah ya jaanch chahiye"}, "facts": {"routine_check": true}}
+     ]},
+    {"id": "general.duration", "kind": "duration", "single": true, "no_none_chip": true,
+     "text": {"en": "Since when?", "hi": "कब से?", "hinglish": "Kab se?"},
+     "skip_if": "known(duration_days)",
+     "chips": [
+       {"id": "today", "label": {"en": "Since today", "hi": "आज से", "hinglish": "Aaj se"}, "facts": {"duration_days": 0}},
+       {"id": "days", "label": {"en": "A few days", "hi": "कुछ दिनों से", "hinglish": "Kuch dino se"}, "facts": {"duration_days": 3}},
+       {"id": "weeks", "label": {"en": "A few weeks", "hi": "कुछ हफ्तों से", "hinglish": "Kuch hafton se"}, "facts": {"duration_days": 21}},
+       {"id": "months", "label": {"en": "For months", "hi": "कई महीनों से", "hinglish": "Kai mahino se"}, "facts": {"duration_days": 90}}
+     ]}
+  ]
+}

@@ -294,9 +294,9 @@ def run(req: TriageRequest, use_llm: bool = True, trace: Optional[dict] = None) 
         # what the user may save ON THEIR DEVICE (debug block only; sensitive items need an explicit tick)
         tr["memory_candidates"] = memory.candidates(turns, pout, age["group"], lang)
         cat = assessment.category_for(prim.pathway, pout.facts) if prim is not None else None
-        tr["memory_summary"] = {"category": cat, "stage": prim.stage if prim is not None else None,
-                                "care_type": dec.care_type, "urgency": dec.urgency,
-                                "sensitive": cat in memory.SENSITIVE_CATEGORIES}
+        tr["memory_summary"] = None if memory.never_saved(turns, pout) else {
+            "category": cat, "stage": prim.stage if prim is not None else None, "care_type": dec.care_type,
+            "urgency": dec.urgency, "sensitive": cat in memory.SENSITIVE_CATEGORIES}
         if prim is not None:  # "Your assessment" card (optional block only; official fields unchanged)
             tr["assessment"] = assessment.build_card(pout, dec.care_type, dec.urgency, reasoning, lang)
 

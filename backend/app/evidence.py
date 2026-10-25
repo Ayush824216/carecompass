@@ -43,7 +43,7 @@ COMPLAINT = re.compile(
 
 @dataclass(frozen=True)
 class Span:
-    kind: str   # symptom | complaint | sign | red_flag
+    kind: str   # symptom | complaint | sign | red_flag | lexicon
     label: str  # symptom id, canonical term, red-flag id, or "complaint"
     text: str   # the user's own words
     start: int
@@ -104,6 +104,10 @@ def find(user_texts: list[str]) -> list[Span]:
             for p in pats:
                 for m in p.finditer(low):
                     add("sign", sid, i, s, m.start(), m.end())
+        # broad medical lexicon (config/medical_lexicon.json, disease aliases), typos included: "aakh pili", "cnacer"
+        from . import lexicon
+        for h in lexicon.evidence_hits(s):
+            add("lexicon", f"{h.kind}:{h.canonical}", i, s, h.start, h.end)
         res = safety.check([s])
         for flag, ev in res.evidence.items():
             first = str(ev).split(" | ")[0].strip()

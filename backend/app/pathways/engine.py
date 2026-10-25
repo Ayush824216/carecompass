@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any, Optional
 
-from .. import evidence
+from .. import evidence, lexicon
 from ..config import get_settings
 from ..lang import clean, normalise
 from ..safety import _negated
@@ -98,7 +98,7 @@ def detect_signs_detail(slots: Slots) -> tuple[dict[str, bool], set[str]]:
     denied: set[str] = set()
     for cl in slots.patient_clauses:
         hit: dict[str, bool] = {}
-        for variant in (cl.lower(), normalise(cl)):
+        for variant in (cl.lower(), normalise(cl), lexicon.canonical_text(cl)):  # typos: "aakh pili" -> "aankh pili"
             for sid, pats in _compiled_signs().items():
                 if hit.get(sid) is True:
                     continue
@@ -314,6 +314,10 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
     for d in slots.named_diseases:
         f[f"named_{d}"] = True
     f["tb_contact"] = f.get("tb_contact") or "tuberculosis" in slots.context_diseases  # exposure, never a diagnosis
+    # broad lexicon (disease names, typos, body part + descriptor): routing facts only, never a diagnosis
+    lex = lexicon.facts(slots.patient_clauses)
+    f.update({k: v for k, v in lex.items() if k != "lex_conditions"})
+    f["comorbid"] = f["comorbid"] or lex["serious_chronic"]
     known: set[str] = {k for k, v in f.items() if v not in (None, False)} | neg
     if answers:
         for k, v in answers.facts.items():
@@ -342,6 +346,9 @@ def build_facts(slots: Slots, signs: dict[str, bool], answers: Optional[Answers]
     f["temp_measured"] = f.get("temp_f") is not None
     if f.get("temp_not_measured"):
         known.add("temp_f")
+    # only a condition name, no current symptom or sign: the name alone never sets urgency
+    f["disease_only"] = bool(f.get("lex_disease")) and not f.get("body_complaint") and not any(
+        f.get(sid) is True for sid in _compiled_signs())
     return f, neg, known
 
 

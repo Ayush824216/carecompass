@@ -205,7 +205,11 @@ STROKE_HISTORY = [r"(after|since|post|had|history\s+of|old|previous|past|pichle\
                   r"bedridden|bistar\s+par|बिस्तर\s*पर",
                   r"(stroke|lakwa|lakva|paralysis)\s+(\S+\s+){0,2}(ke\s+baad|hua\s+tha|aaya\s+tha|pada\s+tha|last\s+year|years?\s+ago)",
                   r"(लकवा|स्ट्रोक)\s*(के बाद|हुआ था|पड़ा था)"]
+# "mujhe mirgi hai" names a known condition; only a fit described as happening now is an emergency
+EPILEPSY_KNOWN = [r"^(?!.*\b(abhi|now|aaj|today|achanak|sudden\w*|aaya|aayi|aa\s+raha|aa\s+rahi|pada|padi|pad\s+gay\w*|pad\s+rah\w*|"
+                  r"ho\s+raha|ho\s+rahi|happening|started|having\s+an?)\b)(?!.*(अभी|आज|आया|पड़ा|पड़ी|पड़\s*रह|हो\s*रह)).*(mirgi|epilep|मिर्गी)"]
 PATTERN_EXCLUDE: dict[str, list[str]] = {
+    r"epilep": EPILEPSY_KNOWN, r"mirgi": EPILEPSY_KNOWN, r"मिर्गी": EPILEPSY_KNOWN,
     r"paraly": STROKE_HISTORY, r"\bstroke\b": STROKE_HISTORY, r"lakwa|lakva|laqwa": STROKE_HISTORY, r"लकवा": STROKE_HISTORY,
     r"dysarthria|hemipar|hemipleg|facial\s+palsy": STROKE_HISTORY,
 }
@@ -351,6 +355,7 @@ _PEXCL_C = {re.compile(k, re.I).pattern: _compile(v) for k, v in PATTERN_EXCLUDE
 _EXCL_C = {k: _compile(v) for k, v in EXCLUDE.items()}
 _TEXCL_C = {k: _compile(v) for k, v in TEXT_EXCLUDE.items()}
 _COMBO_C = {k: (_compile(a), _compile(b)) for k, (a, b) in COMBOS.items()}
+_EPI_KNOWN = re.compile(EPILEPSY_KNOWN[0], re.I)
 _TOKEN = re.compile(r"[\wऀ-ॿ']+")
 
 
@@ -440,7 +445,12 @@ def check(user_texts: list[str], extra_flags: list[str] | None = None) -> Safety
         if DISTRESS_CALL.match(t):
             found.setdefault("distress_call", t)
         _scan_text(t, found)
-        _scan_text(normalise(t), found)
+        norm: dict[str, str] = {}
+        _scan_text(normalise(t), norm)
+        if "seizure" in norm and "seizure" not in found and _EPI_KNOWN.search(t):
+            del norm["seizure"]  # "mujhe mirgi hai" is normalised to "seizure": a known condition, not a fit now
+        for k, v in norm.items():
+            found.setdefault(k, v)
     joined = " . ".join(raws)
     _scan_combos(joined, found)
     _scan_combos(normalise(joined), found)

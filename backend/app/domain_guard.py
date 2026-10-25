@@ -128,8 +128,14 @@ def _greeting_only(t: str) -> bool:
 
 
 def has_health_signal(text: str) -> bool:
-    """At least one evidence span in the user's own words (symptom, complaint or red flag)."""
-    return evidence.has_evidence([text])
+    """At least one evidence span in the user's own words (symptom, complaint, sign or red flag)."""
+    return any(sp.kind != "lexicon" for sp in evidence.find([text]))
+
+
+def has_lexicon_signal(text: str) -> bool:
+    """A word from the broad medical lexicon (disease / symptom names, body part + descriptor), typos included."""
+    from . import lexicon
+    return bool(lexicon.evidence_hits(text))
 
 
 def _llm_tiebreak(text: str) -> str | None:
@@ -166,6 +172,9 @@ def classify(text: str, answering_clinical_question: bool = False) -> str:
         return MATH
     if OFF.search(t):
         return OFF_TOPIC
+    # a lexicon or fuzzy match ("mujhe jaundice hai", "aakh pili h", "cnacer") always beats the gibberish checks
+    if has_lexicon_signal(t):
+        return HEALTH
     if UNKNOWN_MED.search(t):
         return UNKNOWN_TERM
     from . import input_type  # learned classifier + simple gibberish features (lexicon share, repeats, vowels)

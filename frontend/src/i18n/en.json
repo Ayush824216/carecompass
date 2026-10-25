@@ -912,7 +912,8 @@
       "abdominal": "Abdominal pain",
       "vomiting": "Vomiting / loose motions",
       "urinary": "Urine problem",
-      "mood": "Mood"
+      "mood": "Mood",
+      "general": "General"
     }
   },
   "sos": {
