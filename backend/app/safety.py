@@ -283,6 +283,43 @@ COMBOS: dict[str, tuple[list[str], list[str]]] = {
 
 FLAG_ALIAS = {"young_infant_fever": "infant_danger_signs", "cardiac_referred_pain": "chest_pain", "fall_cannot_stand": "major_trauma"}
 
+# --- language context: a clause that is not a current symptom of the patient ----------------------
+# Hypothetical questions ("agar saans ruk jaaye to kya karein?"), long-past events ("pichle saal heart attack aaya tha")
+# and other people's past events ("padosi ko ... aaya tha") do not fire. Anything said in the present ("aaj phir",
+# "abhi", "now", "again") keeps the clause current, so a real danger sign is never hidden by a context word.
+HYPO_START = re.compile(r"^\s*(?:(?:aur|and|but|doctor|sir|ji|accha|acha|ok|okay)\s+)?(?:what\s+if|suppose|supposing|in\s+case|"
+                        r"agar|agr|ager|yadi|maan\s+lo|अगर|यदि|मान\s+लो)\b", re.I)
+HYPO_VERB = re.compile(r"(\bjaa?y[ea]n?\b|\bho\s+to\b|\bhota\s+hai\s+to\b|\bhu[ai]\s+to\b|\baaye?\s+to\b|\bkisi\s+ko\b|\bkoi\b|"
+                       r"\bsomeone\b|\bsomebody\b|\banyone\b|\ba\s+person\b|\bstops?\b|\bhappens?\b|जाए|जाये|जाएँ|हो\s+तो|किसी\s+को|कोई)", re.I)
+QUESTION = re.compile(r"\?|\bkya\s+(kar|hota|karna|karen|karein|karun)|\bwhat\s+(should|to|do|happens|would|can)|\bhow\s+(to|do|should)\b|"
+                      r"\bkaise\b|क्या\s+(कर|होता)|कैसे", re.I)
+PAST_TIME = re.compile(r"\b(pichh?le\s+(saal|varsh|baras|mahine|mahina|years?|months?)|last\s+(year|month)|\d+\s+(years?|months?)\s+ago|"
+                       r"(a|one|two|three|four|five|few|many|several)\s+(years?|months?)\s+ago|(saal|mahine|baras|varsh)\s+pehle|"
+                       r"bachpan\s+(mein|me)|as\s+a\s+child|in\s+(19|20)\d\d)\b|पिछले\s+(साल|महीने|वर्ष|years?|months?)|(साल|महीने|वर्ष)\s+पहले|बचपन\s+में", re.I)
+OTHER_PERSON = re.compile(r"\b(padosi|padosan|pados\s+wale|neighbou?rs?|friends?|dost|colleague|rishtedaar|relatives?|someone\s+i\s+know)\b|"
+                          r"\b(my|mere|meri)\s+(friend|dost|neighbou?r)\b|पड़ोसी|पड़ोसन|दोस्त|रिश्तेदार", re.I)
+PAST_VERB = re.compile(r"\b(tha|thi|the|thaa|had|was|were|happened|suffered)\b|था|थी|थे", re.I)
+PRESENT = re.compile(r"\b(abhi|aaj|now|today|again|currently|still|phir\s+se|fir\s+se|ab\s+(phir|fir|bhi)|ho\s+raha|ho\s+rahi|"
+                     r"ho\s+rahe|is\s+(having|not)|right\s+now)\b|अभी|आज|फिर\s+से|अब\s+(भी|फिर)|हो\s+रह", re.I)
+
+
+def not_current(clause: str, text: str) -> bool:
+    """True when the clause is a hypothetical question, a long-past event, or another person's past event."""
+    if PRESENT.search(clause):
+        return False
+    if HYPO_START.search(clause) and HYPO_VERB.search(clause) and QUESTION.search(text):
+        return True
+    if PAST_VERB.search(clause) and (PAST_TIME.search(clause) or OTHER_PERSON.search(clause)):
+        return True
+    return False
+
+
+# Very short calls for help ("help", "bachao", "SOS") are treated as an emergency at once: no questions first.
+DISTRESS_CALL = re.compile(r"^\s*(please\s+|plz\s+|pls\s+)?(help(\s+me)?(\s+please)?|save\s+me|sos|emergency|bachao|bachaao|bacha\s+lo|"
+                           r"koi\s+bachao|madad(\s+karo|\s+kijiye|\s+karein)?|jaldi\s+(aao|madad)|मदद(\s+करो|\s+कीजिए)?|बचाओ|बचा\s+लो|"
+                           r"कोई\s+बचाओ|इमरजेंसी)(\s+(please|plz|pls|jaldi|जल्दी))*\s*[!.।]*\s*$", re.I)
+
+
 # --- negation ------------------------------------------------------------------------------------
 CLAUSE_SPLIT = re.compile(r"[,.;!?।|\n]+|\s(?:but|however|although|lekin|magar|parantu|लेकिन|मगर|परंतु|किंतु)\s", re.I)
 PRE_NEG = {"no", "not", "never", "without", "denies", "denied", "deny", "nor", "neither", "dont", "don't", "doesnt",
@@ -345,6 +382,8 @@ def clauses(text: str) -> list[str]:
 
 def _scan_text(text: str, found: dict[str, str]) -> None:
     for cl in clauses(text):
+        if not_current(cl, text):
+            continue
         for flag, pats in _SIMPLE_C.items():
             if flag in found:
                 continue
@@ -372,6 +411,8 @@ def _scan_text(text: str, found: dict[str, str]) -> None:
 
 def _affirmed(pats: list[re.Pattern], text: str) -> str | None:
     for cl in clauses(text):
+        if not_current(cl, text):
+            continue
         for p in pats:
             for m in p.finditer(cl):
                 if not _negated(cl, m.start(), m.end()):
@@ -396,6 +437,8 @@ def check(user_texts: list[str], extra_flags: list[str] | None = None) -> Safety
     found: dict[str, str] = {}
     raws = [clean(t) for t in user_texts if t and t.strip()]
     for t in raws:
+        if DISTRESS_CALL.match(t):
+            found.setdefault("distress_call", t)
         _scan_text(t, found)
         _scan_text(normalise(t), found)
     joined = " . ".join(raws)
@@ -438,6 +481,7 @@ FLAG_LABELS = {
     "pregnancy_emergency": ("bleeding or severe pain in pregnancy", "गर्भावस्था में खून आना या तेज़ दर्द",
                             "pregnancy mein khoon aana ya tez dard"),
     "severe_head_injury": ("a serious head injury", "सिर में गंभीर चोट", "sar mein gambhir chot"),
+    "distress_call": ("an urgent call for help", "तुरंत मदद की पुकार", "turant madad ki pukaar"),
 }
 
 STEPS = {

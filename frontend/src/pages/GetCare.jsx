@@ -9,7 +9,7 @@ import DecisionPanel from "../components/care/DecisionPanel.jsx";
 import ResultSection from "../components/care/ResultSection.jsx";
 import EmergencyView from "../components/care/EmergencyView.jsx";
 import { ErrorState } from "../components/ui.jsx";
-import { ShieldAlert } from "lucide-react";
+import { Phone, ShieldAlert } from "lucide-react";
 import { IncognitoBadge, SaveToMemory } from "../components/Privacy.jsx";
 import { loadMemory, memoryHints } from "../lib/memory.js";
 
@@ -38,6 +38,7 @@ export default function GetCare() {
   const [bank, setBank] = useState(null);
   const [emOpen, setEmOpen] = useState(false);
   const lastInput = useRef(null);
+  const inFlight = useRef(false); // double taps / repeated clicks send one request only
   const snapshot = useRef(null); // state before the last send, for "selected by mistake? go back"
 
   useEffect(() => { api.questions().then(setBank).catch(() => {}); }, []);
@@ -47,6 +48,8 @@ export default function GetCare() {
 
   const send = useCallback(async (text, hist = history) => {
     if (!hasLocation) { setError(t("location.required")); return; }
+    if (inFlight.current) return;
+    inFlight.current = true;
     lastInput.current = { text, hist };
     snapshot.current = { messages, history: hist, response, debug, phase };
     setError("");
@@ -77,6 +80,8 @@ export default function GetCare() {
       setPhase(response ? "done" : "idle");
       setError(t("common.serverDown"));
       setMessages((m) => m.slice(0, -1));
+    } finally {
+      inFlight.current = false;
     }
   }, [history, location, hasLocation, voice, t, response, messages, debug, phase, incognito]);
 
@@ -124,6 +129,14 @@ export default function GetCare() {
       {error && (
         <div className="mb-5">
           <ErrorState message={error} onRetry={lastInput.current ? () => send(lastInput.current.text, lastInput.current.hist) : undefined} />
+          {error === t("common.serverDown") && (
+            <div role="alert" className="mt-3 flex flex-wrap items-center gap-3 rounded-xl2 bg-emergency p-4 text-white">
+              <ShieldAlert className="h-6 w-6 shrink-0" aria-hidden="true" />
+              <p className="min-w-0 flex-1 font-semibold">{t("care.offlineEmergency")}</p>
+              <a href="tel:112" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />112</a>
+              <a href="tel:108" className="inline-flex min-h-[48px] items-center gap-2 rounded-xl bg-white px-4 font-bold text-emergency"><Phone className="h-5 w-5" aria-hidden="true" />108</a>
+            </div>
+          )}
         </div>
       )}
       <LocationBar />

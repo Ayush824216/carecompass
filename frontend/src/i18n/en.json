@@ -207,7 +207,8 @@
     "emptyLine": "Describe the problem, who it is for, and since when.",
     "chooseAll": "Tap all that apply, then send. Or type or speak your answer.",
     "sendSelected": "Send ({n} selected)",
-    "chooseOne": "Tap one. Or type or speak your answer."
+    "chooseOne": "Tap one. Or type or speak your answer.",
+    "offlineEmergency": "Server not reachable. If this is an emergency, call now:"
   },
   "panel": {
     "title": "How we decided",
@@ -619,7 +620,8 @@
     "fever_stiff_neck_confusion": "Fever with stiff neck or confusion",
     "infant_danger_signs": "Danger signs in a young baby",
     "pregnancy_emergency": "Bleeding, severe pain or no movement in pregnancy",
-    "severe_head_injury": "Serious head injury"
+    "severe_head_injury": "Serious head injury",
+    "distress_call": "Urgent call for help"
   },
   "location": {
     "your": "Your location",

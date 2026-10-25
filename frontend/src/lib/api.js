@@ -14,10 +14,15 @@ export function setIncognitoHeader(v) { incognito = Boolean(v); }
 
 async function req(path, opts = {}) {
   let r;
+  // a hung server counts as unreachable, so the 112 / 108 strip appears instead of an endless spinner
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 25000);
   try {
-    r = await fetch(`${API_BASE}${path}`, { headers: { "Content-Type": "application/json", ...(incognito ? { "X-Incognito": "1" } : {}) }, ...opts });
+    r = await fetch(`${API_BASE}${path}`, { headers: { "Content-Type": "application/json", ...(incognito ? { "X-Incognito": "1" } : {}) }, signal: ctl.signal, ...opts });
   } catch {
     throw new ApiError("network", { network: true });
+  } finally {
+    clearTimeout(timer);
   }
   if (!r.ok) throw new ApiError(`${r.status}`, { status: r.status });
   return r.json();

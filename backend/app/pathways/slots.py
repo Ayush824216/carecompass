@@ -16,6 +16,7 @@ from datetime import datetime
 from typing import Optional
 
 from ..lang import clean
+from ..safety import not_current
 
 NUMW = {
     "ek": 1, "one": 1, "a": 1, "an": 1, "do": 2, "two": 2, "teen": 3, "three": 3, "char": 4, "chaar": 4, "four": 4,
@@ -303,7 +304,8 @@ def patient_clauses(text: str) -> tuple[list[str], list[str]]:
     keep, context = [], []
     for cl in split_clauses(text):
         named = any(rx.search(cl) for rx in NAMED_C.values())
-        if THIRD_PARTY.search(cl) or PAST.search(cl) or (named and (PAST_DISEASE.search(cl) or HOUSEHOLD.search(cl))):
+        if (THIRD_PARTY.search(cl) or PAST.search(cl) or not_current(cl, text)
+                or (named and (PAST_DISEASE.search(cl) or HOUSEHOLD.search(cl)))):
             context.append(cl)
         else:
             keep.append(cl)
